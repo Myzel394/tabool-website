@@ -1,0 +1,27 @@
+{
+    "extends": [
+        "plugin:@shopify/typescript",
+        "plugin:@shopify/react"
+    ],
+    "rules": {
+        "quotes": ["error", "double", "avoid-escape"],
+        "jsx-quotes": ["error", "prefer-double"],
+        "indent": ["error", 4],
+        "indent-legacy": ["error", 4],
+        "@typescript-eslint/quotes": ["error", "double"],
+        "no-trailing-spaces": "off",
+        "one-var": "off",
+        "react/jsx-indent-props": ["error", 4],
+        "arrow-parens": "off",
+        "no-return-assign": "off",
+        "eslint-comments/no-unlimited-disable": "off",
+        "no-warning-comments": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "@shopify/jsx-no-complex-expressions": "off"
+    },
+    "env": {
+        "browser": true,
+        "amd": true,
+        "node": true
+    }
+}
