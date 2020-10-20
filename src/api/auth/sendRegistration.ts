@@ -1,4 +1,5 @@
-import client from "../client";
+import axios from "axios";
+import applyCaseMiddleware from "axios-case-converter";
 
 export interface ISendRegistrationData {
     email: string;
@@ -14,6 +15,8 @@ export interface ISendRegistrationResponse {
 }
 
 const sendRegistration = async ({email, password, token}: ISendRegistrationData): Promise<ISendRegistrationResponse> => {
+    const client = applyCaseMiddleware(axios.create());
+
     const {data} = await client.post("/api/auth/registration/", {
         email,
         password,

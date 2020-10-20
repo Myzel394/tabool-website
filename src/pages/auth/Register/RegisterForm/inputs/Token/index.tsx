@@ -22,7 +22,7 @@ const Token = ({minLength, maxLength, label, helpText, onChange, ...other}: ITok
 
     const [showRequestDialog, setShowRequestDialog] = useState<boolean>(false);
     const tokenValidator = useCallback(value => {
-        const length = value.length;
+        const length = value?.length || 0;
         if (length < minLength || length > maxLength) {
             return t("Der Token ist nicht richtig lang. Vielleicht falsch kopiert?");
         }

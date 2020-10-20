@@ -1,19 +1,20 @@
-import client from "../client";
+import axios from "axios";
+
+import getLoginData from "../getLoginConfig";
 
 
 export interface IConfirmEmailData {
     token: string;
 }
 
-export interface IConfirmEmailResponse {
-
-}
+export interface IConfirmEmailResponse {}
 
 
 export const confirmEmail = async ({token}: IConfirmEmailData): Promise<IConfirmEmailResponse> => {
-    const {data} = await client.post("/api/auth/confirm-email/", {
-        token,
-    });
+    const {data} = await axios.post("/api/auth/confirmation/", {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        confirmation_key: token,
+    }, await getLoginData());
     return data;
 };
 

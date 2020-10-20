@@ -6,11 +6,8 @@ import {FieldOptions} from "hooks/useGetOptions";
 import {PrimaryButton, SecondaryButton} from "components/buttons";
 import {Actions} from "components/containers";
 import {ErrorResponse} from "types";
-import {ReactSVG} from "react-svg";
 
-import Title from "../Title";
-import {SimpleCenter} from "../../../../components";
-import logo from "../../../../assets/logo.svg";
+import Header from "../../Header";
 
 import Email from "./inputs/Email";
 import Password from "./inputs/Password";
@@ -54,15 +51,7 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
 
     return (
         <>
-            <SimpleCenter>
-                <ReactSVG
-                    src={logo}
-                    beforeInjection={(svg) =>
-                        svg.setAttribute("style", "max-width: 10em;margin:0 auto;max-height: 200px")
-                    }
-                />
-            </SimpleCenter>
-            <Title title={t("Registrieren")} />
+            <Header title={t("Registrieren")} />
             <form
                 onSubmit={event => {
                     event.preventDefault();
@@ -91,6 +80,7 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
                             onChange={value => setPassword(value)}
                             value={password}
                             errorMessages={errors?.password}
+                            isOriginalPassword
                         />
                     </Grid>
                     <Grid item xs={12}>

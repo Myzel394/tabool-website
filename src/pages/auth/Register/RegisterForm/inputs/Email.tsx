@@ -3,8 +3,7 @@ import {FormGroup, FormHelperText} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import validators from "common-validators";
 import {MdEmail} from "react-icons/all";
-
-import InputWithIcon, {IInputWithIcon} from "../../../../../components/inputs/InputWithIcon";
+import InputWithIcon, {IInputWithIcon} from "components/inputs/InputWithIcon";
 
 export type IEmail = Omit<IInputWithIcon, "renderIcon"> & {
     label: string;

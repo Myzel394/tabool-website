@@ -6,6 +6,7 @@ import axios from "axios";
 import "react-app-polyfill/stable";
 
 // Debug
+axios.defaults.withCredentials = true;
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 // eslint-disable-next-line no-console
 console.warn("Debug is active. Edit index.tsx to remove this warning.");
