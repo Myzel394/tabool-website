@@ -5,8 +5,10 @@ import {MdVisibility, MdVisibilityOff} from "react-icons/all";
 
 import TextInput, {ITextInput} from "./TextInput";
 
+export type IPasswordInput = ITextInput;
 
-const PasswordInput = (props: ITextInput) => {
+
+const PasswordInput = (props: IPasswordInput) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const togglePassword = useCallback(() =>

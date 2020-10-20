@@ -1,0 +1,127 @@
+import React, {useCallback, useState} from "react";
+import {Box, Grid} from "@material-ui/core";
+import {useTranslation} from "react-i18next";
+import validators from "common-validators";
+import {FieldOptions} from "hooks/useGetOptions";
+import {PrimaryButton, SecondaryButton} from "components/buttons";
+import {Actions} from "components/containers";
+import {ErrorResponse} from "types";
+import {ReactSVG} from "react-svg";
+
+import Title from "../Title";
+import {SimpleCenter} from "../../../../components";
+import logo from "../../../../assets/logo.svg";
+
+import Email from "./inputs/Email";
+import Password from "./inputs/Password";
+import Token from "./inputs/Token";
+
+const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+
+interface SubmitStates {
+    email: string;
+    password: string;
+    token: string;
+}
+
+export interface IRegisterForm {
+    fields: FieldOptions;
+    errors: ErrorResponse;
+    onRegister: (states: SubmitStates) => void;
+}
+
+const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
+    const {t} = useTranslation();
+    // States
+    const [email, setEmail] = useState<string>(""),
+        [password, setPassword] = useState<string>(""),
+        [secondPassword, setSecondPassword] = useState<string>(""),
+        [token, setToken] = useState<string>("");
+
+    // Validators
+    const passwordValidator = useCallback(value => {
+        if (validators.pattern(value, PASSWORD_REGEX)) {
+            return t(
+                "Das Passwort ist nicht sicher genug (Es muss ein Sonderzeichen haben, eine Zahl, Groß- und Kleinbuchstaben, mindestens 8 Zeichen)",
+            );
+        }
+    }, [t]);
+    const passwordEqual = useCallback(() => {
+        if (password !== secondPassword) {
+            return t("Die Passwörter sind nicht gleich");
+        }
+    }, [password, secondPassword, t]);
+
+    return (
+        <>
+            <SimpleCenter>
+                <ReactSVG
+                    src={logo}
+                    beforeInjection={(svg) =>
+                        svg.setAttribute("style", "max-width: 10em;margin:0 auto;max-height: 200px")
+                    }
+                />
+            </SimpleCenter>
+            <Title title={t("Registrieren")} />
+            <form
+                onSubmit={event => {
+                    event.preventDefault();
+                    onRegister({
+                        email,
+                        password,
+                        token,
+                    });
+                }}
+            >
+                <Grid container spacing={2} justify="center">
+                    <Grid item xs={12}>
+                        <Email
+                            label={fields.email.label}
+                            helpText={fields.email.helpText}
+                            onChange={value => setEmail(value)}
+                            value={email}
+                            errorMessages={errors?.email}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Password
+                            label={fields.password.label}
+                            helpText={fields.password.helpText}
+                            validators={[passwordValidator]}
+                            onChange={value => setPassword(value)}
+                            value={password}
+                            errorMessages={errors?.password}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Password
+                            label={t("Passwort bestätigen")}
+                            validators={[passwordEqual]}
+                            onChange={value => setSecondPassword(value)}
+                            value={secondPassword}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Token
+                            label={fields.token.label}
+                            helpText={fields.token.helpText}
+                            minLength={fields.token.minLength || 0}
+                            maxLength={fields.token.maxLength || 2047}
+                            onChange={value => setToken(value)}
+                            value={token}
+                            errorMessages={errors?.token}
+                        />
+                    </Grid>
+                </Grid>
+                <Box marginTop={3}>
+                    <Actions>
+                        <PrimaryButton type="submit">{t("Registrieren")}</PrimaryButton>
+                        <SecondaryButton>{t("Anmelden")}</SecondaryButton>
+                    </Actions>
+                </Box>
+            </form>
+        </>
+    );
+};
+
+export default RegisterForm;

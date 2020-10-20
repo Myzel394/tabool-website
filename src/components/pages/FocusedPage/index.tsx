@@ -36,5 +36,5 @@ export default function FocusedPage({children, important}: IFocusedPage) {
 }
 
 FocusedPage.defaultProps = {
-    important: true,
+    important: false,
 };

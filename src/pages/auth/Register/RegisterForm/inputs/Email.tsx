@@ -4,26 +4,27 @@ import {useTranslation} from "react-i18next";
 import validators from "common-validators";
 import {MdEmail} from "react-icons/all";
 
-import InputWithIcon from "./InputWithIcon";
+import InputWithIcon, {IInputWithIcon} from "../../../../../components/inputs/InputWithIcon";
 
-export interface IEmail {
+export type IEmail = Omit<IInputWithIcon, "renderIcon"> & {
     label: string;
     onChange: (value: string) => any;
 
     helpText?: string;
-}
+};
 
-const Email = ({label, helpText, onChange}: IEmail) => {
+const Email = ({label, helpText, onChange, ...other}: IEmail) => {
     const {t} = useTranslation();
     const emailValidator = useCallback(value => {
         if (validators.email(value)) {
-            return t("Diese E-Mail ist nicht gültig");
+            return t("Diese E-Mail-Adresse ist nicht gültig");
         }
     }, [t]);
 
     return (
         <FormGroup>
             <InputWithIcon
+                {...other}
                 renderIcon={(props) => <MdEmail {...props} />}
                 type="email"
                 label={label}

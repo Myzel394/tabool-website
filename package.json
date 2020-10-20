@@ -13,6 +13,8 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "axios": "^0.20.0",
+    "axios-case-converter": "^0.6.0",
+    "clsx": "^1.1.1",
     "common-validators": "^0.3.0",
     "fontsource-roboto": "^3.0.3",
     "i18next": "^19.8.2",
@@ -26,9 +28,11 @@
     "react-dom": "^16.14.0",
     "react-i18next": "^11.7.3",
     "react-icons": "^3.11.0",
+    "react-query": "^2.23.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-svg": "^11.0.44",
+    "tinycolor2": "^1.4.2",
     "typescript": "~3.7.2",
     "uuid": "^8.3.1"
   },
@@ -55,6 +59,7 @@
   },
   "devDependencies": {
     "@shopify/eslint-plugin": "^39.0.1",
+    "@types/axios-case-converter": "^0.3.1",
     "@types/lodash": "^4.14.162",
     "@types/paralleljs": "^0.0.20",
     "@types/react-router-dom": "^5.1.6",

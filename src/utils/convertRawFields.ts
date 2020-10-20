@@ -1,7 +1,8 @@
 import _ from "lodash";
+import {FieldOptions} from "hooks/useGetOptions";
 
 
-const convertRawFields = (rawFields: object): object => {
+const convertRawFields = (rawFields: object): FieldOptions => {
     const arrayData = _.map(rawFields, (data, field) => [
         field, _.mapKeys(data, (x, key: string) => _.camelCase(key)),
     ]);

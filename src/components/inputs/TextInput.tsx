@@ -1,10 +1,12 @@
-import React, {memo, ReactNode, useCallback, useState} from "react";
-import {FormControl, InputLabel, InputProps, OutlinedInput} from "@material-ui/core";
+import React, {memo, ReactNode, useCallback, useMemo, useState} from "react";
+import {FormControl, FormHelperText, InputLabel, InputProps, OutlinedInput} from "@material-ui/core";
 import {useUniqueId} from "hooks";
 
 export type ITextInput = InputProps & {
     validators?: ((value: string) => undefined | string)[];
     label?: ReactNode;
+    error?: boolean;
+    errorMessages?: string[];
 };
 
 const TextInput = (props: ITextInput) => {
@@ -13,38 +15,39 @@ const TextInput = (props: ITextInput) => {
         onChange,
         onBlur,
         label,
+        error,
+        errorMessages,
         ...other
     } = props;
 
     const formId = useUniqueId();
     const [value, setValue] = useState();
-    const [error, setError] = useState<string | null>(null);
+    const [validationError, setValidationError] = useState<string | null>(null);
     const callValidators = useCallback((value: string): boolean => {
         // Validates the value and returns whether the value is valid.
-        setError(null);
+        setValidationError(null);
 
         for (const validator of validators || []) {
             const returnValue = validator(value);
 
             if (typeof returnValue === "string") {
-                setError(returnValue);
+                setValidationError(returnValue);
                 return false;
             }
         }
         return true;
     }, [validators]);
+    const areErrorMessagesSet = useMemo(() => errorMessages && errorMessages.length > 0, [errorMessages]);
+    const renderMessage = useCallback((message: string, index: number) =>
+        <FormHelperText error key={index}>{message}</FormHelperText>
+    , []);
 
     return (
         <FormControl variant="outlined">
             <InputLabel htmlFor={formId}>{label}</InputLabel>
             <OutlinedInput
                 {...other}
-                {...(
-                    error ? {
-                        helperText: error,
-                        error: true,
-                    } : {}
-                )}
+                error={error || areErrorMessagesSet || validationError != null}
                 label={label}
                 id={formId}
                 onBlur={(event) => {
@@ -65,17 +68,25 @@ const TextInput = (props: ITextInput) => {
                     setValue(event.target.value);
 
                     // Just call validators when there is already an error. (Better UX)
-                    if (error) {
+                    if (validationError) {
                         callValidators(value);
                     }
                 }}
             />
+            {validationError && <FormHelperText error>{validationError}</FormHelperText>}
+            {errorMessages && errorMessages.length > 0 &&
+                <div>
+                    {errorMessages.map(renderMessage)}
+                </div>
+            }
         </FormControl>
     );
 };
 
 TextInput.defaultProps = {
     validators: [],
+    error: false,
+    errorMessages: [],
 };
 
 export default memo(TextInput);
