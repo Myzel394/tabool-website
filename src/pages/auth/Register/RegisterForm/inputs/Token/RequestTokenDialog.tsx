@@ -68,7 +68,7 @@ const RequestTokenDialog = ({open, onClose}: IRequestTokenDialog) => {
                 <DialogContentText>
                     <Trans>
                         {{APP_NAME}} ist für uns Schüler entwickelt.
-                        Lehrer, Eltern und Schulleiter bekommen <strong>keinen Zugang</strong>.
+                        Lehrer, Eltern, Schulleiter und andere Menschen außerhalb der Schule bekommen <strong>keinen Zugang</strong>.
                         Damit wir wissen, dass du ein Schüler bist, musst du einen <strong>Token</strong> angeben.
                     </Trans>
                 </DialogContentText>

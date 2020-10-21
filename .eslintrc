@@ -17,7 +17,16 @@
         "eslint-comments/no-unlimited-disable": "off",
         "no-warning-comments": "off",
         "react-hooks/exhaustive-deps": "off",
-        "@shopify/jsx-no-complex-expressions": "off"
+        "@shopify/jsx-no-complex-expressions": "off",
+        "react/jsx-sort-props": ["error", {
+            "callbacksLast": true,
+            "shorthandFirst": false,
+            "shorthandLast": true,
+            "ignoreCase": false,
+            "noSortAlphabetically": true,
+            "reservedFirst": true
+        }],
+        "@shopify/binary-assignment-parens": "off"
     },
     "env": {
         "browser": true,

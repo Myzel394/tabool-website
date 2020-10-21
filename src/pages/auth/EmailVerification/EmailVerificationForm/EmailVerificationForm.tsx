@@ -1,10 +1,9 @@
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {Box} from "@material-ui/core";
 import {PrimaryButton} from "components/buttons";
 import {ErrorResponse} from "types";
 
-import Header from "../../Header";
+import Form from "../../Form";
 
 import ConfirmKey from "./inputs/ConfirmKey";
 
@@ -17,26 +16,25 @@ export interface IEmailVerificationForm {
 const EmailVerificationForm = ({onVerify, initialCode, errors}: IEmailVerificationForm) => {
     const {t} = useTranslation();
     const [token, setToken] = useState<string>(initialCode);
+    const form = useMemo(() =>
+        <ConfirmKey
+            value={token}
+            onChange={value => setToken(value)}
+            errorMessages={errors?.detail}
+            required
+        />,
+    [token, errors]);
+    const actions = useMemo(() =>
+        <PrimaryButton type="submit">{t("E-Mail bestätigen")}</PrimaryButton>,
+    [t]);
 
     return (
-        <>
-            <Header title={t("E-Mail bestätigen")} />
-            <form
-                onSubmit={event => {
-                    event.preventDefault();
-                    onVerify(token);
-                }}
-            >
-                <ConfirmKey
-                    value={token}
-                    onChange={value => setToken(value)}
-                    errorMessages={errors?.detail}
-                />
-                <Box marginTop={3}>
-                    <PrimaryButton type="submit">{t("E-Mail bestätigen")}</PrimaryButton>
-                </Box>
-            </form>
-        </>
+        <Form
+            headerTitle={t("E-Mail bestätigen")}
+            onSubmit={() => onVerify(token)}
+            form={form}
+            actions={actions}
+        />
     );
 };
 

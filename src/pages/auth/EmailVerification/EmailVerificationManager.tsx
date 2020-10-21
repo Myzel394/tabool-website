@@ -1,19 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
+import {useHistory} from "react-router-dom";
 
-import Success from "./Success";
 import {EmailVerificationFormManager} from "./EmailVerificationForm";
 
 const EmailVerificationManager = () => {
-    const [isRegistered, setIsRegistered] = useState<boolean>(false);
+    const history = useHistory();
 
-    if (isRegistered) {
-        return <Success />;
-    }
     return (
         <EmailVerificationFormManager
-            onVerified={() => {
-                setIsRegistered(true);
-            }}
+            onVerified={() => history.push("/auth/full-registration/")}
         />
     );
 };

@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useMemo} from "react";
 import {useTranslation} from "react-i18next";
 import {useGetOptions} from "hooks";
 import {LoadingIndicator} from "components/indicators";
@@ -15,7 +15,9 @@ export interface IRegisterFormManager {
 
 const RegisterFormManager = ({onRegister}: IRegisterFormManager) => {
     const {t} = useTranslation();
-    const [fields, isLoading] = useGetOptions("/api/auth/registration/", {
+
+    // Options
+    const fallbackFields = useMemo(() => ({
         email: {
             label: t("E-Mail"),
             type: "email",
@@ -34,7 +36,10 @@ const RegisterFormManager = ({onRegister}: IRegisterFormManager) => {
             required: true,
             readOnly: false,
         },
-    });
+    }), [t]);
+    const [fields, isLoading] = useGetOptions("/api/auth/registration/", fallbackFields);
+
+    // Registration
     const [mutate, {isLoading: isLoadingRegistration, error: axiosError}] = useMutation(sendRegistration, {
         onSuccess: data => onRegister(data),
     });
@@ -45,6 +50,7 @@ const RegisterFormManager = ({onRegister}: IRegisterFormManager) => {
             token,
         });
     }, [mutate]);
+
     const errors = axiosError?.response?.data;
 
     return (

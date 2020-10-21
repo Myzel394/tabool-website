@@ -28,7 +28,7 @@ const EmailVerificationFormManager = ({onVerified}: IEmailVerificationFormManage
 
     return (
         <LoadingOverlay isLoading={isLoading}>
-            <EmailVerificationForm initialCode={code} errors={error?.response.data} onVerify={verifyCode} />
+            <EmailVerificationForm initialCode={code} errors={error?.response?.data} onVerify={verifyCode} />
         </LoadingOverlay>
     );
 };

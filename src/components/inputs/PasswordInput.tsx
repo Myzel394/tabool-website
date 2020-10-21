@@ -8,7 +8,7 @@ import TextInput, {ITextInput} from "./TextInput";
 export type IPasswordInput = ITextInput;
 
 
-const PasswordInput = (props: IPasswordInput) => {
+const PasswordInput = ({InputProps, ...other}: IPasswordInput) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const togglePassword = useCallback(() =>
@@ -17,18 +17,20 @@ const PasswordInput = (props: IPasswordInput) => {
 
     return (
         <TextInput
-            {...props}
+            {...other}
             type={type}
-            endAdornment={
-                <InputAdornment position="end">
-                    <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={togglePassword}
-                    >
-                        {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
-                    </IconButton>
-                </InputAdornment>
-            }
+            InputProps={{
+                ...InputProps,
+                endAdornment:
+                    <InputAdornment position="end">
+                        <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={togglePassword}
+                        >
+                            {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                        </IconButton>
+                    </InputAdornment>,
+            }}
         />
     );
 };

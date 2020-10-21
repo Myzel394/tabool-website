@@ -1,18 +1,16 @@
 import React, {memo, ReactElement, useCallback, useMemo, useState} from "react";
 import {InputAdornment, useTheme} from "@material-ui/core";
-import {TextInput} from "components/inputs/index";
 import {IconBaseProps} from "react-icons";
 
-export interface IInputWithIcon {
+import {ITextInput} from "./TextInput";
+
+import {TextInput} from "./index";
+
+export type IInputWithIcon = ITextInput & {
     renderIcon: (props: IconBaseProps) => ReactElement;
+};
 
-    onBlur?: Function;
-    onFocus?: Function;
-
-    [key: string]: any;
-}
-
-const InputWithIcon = ({renderIcon, onFocus, onBlur, ...other}: IInputWithIcon) => {
+const InputWithIcon = ({renderIcon, onFocus, onBlur, InputProps, ...other}: IInputWithIcon) => {
     const theme = useTheme();
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const handleFocus = useCallback(event => {
@@ -49,7 +47,7 @@ const InputWithIcon = ({renderIcon, onFocus, onBlur, ...other}: IInputWithIcon) 
             {...other}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            startAdornment={startAdornment}
+            InputProps={{...InputProps, startAdornment}}
         />
     );
 };

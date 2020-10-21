@@ -1,13 +1,11 @@
-import React, {useCallback, useState} from "react";
-import {Box, Grid} from "@material-ui/core";
+import React, {useCallback, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import validators from "common-validators";
-import {FieldOptions} from "hooks/useGetOptions";
 import {PrimaryButton, SecondaryButton} from "components/buttons";
 import {Actions} from "components/containers";
 import {ErrorResponse} from "types";
 
-import Header from "../../Header";
+import Form, {buildGrid} from "../../Form";
 
 import Email from "./inputs/Email";
 import Password from "./inputs/Password";
@@ -22,7 +20,7 @@ interface SubmitStates {
 }
 
 export interface IRegisterForm {
-    fields: FieldOptions;
+    fields: any;
     errors: ErrorResponse;
     onRegister: (states: SubmitStates) => void;
 }
@@ -48,69 +46,64 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
             return t("Die Passwörter sind nicht gleich");
         }
     }, [password, secondPassword, t]);
+    const form = useMemo(() => buildGrid([
+        <Email
+            label={fields.email.label}
+            helpText={fields.email.helpText}
+            onChange={value => setEmail(value)}
+            value={email}
+            errorMessages={errors?.email}
+            required={fields.email.required}
+            key="email"
+        />,
+        <Token
+            label={fields.token.label}
+            helpText={fields.token.helpText}
+            minLength={fields.token.minLength || 0}
+            maxLength={fields.token.maxLength || 2047}
+            onChange={value => setToken(value)}
+            value={token}
+            errorMessages={errors?.token}
+            required={fields.token.required}
+            key="token"
+        />,
+        <Password
+            label={fields.password.label}
+            helpText={fields.password.helpText}
+            validators={[passwordValidator]}
+            onChange={value => setPassword(value)}
+            value={password}
+            errorMessages={errors?.password}
+            isOriginalPassword
+            required={fields.password.required}
+            key="password"
+        />,
+        <Password
+            label={t("Passwort bestätigen")}
+            validators={[passwordEqual]}
+            onChange={value => setSecondPassword(value)}
+            value={secondPassword}
+            key="confirm_password"
+        />,
+    ]), [t, fields, passwordEqual, passwordValidator, errors, email, password, secondPassword, token]);
+    const actions = useMemo(() =>
+        <Actions>
+            <PrimaryButton type="submit">{t("Registrieren")}</PrimaryButton>
+            <SecondaryButton>{t("Anmelden")}</SecondaryButton>
+        </Actions>
+    , [t]);
 
     return (
-        <>
-            <Header title={t("Registrieren")} />
-            <form
-                onSubmit={event => {
-                    event.preventDefault();
-                    onRegister({
-                        email,
-                        password,
-                        token,
-                    });
-                }}
-            >
-                <Grid container spacing={2} justify="center">
-                    <Grid item xs={12}>
-                        <Email
-                            label={fields.email.label}
-                            helpText={fields.email.helpText}
-                            onChange={value => setEmail(value)}
-                            value={email}
-                            errorMessages={errors?.email}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Password
-                            label={fields.password.label}
-                            helpText={fields.password.helpText}
-                            validators={[passwordValidator]}
-                            onChange={value => setPassword(value)}
-                            value={password}
-                            errorMessages={errors?.password}
-                            isOriginalPassword
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Password
-                            label={t("Passwort bestätigen")}
-                            validators={[passwordEqual]}
-                            onChange={value => setSecondPassword(value)}
-                            value={secondPassword}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Token
-                            label={fields.token.label}
-                            helpText={fields.token.helpText}
-                            minLength={fields.token.minLength || 0}
-                            maxLength={fields.token.maxLength || 2047}
-                            onChange={value => setToken(value)}
-                            value={token}
-                            errorMessages={errors?.token}
-                        />
-                    </Grid>
-                </Grid>
-                <Box marginTop={3}>
-                    <Actions>
-                        <PrimaryButton type="submit">{t("Registrieren")}</PrimaryButton>
-                        <SecondaryButton>{t("Anmelden")}</SecondaryButton>
-                    </Actions>
-                </Box>
-            </form>
-        </>
+        <Form
+            headerTitle={t("Registrieren")}
+            onSubmit={() => onRegister({
+                email,
+                password,
+                token,
+            })}
+            form={form}
+            actions={actions}
+        />
     );
 };
 

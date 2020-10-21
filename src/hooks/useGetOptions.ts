@@ -15,7 +15,7 @@ export interface FieldOption {
 }
 
 export interface FieldOptions {
-    [key: string]: FieldOption;
+    [key: string]: FieldOptions;
 }
 
 /**
@@ -23,7 +23,7 @@ export interface FieldOptions {
  * @param url: string - The url
  * @param fallback
  */
-const useGetOptions = (url: string, fallback: FieldOptions = {}): [FieldOptions, boolean] => {
+const useGetOptions = (url: string, fallback = {}): [object, boolean] => {
     const [options, setOptions] = useState<{} | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -34,7 +34,6 @@ const useGetOptions = (url: string, fallback: FieldOptions = {}): [FieldOptions,
             try {
                 fieldOptions = await fetchOptions(url);
             } catch (e) {
-                console.log(e);
                 setOptions(fallback);
             } finally {
                 setIsLoading(false);
