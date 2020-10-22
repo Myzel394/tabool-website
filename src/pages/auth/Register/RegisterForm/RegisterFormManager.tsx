@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from "react";
+import React, {useMemo} from "react";
 import {useTranslation} from "react-i18next";
 import {useGetOptions} from "hooks";
 import {LoadingIndicator} from "components/indicators";
@@ -43,13 +43,13 @@ const RegisterFormManager = ({onRegister}: IRegisterFormManager) => {
     const [mutate, {isLoading: isLoadingRegistration, error: axiosError}] = useMutation(sendRegistration, {
         onSuccess: data => onRegister(data),
     });
-    const handleRegister = useCallback(({email, password, token}) => {
+    const handleRegister = ({email, password, token}) => {
         mutate({
             email,
             password,
             token,
         });
-    }, [mutate]);
+    };
 
     const errors = axiosError?.response?.data;
 
@@ -57,7 +57,7 @@ const RegisterFormManager = ({onRegister}: IRegisterFormManager) => {
         <LoadingIndicator isLoading={isLoading}>
             {() =>
                 <LoadingOverlay isLoading={isLoadingRegistration}>
-                    <RegisterForm errors={errors} onRegister={handleRegister} fields={fields} />
+                    <RegisterForm errors={errors} fields={fields} onRegister={handleRegister} />
                 </LoadingOverlay>
             }
         </LoadingIndicator>

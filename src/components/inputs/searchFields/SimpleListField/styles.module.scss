@@ -1,0 +1,9 @@
+@keyframes iconAnimation {
+    0% {transform: scale(0)}
+    100% {transform: none}
+}
+
+.icon {
+    transform-origin: center;
+    animation: iconAnimation .3s cubic-bezier(.17,.67,.36,1.29);
+}

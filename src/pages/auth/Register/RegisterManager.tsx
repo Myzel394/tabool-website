@@ -1,17 +1,32 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
+import {UserContext} from "contexts";
+import {ISendRegistrationResponse} from "api/auth/sendRegistration";
 
 import {RegisterFormManager} from "./RegisterForm";
 import Success from "./Success";
 
 const RegisterManager = () => {
-    const [isRegistered, setIsRegistered] = useState<boolean>(false);
+    const [data, setData] = useState<ISendRegistrationResponse | undefined>();
+    const {dispatch} = useContext(UserContext);
 
-    if (isRegistered) {
+    if (data) {
+        const {email, id} = data;
+
+        dispatch({
+            type: "register",
+            payload: {
+                email,
+                id,
+            },
+        });
+
+        console.log("asd");
+
         return <Success />;
     }
     return <RegisterFormManager
         onRegister={(data) => {
-            setIsRegistered(true);
+            setData(data);
         }} />;
 };
 

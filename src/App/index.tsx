@@ -1,11 +1,12 @@
 import React from "react";
-import {ThemeProvider, CssBaseline} from "@material-ui/core";
+import {CssBaseline, ThemeProvider} from "@material-ui/core";
 import "fontsource-roboto";
 import light from "themes/light";
 import {BrowserRouter as Router} from "react-router-dom";
 
 import "./global.scss";
 import Routes from "./Routes";
+import Contexts from "./Contexts";
 
 const App = () => {
     const theme = light;
@@ -14,8 +15,10 @@ const App = () => {
         <>
             <Router>
                 <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <Routes />
+                    <Contexts>
+                        <CssBaseline />
+                        <Routes />
+                    </Contexts>
                 </ThemeProvider>
             </Router>
         </>

@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from "react";
+import React from "react";
 import {FormGroup, FormHelperText} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import validators from "common-validators";
@@ -14,11 +14,11 @@ export type IEmail = Omit<IInputWithIcon, "renderIcon"> & {
 
 const Email = ({label, helpText, onChange, ...other}: IEmail) => {
     const {t} = useTranslation();
-    const emailValidator = useCallback(value => {
+    const emailValidator = value => {
         if (validators.email(value)) {
             return t("Diese E-Mail-Adresse ist nicht gültig");
         }
-    }, [t]);
+    };
 
     return (
         <FormGroup>
@@ -35,4 +35,4 @@ const Email = ({label, helpText, onChange, ...other}: IEmail) => {
     );
 };
 
-export default memo(Email);
+export default Email;

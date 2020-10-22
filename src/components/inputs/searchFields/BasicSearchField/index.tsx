@@ -1,30 +1,34 @@
-import React, {useRef, useState} from "react";
+import React, {useMemo, useState} from "react";
 import {Button, FormGroup, FormHelperText} from "@material-ui/core";
-import {useElementSize, useQueryOptions, useSaveData, useWindowSize} from "hooks";
+import {useQueryOptions} from "hooks";
 import {QueryFunction, useQuery} from "react-query";
 
-import Modal from "./Modal";
-import List from "./List";
+import SelectMenu from "./SelectMenu";
 
 
 export interface IBasicSearchField {
     title: string;
+    modalTitle: string;
     queryKey: string;
 
     searchParam: string;
     searchPlaceholder: string;
-    renderListElement: (element, props) => JSX.Element;
-
+    renderListElement: (element, props, isSelected: boolean) => JSX.Element;
+    filterData: (givenData: any[], searchValueLowerCased: string, searchValue: string) => any[];
     extractData: (data) => any[];
     queryFunction: QueryFunction<any>;
+    getKeyFromData: (data: any) => any;
 
     onSelect: (data) => void;
 
     errorMessages?: string[];
+    listItemSize?: number;
+    value: any;
 }
 
 const BasicSearchField = ({
     title,
+    modalTitle,
     queryKey,
     searchParam,
     renderListElement,
@@ -32,17 +36,16 @@ const BasicSearchField = ({
     queryFunction,
     searchPlaceholder,
     onSelect,
+    filterData,
     errorMessages,
+    listItemSize,
+    getKeyFromData,
+    value,
 }: IBasicSearchField) => {
-    const $input = useRef<any>();
-
-    const [searchValue, setSearchValue] = useState<string>("");
+    const [filterSearch, setFilterSearch] = useState<string>("");
     const [search, setSearch] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const saveData = useSaveData();
-    const [bodyWidth] = useElementSize($input);
-    const [windowWidth, windowHeight] = useWindowSize();
     const queryOptions = useQueryOptions();
     const {isFetching, isError, data: rawData} = useQuery(
         [queryKey, {[searchParam]: search}],
@@ -52,52 +55,47 @@ const BasicSearchField = ({
             keepPreviousData: true,
         },
     );
-    const data = extractData(rawData);
+    const data = useMemo(() => {
+        return filterData(extractData(rawData), filterSearch.toLocaleLowerCase(), filterSearch);
+    }, [rawData, filterData, filterSearch]);
 
     return (
-        <FormGroup>
-            <Modal
-                isLite={saveData}
+        <>
+            <SelectMenu
+                getKeyFromData={getKeyFromData}
                 isError={isError}
                 isFetching={isFetching}
-                isOpen={isOpen}
-                title={title}
-                searchValue={searchValue}
+                title={modalTitle}
+                searchValue={search}
                 searchPlaceholder={searchPlaceholder}
-                onChange={value => setSearchValue(value)}
+                isOpen={isOpen}
+                data={data}
+                renderListElement={renderListElement}
+                listItemSize={listItemSize || 50}
+                value={value}
                 onClose={() => setIsOpen(false)}
-                onSearch={(val) => setSearch(val)}
-            >
-                <div ref={$input}>
-                    <List
-                        data={data}
-                        width={(bodyWidth || windowWidth || 0)}
-                        height={(windowHeight || 0) * 0.5}
-                        renderListElement={(element, style) => {
-                            const props = {
-                                style,
-                                onClick: () => {
-                                    setIsOpen(false);
-                                    onSelect(element);
-                                },
-                            };
-
-                            return renderListElement(element, props);
-                        }}
-                    />
-                </div>
-            </Modal>
-            <Button
-                variant="outlined"
-                color="default"
-                onClick={() => setIsOpen(true)}
-            >{title}</Button>
-            {errorMessages &&
-                <FormHelperText error>
-                    {errorMessages.map(error => <span key={error}>{error}</span>)}
-                </FormHelperText>
-            }
-        </FormGroup>
+                onSelect={element => {
+                    setIsOpen(false);
+                    onSelect(element);
+                }}
+                onFilter={element => setFilterSearch(element)}
+                onSearch={value => setSearch(value)}
+            />
+            <FormGroup>
+                <Button
+                    variant="outlined"
+                    color="default"
+                    onClick={() => setIsOpen(true)}
+                >
+                    {title}
+                </Button>
+                {errorMessages &&
+                    <FormHelperText error>
+                        {errorMessages.map(error => <span key={error}>{error}</span>)}
+                    </FormHelperText>
+                }
+            </FormGroup>
+        </>
     );
 };
 

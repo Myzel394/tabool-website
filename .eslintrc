@@ -20,13 +20,14 @@
         "@shopify/jsx-no-complex-expressions": "off",
         "react/jsx-sort-props": ["error", {
             "callbacksLast": true,
-            "shorthandFirst": false,
-            "shorthandLast": true,
+            "shorthandFirst": true,
+            "shorthandLast": false,
             "ignoreCase": false,
             "noSortAlphabetically": true,
             "reservedFirst": true
         }],
-        "@shopify/binary-assignment-parens": "off"
+        "@shopify/binary-assignment-parens": "off",
+        "no-mixed-operators": "off"
     },
     "env": {
         "browser": true,

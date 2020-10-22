@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import validators from "common-validators";
 import {PrimaryButton, SecondaryButton} from "components/buttons";
@@ -34,75 +34,73 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
         [token, setToken] = useState<string>("");
 
     // Validators
-    const passwordValidator = useCallback(value => {
+    const passwordValidator = value => {
         if (validators.pattern(value, PASSWORD_REGEX)) {
             return t(
                 "Das Passwort ist nicht sicher genug (Es muss ein Sonderzeichen haben, eine Zahl, Groß- und Kleinbuchstaben, mindestens 8 Zeichen)",
             );
         }
-    }, [t]);
-    const passwordEqual = useCallback(() => {
+    };
+    const passwordEqual = () => {
         if (password !== secondPassword) {
             return t("Die Passwörter sind nicht gleich");
         }
-    }, [password, secondPassword, t]);
-    const form = useMemo(() => buildGrid([
-        <Email
-            label={fields.email.label}
-            helpText={fields.email.helpText}
-            onChange={value => setEmail(value)}
-            value={email}
-            errorMessages={errors?.email}
-            required={fields.email.required}
-            key="email"
-        />,
-        <Token
-            label={fields.token.label}
-            helpText={fields.token.helpText}
-            minLength={fields.token.minLength || 0}
-            maxLength={fields.token.maxLength || 2047}
-            onChange={value => setToken(value)}
-            value={token}
-            errorMessages={errors?.token}
-            required={fields.token.required}
-            key="token"
-        />,
-        <Password
-            label={fields.password.label}
-            helpText={fields.password.helpText}
-            validators={[passwordValidator]}
-            onChange={value => setPassword(value)}
-            value={password}
-            errorMessages={errors?.password}
-            isOriginalPassword
-            required={fields.password.required}
-            key="password"
-        />,
-        <Password
-            label={t("Passwort bestätigen")}
-            validators={[passwordEqual]}
-            onChange={value => setSecondPassword(value)}
-            value={secondPassword}
-            key="confirm_password"
-        />,
-    ]), [t, fields, passwordEqual, passwordValidator, errors, email, password, secondPassword, token]);
-    const actions = useMemo(() =>
-        <Actions>
-            <PrimaryButton type="submit">{t("Registrieren")}</PrimaryButton>
-            <SecondaryButton>{t("Anmelden")}</SecondaryButton>
-        </Actions>
-    , [t]);
+    };
 
     return (
         <Form
             headerTitle={t("Registrieren")}
+            form={buildGrid([
+                <Email
+                    key="email"
+                    label={fields.email.label}
+                    helpText={fields.email.helpText}
+                    value={email}
+                    errorMessages={errors?.email}
+                    required={fields.email.required}
+                    onChange={value => setEmail(value)}
+                />,
+                <Token
+                    key="token"
+                    label={fields.token.label}
+                    helpText={fields.token.helpText}
+                    minLength={fields.token.minLength || 0}
+                    maxLength={fields.token.maxLength || 2047}
+                    value={token}
+                    errorMessages={errors?.token}
+                    required={fields.token.required}
+                    onChange={value => setToken(value)}
+                />,
+                <Password
+                    key="password"
+                    isOriginalPassword
+                    label={fields.password.label}
+                    helpText={fields.password.helpText}
+                    validators={[passwordValidator]}
+                    value={password}
+                    errorMessages={errors?.password}
+                    required={fields.password.required}
+                    onChange={value => setPassword(value)}
+                />,
+                <Password
+                    key="confirm_password"
+                    label={t("Passwort bestätigen")}
+                    validators={[passwordEqual]}
+                    value={secondPassword}
+                    onChange={value => setSecondPassword(value)}
+                />,
+            ])}
+            actions={(
+                <Actions>
+                    <PrimaryButton type="submit">{t("Registrieren")}</PrimaryButton>
+                    <SecondaryButton>{t("Anmelden")}</SecondaryButton>
+                </Actions>
+            )}
             onSubmit={() => onRegister({
                 email,
-                password,
                 token,
+                password,
             })}
-            form={form}
-            actions={actions}
         />
     );
 };

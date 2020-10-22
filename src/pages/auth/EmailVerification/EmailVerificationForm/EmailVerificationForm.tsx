@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {PrimaryButton} from "components/buttons";
 import {ErrorResponse} from "types";
@@ -16,24 +16,22 @@ export interface IEmailVerificationForm {
 const EmailVerificationForm = ({onVerify, initialCode, errors}: IEmailVerificationForm) => {
     const {t} = useTranslation();
     const [token, setToken] = useState<string>(initialCode);
-    const form = useMemo(() =>
-        <ConfirmKey
-            value={token}
-            onChange={value => setToken(value)}
-            errorMessages={errors?.detail}
-            required
-        />,
-    [token, errors]);
-    const actions = useMemo(() =>
-        <PrimaryButton type="submit">{t("E-Mail bestätigen")}</PrimaryButton>,
-    [t]);
 
     return (
         <Form
             headerTitle={t("E-Mail bestätigen")}
+            form={(
+                <ConfirmKey
+                    required
+                    value={token}
+                    errorMessages={errors?.detail}
+                    onChange={value => setToken(value)}
+                />
+            )}
+            actions={(
+                <PrimaryButton type="submit">{t("E-Mail bestätigen")}</PrimaryButton>
+            )}
             onSubmit={() => onVerify(token)}
-            form={form}
-            actions={actions}
         />
     );
 };

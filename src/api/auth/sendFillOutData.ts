@@ -1,9 +1,11 @@
 import axios from "axios";
 import applyCaseMiddleware from "axios-case-converter";
 
+import {includeCSRFToken} from "../getCSRFToken";
+
 export interface ISendFillOutData {
     classNumber: number;
-    mainTeacher: number;
+    mainTeacher: string;
     scoosoUsername: string;
     scoosoPassword: string;
 }
@@ -27,9 +29,7 @@ const sendFillOutData = async ({
             username: scoosoUsername,
             password: scoosoPassword,
         },
-    }, {
-        withCredentials: true,
-    });
+    }, await includeCSRFToken());
     return data;
 };
 

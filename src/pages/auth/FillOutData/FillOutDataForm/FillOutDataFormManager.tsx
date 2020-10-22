@@ -60,15 +60,12 @@ const FillOutDataFormManager = ({onFilledOut}: IFillOutDataFormManager) => {
         scoosoUsername,
         scoosoPassword,
     }: SubmitState) => {
-        console.log(classNumber);
-        console.log(teacher);
-
-        /* mutate({
-            teacher,
+        mutate({
+            mainTeacher: teacher.id,
             classNumber,
             scoosoUsername,
             scoosoPassword,
-        });*/
+        });
     }, [mutate]);
 
     return (

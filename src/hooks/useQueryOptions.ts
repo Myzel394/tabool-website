@@ -1,17 +1,19 @@
-import {useSaveData} from "react-adaptive-hooks/save-data";
 import {useMemo} from "react";
 import {QueryConfig} from "react-query";
+
+import useSaveData from "./useSaveData";
 
 
 type ConfigType = QueryConfig<any, any>;
 
 const useQueryOptions = (): ConfigType => {
-    const {saveData} = useSaveData();
+    const saveData = useSaveData();
     const options = useMemo<ConfigType>(() => {
         if (saveData) {
             return {
                 refetchOnWindowFocus: false,
-                retry: 2,
+                refetchOnMount: true,
+                retry: 1,
                 refetchOnReconnect: false,
             };
         }
