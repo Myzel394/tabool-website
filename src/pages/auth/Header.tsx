@@ -3,7 +3,7 @@ import {ReactSVG} from "react-svg";
 import {SimpleCenter} from "components";
 import {svgLogo} from "assets";
 
-import Title from "./Title";
+import Title from "../../components/pages/FocusedPage/Title";
 
 export interface IHeader {
     title: string;

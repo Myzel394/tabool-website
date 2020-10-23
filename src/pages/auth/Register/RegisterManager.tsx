@@ -20,8 +20,6 @@ const RegisterManager = () => {
             },
         });
 
-        console.log("asd");
-
         return <Success />;
     }
     return <RegisterFormManager

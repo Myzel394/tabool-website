@@ -10,7 +10,12 @@ export interface ISendFillOutData {
     scoosoPassword: string;
 }
 
-export interface ISendFillOutResponse {}
+export interface ISendFillOutResponse {
+    firstName: string;
+    lastName: string;
+    id: string;
+    email: string;
+}
 
 
 const sendFillOutData = async ({

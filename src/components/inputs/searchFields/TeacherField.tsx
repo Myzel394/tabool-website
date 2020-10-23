@@ -1,10 +1,11 @@
-import React, {memo, useCallback, useMemo} from "react";
+import React, {memo, useCallback} from "react";
 import {searchTeacher} from "api/schoolData";
 import {useTranslation} from "react-i18next";
 import {TeacherApprox} from "types/teachers";
 
+import SimpleListField, {itemSize} from "../SimpleListField";
+
 import BasicSearchField, {IBasicSearchField} from "./BasicSearchField";
-import SimpleListField from "./SimpleListField";
 
 export type ITeacherField = Omit<
     IBasicSearchField,
@@ -24,13 +25,13 @@ export type ITeacherField = Omit<
     value: TeacherApprox | undefined;
 };
 
-const itemSize = 48 + 2 * 6 * 2;
-
 
 const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
     const {t} = useTranslation();
-    const defaultTitle = useMemo(() => t("Lehrer auswählen"), []);
+    const defaultTitle = t("Lehrer auswählen");
     const title = value ? `${value.lastName} (${value.shortName})` : defaultTitle;
+
+    // Functions
     const filterFunc = useCallback((givenData: TeacherApprox[], value: string) =>
         givenData.filter(element => {
             return element.lastName.toLocaleLowerCase().includes(value) ||
@@ -39,6 +40,11 @@ const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
     const renderElement = useCallback((element: TeacherApprox, props, isSelected) => {
         return (
             <SimpleListField
+                listItemProps={{
+                    button: true,
+                    disableRipple: true,
+                    disableTouchRipple: true,
+                }}
                 isActive={isSelected}
                 primaryText={element.lastName}
                 secondaryText={element.shortName}

@@ -1,1 +1,1 @@
-export {default as searchTeacher} from "./searchTeacher";
+export {default as searchTeacher} from "./fetchTeachers";

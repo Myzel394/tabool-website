@@ -1,17 +1,14 @@
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
-import validators from "common-validators";
 import {PrimaryButton, SecondaryButton} from "components/buttons";
 import {Actions} from "components/containers";
 import {ErrorResponse} from "types";
+import Form, {buildGrid} from "components/forms/Form";
+import EmailInput from "components/inputs/EmailInput";
+import {useEmailValidator, usePasswordValidator} from "hooks/validators";
 
-import Form, {buildGrid} from "../../Form";
-
-import Email from "./inputs/Email";
 import Password from "./inputs/Password";
 import Token from "./inputs/Token";
-
-const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
 interface SubmitStates {
     email: string;
@@ -27,21 +24,18 @@ export interface IRegisterForm {
 
 const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
     const {t} = useTranslation();
+
     // States
+    const [ownErrors, setOwnErrors] = useState<ErrorResponse>({});
     const [email, setEmail] = useState<string>(""),
         [password, setPassword] = useState<string>(""),
         [secondPassword, setSecondPassword] = useState<string>(""),
         [token, setToken] = useState<string>("");
 
     // Validators
-    const passwordValidator = value => {
-        if (validators.pattern(value, PASSWORD_REGEX)) {
-            return t(
-                "Das Passwort ist nicht sicher genug (Es muss ein Sonderzeichen haben, eine Zahl, Groß- und Kleinbuchstaben, mindestens 8 Zeichen)",
-            );
-        }
-    };
-    const passwordEqual = () => {
+    const passwordValidator = usePasswordValidator();
+    const emailValidator = useEmailValidator();
+    const passwordsEqual = (): string | undefined => {
         if (password !== secondPassword) {
             return t("Die Passwörter sind nicht gleich");
         }
@@ -49,14 +43,16 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
 
     return (
         <Form
-            headerTitle={t("Registrieren")}
             form={buildGrid([
-                <Email
+                <EmailInput
                     key="email"
                     label={fields.email.label}
                     helpText={fields.email.helpText}
                     value={email}
-                    errorMessages={errors?.email}
+                    errorMessages={[
+                        ...errors?.email || [],
+                        ...ownErrors?.email,
+                    ]}
                     required={fields.email.required}
                     onChange={value => setEmail(value)}
                 />,
@@ -78,15 +74,19 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
                     helpText={fields.password.helpText}
                     validators={[passwordValidator]}
                     value={password}
-                    errorMessages={errors?.password}
+                    errorMessages={[
+                        ...errors?.password || [],
+                        ...ownErrors?.password,
+                    ]}
                     required={fields.password.required}
                     onChange={value => setPassword(value)}
                 />,
                 <Password
                     key="confirm_password"
                     label={t("Passwort bestätigen")}
-                    validators={[passwordEqual]}
+                    validators={[passwordsEqual]}
                     value={secondPassword}
+                    errorMessages={ownErrors?.secondPassword}
                     onChange={value => setSecondPassword(value)}
                 />,
             ])}
@@ -96,11 +96,43 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
                     <SecondaryButton>{t("Anmelden")}</SecondaryButton>
                 </Actions>
             )}
-            onSubmit={() => onRegister({
-                email,
-                token,
-                password,
-            })}
+            onSubmit={() => {
+                // Reset
+                setOwnErrors({});
+                let tempErrors = {};
+
+                const emailValid = emailValidator(email);
+                if (typeof emailValid === "string") {
+                    tempErrors = {
+                        ...tempErrors,
+                        email: emailValid,
+                    };
+                }
+                const passwordValid = passwordValidator(password);
+                if (typeof passwordValid === "string") {
+                    tempErrors = {
+                        ...tempErrors,
+                        password: passwordValid,
+                    };
+                }
+                const secondPasswordValid = passwordsEqual();
+                if (typeof secondPasswordValid === "string") {
+                    tempErrors = {
+                        ...tempErrors,
+                        secondPassword: secondPasswordValid,
+                    };
+                }
+
+                setOwnErrors(tempErrors);
+
+                if (Object.keys(tempErrors).length === 0) {
+                    onRegister({
+                        email,
+                        token,
+                        password,
+                    });
+                }
+            }}
         />
     );
 };

@@ -1,6 +1,6 @@
 import React, {memo, useContext, useEffect} from "react";
 import {useMutation} from "react-query";
-import {confirmEmail} from "api/auth";
+import {sendConfirmEmail} from "api/auth";
 import {LoadingOverlay} from "components/overlays";
 import {useParams} from "react-router-dom";
 import {UserContext} from "contexts";
@@ -14,10 +14,10 @@ export interface IEmailVerificationFormManager {
 const EmailVerificationFormManager = ({onVerified}: IEmailVerificationFormManager) => {
     const {code} = useParams();
     const {dispatch} = useContext(UserContext);
-    const [mutate, {isLoading, error}] = useMutation(confirmEmail, {
+    const [mutate, {isLoading, error}] = useMutation(sendConfirmEmail, {
         onSuccess: () => onVerified(),
     });
-    const verifyCode = token => {
+    const verifyCode = useCallback(token => {
         dispatch({
             type: "verify-email",
             payload: {},
@@ -25,12 +25,12 @@ const EmailVerificationFormManager = ({onVerified}: IEmailVerificationFormManage
         mutate({
             token,
         });
-    };
+    });
 
     // If given code, verify it automatically
     useEffect(() => {
         verifyCode(code);
-    }, [code]);
+    }, [code, verifyCode]);
 
     return (
         <LoadingOverlay isLoading={isLoading}>

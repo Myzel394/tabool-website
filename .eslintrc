@@ -16,7 +16,6 @@
         "no-return-assign": "off",
         "eslint-comments/no-unlimited-disable": "off",
         "no-warning-comments": "off",
-        "react-hooks/exhaustive-deps": "off",
         "@shopify/jsx-no-complex-expressions": "off",
         "react/jsx-sort-props": ["error", {
             "callbacksLast": true,

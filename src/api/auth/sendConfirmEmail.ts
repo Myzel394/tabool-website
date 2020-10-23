@@ -10,7 +10,7 @@ export interface IConfirmEmailData {
 export interface IConfirmEmailResponse {}
 
 
-export const confirmEmail = async ({token}: IConfirmEmailData): Promise<IConfirmEmailResponse> => {
+export const sendConfirmEmail = async ({token}: IConfirmEmailData): Promise<IConfirmEmailResponse> => {
     const {data} = await axios.post("/api/auth/confirmation/", {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         confirmation_key: token,
@@ -18,4 +18,4 @@ export const confirmEmail = async ({token}: IConfirmEmailData): Promise<IConfirm
     return data;
 };
 
-export default confirmEmail;
+export default sendConfirmEmail;

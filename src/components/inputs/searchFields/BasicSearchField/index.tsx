@@ -42,7 +42,6 @@ const BasicSearchField = ({
     getKeyFromData,
     value,
 }: IBasicSearchField) => {
-    const [filterSearch, setFilterSearch] = useState<string>("");
     const [search, setSearch] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -51,13 +50,14 @@ const BasicSearchField = ({
         [queryKey, {[searchParam]: search}],
         queryFunction,
         {
+            refetchOnWindowFocus: isOpen,
             ...queryOptions,
             keepPreviousData: true,
         },
     );
     const data = useMemo(() => {
-        return filterData(extractData(rawData), filterSearch.toLocaleLowerCase(), filterSearch);
-    }, [rawData, filterData, filterSearch]);
+        return filterData(extractData(rawData), search.toLocaleLowerCase(), search);
+    }, [rawData, filterData, extractData, search]);
 
     return (
         <>
@@ -78,7 +78,6 @@ const BasicSearchField = ({
                     setIsOpen(false);
                     onSelect(element);
                 }}
-                onFilter={element => setFilterSearch(element)}
                 onSearch={value => setSearch(value)}
             />
             <FormGroup>

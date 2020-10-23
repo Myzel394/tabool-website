@@ -5,20 +5,18 @@ import {Trans} from "react-i18next";
 
 export type IPassword = Omit<IPasswordInput, "renderIcon"> & {
     label: string;
-    onChange: (value: string) => any;
     validators: any[];
     isOriginalPassword: boolean;
 
     helpText?: string;
 };
 
-const Password = ({label, helpText, onChange, validators, isOriginalPassword, ...other}: IPassword) => {
+const Password = ({label, helpText, validators, isOriginalPassword, ...other}: IPassword) => {
     return (
         <FormGroup>
             <PasswordInput
                 {...other}
                 label={label}
-                onChange={event => onChange(event.target.value)}
                 validators={validators}
             />
             {helpText && <FormHelperText>{helpText}</FormHelperText>}

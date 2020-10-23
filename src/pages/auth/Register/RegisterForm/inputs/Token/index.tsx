@@ -2,9 +2,8 @@ import React, {memo, useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {Box, FormGroup, FormHelperText} from "@material-ui/core";
 import {MdVpnKey} from "react-icons/all";
-
-import {SecondaryButton} from "../../../../../../components/buttons";
-import InputWithIcon, {IInputWithIcon} from "../../../../../../components/inputs/InputWithIcon";
+import {SecondaryButton} from "components/buttons";
+import InputWithIcon, {IInputWithIcon} from "components/inputs/InputWithIcon";
 
 import RequestTokenDialog from "./RequestTokenDialog";
 
@@ -21,6 +20,7 @@ const Token = ({minLength, maxLength, label, helpText, onChange, ...other}: ITok
     const {t} = useTranslation();
 
     const [showRequestDialog, setShowRequestDialog] = useState<boolean>(false);
+
     const tokenValidator = useCallback(value => {
         const length = value?.length || 0;
         if (length < minLength || length > maxLength) {
@@ -46,8 +46,8 @@ const Token = ({minLength, maxLength, label, helpText, onChange, ...other}: ITok
                 {helpText && <FormHelperText>{helpText}</FormHelperText>}
                 <Box marginTop={1}>
                     <SecondaryButton
-                        onClick={() => setShowRequestDialog(true)}
                         size="small"
+                        onClick={() => setShowRequestDialog(true)}
                     >
                         Zugangscode holen
                     </SecondaryButton>

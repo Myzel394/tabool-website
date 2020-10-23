@@ -73,7 +73,7 @@ const FillOutDataFormManager = ({onFilledOut}: IFillOutDataFormManager) => {
             {() =>
                 <LoadingOverlay isLoading={isSending}>
                     <FillOutDataForm
-                        errors={error}
+                        errors={error?.response?.data}
                         fields={fields}
                         onFillOut={handleFillOut}
                     />

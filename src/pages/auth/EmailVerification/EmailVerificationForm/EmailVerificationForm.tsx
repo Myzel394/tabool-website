@@ -2,8 +2,7 @@ import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {PrimaryButton} from "components/buttons";
 import {ErrorResponse} from "types";
-
-import Form from "../../Form";
+import Form from "components/forms/Form";
 
 import ConfirmKey from "./inputs/ConfirmKey";
 
@@ -19,7 +18,6 @@ const EmailVerificationForm = ({onVerify, initialCode, errors}: IEmailVerificati
 
     return (
         <Form
-            headerTitle={t("E-Mail bestätigen")}
             form={(
                 <ConfirmKey
                     required

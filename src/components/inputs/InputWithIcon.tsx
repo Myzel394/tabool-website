@@ -45,9 +45,9 @@ const InputWithIcon = ({renderIcon, onFocus, onBlur, InputProps, ...other}: IInp
     return (
         <TextInput
             {...other}
+            InputProps={{...InputProps, startAdornment}}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            InputProps={{...InputProps, startAdornment}}
         />
     );
 };

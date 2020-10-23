@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import {Box, Dialog, DialogTitle} from "@material-ui/core";
 import {useUniqueId} from "hooks";
 
+import Search from "../../../Search";
+
+import ErrorStatus from "./statuses/ErrorStatus";
 import List from "./List";
-import Search from "./Search";
-import FetchingStatus from "./FetchingStatus";
-import ErrorStatus from "./ErrorStatus";
 import Actions from "./Actions";
 
 export interface ISelectMenu {
@@ -24,7 +24,6 @@ export interface ISelectMenu {
     onSearch: (value: string) => void;
     onClose: () => void;
     onSelect: (element) => void;
-    onFilter: (search: string) => void;
 
     getKeyFromData: (data: any) => any;
     renderListElement: (element, props, isSelected: boolean) => JSX.Element;
@@ -39,7 +38,6 @@ const SelectMenu = ({
     isFetching,
     onSearch,
     onSelect,
-    onFilter,
     searchPlaceholder,
     listItemSize,
     onClose,
@@ -51,12 +49,13 @@ const SelectMenu = ({
     const titleId = useUniqueId();
     const [selectedElement, setSelectedElement] = useState<any>();
     const [searchValue, setSearchValue] = useState<string>("");
+    const canConfirm = value !== undefined && selectedElement === undefined || selectedElement !== undefined;
 
     // Update selected element to given value if opens
     useEffect(() => {
         // Element only needs to be updated when dialog is opened
         if (isOpen) {
-            // Only update when value is an element
+            // Only update when a value is selected
             if (value) {
                 setSelectedElement(value);
             }
@@ -72,34 +71,27 @@ const SelectMenu = ({
         >
             <Box marginX={3}>
                 <DialogTitle id={titleId}>{title}</DialogTitle>
-                {isError
-                    ? <ErrorStatus />
-                    : <>
-                        <Search
-                            searchPlaceholder={searchPlaceholder}
-                            value={searchValue}
-                            onSearch={onSearch}
-                            onFilter={onFilter}
-                            onChange={val => setSearchValue(val)}
-                        />
-                        {isFetching && <FetchingStatus />}
-                        <Box marginY={1}>
-                            <List
-                                renderListElement={renderListElement}
-                                data={data}
-                                getKeyFromData={getKeyFromData}
-                                selectedKey={selectedElement && getKeyFromData(selectedElement)}
-                                itemSize={listItemSize}
-                                onSelect={element => setSelectedElement(element)}
-                            />
-                        </Box>
-                        <Actions
-                            canConfirm={selectedElement !== undefined}
-                            onConfirm={() => onSelect(selectedElement)}
-                            onClose={onClose}
-                        />
-                    </>
-                }
+                {isError && <ErrorStatus />}
+                <Search
+                    searchPlaceholder={searchPlaceholder}
+                    value={searchValue}
+                    isLoading={isFetching}
+                    onSearch={onSearch}
+                    onChange={val => setSearchValue(val)}
+                />
+                <List
+                    renderListElement={renderListElement}
+                    data={data}
+                    getKeyFromData={getKeyFromData}
+                    selectedKey={selectedElement && getKeyFromData(selectedElement)}
+                    itemSize={listItemSize}
+                    onSelect={element => setSelectedElement(element)}
+                />
+                <Actions
+                    canConfirm={canConfirm}
+                    onConfirm={() => onSelect(selectedElement)}
+                    onClose={onClose}
+                />
             </Box>
         </Dialog>
     );

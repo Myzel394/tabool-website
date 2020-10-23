@@ -4,6 +4,7 @@ import Register from "pages/auth/Register";
 import EmailVerification from "pages/auth/EmailVerification";
 import FillOutData from "pages/auth/FillOutData";
 import {UserContext} from "contexts";
+import SubjectList from "pages/list/Subject";
 
 import Route from "./PrivateRoute";
 
@@ -34,6 +35,12 @@ export default function Routes() {
                 component={FillOutData}
                 authed={user.isAuthenticated && user.isEmailVerified}
                 redirectUrl="/auth/registration/"
+            />
+            <Route
+                exact
+                path="/subject/"
+                authed={isUserRegistered}
+                component={SubjectList}
             />
             <Route
                 exact

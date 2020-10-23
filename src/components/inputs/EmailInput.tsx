@@ -1,24 +1,18 @@
 import React from "react";
 import {FormGroup, FormHelperText} from "@material-ui/core";
-import {useTranslation} from "react-i18next";
-import validators from "common-validators";
 import {MdEmail} from "react-icons/all";
 import InputWithIcon, {IInputWithIcon} from "components/inputs/InputWithIcon";
+import {useEmailValidator} from "hooks/validators";
 
-export type IEmail = Omit<IInputWithIcon, "renderIcon"> & {
+export type IEmailInput = Omit<IInputWithIcon, "renderIcon"> & {
     label: string;
     onChange: (value: string) => any;
 
     helpText?: string;
 };
 
-const Email = ({label, helpText, onChange, ...other}: IEmail) => {
-    const {t} = useTranslation();
-    const emailValidator = value => {
-        if (validators.email(value)) {
-            return t("Diese E-Mail-Adresse ist nicht gültig");
-        }
-    };
+const EmailInput = ({label, helpText, onChange, ...other}: IEmailInput) => {
+    const emailValidator = useEmailValidator();
 
     return (
         <FormGroup>
@@ -35,4 +29,4 @@ const Email = ({label, helpText, onChange, ...other}: IEmail) => {
     );
 };
 
-export default Email;
+export default EmailInput;

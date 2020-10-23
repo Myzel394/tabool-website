@@ -1,14 +1,28 @@
-import React, {useState} from "react";
+import React, {useContext} from "react";
+import {useHistory} from "react-router";
+import {UserContext} from "contexts";
 
-import FillOutDataFormManager from "./FillOutDataForm/FillOutDataFormManager";
+import {FillOutDataFormManager} from "./FillOutDataForm";
 
 const FillOutDataManager = () => {
-    const [isRegistered, setIsRegistered] = useState<boolean>(false);
+    const history = useHistory();
+    const {dispatch} = useContext(UserContext);
 
-    if (isRegistered) {
-        return <p>Success</p>;
-    }
-    return <FillOutDataFormManager onFilledOut={() => null} />;
+    return <FillOutDataFormManager
+        onFilledOut={({
+            firstName,
+            lastName,
+        }) => {
+            dispatch({
+                type: "fill-out-data",
+                payload: {
+                    firstName,
+                    lastName,
+                },
+            });
+
+            history.push("/");
+        }} />;
 };
 
 export default FillOutDataManager;

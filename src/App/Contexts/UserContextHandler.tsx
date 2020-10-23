@@ -15,6 +15,10 @@ export interface IUserContextHandler {
 
 const reducer = (state: IUser, action: ActionType): IUser => {
     switch (action.type) {
+    case "logout": {
+        return initialUserState;
+    }
+
     case "verify-email": {
         return update(
             state,

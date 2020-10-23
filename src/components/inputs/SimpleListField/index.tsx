@@ -1,17 +1,33 @@
-import React, {memo, useMemo} from "react";
-import {Box, BoxProps, ListItem, ListItemIcon, ListItemText, useTheme} from "@material-ui/core";
+import React, {memo, ReactNode, useMemo} from "react";
+import {Box, BoxProps, ListItem, ListItemIcon, ListItemProps, ListItemText, useTheme} from "@material-ui/core";
 import {FaCheck} from "react-icons/all";
 import tinycolor from "tinycolor2";
 
 import styles from "./styles.module.scss";
 
 export type ISimpleListField = BoxProps & {
-    isActive: boolean;
     primaryText: string;
+
+    isActive?: boolean;
     secondaryText?: string;
+
+    left?: ReactNode;
+    right?: ReactNode;
+
+    listItemProps?: ListItemProps;
 };
 
-const SimpleListField = ({isActive, primaryText, secondaryText, onClick, ...other}: ISimpleListField) => {
+export const itemSize = 48 + 2 * 6 * 2;
+
+const SimpleListField = ({
+    isActive,
+    primaryText,
+    secondaryText,
+    onClick,
+    listItemProps,
+    left,
+    right,
+    ...other}: ISimpleListField) => {
     const theme = useTheme();
     const isSelectedBackgroundColor = useMemo(() => {
         const {palette} = theme;
@@ -21,21 +37,24 @@ const SimpleListField = ({isActive, primaryText, secondaryText, onClick, ...othe
 
         return color.toString();
     }, [theme]);
-    const listProps = isActive ? {style: {backgroundColor: isSelectedBackgroundColor}} : {};
+    const styleProps = isActive ? {style: {backgroundColor: isSelectedBackgroundColor}} : {};
+    const itemProps: any = {
+        ...listItemProps,
+        ...styleProps,
+    };
 
     return (
         <Box marginY={2} {...other}>
             <ListItem
-                {...listProps}
-                button
-                disableTouchRipple
-                disableRipple
+                {...itemProps}
                 onClick={onClick}
             >
+                {left}
                 <ListItemText
                     primary={primaryText}
                     secondary={secondaryText}
                 />
+                {right}
                 {isActive &&
                     <ListItemIcon>
                         <FaCheck className={styles.icon} />
@@ -44,6 +63,12 @@ const SimpleListField = ({isActive, primaryText, secondaryText, onClick, ...othe
             </ListItem>
         </Box>
     );
+};
+
+SimpleListField.defaultProps = {
+    isActive: false,
+    button: undefined,
+    listItemProps: {},
 };
 
 export default memo(SimpleListField);

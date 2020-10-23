@@ -2,21 +2,21 @@ import React, {memo} from "react";
 import {useSaveData} from "hooks";
 import {IoIosSpeedometer, MdSearch} from "react-icons/all";
 import {PrimaryButton} from "components/buttons";
-import {Box, Tooltip, Typography} from "@material-ui/core";
+import {Box, CircularProgress, Tooltip, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
-import InputWithIcon from "../../InputWithIcon";
+import InputWithIcon from "./InputWithIcon";
 
 export interface ISearch {
+    isLoading: boolean;
     searchPlaceholder: string;
     onSearch: (value: string) => void;
-    onFilter: (value: string) => void;
 
     value: string;
     onChange: (value: string) => void;
 }
 
-const Search = ({searchPlaceholder, onSearch, onFilter, onChange, value}: ISearch) => {
+const Search = ({searchPlaceholder, onSearch, onChange, value, isLoading}: ISearch) => {
     const {t} = useTranslation();
     const saveData = useSaveData();
 
@@ -30,7 +30,6 @@ const Search = ({searchPlaceholder, onSearch, onFilter, onChange, value}: ISearc
         const val = event.target.value;
 
         onChange(val);
-        onFilter(val);
 
         if (!saveData) {
             onSearch(val);
@@ -39,12 +38,19 @@ const Search = ({searchPlaceholder, onSearch, onFilter, onChange, value}: ISearc
 
     return (
         <>
-            <InputWithIcon
-                renderIcon={props => <MdSearch {...props} />}
-                value={value}
-                placeholder={searchPlaceholder}
-                onChange={handleChange}
-            />
+            <Box display="flex" alignItems="center">
+                <Box mr={1}>
+                    <InputWithIcon
+                        fullWidth
+                        renderIcon={props => <MdSearch {...props} />}
+                        value={value}
+                        placeholder={searchPlaceholder}
+                        type="search"
+                        onChange={handleChange}
+                    />
+                </Box>
+                {isLoading && <CircularProgress />}
+            </Box>
             {saveData &&
                 <Box display="flex" alignItems="center">
                     <PrimaryButton onClick={() => onSearch(value)}>

@@ -1,4 +1,4 @@
-import React, {ReactNode, useCallback, useRef} from "react";
+import React, {ReactNode, useRef} from "react";
 import {FixedSizeList} from "react-window";
 import {useElementSize, useWindowSize} from "hooks";
 
@@ -17,26 +17,6 @@ const List = ({data, renderListElement, itemSize, selectedKey, getKeyFromData, o
     const [bodyWidth] = useElementSize($wrapper);
     const [windowWidth, windowHeight] = useWindowSize();
 
-    const renderRow = useCallback(({index, style}) => {
-        const element = data[index];
-        const isSelected = selectedKey === getKeyFromData(element);
-
-        return renderListElement(
-            element,
-            {
-                style,
-                onClick: () => {
-                    if (isSelected) {
-                        onSelect(undefined);
-                    } else {
-                        onSelect(element);
-                    }
-                },
-            },
-            isSelected,
-        );
-    }, [renderListElement, data, selectedKey]);
-
     return (
         <div ref={$wrapper}>
             <FixedSizeList
@@ -45,7 +25,25 @@ const List = ({data, renderListElement, itemSize, selectedKey, getKeyFromData, o
                 itemCount={data.length}
                 itemSize={itemSize}
             >
-                {renderRow}
+                {({index, style}): any => {
+                    const element = data[index];
+                    const isSelected = selectedKey === getKeyFromData(element);
+
+                    return renderListElement(
+                        element,
+                        {
+                            style,
+                            onClick: () => {
+                                if (isSelected) {
+                                    onSelect(undefined);
+                                } else {
+                                    onSelect(element);
+                                }
+                            },
+                        },
+                        isSelected,
+                    );
+                }}
             </FixedSizeList>
         </div>
     );
