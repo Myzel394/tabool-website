@@ -1,4 +1,4 @@
-import React, {memo, useContext, useEffect} from "react";
+import React, {memo, useCallback, useContext, useEffect} from "react";
 import {useMutation} from "react-query";
 import {sendConfirmEmail} from "api/auth";
 import {LoadingOverlay} from "components/overlays";
@@ -25,7 +25,7 @@ const EmailVerificationFormManager = ({onVerified}: IEmailVerificationFormManage
         mutate({
             token,
         });
-    });
+    }, [dispatch, mutate]);
 
     // If given code, verify it automatically
     useEffect(() => {
