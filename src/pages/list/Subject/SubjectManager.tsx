@@ -1,4 +1,4 @@
-import React, {memo, useMemo, useState} from "react";
+import React, {memo, useState} from "react";
 import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import fetchSubjects from "api/schoolData/fetchSubjects";
@@ -17,12 +17,8 @@ const SubjectManager = (props: ISubjectManager) => {
     const queryOptions = useQueryOptions();
     const {data: rawData, isError, isFetching} = useQuery(["subject", {search}], fetchSubjects, queryOptions);
     const searchLower = search.toLowerCase();
-    const data = useMemo(() => {
-        const data = rawData?.results || [];
-
-        return data.filter((element: Subject) =>
-            element.name.toLowerCase().includes(searchLower));
-    }, [rawData, searchLower]);
+    const data = (rawData?.results || []).filter((element: Subject) =>
+        element.name.toLowerCase().includes(searchLower));
 
 
     return (

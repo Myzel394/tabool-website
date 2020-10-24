@@ -3,9 +3,10 @@ import Form, {buildGrid} from "components/forms/Form";
 import {useTranslation} from "react-i18next";
 import {EmailInput, PasswordInput} from "components/inputs";
 import {PrimaryButton, SecondaryButton} from "components/buttons";
-import {generatePath, Link} from "react-router-dom";
+import {generatePath} from "react-router-dom";
 import {ErrorResponse} from "types";
-import {useEmailValidator, usePasswordValidator} from "hooks/validators";
+import {Actions} from "components/containers";
+import {TransparentLink} from "components";
 
 export interface SubmitState {
     email: string;
@@ -20,76 +21,43 @@ export interface ILoginForm {
 const LoginForm = ({errors, onLogin}: ILoginForm) => {
     const {t} = useTranslation();
 
-    const emailValidator = useEmailValidator();
-    const passwordValidator = usePasswordValidator();
-
-    const [ownErrors, setOwnErrors] = useState<ErrorResponse>({});
     const [email, setEmail] = useState<string>(""),
         [password, setPassword] = useState<string>("");
 
     return (
         <Form
-            form={
-                buildGrid([
-                    <EmailInput
-                        key="email"
-                        value={email}
-                        type="email"
-                        label={t("E-Mail")}
-                        errorMessages={[
-                            ...errors?.email || [],
-                            ...ownErrors?.email,
-                        ]}
-                        onChange={value => setEmail(value)}
-                    />,
-                    <PasswordInput
-                        key="password"
-                        value={password}
-                        errorMessages={[
-                            ...errors?.password || [],
-                            ...ownErrors?.password,
-                        ]}
-                        onChange={value => setPassword(value)}
-                    />,
-                ])
-            }
+            form={buildGrid([
+                <EmailInput
+                    key="email"
+                    value={email}
+                    type="email"
+                    errorMessages={errors?.email}
+                    onChange={value => setEmail(value)}
+                />,
+                <PasswordInput
+                    key="password"
+                    value={password}
+                    errorMessages={errors?.password}
+                    label={t("Passwort")}
+                    onChange={value => setPassword(value)}
+                />,
+            ])}
             actions={
-                <>
-                    <PrimaryButton title={t("Anmelden")} />
-                    <Link to={generatePath("/auth/registration/")}>
-                        <SecondaryButton title={t("Registrieren")} />
-                    </Link>
-                </>
+                <Actions>
+                    <PrimaryButton key="login" type="submit">
+                        {t("Anmelden")}
+                    </PrimaryButton>
+                    <TransparentLink key="register" to={generatePath("/auth/registration/")}>
+                        <SecondaryButton>
+                            {t("Registrieren")}
+                        </SecondaryButton>
+                    </TransparentLink>
+                </Actions>
             }
-            onSubmit={() => {
-                setOwnErrors({});
-                let tempErrors = {};
-
-                const emailValid = emailValidator(email);
-                if (typeof emailValid === "string") {
-                    tempErrors = {
-                        ...tempErrors,
-                        email: emailValid,
-                    };
-                }
-
-                const passwordValid = passwordValidator(password);
-                if (typeof passwordValid === "string") {
-                    tempErrors = {
-                        ...tempErrors,
-                        password: passwordValid,
-                    };
-                }
-
-                setOwnErrors(tempErrors);
-
-                if (Object.keys(tempErrors).length === 0) {
-                    onLogin({
-                        email,
-                        password,
-                    });
-                }
-            }}
+            onSubmit={() => onLogin({
+                email,
+                password,
+            })}
         />
     );
 };

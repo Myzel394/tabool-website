@@ -1,20 +1,20 @@
 import React, {useMemo} from "react";
 import {useTranslation} from "react-i18next";
-import {useGetOptions} from "hooks";
+import {useGetOptions, useSendRegistrationAPI} from "hooks";
 import {LoadingIndicator} from "components/indicators";
 import {useMutation} from "react-query";
-import {sendRegistration} from "api/auth";
 import {LoadingOverlay} from "components/overlays";
-import {ISendRegistrationResponse} from "api/auth/sendRegistration";
+import {ISendFillOutDataResponse} from "hooks/apis/auth/useSendFillOutDataAPI";
 
 import RegisterForm from "./RegisterForm";
 
 export interface IRegisterFormManager {
-    onRegister: (data: ISendRegistrationResponse) => void;
+    onRegister: (data: ISendFillOutDataResponse) => void;
 }
 
 const RegisterFormManager = ({onRegister}: IRegisterFormManager) => {
     const {t} = useTranslation();
+    const sendRegistration = useSendRegistrationAPI();
 
     // Options
     const fallbackFields = useMemo(() => ({
@@ -40,7 +40,7 @@ const RegisterFormManager = ({onRegister}: IRegisterFormManager) => {
     const [fields, isLoading] = useGetOptions("/api/auth/registration/", fallbackFields);
 
     // Registration
-    const [mutate, {isLoading: isLoadingRegistration, error: axiosError}] = useMutation(sendRegistration, {
+    const [mutate, {isLoading: isLoadingRegistration, error}] = useMutation(sendRegistration, {
         onSuccess: data => onRegister(data),
     });
     const handleRegister = ({email, password, token}) => {
@@ -51,13 +51,11 @@ const RegisterFormManager = ({onRegister}: IRegisterFormManager) => {
         });
     };
 
-    const errors = axiosError?.response?.data;
-
     return (
         <LoadingIndicator isLoading={isLoading}>
             {() =>
                 <LoadingOverlay isLoading={isLoadingRegistration}>
-                    <RegisterForm errors={errors} fields={fields} onRegister={handleRegister} />
+                    <RegisterForm errors={error?.response?.data} fields={fields} onRegister={handleRegister} />
                 </LoadingOverlay>
             }
         </LoadingIndicator>

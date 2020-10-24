@@ -6,6 +6,8 @@ import FillOutData from "pages/auth/FillOutData";
 import {UserContext} from "contexts";
 import SubjectList from "pages/list/Subject";
 
+import Login from "../../pages/auth/Login";
+
 import Route from "./PrivateRoute";
 
 
@@ -20,6 +22,13 @@ export default function Routes() {
                 authed
                 path="/auth/registration"
                 component={Register}
+                redirectUrl="/"
+            />
+            <Route
+                exact
+                authed
+                path="/auth/login"
+                component={Login}
                 redirectUrl="/"
             />
             <Route

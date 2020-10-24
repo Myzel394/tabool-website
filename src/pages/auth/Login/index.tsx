@@ -1,11 +1,9 @@
 import React, {memo} from "react";
 
-export interface IIndex {
+import LoginManager from "./LoginManager";
 
-}
-
-const index = (props: IIndex) => {
-    return null;
+const Login = () => {
+    return <LoginManager />;
 };
 
-export default memo(index);
+export default memo(Login);

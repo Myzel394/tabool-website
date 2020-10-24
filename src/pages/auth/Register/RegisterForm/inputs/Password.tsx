@@ -23,11 +23,23 @@ const Password = ({label, helpText, validators, isOriginalPassword, ...other}: I
             {isOriginalPassword && <FormHelperText>
                 <Trans>
                     Wenn du Schwierigkeiten hast, dir starke Passwörter zu merken,
-                    dir Passwörter aufschreibst oder Passwörter doppelt benutzt,
+                    sie dir aufschreibst oder gar welche doppelt benutzt,
                     solltest du lieber einen Passwort-Manager wie{" "}
-                    <Link href="https://bitwarden.com/" rel="noopener noreferrer">Bitwarden</Link>
+                    <Link
+                        href="https://bitwarden.com/"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        Bitwarden
+                    </Link>
                     {" "}oder{" "}
-                    <Link href="https://passwords.google.com/" rel="noopener noreferrer">Googles Passwort-Manager</Link>
+                    <Link
+                        href="https://passwords.google.com/"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        Googles Passwort-Manager
+                    </Link>
                     {" "}benutzen.
                 </Trans>
             </FormHelperText>}

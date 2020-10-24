@@ -6,6 +6,8 @@ import {ErrorResponse} from "types";
 import Form, {buildGrid} from "components/forms/Form";
 import EmailInput from "components/inputs/EmailInput";
 import {useEmailValidator, usePasswordValidator} from "hooks/validators";
+import {TransparentLink} from "components";
+import {generatePath} from "react-router";
 
 import Password from "./inputs/Password";
 import Token from "./inputs/Token";
@@ -51,7 +53,7 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
                     value={email}
                     errorMessages={[
                         ...errors?.email || [],
-                        ...ownErrors?.email,
+                        ...ownErrors?.email || [],
                     ]}
                     required={fields.email.required}
                     onChange={value => setEmail(value)}
@@ -76,7 +78,7 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
                     value={password}
                     errorMessages={[
                         ...errors?.password || [],
-                        ...ownErrors?.password,
+                        ...ownErrors?.password || [],
                     ]}
                     required={fields.password.required}
                     onChange={value => setPassword(value)}
@@ -93,7 +95,9 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
             actions={(
                 <Actions>
                     <PrimaryButton type="submit">{t("Registrieren")}</PrimaryButton>
-                    <SecondaryButton>{t("Anmelden")}</SecondaryButton>
+                    <TransparentLink to={generatePath("/auth/login/")}>
+                        <SecondaryButton>{t("Anmelden")}</SecondaryButton>
+                    </TransparentLink>
                 </Actions>
             )}
             onSubmit={() => {

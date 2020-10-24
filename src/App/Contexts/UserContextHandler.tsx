@@ -1,10 +1,11 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useEffect} from "react";
 import {UserContext} from "contexts";
-import {initialUserState, IUser} from "contexts/user";
+import {initialUserState, IUser} from "contexts/UserContext";
 import {ActionType} from "types";
 import update from "immutability-helper";
 import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
+import axios from "axios";
 
 
 const usePersistedReducer = createPersistedReducer("state");
@@ -17,6 +18,18 @@ const reducer = (state: IUser, action: ActionType): IUser => {
     switch (action.type) {
     case "logout": {
         return initialUserState;
+    }
+
+
+    case "login": {
+        return update(
+            state,
+            {
+                isAuthenticated: {
+                    $set: true,
+                },
+            },
+        );
     }
 
     case "verify-email": {
@@ -73,30 +86,6 @@ const reducer = (state: IUser, action: ActionType): IUser => {
         );
     }
 
-    case "login": {
-        const {email, firstName, lastName} = action.payload;
-
-        return update(
-            state,
-            {
-                isAuthenticated: {
-                    $set: true,
-                },
-                data: {
-                    email: {
-                        $set: email,
-                    },
-                    firstName: {
-                        $set: firstName,
-                    },
-                    lastName: {
-                        $set: lastName,
-                    },
-                },
-            },
-        );
-    }
-
     default: {
         throw new Error();
     }
@@ -106,10 +95,17 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 const UserContextHandler = ({children}: IUserContextHandler) => {
     const [state, dispatch] = usePersistedReducer(reducer, initialUserState);
 
+    // Logout user on authentication error
+    useEffect(() => {
+        axios.interceptors.response.use(response => response, (error) => {
+            console.log(error);
+        });
+    }, []);
+
     return (
         <UserContext.Provider value={{state, dispatch}}>
-            <ContextDevTool context={UserContext} id="userContextId" displayName="UserContext" />
             {children}
+            <ContextDevTool context={UserContext} id="userContextId" displayName="UserContext" />
             <UserContext.Consumer>
                 {
                     values => {

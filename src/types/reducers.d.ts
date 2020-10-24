@@ -4,3 +4,9 @@ export interface ActionType {
         [key: string]: any;
     };
 }
+
+
+export interface ReducerType<T> {
+    state: T;
+    dispatch: (action: ActionType) => void;
+}

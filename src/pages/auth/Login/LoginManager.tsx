@@ -1,19 +1,27 @@
-import React, {memo} from "react";
+import React, {memo, useContext} from "react";
 import {FocusedPage} from "components/pages";
 import {useTranslation} from "react-i18next";
+import {UserContext} from "contexts";
+import {useHistory} from "react-router";
 
 import {LoginFormManager} from "./LoginForm";
 
-export interface ILoginManager {
-
-}
-
-const LoginManager = (props: ILoginManager) => {
+const LoginManager = () => {
     const {t} = useTranslation();
+    const {dispatch} = useContext(UserContext);
+    const history = useHistory();
 
     return (
         <FocusedPage title={t("Anmelden")}>
-            <LoginFormManager />
+            <LoginFormManager
+                onLoggedIn={() => {
+                    dispatch({
+                        type: "login",
+                        payload: {},
+                    });
+                    history.push("/");
+                }}
+            />
         </FocusedPage>
     );
 };

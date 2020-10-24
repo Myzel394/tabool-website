@@ -1,6 +1,7 @@
 import React, {ReactNode} from "react";
 import {Box, Container, useTheme} from "@material-ui/core";
-import BackButton from "components/buttons/BackButton";
+import {BackButton, Tooltip} from "components";
+import {useTranslation} from "react-i18next";
 
 import styles from "./index.module.scss";
 import Title from "./Title";
@@ -13,6 +14,7 @@ export interface IFocusedPage {
 
 
 export default function FocusedPage({children, title, important}: IFocusedPage) {
+    const {t} = useTranslation();
     const theme = useTheme();
     const containerStyles = {
         backgroundColor: theme.palette.background.paper,
@@ -25,12 +27,16 @@ export default function FocusedPage({children, title, important}: IFocusedPage) 
             flexDirection="column"
             className={styles.container}
         >
-            <Title title={title} />
             <Container maxWidth="sm">
                 <Box marginY={1} marginX={2}>
                     <Box display="flex" justifyContent="flex-end">
-                        <BackButton confirm={important} />
+                        <Tooltip title={t("Zurück gehen").toString()}>
+                            <span>
+                                <BackButton confirm={important} />
+                            </span>
+                        </Tooltip>
                     </Box>
+                    <Title title={title} />
                     {children}
                 </Box>
             </Container>

@@ -1,12 +1,12 @@
 import React, {useContext, useState} from "react";
 import {UserContext} from "contexts";
-import {ISendRegistrationResponse} from "api/auth/sendRegistration";
+import {ISendFillOutDataResponse} from "hooks/apis/auth/useSendFillOutDataAPI";
 
 import {RegisterFormManager} from "./RegisterForm";
 import Success from "./Success";
 
 const RegisterManager = () => {
-    const [data, setData] = useState<ISendRegistrationResponse | undefined>();
+    const [data, setData] = useState<ISendFillOutDataResponse | undefined>();
     const {dispatch} = useContext(UserContext);
 
     if (data) {

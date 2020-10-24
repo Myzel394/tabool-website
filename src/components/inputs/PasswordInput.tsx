@@ -2,20 +2,27 @@ import React, {memo, useCallback, useState} from "react";
 import {InputAdornment} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import {MdVisibility, MdVisibilityOff} from "react-icons/all";
-
-import {usePasswordValidator} from "../../hooks/validators";
+import {useTranslation} from "react-i18next";
 
 import TextInput, {ITextInput} from "./TextInput";
 
 export type IPasswordInput = Omit<ITextInput, "onChange"> & {
+    label: string;
+
     onChange: (value: string) => void;
 };
 
 
-const PasswordInput = ({InputProps, onChange, ...other}: IPasswordInput) => {
-    const [showPassword, setShowPassword] = useState<boolean>(false);
+const PasswordInput = (props: IPasswordInput) => {
+    const {t} = useTranslation();
+    const {
+        label = t("Passwort"),
+        InputProps,
+        onChange,
+        ...other
+    } = props;
 
-    const passwordValidator = usePasswordValidator();
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const togglePassword = useCallback(() =>
         setShowPassword(value => !value), []);
@@ -24,8 +31,9 @@ const PasswordInput = ({InputProps, onChange, ...other}: IPasswordInput) => {
     return (
         <TextInput
             {...other}
+            fullWidth
             type={type}
-            validators={[passwordValidator]}
+            label={label}
             InputProps={{
                 ...InputProps,
                 endAdornment:

@@ -1,6 +1,5 @@
 import {createContext} from "react";
-
-import {ActionType} from "../types";
+import {ReducerType} from "types";
 
 export interface IUser {
     isAuthenticated: boolean;
@@ -23,16 +22,11 @@ export const initialUserState: IUser = {
     data: null,
 };
 
-export interface ContextType {
-    state: IUser;
-    dispatch: (action: ActionType) => void;
-}
 
-
-const UserContext = createContext<ContextType>({
+const UserContext = createContext<ReducerType<IUser>>({
     state: initialUserState,
     dispatch: () => {
-        throw new Error("Context got no value");
+        throw new Error("Dispatch method not implemented yet.");
     },
 });
 
