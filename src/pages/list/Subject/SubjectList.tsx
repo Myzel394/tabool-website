@@ -55,7 +55,11 @@ const SubjectList = ({data, isFetching, onSearch, onSearchValueChange, searchVal
                 onSearch={onSearch}
                 onChange={onSearchValueChange}
             />
-            <AutoSizer>
+            <AutoSizer
+                style={{
+                    alignSelf: "flex-start",
+                }}
+            >
                 {({width, height}) =>
                     <List
                         width={width}
