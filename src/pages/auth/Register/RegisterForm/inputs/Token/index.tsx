@@ -8,13 +8,13 @@ import InputWithIcon, {IInputWithIcon} from "components/inputs/InputWithIcon";
 import RequestTokenDialog from "./RequestTokenDialog";
 
 export type IToken = Omit<IInputWithIcon, "renderIcon"> & {
-    label: string;
-    minLength: number;
-    maxLength: number;
     onChange: (data: string) => any;
 
     helpText?: string;
 };
+
+const MIN_LENGTH = 127;
+const MAX_LENGTH = 127;
 
 const Token = ({minLength, maxLength, label, helpText, onChange, ...other}: IToken) => {
     const {t} = useTranslation();
@@ -23,10 +23,10 @@ const Token = ({minLength, maxLength, label, helpText, onChange, ...other}: ITok
 
     const tokenValidator = useCallback(value => {
         const length = value?.length || 0;
-        if (length < minLength || length > maxLength) {
+        if (length < MIN_LENGTH || length > MAX_LENGTH) {
             return t("Der Token ist nicht richtig lang. Vielleicht falsch kopiert?");
         }
-    }, [minLength, maxLength, t]);
+    }, [t]);
 
     return (
         <>
@@ -38,8 +38,8 @@ const Token = ({minLength, maxLength, label, helpText, onChange, ...other}: ITok
                 <InputWithIcon
                     {...other}
                     renderIcon={(props) => <MdVpnKey {...props} />}
+                    label={t("Token")}
                     type="text"
-                    label={label}
                     validators={[tokenValidator]}
                     onChange={event => onChange(event.target.value.replace(/\s+/, ""))}
                 />

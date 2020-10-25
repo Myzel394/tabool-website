@@ -1,25 +1,37 @@
-import React, {ReactNode, useEffect, useState} from "react";
-import AxiosContext, {IAxios, initialAxiosState} from "contexts/AxiosContext";
-import axios from "axios";
+import React, {ReactNode, useContext, useMemo} from "react";
+import AxiosContext, {IAxios} from "contexts/AxiosContext";
+import axios, {AxiosError} from "axios";
 import applyCaseMiddleware from "axios-case-converter";
+import {UserContext} from "contexts";
+import {useLocation} from "react-router";
 
 export interface IAxiosContextHandler {
     children: ReactNode;
 }
 
 const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
-    const [client, setClient] = useState<IAxios>(initialAxiosState);
+    const {dispatch} = useContext(UserContext);
+    const location = useLocation();
+    const client: IAxios = useMemo(() => {
+        const instance = applyCaseMiddleware(axios.create({
+            baseURL: "http://127.0.0.1:8000/",
+        }));
 
-    useEffect(() => {
-        const client = applyCaseMiddleware(axios.create());
-        client.interceptors.response.use(response => response, error => {
-            console.log(error);
+        instance.interceptors.response.use(response => response, (error: AxiosError) => {
+            if (error.response?.status === 401 && location.pathname !== "/auth/login/") {
+                dispatch({
+                    type: "logout",
+                    payload: {},
+                });
+            }
+
+            return Promise.reject(error);
         });
 
-        setClient({
-            instance: client,
-        });
-    }, []);
+        return {
+            instance,
+        };
+    }, [dispatch, location]);
 
     return (
         <AxiosContext.Provider value={client}>

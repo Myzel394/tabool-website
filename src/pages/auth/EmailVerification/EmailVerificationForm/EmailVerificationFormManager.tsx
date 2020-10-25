@@ -1,9 +1,9 @@
 import React, {memo, useCallback, useContext, useEffect} from "react";
 import {useMutation} from "react-query";
-import {sendConfirmEmail} from "api/auth";
 import {LoadingOverlay} from "components/overlays";
 import {useParams} from "react-router-dom";
 import {UserContext} from "contexts";
+import {useSendConfirmEmailAPI} from "hooks/apis/auth";
 
 import EmailVerificationForm from "./EmailVerificationForm";
 
@@ -14,6 +14,7 @@ export interface IEmailVerificationFormManager {
 const EmailVerificationFormManager = ({onVerified}: IEmailVerificationFormManager) => {
     const {code} = useParams();
     const {dispatch} = useContext(UserContext);
+    const sendConfirmEmail = useSendConfirmEmailAPI();
     const [mutate, {isLoading, error}] = useMutation(sendConfirmEmail, {
         onSuccess: () => onVerified(),
     });
@@ -29,7 +30,9 @@ const EmailVerificationFormManager = ({onVerified}: IEmailVerificationFormManage
 
     // If given code, verify it automatically
     useEffect(() => {
-        verifyCode(code);
+        if (code !== undefined && code !== "") {
+            verifyCode(code);
+        }
     }, [code, verifyCode]);
 
     return (

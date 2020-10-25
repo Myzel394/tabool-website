@@ -14,21 +14,21 @@ export interface ISelectMenu {
     isFetching: boolean;
 
     title: string;
-    searchValue: string;
     searchPlaceholder: string;
-
 
     data: any[];
     listItemSize: number;
 
-    onSearch: (value: string) => void;
+    onFetch: (value: string) => void;
     onClose: () => void;
     onSelect: (element) => void;
+    onSearchChange: (value: string) => void;
 
     getKeyFromData: (data: any) => any;
     renderListElement: (element, props, isSelected: boolean) => JSX.Element;
 
     value: any;
+    searchValue: string;
 }
 
 const SelectMenu = ({
@@ -36,7 +36,7 @@ const SelectMenu = ({
     title,
     isError,
     isFetching,
-    onSearch,
+    onFetch,
     onSelect,
     searchPlaceholder,
     listItemSize,
@@ -45,10 +45,11 @@ const SelectMenu = ({
     renderListElement,
     getKeyFromData,
     value,
+    onSearchChange,
+    searchValue,
 }: ISelectMenu) => {
     const titleId = useUniqueId();
     const [selectedElement, setSelectedElement] = useState<any>();
-    const [searchValue, setSearchValue] = useState<string>("");
     const canConfirm = value !== undefined && selectedElement === undefined || selectedElement !== undefined;
 
     // Update selected element to given value if opens
@@ -76,8 +77,8 @@ const SelectMenu = ({
                     searchPlaceholder={searchPlaceholder}
                     value={searchValue}
                     isLoading={isFetching}
-                    onSearch={onSearch}
-                    onChange={val => setSearchValue(val)}
+                    onSearch={onFetch}
+                    onChange={val => onSearchChange(val)}
                 />
                 <List
                     renderListElement={renderListElement}

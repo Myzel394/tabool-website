@@ -6,26 +6,23 @@ import {Choice} from "types";
 
 
 export type IClassNumberInput = Omit<SelectProps, "labelId" | "variant"> & {
-    label: string;
     choices: Choice[];
     onChange: (value: any) => void;
     helpText?: string;
 };
 
-const ClassNumberInput = (props: IClassNumberInput) => {
-    const {t} = useTranslation();
-    const {
-        label = t("Klassenstufe"),
-        choices,
-        helpText,
-        onChange,
-        ...other
-    } = props;
-    const labelId = useUniqueId();
+export const DEFAULT_CLASS_NUMBER_CHOICES = [5, 6, 7, 8, 9, 10, 11, 12, 13].map(num => ({
+    value: num,
+    displayName: num.toString(),
+}));
 
+const ClassNumberInput = ({helpText, onChange, choices, ...other}: IClassNumberInput) => {
+    const {t} = useTranslation();
+    const labelId = useUniqueId();
+    const label = t("Klassenstufe");
 
     return (
-        <FormControl variant="outlined" fullWidth>
+        <FormControl fullWidth variant="outlined">
             <InputLabel id={labelId}>{label}</InputLabel>
             <Select
                 {...other}
@@ -35,7 +32,7 @@ const ClassNumberInput = (props: IClassNumberInput) => {
                 onChange={event => onChange(event.target.value)}
             >
                 {choices.map(choice =>
-                    <MenuItem value={choice.value} key={choice.value}>{choice.displayName}</MenuItem>)}
+                    <MenuItem key={choice.value} value={choice.value}>{choice.displayName}</MenuItem>)}
                 <MenuItem />
             </Select>
             {helpText && <FormHelperText>{helpText}</FormHelperText>}

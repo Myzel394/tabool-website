@@ -1,7 +1,7 @@
 import React, {memo, useCallback} from "react";
-import {searchTeacher} from "api/schoolData";
 import {useTranslation} from "react-i18next";
 import {TeacherApprox} from "types/teachers";
+import {useFetchTeacherListAPI} from "hooks/apis/schoolData";
 
 import SimpleListField, {itemSize} from "../SimpleListField";
 
@@ -28,9 +28,8 @@ export type ITeacherField = Omit<
 
 const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
     const {t} = useTranslation();
-    const defaultTitle = t("Lehrer auswählen");
-    const title = value ? `${value.lastName} (${value.shortName})` : defaultTitle;
 
+    const queryFunction = useFetchTeacherListAPI();
     // Functions
     const filterFunc = useCallback((givenData: TeacherApprox[], value: string) =>
         givenData.filter(element => {
@@ -52,13 +51,16 @@ const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
             />);
     }, []);
 
+    const defaultTitle = t("Lehrer auswählen");
+    const title = value ? `${value.lastName} (${value.shortName})` : defaultTitle;
+
     return (
         <BasicSearchField
             {...other}
             searchPlaceholder={t("Suche nach Nachnamen")}
             title={title}
             renderListElement={renderElement}
-            queryFunction={searchTeacher}
+            queryFunction={queryFunction}
             queryKey="fetch_teachers"
             modalTitle={defaultTitle}
             filterData={filterFunc}

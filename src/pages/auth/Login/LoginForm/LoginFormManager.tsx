@@ -1,18 +1,21 @@
 import React, {memo} from "react";
 import {useMutation} from "react-query";
-import {sendLogin} from "api/auth";
-import {ISendLoginResponse} from "api/auth/sendLogin";
 import {LoadingOverlay} from "components/overlays";
+import {useSendLoginAPI} from "hooks/apis/auth";
+import {ILoginResponse} from "hooks/apis/auth/useSendLoginAPI";
 
 import LoginForm from "./LoginForm";
 
 export interface ILoginFormManager {
-    onLoggedIn: (data: ISendLoginResponse) => void;
+    onLoggedIn: (data: ILoginResponse) => void;
 }
 
 const LoginFormManager = ({onLoggedIn}: ILoginFormManager) => {
+    const sendLogin = useSendLoginAPI();
     const [mutate, {isLoading, error}] = useMutation(sendLogin, {
-        onSuccess: (data: ISendLoginResponse) => onLoggedIn(data),
+        onSuccess: (data: ILoginResponse) => {
+            onLoggedIn(data);
+        },
     });
 
     return (

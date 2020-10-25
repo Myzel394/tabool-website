@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useMemo, useState} from "react";
 import {TextField, TextFieldProps} from "@material-ui/core";
-import commonValidators from "common-validators";
 import {useTranslation} from "react-i18next";
+import {useLengthValidator} from "hooks/validators";
 
 export type ITextInput = Omit<TextFieldProps, "variant" | "helperText"> & {
     validators?: ((value: string) => undefined | string)[];
@@ -24,26 +24,15 @@ const TextInput = ({
     const {t} = useTranslation();
     const [value, setValue] = useState();
     const [validationError, setValidationError] = useState<string | null>(null);
+    const lengthValidator = useLengthValidator(minLength, maxLength);
+
     const allValidators = useMemo((): Function[] => {
         const allValidators = validators || [];
 
-        if (minLength) {
-            allValidators.push(value => {
-                if (commonValidators.minLength(minLength, value.length)) {
-                    return t(`Das Feld muss mindestens ${minLength} Zeichen lang sein`);
-                }
-            });
-        }
-        if (maxLength) {
-            allValidators.push(value => {
-                if (commonValidators.maxLength(maxLength, value.length)) {
-                    return t(`Das Feld darf nicht länger als ${minLength} Zeichen lang sein`);
-                }
-            });
-        }
+        allValidators.push(lengthValidator);
 
         return allValidators;
-    }, [validators, t, minLength, maxLength]);
+    }, [validators, lengthValidator]);
 
     const callValidators = useCallback((value: string): boolean => {
         // Validates the value and returns whether the value is valid.

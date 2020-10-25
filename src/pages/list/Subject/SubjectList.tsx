@@ -2,11 +2,11 @@ import React, {memo, useCallback} from "react";
 import {Subject} from "types/subject";
 import Search, {ISearch} from "components/inputs/Search";
 import {useTranslation} from "react-i18next";
-import AutoSizer from "react-virtualized-auto-sizer";
 import {FixedSizeList as List} from "react-window";
-import {generatePath, useHistory} from "react-router";
+import {generatePath} from "react-router";
 import {Link} from "react-router-dom";
 import SimpleListField, {itemSize} from "components/inputs/SimpleListField";
+import {AutoSizer} from "react-virtualized";
 
 export interface ISubjectList {
     data: Subject[];
@@ -20,7 +20,7 @@ export interface ISubjectList {
 
 const SubjectList = ({data, isFetching, onSearch, onSearchValueChange, searchValue}: ISubjectList) => {
     const {t} = useTranslation();
-    const history = useHistory();
+
     const renderElement = useCallback(({index, style}) => {
         const props = {
             style,

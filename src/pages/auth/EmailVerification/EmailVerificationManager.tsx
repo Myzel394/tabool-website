@@ -1,14 +1,24 @@
-import React from "react";
+import React, {useContext} from "react";
 import {useHistory} from "react-router-dom";
+import {UserContext} from "contexts";
 
 import {EmailVerificationFormManager} from "./EmailVerificationForm";
 
 const EmailVerificationManager = () => {
+    const {dispatch, state} = useContext(UserContext);
     const history = useHistory();
+
+    console.log(state);
 
     return (
         <EmailVerificationFormManager
-            onVerified={() => history.push("/auth/full-registration/")}
+            onVerified={() => {
+                dispatch({
+                    type: "verify-email",
+                    payload: {},
+                });
+                history.push("/auth/full-registration/");
+            }}
         />
     );
 };

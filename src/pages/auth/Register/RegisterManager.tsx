@@ -1,24 +1,30 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "contexts";
-import {ISendFillOutDataResponse} from "hooks/apis/auth/useSendFillOutDataAPI";
+import {IFillOutDataResponse} from "hooks/apis/auth/useSendFillOutDataAPI";
 
 import {RegisterFormManager} from "./RegisterForm";
 import Success from "./Success";
 
 const RegisterManager = () => {
-    const [data, setData] = useState<ISendFillOutDataResponse | undefined>();
+    const [data, setData] = useState<IFillOutDataResponse | undefined>();
     const {dispatch} = useContext(UserContext);
 
-    if (data) {
-        const {email, id} = data;
+    // Login user
+    useEffect(() => {
+        if (data) {
+            const {email, id} = data;
 
-        dispatch({
-            type: "register",
-            payload: {
-                email,
-                id,
-            },
-        });
+            dispatch({
+                type: "register",
+                payload: {
+                    email,
+                    id,
+                },
+            });
+        }
+    }, [data, dispatch]);
+
+    if (data) {
 
         return <Success />;
     }

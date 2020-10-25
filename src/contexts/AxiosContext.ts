@@ -1,12 +1,14 @@
 import {createContext} from "react";
-import axios, {AxiosInstance} from "axios";
+import {AxiosInstance} from "axios";
 
 export interface IAxios {
     instance: AxiosInstance;
 }
 
 export const initialAxiosState: IAxios = {
-    instance: axios.create(),
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+    instance: null,
 };
 
 const AxiosContext = createContext<IAxios>(initialAxiosState);

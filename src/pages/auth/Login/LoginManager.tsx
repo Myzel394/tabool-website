@@ -12,12 +12,15 @@ const LoginManager = () => {
     const history = useHistory();
 
     return (
-        <FocusedPage title={t("Anmelden")}>
+        <FocusedPage disableBackButton title={t("Anmelden")}>
             <LoginFormManager
-                onLoggedIn={() => {
+                onLoggedIn={({hasFilledOutData, isConfirmed}) => {
                     dispatch({
                         type: "login",
-                        payload: {},
+                        payload: {
+                            isFullyRegistered: hasFilledOutData,
+                            isEmailVerified: isConfirmed,
+                        },
                     });
                     history.push("/");
                 }}

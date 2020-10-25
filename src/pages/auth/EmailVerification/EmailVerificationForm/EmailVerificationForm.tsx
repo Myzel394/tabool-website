@@ -22,7 +22,7 @@ const EmailVerificationForm = ({onVerify, initialCode, errors}: IEmailVerificati
                 <ConfirmKey
                     required
                     value={token}
-                    errorMessages={errors?.detail}
+                    errorMessages={errors?.confirmationKey}
                     onChange={value => setToken(value)}
                 />
             )}

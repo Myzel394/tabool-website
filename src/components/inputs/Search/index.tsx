@@ -4,8 +4,11 @@ import {IoIosSpeedometer, MdSearch} from "react-icons/all";
 import {PrimaryButton} from "components/buttons";
 import {Box, CircularProgress, Tooltip, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
+import clsx from "clsx";
 
-import InputWithIcon from "./InputWithIcon";
+import InputWithIcon from "../InputWithIcon";
+
+import styles from "./Search.module.scss";
 
 export interface ISearch {
     isLoading: boolean;
@@ -49,7 +52,14 @@ const Search = ({searchPlaceholder, onSearch, onChange, value, isLoading}: ISear
                         onChange={handleChange}
                     />
                 </Box>
-                {isLoading && <CircularProgress />}
+                <CircularProgress
+                    className={clsx([
+                        styles.loader,
+                        {
+                            [styles.disabled]: !isLoading,
+                        },
+                    ])}
+                />
             </Box>
             {saveData &&
                 <Box display="flex" alignItems="center">

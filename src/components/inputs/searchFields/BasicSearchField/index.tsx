@@ -43,6 +43,7 @@ const BasicSearchField = ({
     value,
 }: IBasicSearchField) => {
     const [search, setSearch] = useState<string>("");
+    const [searchValue, setSearchValue] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const queryOptions = useQueryOptions();
@@ -56,8 +57,8 @@ const BasicSearchField = ({
         },
     );
     const data = useMemo(() => {
-        return filterData(extractData(rawData), search.toLocaleLowerCase(), search);
-    }, [rawData, filterData, extractData, search]);
+        return filterData(extractData(rawData), searchValue.toLocaleLowerCase(), searchValue);
+    }, [rawData, filterData, extractData, searchValue]);
 
     return (
         <>
@@ -66,7 +67,7 @@ const BasicSearchField = ({
                 isError={isError}
                 isFetching={isFetching}
                 title={modalTitle}
-                searchValue={search}
+                searchValue={searchValue}
                 searchPlaceholder={searchPlaceholder}
                 isOpen={isOpen}
                 data={data}
@@ -78,7 +79,8 @@ const BasicSearchField = ({
                     setIsOpen(false);
                     onSelect(element);
                 }}
-                onSearch={value => setSearch(value)}
+                onFetch={value => setSearch(value)}
+                onSearchChange={value => setSearchValue(value)}
             />
             <FormGroup>
                 <Button

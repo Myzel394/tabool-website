@@ -8,6 +8,7 @@ import {TeacherApprox} from "types/teachers";
 import {NonFieldErrors} from "components/forms";
 import Form, {buildGrid} from "components/forms/Form";
 import {useNotEmptyValidator} from "hooks/validators";
+import {DEFAULT_CLASS_NUMBER_CHOICES} from "components/inputs/ClassNumberInput";
 
 export interface SubmitState {
     teacher: TeacherApprox;
@@ -17,17 +18,16 @@ export interface SubmitState {
 }
 
 export interface IFillOutDataForm {
-    fields: any;
     errors: ErrorResponse;
     onFillOut: ({teacher, classNumber, scoosoUsername, scoosoPassword}: SubmitState) => void;
 }
 
-export default function FillOutDataForm({fields, errors, onFillOut}: IFillOutDataForm) {
+export default function FillOutDataForm({errors, onFillOut}: IFillOutDataForm) {
     const {t} = useTranslation();
 
     const [ownErrors, setOwnErrors] = useState<ErrorResponse>({});
     const [teacher, setTeacher] = useState<TeacherApprox>(),
-        [classNumber, setClassNumber] = useState<number>(fields.student.classNumber.choices[0].value),
+        [classNumber, setClassNumber] = useState<number>(DEFAULT_CLASS_NUMBER_CHOICES[0].value),
         [scoosoUsername, setScoosoUsername] = useState<string>(""),
         [scoosoPassword, setScoosoPassword] = useState<string>("");
 
@@ -75,10 +75,8 @@ export default function FillOutDataForm({fields, errors, onFillOut}: IFillOutDat
                                 </div>,
                                 <ClassNumberInput
                                     key="class"
-                                    label={fields.student.classNumber.label}
-                                    helpText={fields.student.classNumber.helpText}
-                                    required={fields.student.classNumber.required}
-                                    choices={fields.student.classNumber.choices}
+                                    required
+                                    choices={DEFAULT_CLASS_NUMBER_CHOICES}
                                     value={classNumber}
                                     onChange={value => setClassNumber(value)}
                                 />,
@@ -89,13 +87,13 @@ export default function FillOutDataForm({fields, errors, onFillOut}: IFillOutDat
                             {buildGrid([
                                 <SimpleHelpTextWrapper
                                     key="scooso_username"
-                                    helpText={fields.scoosodata.username.helpText}
+                                    helpText={t("Dein Benutzername wird verschlüsselt gespeichert")}
                                 >
                                     <TextInput
+                                        required
                                         type="string"
-                                        label={fields.scoosodata.username.label}
-                                        required={fields.scoosodata.username.required}
-                                        minLength={fields.scoosodata.username.minLength}
+                                        label={t("Scooso-Benutzername")}
+                                        minLength={1}
                                         errorMessages={[
                                             ...errors?.username || [],
                                             ...ownErrors?.scoosoUsername || [],
@@ -107,12 +105,12 @@ export default function FillOutDataForm({fields, errors, onFillOut}: IFillOutDat
                                 </SimpleHelpTextWrapper>,
                                 <SimpleHelpTextWrapper
                                     key="scooso_password"
-                                    helpText={fields.scoosodata.password.helpText}
+                                    helpText={t("Dein Passwort wird verschlüsselt gespeichert")}
                                 >
                                     <PasswordInput
-                                        label={fields.scoosodata.password.label}
-                                        required={fields.scoosodata.password.required}
-                                        minLength={fields.scoosodata.password.minLength}
+                                        required
+                                        label={t("Scooso-Passwort")}
+                                        minLength={1}
                                         errorMessages={[
                                             ...errors?.username || [],
                                             ...ownErrors?.scoosoPassword || [],

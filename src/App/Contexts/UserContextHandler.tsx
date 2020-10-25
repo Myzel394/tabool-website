@@ -22,11 +22,19 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 
 
     case "login": {
+        const {isFullyRegistered, isEmailVerified} = action.payload;
+
         return update(
             state,
             {
                 isAuthenticated: {
                     $set: true,
+                },
+                isFullyRegistered: {
+                    $set: isFullyRegistered,
+                },
+                isEmailVerified: {
+                    $set: isEmailVerified,
                 },
             },
         );
@@ -45,6 +53,15 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 
     case "fill-out-data": {
         const {firstName, lastName} = action.payload;
+        const func = value => update(value || {}, {
+            firstName: {
+                $set: firstName,
+            },
+            lastName: {
+                $set: lastName,
+            },
+        });
+
         return update(
             state,
             {
@@ -52,12 +69,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                     $set: true,
                 },
                 data: {
-                    firstName: {
-                        $set: firstName,
-                    },
-                    lastName: {
-                        $set: lastName,
-                    },
+                    $apply: func,
                 },
             },
         );
@@ -73,6 +85,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                 $set: id,
             },
         });
+
         return update(
             state,
             {

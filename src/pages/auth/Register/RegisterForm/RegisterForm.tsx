@@ -19,12 +19,11 @@ interface SubmitStates {
 }
 
 export interface IRegisterForm {
-    fields: any;
     errors: ErrorResponse;
     onRegister: (states: SubmitStates) => void;
 }
 
-const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
+const RegisterForm = ({onRegister, errors}: IRegisterForm) => {
     const {t} = useTranslation();
 
     // States
@@ -48,39 +47,32 @@ const RegisterForm = ({fields, onRegister, errors}: IRegisterForm) => {
             form={buildGrid([
                 <EmailInput
                     key="email"
-                    label={fields.email.label}
-                    helpText={fields.email.helpText}
+                    required
                     value={email}
                     errorMessages={[
                         ...errors?.email || [],
                         ...ownErrors?.email || [],
                     ]}
-                    required={fields.email.required}
                     onChange={value => setEmail(value)}
                 />,
                 <Token
                     key="token"
-                    label={fields.token.label}
-                    helpText={fields.token.helpText}
-                    minLength={fields.token.minLength || 0}
-                    maxLength={fields.token.maxLength || 2047}
+                    required
                     value={token}
                     errorMessages={errors?.token}
-                    required={fields.token.required}
                     onChange={value => setToken(value)}
                 />,
                 <Password
                     key="password"
                     isOriginalPassword
-                    label={fields.password.label}
-                    helpText={fields.password.helpText}
+                    required
+                    label={t("Passwort")}
                     validators={[passwordValidator]}
                     value={password}
                     errorMessages={[
                         ...errors?.password || [],
                         ...ownErrors?.password || [],
                     ]}
-                    required={fields.password.required}
                     onChange={value => setPassword(value)}
                 />,
                 <Password
