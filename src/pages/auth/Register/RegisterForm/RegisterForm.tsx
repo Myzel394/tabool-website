@@ -87,9 +87,11 @@ const RegisterForm = ({onRegister, errors}: IRegisterForm) => {
             actions={(
                 <Actions>
                     <PrimaryButton type="submit">{t("Registrieren")}</PrimaryButton>
-                    <TransparentLink to={generatePath("/auth/login/")}>
-                        <SecondaryButton>{t("Anmelden")}</SecondaryButton>
-                    </TransparentLink>
+                    <SecondaryButton
+                        href={generatePath("/auth/login/")}
+                    >
+                        {t("Anmelden")}
+                    </SecondaryButton>
                 </Actions>
             )}
             onSubmit={() => {

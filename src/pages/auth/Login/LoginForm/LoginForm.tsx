@@ -7,6 +7,7 @@ import {generatePath} from "react-router-dom";
 import {ErrorResponse} from "types";
 import {Actions} from "components/containers";
 import {TransparentLink} from "components";
+import {svgLogo} from "assets"
 
 export interface SubmitState {
     email: string;
@@ -25,40 +26,40 @@ const LoginForm = ({errors, onLogin}: ILoginForm) => {
         [password, setPassword] = useState<string>("");
 
     return (
-        <Form
-            form={buildGrid([
-                <EmailInput
-                    key="email"
-                    value={email}
-                    type="email"
-                    errorMessages={errors?.email}
-                    onChange={value => setEmail(value)}
-                />,
-                <PasswordInput
-                    key="password"
-                    value={password}
-                    errorMessages={errors?.password}
-                    label={t("Passwort")}
-                    onChange={value => setPassword(value)}
-                />,
-            ])}
-            actions={
-                <Actions>
-                    <PrimaryButton key="login" type="submit">
-                        {t("Anmelden")}
-                    </PrimaryButton>
-                    <TransparentLink key="register" to={generatePath("/auth/registration/")}>
-                        <SecondaryButton>
+        <>
+            <Form
+                form={buildGrid([
+                    <EmailInput
+                        key="email"
+                        value={email}
+                        type="email"
+                        errorMessages={errors?.email}
+                        onChange={value => setEmail(value)}
+                    />,
+                    <PasswordInput
+                        key="password"
+                        value={password}
+                        errorMessages={errors?.password}
+                        label={t("Passwort")}
+                        onChange={value => setPassword(value)}
+                    />,
+                ])}
+                actions={
+                    <Actions>
+                        <PrimaryButton key="login" type="submit">
+                            {t("Anmelden")}
+                        </PrimaryButton>
+                        <SecondaryButton href={generatePath("/auth/registration/")}>
                             {t("Registrieren")}
                         </SecondaryButton>
-                    </TransparentLink>
-                </Actions>
-            }
-            onSubmit={() => onLogin({
-                email,
-                password,
-            })}
-        />
+                    </Actions>
+                }
+                onSubmit={() => onLogin({
+                    email,
+                    password,
+                })}
+            />
+        </>
     );
 };
 

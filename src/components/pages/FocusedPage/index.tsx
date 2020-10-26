@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import BasePage from "../BasePage";
 
 import Title from "./Title";
+import Logo from "../../Logo";
 
 export interface IFocusedPage {
     children: ReactNode;
@@ -20,6 +21,7 @@ export default function FocusedPage({children, title, important, disableBackButt
     const theme = useTheme();
     const containerStyles = {
         backgroundColor: theme.palette.background.paper,
+        minHeight: "100vh",
     };
 
     return (
@@ -42,6 +44,7 @@ export default function FocusedPage({children, title, important, disableBackButt
                                 </Tooltip>
                             </Box>
                         }
+                        <Logo />
                         <Title title={title} />
                         {children}
                     </Box>
