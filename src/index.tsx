@@ -21,5 +21,5 @@ ReactDOM.render(
 if (DEBUG) {
     axios.defaults.baseURL = "http://127.0.0.1:8000";
     // eslint-disable-next-line no-console
-    console.warn("Debug is active. Edit index.tsx to remove this warning.");
+    console.warn("Debug is active. Edit InputWithIcon.tsx to remove this warning.");
 }

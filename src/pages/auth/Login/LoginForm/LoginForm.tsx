@@ -6,8 +6,7 @@ import {PrimaryButton, SecondaryButton} from "components/buttons";
 import {generatePath} from "react-router-dom";
 import {ErrorResponse} from "types";
 import {Actions} from "components/containers";
-import {TransparentLink} from "components";
-import {svgLogo} from "assets"
+import {NonFieldErrors} from "components";
 
 export interface SubmitState {
     email: string;
@@ -28,22 +27,27 @@ const LoginForm = ({errors, onLogin}: ILoginForm) => {
     return (
         <>
             <Form
-                form={buildGrid([
-                    <EmailInput
-                        key="email"
-                        value={email}
-                        type="email"
-                        errorMessages={errors?.email}
-                        onChange={value => setEmail(value)}
-                    />,
-                    <PasswordInput
-                        key="password"
-                        value={password}
-                        errorMessages={errors?.password}
-                        label={t("Passwort")}
-                        onChange={value => setPassword(value)}
-                    />,
-                ])}
+                form={
+                    <>
+                        {buildGrid([
+                            <EmailInput
+                                key="email"
+                                value={email}
+                                type="email"
+                                errorMessages={errors?.email}
+                                onChange={value => setEmail(value)}
+                            />,
+                            <PasswordInput
+                                key="password"
+                                value={password}
+                                errorMessages={errors?.password}
+                                label={t("Passwort")}
+                                onChange={value => setPassword(value)}
+                            />,
+                        ])}
+                        {errors?.nonFieldErrors && <NonFieldErrors errors={errors.nonFieldErrors} />}
+                    </>
+                }
                 actions={
                     <Actions>
                         <PrimaryButton key="login" type="submit">

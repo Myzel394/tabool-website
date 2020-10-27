@@ -45,6 +45,7 @@
     "react-window": "^1.8.5",
     "tinycolor2": "^1.4.2",
     "typescript": "~3.7.2",
+    "use-memo-one": "^1.1.1",
     "use-persisted-reducer": "^2.1.0",
     "uuid": "^8.3.1"
   },

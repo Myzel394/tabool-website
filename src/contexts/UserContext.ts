@@ -15,7 +15,7 @@ export interface IUser {
 }
 
 export const initialUserState: IUser = {
-    isAuthenticated: true,
+    isAuthenticated: false,
     isFullyRegistered: false,
     isEmailVerified: false,
     isAdmin: false,
@@ -26,7 +26,7 @@ export const initialUserState: IUser = {
 const UserContext = createContext<ReducerType<IUser>>({
     state: initialUserState,
     dispatch: () => {
-        throw new Error("Dispatch method not implemented yet.");
+        throw new Error("Dispatch method not implemented!");
     },
 });
 

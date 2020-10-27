@@ -2,11 +2,9 @@ import React, {memo, useCallback} from "react";
 import {Subject} from "types/subject";
 import Search, {ISearch} from "components/inputs/Search";
 import {useTranslation} from "react-i18next";
-import {FixedSizeList as List} from "react-window";
 import {generatePath} from "react-router";
-import {Link} from "react-router-dom";
-import SimpleListField, {itemSize} from "components/inputs/SimpleListField";
-import {AutoSizer} from "react-virtualized";
+import {Box, Card, CardContent, List, Typography} from "@material-ui/core";
+import {TransparentLink} from "components";
 
 export interface ISubjectList {
     data: Subject[];
@@ -21,30 +19,28 @@ export interface ISubjectList {
 const SubjectList = ({data, isFetching, onSearch, onSearchValueChange, searchValue}: ISubjectList) => {
     const {t} = useTranslation();
 
-    const renderElement = useCallback(({index, style}) => {
-        const props = {
-            style,
-        };
-        const element = data[index];
+    const renderElement = useCallback((element: Subject) => {
         const url = generatePath("/subject/:id", {
             id: element.id,
         });
+        console.log(element.userRelation.color);
 
         return (
-            <Link to={url}>
-                <SimpleListField
-                    listItemProps={{
-                        button: true,
-                    }}
-                    primaryText={element.name}
-                    secondaryText={element.shortName}
-                    left={
-                        <div style={{width: 10, height: 10, backgroundColor: element.userRelation.color}} />
-                    }
-                    {...props}
-                />
-            </Link>);
-    }, [data]);
+            <Box mb={2}>
+                <TransparentLink to={url}>
+                    <Card>
+                        <CardContent>
+                            <Typography component="h1" variant="h5">
+                                {element.name}
+                            </Typography>
+                            <Typography color="textSecondary">
+                                {element.shortName}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </TransparentLink>
+            </Box>);
+    }, []);
 
     return (
         <>
@@ -55,22 +51,9 @@ const SubjectList = ({data, isFetching, onSearch, onSearchValueChange, searchVal
                 onSearch={onSearch}
                 onChange={onSearchValueChange}
             />
-            <AutoSizer
-                style={{
-                    alignSelf: "flex-start",
-                }}
-            >
-                {({width, height}) =>
-                    <List
-                        width={width}
-                        height={height}
-                        itemCount={data.length}
-                        itemSize={itemSize}
-                    >
-                        {renderElement}
-                    </List>
-                }
-            </AutoSizer>
+            <List style={{width: "100%"}}>
+                {data.map(data => renderElement(data))}
+            </List>
         </>
     );
 };

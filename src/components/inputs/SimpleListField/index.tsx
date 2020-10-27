@@ -37,6 +37,10 @@ const SimpleListField = ({
 
         return color.toString();
     }, [theme]);
+    const boxStyle = useMemo(() => ({
+        backgroundColor: theme.palette.background.paper,
+        width: "100%",
+    }), [theme]);
     const styleProps = isActive ? {style: {backgroundColor: isSelectedBackgroundColor}} : {};
     const itemProps: any = {
         ...listItemProps,
@@ -44,7 +48,11 @@ const SimpleListField = ({
     };
 
     return (
-        <Box marginY={2} {...other}>
+        <Box
+            marginY={2}
+            style={boxStyle}
+            {...other}
+        >
             <ListItem
                 {...itemProps}
                 onClick={onClick}

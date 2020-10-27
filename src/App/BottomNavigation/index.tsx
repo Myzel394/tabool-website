@@ -4,6 +4,7 @@ import {BottomNavigation as MuiBottomNavigation, BottomNavigationAction} from "@
 import {useTranslation} from "react-i18next";
 import {FaTable, MdEventNote, MdHome} from "react-icons/all";
 
+import styles from "./BottomNavigation.module.scss";
 
 
 const BottomNavigation = () => {
@@ -12,7 +13,7 @@ const BottomNavigation = () => {
 
     if (state.isFullyRegistered) {
         return (
-            <MuiBottomNavigation value="home">
+            <MuiBottomNavigation value="home" className={styles.container}>
                 <BottomNavigationAction
                     label={t("Start").toString()}
                     icon={<MdHome />}
@@ -33,6 +34,6 @@ const BottomNavigation = () => {
     }
 
     return null;
-}
+};
 
 export default memo(BottomNavigation);

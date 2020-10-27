@@ -6,7 +6,8 @@ import FillOutData from "pages/auth/FillOutData";
 import {UserContext} from "contexts";
 import SubjectList from "pages/list/Subject";
 import Login from "pages/auth/Login";
-import {} from "index";
+
+import Home from "../../pages/home";
 
 
 export default function Routes() {
@@ -49,7 +50,7 @@ export default function Routes() {
             <Route
                 exact
                 path="/"
-                component={Register}
+                component={Home}
             />
         </Switch>
     );
