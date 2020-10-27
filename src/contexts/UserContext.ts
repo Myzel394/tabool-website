@@ -15,7 +15,7 @@ export interface IUser {
 }
 
 export const initialUserState: IUser = {
-    isAuthenticated: false,
+    isAuthenticated: true,
     isFullyRegistered: false,
     isEmailVerified: false,
     isAdmin: false,

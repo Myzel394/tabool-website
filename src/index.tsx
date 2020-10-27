@@ -7,7 +7,7 @@ import axios from "axios";
 import "react-app-polyfill/stable";
 import "animate.css";
 
-const DEBUG = true;
+export const DEBUG = true;
 
 const container = document.getElementById("root");
 

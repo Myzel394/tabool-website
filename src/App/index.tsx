@@ -7,6 +7,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import "./global.scss";
 import Routes from "./Routes";
 import Contexts from "./Contexts";
+import BottomNavigation from "./BottomNavigator";
 
 const App = () => {
     const theme = light;
@@ -18,6 +19,7 @@ const App = () => {
                     <Contexts>
                         <CssBaseline />
                         <Routes />
+                        <BottomNavigation />
                     </Contexts>
                 </ThemeProvider>
             </Router>

@@ -6,6 +6,7 @@ import update from "immutability-helper";
 import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
 import axios from "axios";
+import {DEBUG} from "../../index";
 
 
 const usePersistedReducer = createPersistedReducer("state");
@@ -113,6 +114,17 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
         axios.interceptors.response.use(response => response, (error) => {
             console.log(error);
         });
+
+        // Debug
+        if (DEBUG) {
+            dispatch({
+                type: "login",
+                payload: {
+                    isFullyRegistered: true,
+                    isEmailVerified: true
+                }
+            })
+        }
     }, []);
 
     return (
