@@ -3,7 +3,7 @@ import {AxiosContext} from "contexts";
 import {PaginatedResponse} from "types";
 import {Subject} from "types/subject";
 
-import getLoginData from "../../../api/getLoginConfig";
+import getLoginData from "api/getLoginConfig";
 
 export interface IFetchSubjectData {
     search: string;
@@ -12,7 +12,7 @@ export interface IFetchSubjectData {
 
 export type IFetchSubjectResponse = PaginatedResponse<Subject[]>;
 
-const useFetchSubject = () => {
+const useFetchSubjectAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async (key: string, {
@@ -30,4 +30,4 @@ const useFetchSubject = () => {
     }, [instance]);
 };
 
-export default useFetchSubject;
+export default useFetchSubjectAPI;

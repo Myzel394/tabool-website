@@ -1,2 +1,2 @@
-export {default as useFetchSubject} from "./useFetchSubject";
+export {default as useFetchSubject} from "./useFetchSubjectAPI";
 export {default as useFetchTeacherListAPI} from "./useFetchTeacherListAPI";

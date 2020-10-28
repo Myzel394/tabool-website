@@ -1,10 +1,11 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useEffect} from "react";
 import {UserContext} from "contexts";
 import {initialUserState, IUser} from "contexts/UserContext";
 import {ActionType} from "types";
 import update from "immutability-helper";
 import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
+import {DEBUG} from "../../index";
 
 
 const usePersistedReducer = createPersistedReducer("state");
@@ -106,6 +107,18 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 
 const UserContextHandler = ({children}: IUserContextHandler) => {
     const [state, dispatch] = usePersistedReducer(reducer, initialUserState);
+
+    useEffect(() => {
+        if (DEBUG && true) {
+            dispatch({
+                type: "login",
+                payload: {
+                    isFullyRegistered: true,
+                    isEmailVerified: true
+                }
+            });
+        }
+    }, []);
 
     return (
         <UserContext.Provider value={{state, dispatch}}>
