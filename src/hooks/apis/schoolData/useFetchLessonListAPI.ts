@@ -1,30 +1,34 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {DayJS} from "dayjs";
+import {convertToDate, getLoginConfig} from "api";
+import {LessonApprox, PaginatedResponse} from "types";
 
-
-export interface IFetchLessonListData {
-    startDate: DayJS;
-    endDate: DayJS;
+export interface IFetchLessonsData {
+    startDate: string;
+    endDate: string;
 }
 
-export interface IFetchLessonListResponse {}
+export type IFetchLessonsResponse = PaginatedResponse<LessonApprox[]>;
 
-const useFetchLessonListAPI = async () => {
+const useFetchLessonListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async (key: string, {
         startDate,
-        endDate
-    }: IFetchLessonListData): IFetchLessonListResponse => {
+        endDate,
+    }: IFetchLessonsData): Promise<IFetchLessonsResponse> => {
         const {data} = await instance.get("/api/data/lesson/", {
             params: {
-                "start_date__gte": startDate,
-                "end_date__lte": endDate
-            }
-        })
+                date__gte: startDate,
+                date__lte: endDate,
+            },
+            ...await getLoginConfig(),
+        });
+        convertToDate(data);
+
         return data;
     }, [instance]);
-}
+};
 
 export default useFetchLessonListAPI;

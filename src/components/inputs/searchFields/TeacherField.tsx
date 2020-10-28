@@ -1,6 +1,6 @@
 import React, {memo, useCallback} from "react";
 import {useTranslation} from "react-i18next";
-import {TeacherApprox} from "types/teachers";
+import {TeacherApprox} from "types/teacher";
 import {useFetchTeacherListAPI} from "hooks/apis/schoolData";
 
 import SimpleListField, {itemSize} from "../SimpleListField";

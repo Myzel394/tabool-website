@@ -1,8 +1,13 @@
 import React, {memo} from "react";
 
+import TodayLesson from "./TodayLesson";
+
 const Home = () => {
     return (
-        <p>Homepage</p>
+        <>
+            <p>Homepage</p>
+            <TodayLesson />
+        </>
     );
 };
 

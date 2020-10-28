@@ -1,7 +1,7 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {PaginatedResponse} from "types";
-import {TeacherApprox} from "types/teachers";
+import {TeacherApprox} from "types/teacher";
 import getLoginData from "api/getLoginConfig";
 
 export interface IFetchTeacherListData {

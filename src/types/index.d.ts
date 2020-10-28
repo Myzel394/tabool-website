@@ -1,5 +1,9 @@
 export * from "./api";
 export * from "./reducers";
+export * from "./lesson";
+export * from "./subject";
+export * from "./teacher";
+export * from "./validators";
 
 export interface ErrorResponse {
     [key: string]: string[];

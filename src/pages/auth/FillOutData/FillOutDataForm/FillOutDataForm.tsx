@@ -4,7 +4,7 @@ import {ClassNumberInput, PasswordInput, SimpleHelpTextWrapper, TeacherField, Te
 import {Grid, Typography} from "@material-ui/core";
 import {PrimaryButton} from "components/buttons";
 import {ErrorResponse} from "types";
-import {TeacherApprox} from "types/teachers";
+import {TeacherApprox} from "types/teacher";
 import {NonFieldErrors} from "components/forms";
 import Form, {buildGrid} from "components/forms/Form";
 import {useNotEmptyValidator} from "hooks/validators";
