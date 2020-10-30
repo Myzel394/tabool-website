@@ -4,10 +4,7 @@ export interface TeacherApprox {
     id: string;
 }
 
-export interface TeacherDetail {
+export interface TeacherDetail extends TeacherApprox {
     firstName: string;
-    lastName: string;
-    shortName: string;
     email: string;
-    id: string;
 }

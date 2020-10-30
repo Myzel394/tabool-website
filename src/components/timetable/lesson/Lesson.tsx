@@ -1,22 +1,40 @@
-import React, {memo} from "react";
+import LessonContext from "./LessonContext";
+import React, {ReactNode, useMemo} from "react";
 import {Dayjs} from "dayjs";
 
 export interface ILesson {
+    children: ReactNode;
     startTime: Dayjs;
     endTime: Dayjs;
     color: string;
-    teacherName: string;
-    subjectName: string;
+    isDisabled?: boolean;
 }
 
-const Lesson = ({color, endTime, startTime, subjectName, teacherName}: ILesson) => {
+const Lesson = ({
+                    children,
+                    startTime,
+                    endTime,
+                    color,
+                    isDisabled,
+                }: ILesson) => {
+    isDisabled = isDisabled ?? false;
+    const contextValue = useMemo(() => ({
+        color,
+        isDisabled,
+        startTime,
+        endTime,
+    }), [color, isDisabled, startTime, endTime]);
+
     return (
-        <div
-            style={{
-                backgroundColor: color,
-            }}
-        />
+        <LessonContext.Provider value={contextValue}>
+            {children}
+        </LessonContext.Provider>
     );
 };
 
-export default memo(Lesson);
+Lesson.defaultProps = {
+    isDisabled: false,
+}
+
+export default Lesson
+

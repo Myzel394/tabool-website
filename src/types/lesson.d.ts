@@ -8,13 +8,8 @@ export interface LessonDataApprox {
     id: string;
 }
 
-export interface LessonDataDetail {
+export interface LessonDataDetail extends LessonDataApprox{
     room: string;
-    course: string;
-    startTime: Dayjs;
-    endTime: Dayjs;
-    weekday: number;
-    id: string;
 }
 
 

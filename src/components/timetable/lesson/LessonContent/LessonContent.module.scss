@@ -1,0 +1,15 @@
+.container {
+
+
+    &.disabled {
+        text-decoration: line-through;
+    }
+
+    .secondary {
+        opacity: .8;
+    }
+
+    .text {
+        color: #fff;
+    }
+}
