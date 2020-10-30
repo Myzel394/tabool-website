@@ -1,8 +1,13 @@
 .container {
-
+    border-radius: .5em;
 
     &.disabled {
         text-decoration: line-through;
+    }
+
+    &.single {
+        display: flex;
+        flex-flow: row nowrap;
     }
 
     .secondary {
@@ -11,5 +16,17 @@
 
     .text {
         color: #fff;
+        display: inline-block;
+
+        &.title {
+            text-transform: uppercase;
+            letter-spacing: .1em;
+        }
+    }
+
+    .singleLessonInformation {
+        display: flex;
+        flex: 50% 0 1;
+        margin-bottom: 0;
     }
 }

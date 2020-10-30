@@ -10453,10 +10453,10 @@ react-context-devtool@^2.0.0:
     react-dom "16.13.1"
     react-json-view "1.19.1"
 
-react-dayjs@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-dayjs/-/react-dayjs-0.2.0.tgz#6ad340a8f0f6126e676fa929d2fc7cf77c76723e"
-  integrity sha512-kO24qxIUVMRmNMuznFjxb8tXrOCQsBHy3m3Pdnenwlu2sAtjVUT3hLG75dxa1OZ7T4Bt1pIY6L7SNLfCEVyttg==
+react-dayjs@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-dayjs/-/react-dayjs-0.2.1.tgz#1302fc781ff7fc31110fc96003be3fe722491cab"
+  integrity sha512-a8mRXVgWgcY1/7pWJf6MRYfn7q25HVPkLH+xPnU1MrftHqq0qBGYgl+VgO++tyaJhmNTeZjqYQlmJUQIDCsAvg==
   dependencies:
     prop-types "^15.6.1"
 

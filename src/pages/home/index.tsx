@@ -1,22 +1,37 @@
 import React, {memo} from "react";
-
-import TodayLesson from "./TodayLesson";
-import {Lesson, Badges, LessonContent} from "components/timetable/lesson";
+import {Badges, Lesson, LessonBadge, LessonContent} from "components/timetable/lesson";
 import dayjs from "dayjs";
+import {FaClipboardList, FaStickyNote} from "react-icons/all";
 
 const Home = () => {
     return (
         <>
             <p>Homepage</p>
             <Lesson
-                color="#23ac43"
+                isSingle
+                color="rgb(253,85,68)"
                 startTime={dayjs(new Date(2020, 10, 30, 9, 50))}
                 endTime={dayjs(new Date(2020, 10, 30, 11, 20))}
             >
+                <Badges>
+                    {[
+                        <LessonBadge
+                            key="materials"
+                            description="Materialien verfügbar"
+                            getIcon={props => <FaStickyNote {...props} />}
+                        />,
+                        <LessonBadge
+                            key="notes"
+                            description="Hausaufgaben verfügbar"
+                            getIcon={props => <FaClipboardList {...props} />}
+                        />,
+                    ]}
+                </Badges>
                 <LessonContent
                     courseName="Mathe 2"
                     roomName="118"
-                    teacherName="Herbst" />
+                    teacherName="Herbst"
+                />
             </Lesson>
         </>
     );
