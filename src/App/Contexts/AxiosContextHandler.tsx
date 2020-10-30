@@ -16,7 +16,7 @@ const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
     const location = useLocation();
     const client: IAxios = useMemoOne(() => {
         const instance = axios.create({
-            baseURL: "http://127.0.0.1:8000/",
+            baseURL: "http://127.0.0.1:8000",
         });
 
         // Logout user on authentication error
@@ -43,6 +43,7 @@ const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
             instance,
         };
     }, [dispatch, location]);
+    console.log(client.instance.defaults.baseURL);
 
     return (
         <AxiosContext.Provider value={client}>

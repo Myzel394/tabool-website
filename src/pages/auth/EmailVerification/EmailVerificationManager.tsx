@@ -8,8 +8,6 @@ const EmailVerificationManager = () => {
     const {dispatch, state} = useContext(UserContext);
     const history = useHistory();
 
-    console.log(state);
-
     return (
         <EmailVerificationFormManager
             onVerified={() => {

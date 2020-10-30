@@ -19,8 +19,6 @@ const TodayLessonManager = (props: ITodayLessonManager) => {
         endDate: getISODate(today),
     }], queryFunction, queryOptions);
 
-    console.log(data);
-
     return (
         <LoadingIndicator isLoading={isLoading}>
             {() =>

@@ -23,7 +23,6 @@ const SubjectList = ({data, isFetching, onSearch, onSearchValueChange, searchVal
         const url = generatePath("/subject/:id", {
             id: element.id,
         });
-        console.log(element.userRelation.color);
 
         return (
             <Box mb={2}>
