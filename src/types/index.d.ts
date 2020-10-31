@@ -4,6 +4,7 @@ export * from "./lesson";
 export * from "./subject";
 export * from "./teacher";
 export * from "./validators";
+export * from "./course";
 
 export interface ErrorResponse {
     [key: string]: string[];

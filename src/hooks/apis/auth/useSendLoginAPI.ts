@@ -1,6 +1,5 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import getLoginData from "api/getLoginConfig";
 
 export interface ILoginData {
     email: string;
@@ -19,12 +18,10 @@ const useSendLoginAPI = () => {
         email,
         password,
     }: ILoginData): Promise<ILoginResponse> => {
-        console.log(instance.defaults.baseURL);
-        await instance.get("/api/data/subject/");
         const {data} = await instance.post("/api/auth/login/", {
             email,
             password,
-        }, await getLoginData());
+        });
         return data;
     }, [instance]);
 };
