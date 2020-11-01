@@ -1,6 +1,6 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import getLoginData from "api/getLoginConfig";
+import getLoginConfig from "api/getLoginConfig";
 
 export interface IConfirmEmailData {
     token: string;
@@ -12,7 +12,7 @@ const useSendConfirmEmailAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async ({token}: IConfirmEmailData): Promise<IConfirmEmailResponse> => {
-        const loginData = await getLoginData();
+        const loginData = await getLoginConfig();
         const {data} = await instance.post("/api/auth/confirmation/", {
             confirmationKey: token,
         }, loginData);

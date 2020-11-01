@@ -49,6 +49,7 @@
     "snakecase-keys": "^3.2.0",
     "tinycolor2": "^1.4.2",
     "typescript": "~3.7.2",
+    "use-deep-compare-effect": "^1.4.0",
     "use-memo-one": "^1.1.1",
     "use-persisted-reducer": "^2.1.0",
     "uuid": "^8.3.1"
@@ -83,6 +84,8 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/react-test-renderer": "^16.9.3",
     "@types/react-window": "^1.8.2",
+    "@types/tinycolor2": "^1.4.2",
+    "@types/use-deep-compare-effect": "^1.2.0",
     "@types/uuid": "^8.3.0",
     "prettier": "^2.1.2",
     "react-app-rewire-alias": "^0.1.6",

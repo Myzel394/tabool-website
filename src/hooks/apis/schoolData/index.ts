@@ -1,3 +1,9 @@
-export {default as useFetchSubject} from "./useFetchSubjectAPI";
-export {default as useFetchTeacherListAPI} from "./useFetchTeacherListAPI";
+export {default as useFetchCourseDetailAPI} from "./useFetchCourseDetailAPI";
+export {default as useFetchLessonDetailAPI} from "./useFetchLessonDetailAPI";
 export {default as useFetchLessonListAPI} from "./useFetchLessonListAPI";
+export {default as useFetchRoomDetailAPI} from "./useFetchRoomDetailAPI";
+export {default as useFetchRoomListAPI} from "./useFetchRoomListAPI";
+export {default as useFetchSubjectDetailAPI} from "./useFetchSubjectDetailAPI";
+export {default as useFetchSubjectListAPI} from "./useFetchSubjectListAPI";
+export {default as useFetchTeacherDetailAPI} from "./useFetchTeacherDetailAPI";
+export {default as useFetchTeacherListAPI} from "./useFetchTeacherListAPI";

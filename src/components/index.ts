@@ -6,6 +6,7 @@ export * from "./inputs";
 export * from "./mixins";
 export * from "./overlays";
 export * from "./pages";
+export * from "./timetable";
 
 export {default as SimpleCenter} from "./SimpleCenter";
 export {default as Tooltip} from "./Tooltip";

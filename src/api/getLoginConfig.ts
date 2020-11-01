@@ -2,7 +2,7 @@ import {AxiosRequestConfig} from "axios";
 
 import getCSRFToken from "./getCSRFToken";
 
-const getLoginData = async (): Promise<AxiosRequestConfig> => {
+const getLoginConfig = async (): Promise<AxiosRequestConfig> => {
     return {
         withCredentials: true,
         headers: {
@@ -11,4 +11,4 @@ const getLoginData = async (): Promise<AxiosRequestConfig> => {
     };
 };
 
-export default getLoginData;
+export default getLoginConfig;

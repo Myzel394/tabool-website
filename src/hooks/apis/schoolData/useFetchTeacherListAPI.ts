@@ -2,7 +2,7 @@ import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {PaginatedResponse} from "types";
 import {TeacherApprox} from "types/teacher";
-import getLoginData from "api/getLoginConfig";
+import getLoginConfig from "api/getLoginConfig";
 
 export interface IFetchTeacherListData {
     search: string;
@@ -23,7 +23,7 @@ const useFetchTeacherListAPI = () => {
                 search,
                 ordering,
             },
-            ...await getLoginData(),
+            ...await getLoginConfig(),
         });
         return data;
     }, [instance]);

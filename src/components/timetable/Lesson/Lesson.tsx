@@ -8,6 +8,7 @@ export interface ILesson {
     startTime: Dayjs;
     endTime: Dayjs;
     color: string;
+    style?: any;
     isDisabled?: boolean;
     isSingle?: boolean;
 }
@@ -20,6 +21,7 @@ const Lesson = ({
     color,
     isDisabled,
     isSingle,
+    style,
 }: ILesson) => {
     const contextValue = useMemo(() => ({
         color,
@@ -30,9 +32,11 @@ const Lesson = ({
     }), [color, isDisabled, startTime, endTime, isSingle]);
 
     return (
-        <LessonContext.Provider value={contextValue}>
-            {children}
-        </LessonContext.Provider>
+        <div style={style}>
+            <LessonContext.Provider value={contextValue}>
+                {children}
+            </LessonContext.Provider>
+        </div>
     );
 };
 

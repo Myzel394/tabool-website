@@ -2,7 +2,8 @@ import React, {memo} from "react";
 import {Typography} from "@material-ui/core";
 import clsx from "clsx";
 
-import styles from "./LessonContent.module.scss";
+import useTextClass from "../useTextClass";
+import styles from "../LessonContent.module.scss";
 
 export interface ICourse {
     name: string;
@@ -10,11 +11,13 @@ export interface ICourse {
 
 
 const Course = ({name}: ICourse) => {
+    const textClass = useTextClass();
+
     return (
         <Typography
             variant="h4"
             component="h1"
-            className={clsx(styles.text, styles.title)}
+            className={clsx(textClass, styles.title)}
         >
             {name}
         </Typography>

@@ -14,8 +14,15 @@
         opacity: .8;
     }
 
+    .darkText {
+        color: #444;
+    }
+
+    .brightText {
+        color: #f0f0f0;
+    }
+
     .text {
-        color: #fff;
         display: inline-block;
 
         &.title {

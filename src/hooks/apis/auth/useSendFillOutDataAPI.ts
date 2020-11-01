@@ -1,6 +1,6 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import getLoginData from "api/getLoginConfig";
+import getLoginConfig from "api/getLoginConfig";
 
 export interface IFillOutDataData {
     classNumber: number;
@@ -25,7 +25,7 @@ const useSendFillOutDataAPI = () => {
         scoosoUsername,
         scoosoPassword,
     }: IFillOutDataData): Promise<IFillOutDataResponse> => {
-        const loginData = await getLoginData();
+        const loginData = await getLoginConfig();
         const {data} = await instance.post("/api/auth/full-registration/", {
             student: {
                 classNumber,

@@ -1,5 +1,5 @@
 import React, {memo, useState} from "react";
-import {useFetchSubject, useQueryOptions} from "hooks";
+import {useFetchSubjectListAPI, useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {Subject} from "types/subject";
 
@@ -13,7 +13,7 @@ const SubjectManager = (props: ISubjectManager) => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [search, setSearch] = useState<string>("");
 
-    const fetchSubjects = useFetchSubject();
+    const fetchSubjects = useFetchSubjectListAPI();
     const queryOptions = useQueryOptions();
     const {data: rawData, isError, isFetching} = useQuery(
         ["subject", {search}],

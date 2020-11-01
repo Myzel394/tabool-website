@@ -4,9 +4,9 @@ import clsx from "clsx";
 import {Box} from "@material-ui/core";
 
 import LessonContext from "../LessonContext";
+import styles from "../LessonContent.module.scss";
 
 import Time from "./Time";
-import styles from "./LessonContent.module.scss";
 import Course from "./Course";
 import Information from "./Information";
 

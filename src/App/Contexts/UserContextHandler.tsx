@@ -21,7 +21,21 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 
 
     case "login": {
-        const {isFullyRegistered, isEmailVerified} = action.payload;
+        const {isFullyRegistered, isEmailVerified, firstName, lastName, email, id} = action.payload;
+        const func = value => update(value || {}, {
+            firstName: {
+                $set: firstName,
+            },
+            lastName: {
+                $set: lastName,
+            },
+            email: {
+                $set: email,
+            },
+            id: {
+                $set: id,
+            },
+        });
 
         return update(
             state,
@@ -34,6 +48,9 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                 },
                 isEmailVerified: {
                     $set: isEmailVerified,
+                },
+                data: {
+                    $apply: func,
                 },
             },
         );
@@ -51,48 +68,22 @@ const reducer = (state: IUser, action: ActionType): IUser => {
     }
 
     case "fill-out-data": {
-        const {firstName, lastName} = action.payload;
-        const func = value => update(value || {}, {
-            firstName: {
-                $set: firstName,
-            },
-            lastName: {
-                $set: lastName,
-            },
-        });
-
         return update(
             state,
             {
                 isFullyRegistered: {
                     $set: true,
                 },
-                data: {
-                    $apply: func,
-                },
             },
         );
     }
 
     case "register": {
-        const {email, id} = action.payload;
-        const func = value => update(value || {}, {
-            email: {
-                $set: email,
-            },
-            id: {
-                $set: id,
-            },
-        });
-
         return update(
             state,
             {
                 isAuthenticated: {
                     $set: true,
-                },
-                data: {
-                    $apply: func,
                 },
             },
         );

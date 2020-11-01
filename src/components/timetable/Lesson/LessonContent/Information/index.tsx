@@ -3,7 +3,8 @@ import {Tooltip} from "components";
 import {Grid, Typography} from "@material-ui/core";
 import clsx from "clsx";
 
-import LessonStyles from "../LessonContent.module.scss";
+import LessonStyles from "../../LessonContent.module.scss";
+import useTextClass from "../../useTextClass";
 
 import styles from "./Information.module.scss";
 
@@ -14,17 +15,19 @@ export interface IInformation {
 }
 
 const Information = ({getIcon, text, tooltip}: IInformation) => {
+    const textClass = useTextClass();
     const iconProps = useMemo(() => ({
-        className: clsx([LessonStyles.text, LessonStyles.icon]),
+        className: clsx([LessonStyles.text, LessonStyles.icon, textClass]),
         fontSize: "large",
-    }), []);
-    const textNode = <Typography
-        className={LessonStyles.text}
-        variant="body2"
-        component="span"
-    >
-        {text}
-    </Typography>;
+    }), [textClass]);
+    const textNode =
+        <Typography
+            className={clsx(LessonStyles.text, textClass)}
+            variant="body2"
+            component="span"
+        >
+            {text}
+        </Typography>;
     const tooltipNode = tooltip ? <Tooltip title={tooltip}>{textNode}</Tooltip> : textNode;
 
     return (
@@ -32,6 +35,7 @@ const Information = ({getIcon, text, tooltip}: IInformation) => {
             container
             spacing={1}
             direction="row"
+            wrap="nowrap"
             alignItems="center"
             className={styles.container}
         >

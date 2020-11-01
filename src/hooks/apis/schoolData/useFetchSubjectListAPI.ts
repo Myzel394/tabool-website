@@ -2,8 +2,7 @@ import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {PaginatedResponse} from "types";
 import {Subject} from "types/subject";
-
-import getLoginData from "api/getLoginConfig";
+import getLoginConfig from "api/getLoginConfig";
 
 export interface IFetchSubjectData {
     search: string;
@@ -12,10 +11,10 @@ export interface IFetchSubjectData {
 
 export type IFetchSubjectResponse = PaginatedResponse<Subject[]>;
 
-const useFetchSubjectAPI = () => {
+const useFetchSubjectListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async (key: string | undefined, {
         search,
         ordering = "name",
     }: IFetchSubjectData): Promise<IFetchSubjectResponse> => {
@@ -24,10 +23,10 @@ const useFetchSubjectAPI = () => {
                 search,
                 ordering,
             },
-            ...await getLoginData(),
+            ...await getLoginConfig(),
         });
         return data;
     }, [instance]);
 };
 
-export default useFetchSubjectAPI;
+export default useFetchSubjectListAPI;
