@@ -48,7 +48,7 @@ const BasicSearchField = ({
 
     const queryOptions = useQueryOptions();
     const {isFetching, isError, data: rawData} = useQuery(
-        [queryKey, {[searchParam]: search}],
+        [queryKey + search],
         queryFunction,
         {
             refetchOnWindowFocus: isOpen,

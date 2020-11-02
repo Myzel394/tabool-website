@@ -4,3 +4,13 @@ export interface PaginatedResponse<T> {
     previous: string;
     results: T;
 }
+
+
+export interface ErrorResponse {
+    [key: string]: string[];
+}
+
+export interface Choice {
+    value: any;
+    displayName: string;
+}

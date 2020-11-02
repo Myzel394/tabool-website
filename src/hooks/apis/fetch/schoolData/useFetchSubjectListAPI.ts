@@ -5,7 +5,6 @@ import {Subject} from "types/subject";
 import getLoginConfig from "api/getLoginConfig";
 
 export interface IFetchSubjectData {
-    search: string;
     ordering?: string;
 }
 
@@ -14,10 +13,9 @@ export type IFetchSubjectResponse = PaginatedResponse<Subject[]>;
 const useFetchSubjectListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string | undefined, {
-        search,
+    return useCallback(async (search: string, {
         ordering = "name",
-    }: IFetchSubjectData): Promise<IFetchSubjectResponse> => {
+    }: IFetchSubjectData = {}): Promise<IFetchSubjectResponse> => {
         const {data} = await instance.get("/api/data/subject/", {
             params: {
                 search,

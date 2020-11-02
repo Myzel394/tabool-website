@@ -3,7 +3,7 @@ import {useMutation} from "react-query";
 import {LoadingOverlay} from "components/overlays";
 import {useParams} from "react-router-dom";
 import {UserContext} from "contexts";
-import {useSendConfirmEmailAPI} from "hooks/apis/auth";
+import {useSendConfirmEmailAPI} from "hooks/apis/send";
 
 import EmailVerificationForm from "./EmailVerificationForm";
 

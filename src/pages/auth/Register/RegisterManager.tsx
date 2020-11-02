@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "contexts";
-import {IFillOutDataResponse} from "hooks/apis/auth/useSendFillOutDataAPI";
+import {IFillOutDataResponse} from "hooks/apis/send/useSendFillOutDataAPI";
 
 import {RegisterFormManager} from "./RegisterForm";
 import Success from "./Success";

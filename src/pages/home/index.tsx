@@ -5,9 +5,10 @@ import {UserContext} from "contexts";
 import _ from "lodash";
 import tinycolor from "tinycolor2";
 
-import TodayLesson from "./TodayLesson";
 import Heading from "./Heading";
+import Homeworks from "./Homeworks";
 import {ColorType} from "./TodayLesson/LessonManager";
+import TodayLessonManager from "./TodayLesson";
 
 const Home = () => {
     const {t} = useTranslation();
@@ -44,7 +45,7 @@ const Home = () => {
                             title={t("Stundenplan")}
                             color={color}
                         />
-                        <TodayLesson
+                        <TodayLessonManager
                             onColor={(value, index) => setColors(prev => ({
                                 ...prev,
                                 [index]: value,

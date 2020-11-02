@@ -1,2 +1,2 @@
-export * from "./auth";
-export * from "./schoolData";
+export * from "./send";
+export * from "./fetch";

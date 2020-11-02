@@ -1,10 +1,10 @@
 import {Dayjs} from "dayjs";
 
 import {Room} from "./room";
-import {Course} from "./course";
+import {CourseDetail} from "./course";
 
 export interface LessonDataApprox {
-    course: Course;
+    course: string;
     startTime: Dayjs;
     endTime: Dayjs;
     weekday: number;
@@ -12,6 +12,7 @@ export interface LessonDataApprox {
 }
 
 export interface LessonDataDetail extends LessonDataApprox{
+    course: CourseDetail;
     room: Room;
 }
 

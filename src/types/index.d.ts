@@ -1,18 +1,14 @@
 export * from "./api";
-export * from "./reducers";
+export * from "./room";
+export * from "./event";
+export * from "./course";
 export * from "./lesson";
 export * from "./subject";
 export * from "./teacher";
+export * from "./homework";
+export * from "./material";
+export * from "./reducers";
+export * from "./classtest";
+export * from "./submission";
 export * from "./validators";
-export * from "./course";
-export * from "./room";
-
-export interface ErrorResponse {
-    [key: string]: string[];
-}
-
-export interface Choice {
-    value: any;
-    displayName: string;
-}
-
+export * from "./modification";

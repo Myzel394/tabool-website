@@ -2,7 +2,7 @@ import React, {memo, useCallback} from "react";
 import {useSendFillOutDataAPI} from "hooks";
 import {useMutation} from "react-query";
 import {LoadingOverlay} from "components/overlays";
-import {IFillOutDataResponse} from "hooks/apis/auth/useSendFillOutDataAPI";
+import {IFillOutDataResponse} from "hooks/apis/send/useSendFillOutDataAPI";
 
 import FillOutDataForm, {SubmitState} from "./FillOutDataForm";
 

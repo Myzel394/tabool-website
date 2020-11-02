@@ -1,8 +1,8 @@
 import React, {memo} from "react";
 import {useMutation} from "react-query";
 import {LoadingOverlay} from "components/overlays";
-import {useSendLoginAPI} from "hooks/apis/auth";
-import {ILoginResponse} from "hooks/apis/auth/useSendLoginAPI";
+import {useSendLoginAPI} from "hooks/apis/send";
+import {ILoginResponse} from "hooks/apis/send/useSendLoginAPI";
 
 import LoginForm from "./LoginForm";
 

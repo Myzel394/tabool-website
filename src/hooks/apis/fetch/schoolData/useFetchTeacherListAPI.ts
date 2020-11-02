@@ -5,7 +5,6 @@ import {TeacherApprox} from "types/teacher";
 import getLoginConfig from "api/getLoginConfig";
 
 export interface IFetchTeacherListData {
-    search: string;
     ordering?: string;
 }
 
@@ -14,10 +13,9 @@ export type IFetchTeacherResponse = PaginatedResponse<TeacherApprox[]>;
 const useFetchTeacherListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
-        search,
+    return useCallback(async (search: string, {
         ordering = "lastName",
-    }: IFetchTeacherListData): Promise<IFetchTeacherResponse> => {
+    }: IFetchTeacherListData = {}): Promise<IFetchTeacherResponse> => {
         const {data} = await instance.get("/api/data/teacher/", {
             params: {
                 search,
