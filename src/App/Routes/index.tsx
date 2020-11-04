@@ -8,6 +8,7 @@ import SubjectList from "pages/list/Subject";
 import Login from "pages/auth/Login";
 
 import Home from "../../pages/home";
+import Calendar from "../../pages/calendar";
 
 
 export default function Routes() {
@@ -51,6 +52,11 @@ export default function Routes() {
                 exact
                 path="/"
                 component={Home}
+            />
+            <Route
+                exact
+                path="/calendar/"
+                component={Calendar}
             />
         </Switch>
     );

@@ -5,14 +5,15 @@ import {UserContext} from "contexts";
 import _ from "lodash";
 import tinycolor from "tinycolor2";
 
-import Heading from "./Heading";
 import Homeworks from "./Homeworks";
 import {ColorType} from "./TodayLesson/LessonManager";
 import TodayLessonManager from "./TodayLesson";
+import Heading from "./Heading";
 
 const Home = () => {
     const {t} = useTranslation();
     const {state} = useContext(UserContext);
+
     // Get color of first lesson
     const [colors, setColors] = useState<{
         [key: number]: ColorType;
@@ -37,9 +38,9 @@ const Home = () => {
     }, [colors]);
 
     return (
-        <Container maxWidth="sm">
-            <Box my={2}>
-                <Grid container spacing={3} direction="column">
+        <Box my={2}>
+            <Container maxWidth="sm">
+                <Grid container spacing={4} direction="row">
                     <Grid item>
                         <Heading
                             title={t("Stundenplan")}
@@ -55,13 +56,13 @@ const Home = () => {
                     <Grid item>
                         <Heading
                             title={t("Hausaufgaben")}
-                            color="#e72061"
+                            color="#ec2354"
                         />
                         <Homeworks />
                     </Grid>
                 </Grid>
-            </Box>
-        </Container>
+            </Container>
+        </Box>
     );
 };
 

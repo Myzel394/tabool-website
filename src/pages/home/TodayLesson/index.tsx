@@ -4,7 +4,7 @@ import {useFetchLessonListAPI, useQueryOptions} from "hooks";
 import dayjs from "dayjs";
 import {LoadingIndicator} from "components/indicators";
 import {getISODate} from "utils";
-import {Grid} from "@material-ui/core";
+import {Box} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {LessonApprox} from "types";
@@ -42,16 +42,16 @@ const TodayLessonManager = ({onColor}: ITodayLessonManager) => {
     return (
         <LoadingIndicator isLoading={isLoading}>
             {() =>
-                <Grid container spacing={1} direction="column">
+                <>
                     {lessons.map((lesson, index) =>
-                        <Grid key={lesson.id} item>
+                        <Box key={lesson.id} mt={1}>
                             <LessonManager
                                 lessonId={lesson.id}
                                 delay={index * 120}
                                 onColor={value => onColor(value, index)}
                             />
-                        </Grid>)}
-                </Grid>
+                        </Box>)}
+                </>
             }
         </LoadingIndicator>
     );

@@ -22,9 +22,6 @@ const Homeworks = (props: IHomeworks) => {
         return <LoadingIndicator isLoading>{() => <p>Element</p>}</LoadingIndicator>;
     }
 
-    console.log("sdfdf");
-    console.log(data);
-
     return null;
 };
 

@@ -7,7 +7,7 @@
 
     &.single {
         display: flex;
-        flex-flow: row nowrap;
+        flex-direction: row;
     }
 
     .secondary {
@@ -27,7 +27,10 @@
 
         &.title {
             text-transform: uppercase;
-            letter-spacing: .1em;
+
+            @media (min-width: 1200px) {
+                letter-spacing: .1em;
+            }
         }
     }
 

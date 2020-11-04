@@ -1,0 +1,12 @@
+.text {
+    text-transform: uppercase;
+    font-weight: 900 !important;
+
+    @media (min-width: 500px) {
+        letter-spacing: .05em;
+    }
+
+    @media (min-width: 1200px) {
+        letter-spacing: .2em;
+    }
+}

@@ -1,6 +1,8 @@
 import React, {memo, useMemo} from "react";
 import {Box, Typography, TypographyProps, useTheme} from "@material-ui/core";
 
+import styles from "./Heading.module.scss";
+
 export interface IHeading extends Omit<TypographyProps, "color">{
     title: string;
     color?: string;
@@ -14,9 +16,6 @@ const Heading = (props: IHeading) => {
         ...other
     } = props;
     const style: any = useMemo(() => ({
-        textTransform: "uppercase",
-        letterSpacing: ".2em",
-        fontWeight: 900,
         color,
     }), [color]);
 
@@ -26,6 +25,7 @@ const Heading = (props: IHeading) => {
                 style={style}
                 variant="h2"
                 align="center"
+                className={styles.text}
                 {...other}
             >
                 {title}
