@@ -12,8 +12,8 @@ export interface ModificationApprox {
 }
 
 export interface ModificationDetail extends ModificationApprox {
-    newRoom: Room;
-    newTeacher: TeacherDetail;
-    newSubject: Subject;
+    newRoom?: Room;
+    newTeacher?: TeacherDetail;
+    newSubject?: Subject;
     information: string;
 }

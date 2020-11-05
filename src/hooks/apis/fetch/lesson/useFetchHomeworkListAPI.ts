@@ -3,7 +3,7 @@ import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {Dayjs} from "dayjs";
 import {HomeworkApprox, PaginatedResponse} from "types";
-import {getLoginConfig} from "api";
+import {convertToDate, getLoginConfig} from "api";
 
 export interface IFetchHomeworkListData {
     dueDateMax?: Dayjs;
@@ -14,9 +14,10 @@ export interface IFetchHomeworkListData {
     completed?: boolean;
     ignore?: boolean;
     ordering?: string;
+    page?: string;
 }
 
-export type IFetchHomeworkListResponse = PaginatedResponse<HomeworkApprox>;
+export type IFetchHomeworkListResponse = PaginatedResponse<HomeworkApprox[]>;
 
 const useFetchHomeworkListAPI = () => {
     const {instance} = useContext(AxiosContext);
@@ -30,6 +31,7 @@ const useFetchHomeworkListAPI = () => {
         subjectId,
         completed,
         ignore,
+        page,
     }: IFetchHomeworkListData = {}): Promise<IFetchHomeworkListResponse> => {
         const {data} = await instance.get("/api/data/homework/", {
             params: {
@@ -38,6 +40,7 @@ const useFetchHomeworkListAPI = () => {
                 completed,
                 type,
                 ordering,
+                page,
                 lesson: lessonId,
                 subject: subjectId,
                 due_date__lte: dueDateMin,
@@ -45,6 +48,8 @@ const useFetchHomeworkListAPI = () => {
             },
             ...await getLoginConfig(),
         });
+        data.results.forEach(element => convertToDate(element, ["dueDate"]));
+
         return data;
     }, [instance]);
 };

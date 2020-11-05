@@ -7,6 +7,7 @@ import {LessonApprox, PaginatedResponse} from "types";
 export interface IFetchLessonsData {
     startDate?: string;
     endDate?: string;
+    page?: string;
 }
 
 export type IFetchLessonsResponse = PaginatedResponse<LessonApprox[]>;
@@ -17,15 +18,17 @@ const useFetchLessonListAPI = () => {
     return useCallback(async (key: string, {
         startDate,
         endDate,
+        page,
     }: IFetchLessonsData = {}): Promise<IFetchLessonsResponse> => {
         const {data} = await instance.get("/api/data/lesson/", {
             params: {
+                page,
                 date__gte: startDate,
                 date__lte: endDate,
             },
             ...await getLoginConfig(),
         });
-        convertToDate(data);
+        data.results.forEach(element => convertToDate(element, ["lessonData.date"]));
 
         return data;
     }, [instance]);
