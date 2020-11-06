@@ -1,4 +1,4 @@
-export {default as useFetchTimetableAPI} from "./useFetchTimetableAPI";
+export {default as useFetchTimetableState} from "./useFetchTimetableState";
 
 export * from "./lesson";
 export * from "./schoolData";

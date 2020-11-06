@@ -1,13 +1,11 @@
 import React, {memo} from "react";
-import {useQuery} from "react-query";
-import {useFetchTimetableAPI, useQueryOptions} from "hooks";
 import dayjs, {Dayjs} from "dayjs";
 import {findNextDate} from "utils";
 import {useMemoOne} from "use-memo-one";
+import {LoadingIndicator} from "components/indicators";
+import useFetchTimetableState from "hooks/apis/fetch/useFetchTimetableState";
 
 import Calendar from "./Calendar";
-import {LoadingIndicator} from "components/indicators";
-import {IFetchTimetableResponse} from "../../hooks/apis/fetch/useFetchTimetableAPI";
 
 export interface ICalendarManager {
 
@@ -16,27 +14,21 @@ export interface ICalendarManager {
 const CalendarManager = (props: ICalendarManager) => {
     const startDate = useMemoOne<Dayjs>(() =>
         findNextDate(dayjs().subtract(6, "day"), 0),
-        []);
+    []);
     const endDate = useMemoOne<Dayjs>(() =>
         findNextDate(startDate, 4),
-        [startDate]
-    );
+    [startDate]);
 
-    const fetchTimetable = useFetchTimetableAPI();
-    const queryOptions = useQueryOptions();
-    const {data, isLoading} = useQuery(["fetch_timetable", {
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-    }], fetchTimetable, queryOptions);
+    const {lessons, modifications, events} = useFetchTimetableState(startDate, endDate);
 
     return (
-        <LoadingIndicator isLoading={isLoading}>
+        <LoadingIndicator isLoading={!lessons && !modifications && !events}>
             {() =>
                 <Calendar
                     date={startDate}
-                    events={data.events}
-                    lessons={data.lessons}
-                    modifications={data.modifications}
+                    events={events}
+                    lessons={lessons}
+                    modifications={modifications}
                 />
             }
         </LoadingIndicator>

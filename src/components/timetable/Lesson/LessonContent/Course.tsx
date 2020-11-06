@@ -15,7 +15,7 @@ const Course = ({name}: ICourse) => {
 
     return (
         <Typography
-            variant="h4"
+            variant="h5"
             component="h1"
             className={clsx(textClass, styles.title)}
         >

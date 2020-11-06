@@ -13,7 +13,7 @@ const Homeworks = (props: IHomeworks) => {
     const date = dayjs(new Date(2020, 9, 30, 1, 1, 1));
     const queryOptions = useQueryOptions();
     const fetchHomework = useFetchHomeworkListAPI();
-    const {data, isLoading, isError} = useQuery(["fetch_homework", {
+    const {data, isLoading, isError} = useQuery(["", {
         dueDateMin: getISODate(date),
         dueDateMax: getISODate(date),
     }], fetchHomework, queryOptions);

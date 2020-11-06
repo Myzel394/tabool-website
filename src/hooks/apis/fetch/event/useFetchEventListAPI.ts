@@ -21,14 +21,14 @@ const useFetchEventListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async (search: string, {
-        endDateMax,
         ordering = "start_datetime",
-        endDateMin,
         ignore,
         roomId,
         page,
-        startDateMax,
         startDateMin,
+        startDateMax,
+        endDateMin,
+        endDateMax,
     }: IFetchEventListData): Promise<IFetchEventListResponse> => {
         const {data} = await instance.get("/api/data/event/", {
             params: {
