@@ -3,6 +3,7 @@ import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {EventApprox, FetchListData, PaginatedResponse} from "types";
 import {convertToDate, getLoginConfig} from "api";
+import {isAllDay} from "utils";
 
 export interface IFetchEventListData extends FetchListData {
     ordering?: "start_datetime" | "-start_datetime" | "end_datetime" | "-end_datetime";
@@ -43,10 +44,13 @@ const useFetchEventListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(element => convertToDate(element, [
-            "startDatetime",
-            "endDatetime",
-        ]));
+        data.results.forEach(element => {
+            convertToDate(element, [
+                "startDatetime",
+                "endDatetime",
+            ]);
+            element.isAllDay = isAllDay(element.startDatetime, element.endDatetime);
+        });
 
         return data;
     }, [instance]);

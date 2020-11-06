@@ -6,9 +6,11 @@ export interface HomeworkApprox {
     lesson: string;
     dueDate: Dayjs;
     id: string;
+
+    truncatedInformation: string;
 }
 
-export interface HomeworkDetail extends HomeworkApprox{
+export interface HomeworkDetail extends Omit<HomeworkApprox, "truncatedInformation"> {
     lesson: LessonDetail;
     isPrivate: boolean;
     information: string;

@@ -2,7 +2,7 @@ import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {EventDetail} from "types";
 import {convertToDate, getLoginConfig} from "api";
-import {fetchIdsToObject} from "utils";
+import {fetchIdsToObject, isAllDay} from "utils";
 
 import {useFetchRoomDetailAPI} from "../schoolData";
 
@@ -19,6 +19,7 @@ const useFetchEventDetailAPI = () => {
             "startDatetime",
             "endDatetime",
         ]);
+        data.isAllDay = isAllDay(data.startDatetime, data.endDatetime);
 
         return data;
     }, [fetchRoom, instance]);

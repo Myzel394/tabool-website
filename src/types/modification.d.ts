@@ -9,9 +9,11 @@ export interface ModificationApprox {
     endDatetime: Dayjs;
     modificationType: string;
     id: string;
+
+    truncatedInformation: string;
 }
 
-export interface ModificationDetail extends ModificationApprox {
+export interface ModificationDetail extends Omit<ModificationApprox, "truncatedInformation"> {
     newRoom?: Room;
     newTeacher?: TeacherDetail;
     newSubject?: Subject;

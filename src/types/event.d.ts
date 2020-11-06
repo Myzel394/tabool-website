@@ -6,6 +6,7 @@ export interface EventApprox {
     title: string;
     startDatetime: Dayjs;
     endDatetime: Dayjs;
+    isAllDay: boolean;
     id: string;
 }
 

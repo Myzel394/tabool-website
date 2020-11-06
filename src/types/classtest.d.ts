@@ -7,11 +7,13 @@ export interface ClasstestApprox {
     course: string;
     targetedDate: Dayjs;
     id: string;
+
+    truncatedInformation: string;
 }
 
-export interface ClasstestDetail extends ClasstestApprox {
+export interface ClasstestDetail extends Omit<ClasstestApprox, "truncatedInformation"> {
     course: CourseDetail;
-    room: Room;
+    room?: Room;
     information: string;
     createdAt: Dayjs;
 }
