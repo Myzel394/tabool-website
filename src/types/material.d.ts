@@ -7,7 +7,7 @@ export interface MaterialApprox {
 }
 
 export interface MaterialDetail extends MaterialApprox {
-    file: string;
+    file?: string;
     scoosoDownloadLink: string;
 }
 

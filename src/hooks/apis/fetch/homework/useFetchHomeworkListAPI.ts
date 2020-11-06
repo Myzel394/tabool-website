@@ -2,10 +2,10 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {Dayjs} from "dayjs";
-import {HomeworkApprox, PaginatedResponse} from "types";
+import {FetchListData, HomeworkApprox, PaginatedResponse} from "types";
 import {convertToDate, getLoginConfig} from "api";
 
-export interface IFetchHomeworkListData {
+export interface IFetchHomeworkListData extends FetchListData {
     dueDateMax?: Dayjs;
     dueDateMin?: Dayjs;
     type?: string;
@@ -13,8 +13,7 @@ export interface IFetchHomeworkListData {
     subjectId?: string;
     completed?: boolean;
     ignore?: boolean;
-    ordering?: string;
-    page?: string;
+    ordering?: "due_date" | "-due_date";
 }
 
 export type IFetchHomeworkListResponse = PaginatedResponse<HomeworkApprox[]>;

@@ -5,7 +5,7 @@ import {fetchIdsToObject} from "utils";
 import {parseDate} from "utils/parsers";
 import {getLoginConfig} from "api";
 
-import useFetchLessonDetailAPI from "./useFetchLessonDetailAPI";
+import useFetchLessonDetailAPI from "../lesson/useFetchLessonDetailAPI";
 
 const useFetchHomeworkDetailAPI = () => {
     const {instance} = useContext(AxiosContext);

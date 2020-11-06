@@ -19,11 +19,11 @@ const snakeCase = (string) => {
 
 const snakeCaseKeys = (data) => {
     // @ts-ignore
-    return _.deep(data, (x) => {
-        return _.mapKeys(x, (value, key) => {
-            return snakeCase(key);
-        });
-    });
+    return _.deep(data, (x) =>
+        _.mapKeys(x, (value, key) =>
+            snakeCase(key)
+        )
+    );
 };
 
 export default snakeCaseKeys;

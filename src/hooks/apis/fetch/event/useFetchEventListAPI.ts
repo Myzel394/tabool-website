@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {EventApprox, PaginatedResponse} from "types";
+import {EventApprox, FetchListData, PaginatedResponse} from "types";
 import {convertToDate, getLoginConfig} from "api";
 
-export interface IFetchEventListData {
-    ordering?: "start_datetime" | "end_datetime";
-    search?: string;
-    room?: string;
+export interface IFetchEventListData extends FetchListData {
+    ordering?: "start_datetime" | "-start_datetime" | "end_datetime" | "-end_datetime";
+    roomId?: string;
     ignore?: boolean;
     startDateMin?: string;
     startDateMax?: string;
@@ -20,22 +19,23 @@ export type IFetchEventListResponse = PaginatedResponse<EventApprox[]>;
 const useFetchEventListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async (search: string, {
         endDateMax,
         ordering = "start_datetime",
         endDateMin,
         ignore,
-        room,
-        search,
+        roomId,
+        page,
         startDateMax,
         startDateMin,
     }: IFetchEventListData): Promise<IFetchEventListResponse> => {
         const {data} = await instance.get("/api/data/event/", {
             params: {
                 ordering,
+                page,
                 search,
-                room,
                 ignore,
+                room: roomId,
                 start_datetime__gte: startDateMin,
                 start_datetime__lte: startDateMax,
                 end_datetime__gte: endDateMin,

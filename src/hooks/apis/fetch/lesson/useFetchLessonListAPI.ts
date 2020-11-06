@@ -2,12 +2,11 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {convertToDate, getLoginConfig} from "api";
-import {LessonApprox, PaginatedResponse} from "types";
+import {FetchListData, LessonApprox, PaginatedResponse} from "types";
 
-export interface IFetchLessonsData {
-    startDate?: string;
-    endDate?: string;
-    page?: string;
+export interface IFetchLessonsData extends FetchListData {
+    dateMin?: string;
+    dateMax?: string;
 }
 
 export type IFetchLessonsResponse = PaginatedResponse<LessonApprox[]>;
@@ -16,15 +15,15 @@ const useFetchLessonListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async (key: string, {
-        startDate,
-        endDate,
+        dateMin,
+        dateMax,
         page,
     }: IFetchLessonsData = {}): Promise<IFetchLessonsResponse> => {
         const {data} = await instance.get("/api/data/lesson/", {
             params: {
                 page,
-                date__gte: startDate,
-                date__lte: endDate,
+                date__gte: dateMin,
+                date__lte: dateMax,
             },
             ...await getLoginConfig(),
         });

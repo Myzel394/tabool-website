@@ -3,7 +3,7 @@ import {EventDetail, LessonDetail, ModificationDetail} from "types";
 import dayjs, {Dayjs} from "dayjs";
 import {getISODate} from "utils";
 
-import getISODatetime from "../../../utils/getIsoDatetime";
+import getISODatetime from "utils/getIsoDatetime";
 
 import {useFetchLessonDetailAPI, useFetchLessonListAPI} from "./lesson";
 import useFetchModificationListAPI from "./lesson/useFetchModificationListAPI";
@@ -11,8 +11,8 @@ import useFetchModificationDetailAPI from "./lesson/useFetchModificationDetailAP
 import {useFetchEventDetailAPI, useFetchEventListAPI} from "./event";
 
 export interface IFetchTimetableData {
-    startDate: Dayjs;
-    endDate: Dayjs;
+    startDate: string;
+    endDate: string;
 }
 
 export interface IFetchTimetableResponse {

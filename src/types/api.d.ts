@@ -14,3 +14,7 @@ export interface Choice {
     value: any;
     displayName: string;
 }
+
+export interface FetchListData {
+    page?: string;
+}

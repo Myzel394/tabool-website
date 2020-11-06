@@ -3,17 +3,15 @@ import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {convertToDate, getLoginConfig} from "api";
 
-import {ModificationApprox, PaginatedResponse} from "../../../../types";
+import {FetchListData, ModificationApprox, PaginatedResponse} from "../../../../types";
 
-export interface IFetchModificationListData {
-    search?: string;
-    ordering?: string;
+export interface IFetchModificationListData extends FetchListData {
+    ordering?: "start_datetime" | "-start_datetime" | "end_datetime" | "-end_datetime";
     startDateMin?: string;
     startDateMax?: string;
     endDateMin?: string;
     endDateMax?: string;
     modificationType?: string;
-    page?: string;
 }
 
 export type IFetchModificationListResponse = PaginatedResponse<ModificationApprox[]>;
@@ -21,12 +19,11 @@ export type IFetchModificationListResponse = PaginatedResponse<ModificationAppro
 const useFetchModificationListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async (search: string, {
         ordering = "start_datetime",
         endDateMax,
         endDateMin,
         modificationType,
-        search,
         startDateMax,
         startDateMin,
         page,
