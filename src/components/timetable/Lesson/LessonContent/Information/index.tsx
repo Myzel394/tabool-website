@@ -1,10 +1,9 @@
 import React, {ReactNode, useMemo} from "react";
 import {Tooltip} from "components";
-import {Grid, Typography} from "@material-ui/core";
+import {Typography, useTheme} from "@material-ui/core";
 import clsx from "clsx";
 
 import LessonStyles from "../../LessonContent.module.scss";
-import useTextClass from "../../useTextClass";
 
 import styles from "./Information.module.scss";
 
@@ -15,39 +14,28 @@ export interface IInformation {
 }
 
 const Information = ({getIcon, text, tooltip}: IInformation) => {
-    const textClass = useTextClass();
+    const theme = useTheme();
     const iconProps = useMemo(() => ({
-        className: clsx([LessonStyles.text, LessonStyles.icon, textClass]),
-        fontSize: "large",
-    }), [textClass]);
+        color: theme.palette.text.primary,
+        className: clsx([LessonStyles.text, LessonStyles.icon]),
+        fontSize: theme.typography.body1.fontSize,
+    }), [theme.palette.text.primary, theme.typography.body1.fontSize]);
     const textNode =
         <Typography
-            className={clsx(LessonStyles.text, textClass)}
-            variant="body2"
-            component="span"
+            className={LessonStyles.text}
+            variant="body1"
+            component="dd"
+            color="textSecondary"
         >
             {text}
         </Typography>;
     const tooltipNode = tooltip ? <Tooltip title={tooltip}>{textNode}</Tooltip> : textNode;
 
     return (
-        <Grid
-            container
-            spacing={1}
-            direction="row"
-            wrap="nowrap"
-            alignItems="center"
-            className={styles.container}
-        >
-            <Grid item>
-                {getIcon(iconProps)}
-            </Grid>
-            <Grid item>
-                <dd>
-                    {tooltipNode}
-                </dd>
-            </Grid>
-        </Grid>
+        <div className={styles.container}>
+            {getIcon(iconProps)}
+            {tooltipNode}
+        </div>
     );
 };
 

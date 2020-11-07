@@ -39,7 +39,6 @@ const Lesson = ({
                 endTime={endTime}
                 color={color}
                 isDisabled={isDisabled}
-                isSingle={endTime.diff(startTime, "minute") <= 45}
             >
                 <LessonContent
                     courseName={courseName}

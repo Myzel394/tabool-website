@@ -1,7 +1,7 @@
-import React, {useContext, useMemo} from "react";
+import React, {memo, useContext, useMemo} from "react";
 import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
 import clsx from "clsx";
-import {Box} from "@material-ui/core";
+import {Box, useTheme} from "@material-ui/core";
 
 import LessonContext from "../LessonContext";
 import styles from "../LessonContent.module.scss";
@@ -23,54 +23,57 @@ const LessonContent = ({
     teacherName,
     roomName,
 }: ILessonContent) => {
-    const {color, isDisabled, startTime, endTime, isSingle} = useContext(LessonContext);
+    const theme = useTheme();
+    const {isDisabled, startTime, endTime, isSingle, isSmall} = useContext(LessonContext);
 
     const wrapperStyle = useMemo(() => ({
-        backgroundColor: color,
-    }), [color]);
+        backgroundColor: theme.palette.primary.main,
+    }), [theme.palette.primary.main]);
+    const articleClassNames = useMemo(() => clsx(styles.container, {
+        [styles.disabled]: isDisabled,
+    }), [isDisabled]);
+    const dlClassNames = useMemo(() => clsx(styles.information, {
+        [styles.singleLessonInformation]: isSingle ?? false,
+    }), [isSingle]);
 
     return (
-        <article>
-            <Box
-                flexDirection="column"
-                flexWrap="wrap"
-                p={1}
-                style={wrapperStyle}
-                className={clsx(styles.container, {
-                    [styles.disabled]: isDisabled,
-                    [styles.single]: isSingle,
-                })}
-                {...(
-                    isSingle && {
-                        justifyContent: "space-between",
-                        alignItems: "flex-end",
-                    }
-                )}
-            >
-                <div>
-                    <div className={styles.secondary}>
-                        <Time startTime={startTime} endTime={endTime} />
-                    </div>
-                    <Box my={1}>
-                        <Course name={courseName} />
-                    </Box>
+        <Box
+            component="article"
+            flexDirection="column"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            flexWrap="nowrap"
+            display="flex"
+            p={1}
+            style={wrapperStyle}
+            className={articleClassNames}
+        >
+            <div>
+                <div className={styles.secondary}>
+                    <Time startTime={startTime} endTime={endTime} />
                 </div>
-                <dl
-                    className={clsx({
-                        [styles.singleLessonInformation]: isSingle ?? false,
-                    })}
-                >
-                    <Information
-                        getIcon={props => <FaGraduationCap {...props} />}
-                        text={teacherName}
-                    />
-                    <Information
-                        getIcon={props => <FaMapMarkerAlt {...props} />}
-                        text={roomName}
-                    />
-                </dl>
+                <Box my={Number(!isSmall)}>
+                    <Course name={courseName} />
+                </Box>
+            </div>
+            <Box
+                component="dl"
+                display="flex"
+                flexDirection="row"
+                flexWrap="wrap"
+                m={0}
+                className={dlClassNames}
+            >
+                <Information
+                    getIcon={props => <FaGraduationCap {...props} />}
+                    text={teacherName}
+                />
+                <Information
+                    getIcon={props => <FaMapMarkerAlt {...props} />}
+                    text={roomName}
+                />
             </Box>
-        </article>
+        </Box>
     );
 };
 
@@ -78,4 +81,4 @@ LessonContent.defaultProps = {
     isDisabled: false,
 };
 
-export default LessonContent;
+export default memo(LessonContent);

@@ -1,8 +1,6 @@
-import React, {ReactNode, useContext, useMemo} from "react";
+import React, {ReactNode, useMemo} from "react";
 import {Tooltip} from "components";
 import {useTheme} from "@material-ui/core";
-
-import LessonContext from "../LessonContext";
 
 import styles from "./LessonBadge.module.scss";
 
@@ -14,12 +12,11 @@ export interface ILessonBadge {
 const LessonBadge = ({description, getIcon}: ILessonBadge) => {
     const theme = useTheme();
 
-    const {color} = useContext(LessonContext);
     const props = useMemo(() => ({
-        color,
+        color: theme.palette.primary.main,
         className: styles.icon,
         fontSize: "large",
-    }), [color]);
+    }), [theme.palette.primary.main]);
     const style = useMemo(() => ({
         backgroundColor: theme.palette.background.paper,
     }), [theme]);

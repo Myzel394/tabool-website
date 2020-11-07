@@ -5,6 +5,7 @@ export interface ILesson {
     color: string;
     isDisabled: boolean;
     isSingle: boolean;
+    isSmall: boolean;
     startTime: Dayjs;
     endTime: Dayjs;
 }

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {EventDetail, LessonDetail, ModificationDetail} from "types";
+import {EventDetail, HomeworkDetail, LessonDetail, ModificationDetail} from "types";
 import {Dayjs} from "dayjs";
 import {useQuery} from "react-query";
 import useQueryOptions from "hooks/useQueryOptions";
@@ -12,6 +12,7 @@ import {
     useFetchModificationDetailAPI,
     useFetchModificationListAPI,
 } from "./lesson";
+import {useFetchHomeworkDetailAPI, useFetchHomeworkListAPI} from "./homework";
 
 export interface IUseFetchTimetableState {
     startDate: Dayjs;
@@ -31,6 +32,7 @@ const useFetchTimetableState = (
     lessons?: LessonDetail[];
     modifications?: ModificationDetail[];
     events?: EventDetail[];
+    homeworks?: HomeworkDetail[];
 } => {
     const startDateIso = getISODate(startDate);
     const endDateIso = getISODate(endDate);
@@ -39,14 +41,17 @@ const useFetchTimetableState = (
 
     const [lessons, setLessons] = useState<LessonDetail[] | undefined>(undefined),
         [modifications, setModifications] = useState<ModificationDetail[] | undefined>(undefined),
-        [events, setEvents] = useState<EventDetail[] | undefined>(undefined);
+        [events, setEvents] = useState<EventDetail[] | undefined>(undefined),
+        [homeworks, setHomeworks] = useState<HomeworkDetail[] | undefined>(undefined);
 
     const fetchLessonList = useFetchLessonListAPI(),
         fetchLessonDetail = useFetchLessonDetailAPI(),
         fetchModificationList = useFetchModificationListAPI(),
         fetchModificationDetail = useFetchModificationDetailAPI(),
         fetchEventList = useFetchEventListAPI(),
-        fetchEventDetail = useFetchEventDetailAPI();
+        fetchEventDetail = useFetchEventDetailAPI(),
+        fetchHomeworkList = useFetchHomeworkListAPI(),
+        fetchHomeworkDetail = useFetchHomeworkDetailAPI();
 
     const queryOptions = useQueryOptions();
 
@@ -61,15 +66,19 @@ const useFetchTimetableState = (
         eventsQuery = useQuery(["", {
             startDateMin: startDatetimeIso,
             endDateMax: endDatetimeIso,
-        }], fetchEventList, queryOptions);
+        }], fetchEventList, queryOptions),
+        homeworkQuery = useQuery(["", {
+            dueDateMin: startDateIso,
+            dueDateMax: endDateIso,
+        }], fetchHomeworkList, queryOptions);
 
     // Fetch lessons
     useEffect(() => {
         const handle = async () => {
             if (!lessonQuery.isFetching && lessonQuery.isSuccess && lessonQuery.data?.results?.length > 0) {
-                const lessons: LessonDetail[] = await defaultFetch(lessonQuery.data.results, fetchLessonDetail);
+                const givenLessons: LessonDetail[] = await defaultFetch(lessonQuery.data.results, fetchLessonDetail);
 
-                setLessons(lessons);
+                setLessons(givenLessons);
             }
         };
 
@@ -80,9 +89,9 @@ const useFetchTimetableState = (
     useEffect(() => {
         const handle = async () => {
             if (!modificationsQuery.isFetching && modificationsQuery.isSuccess && modificationsQuery.data?.results?.length > 0) {
-                const modifications = await defaultFetch(modificationsQuery.data.results, fetchModificationDetail);
+                const givenModifications = await defaultFetch(modificationsQuery.data.results, fetchModificationDetail);
 
-                setModifications(modifications);
+                setModifications(givenModifications);
             }
         };
 
@@ -93,19 +102,33 @@ const useFetchTimetableState = (
     useEffect(() => {
         const handle = async () => {
             if (!eventsQuery.isFetching && eventsQuery.isSuccess && eventsQuery.data?.results?.length > 0) {
-                const events = await defaultFetch(eventsQuery.data.results, fetchEventDetail);
+                const givenEvents = await defaultFetch(eventsQuery.data.results, fetchEventDetail);
 
-                setEvents(events);
+                setEvents(givenEvents);
             }
         };
 
         handle();
     }, [eventsQuery.data, eventsQuery.isFetching, eventsQuery.isSuccess, fetchEventDetail, fetchEventList]);
 
+    // Fetch homeworks
+    useEffect(() => {
+        const handle = async () => {
+            if (!homeworkQuery.isFetching && homeworkQuery.isSuccess && homeworkQuery.data?.results?.length > 0) {
+                const givenHomeworks = await defaultFetch(homeworkQuery.data.results, fetchHomeworkDetail);
+
+                setHomeworks(givenHomeworks);
+            }
+        };
+
+        handle();
+    });
+
     return {
         lessons,
         modifications,
         events,
+        homeworks,
     };
 };
 

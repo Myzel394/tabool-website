@@ -19,7 +19,9 @@ const CalendarManager = (props: ICalendarManager) => {
         findNextDate(startDate, 4),
     [startDate]);
 
-    const {lessons, modifications, events} = useFetchTimetableState(startDate, endDate);
+    const {lessons, modifications, events, homeworks} = useFetchTimetableState(startDate, endDate);
+
+    console.log(homeworks);
 
     return (
         <LoadingIndicator isLoading={!lessons && !modifications && !events}>

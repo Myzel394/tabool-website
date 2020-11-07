@@ -26,7 +26,8 @@
             "reservedFirst": true
         }],
         "@shopify/binary-assignment-parens": "off",
-        "no-mixed-operators": "off"
+        "no-mixed-operators": "off",
+        "@typescript-eslint/no-extra-parens": "off"
     },
     "env": {
         "browser": true,
