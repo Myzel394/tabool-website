@@ -13,12 +13,12 @@ const useFetchModificationDetailAPI = () => {
     const fetchSubject = useFetchSubjectDetailAPI();
     const fetchTeacher = useFetchTeacherDetailAPI();
 
-    return useCallback(async (id: string): Promise<ModificationDetail> => {
+    return useCallback(async (key: string, id: string): Promise<ModificationDetail> => {
         let {data} = await instance.get(`/api/data/modification/${id}/`, await getLoginConfig());
         data = fetchIdsToObject(data, {
-            newRoom: id => id && fetchRoom(id),
-            newSubject: id => id && fetchSubject(id),
-            newTeacher: id => id && fetchTeacher(id),
+            newRoom: roomId => roomId && fetchRoom(`modification_${id}_${roomId}`, roomId),
+            newSubject: subjectId => subjectId && fetchSubject(`modification_${id}_${subjectId}`, subjectId),
+            newTeacher: teacherId => teacherId && fetchTeacher(`modification_${id}_${teacherId}`, teacherId),
         });
 
         convertToDate(data, ["startDatetime", "endDatetime"]);

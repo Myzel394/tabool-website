@@ -9,12 +9,19 @@ const SPACING = 2;
 
 const Badges = ({children}: IBadges) => {
     const theme = useTheme();
+    const boxStyle = useMemo(() => ({
+        height: 0,
+    }), []);
     const style = useMemo(() => ({
-        transform: `translateY(calc(50% - ${theme.spacing(SPACING) * 0.5}px))`,
-    }), [theme]);
+        transform: "translateY(-50%)",
+        height: "fit-content",
+    }), []);
 
     return (
-        <Box mr={1}>
+        <Box
+            mr={1}
+            style={boxStyle}
+        >
             <Grid
                 container
                 justify="flex-end"
@@ -31,3 +38,5 @@ const Badges = ({children}: IBadges) => {
 };
 
 export default Badges;
+export {default as HomeworkBadge} from "./HomeworkBadge";
+export {default as MaterialBadge} from "./MaterialBadge";

@@ -13,9 +13,10 @@ export type IFetchTeacherResponse = PaginatedResponse<TeacherApprox[]>;
 const useFetchTeacherListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (search: string, {
+    return useCallback(async (key: string, {
         ordering = "last_name",
         page,
+        search,
     }: IFetchTeacherListData = {}): Promise<IFetchTeacherResponse> => {
         const {data} = await instance.get("/api/data/teacher/", {
             params: {

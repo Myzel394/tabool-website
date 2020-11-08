@@ -20,7 +20,7 @@ export type IFetchEventListResponse = PaginatedResponse<EventApprox[]>;
 const useFetchEventListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (search: string, {
+    return useCallback(async (key: string, {
         ordering = "start_datetime",
         ignore,
         roomId,
@@ -29,6 +29,7 @@ const useFetchEventListAPI = () => {
         startDateMax,
         endDateMin,
         endDateMax,
+        search,
     }: IFetchEventListData): Promise<IFetchEventListResponse> => {
         const {data} = await instance.get("/api/data/event/", {
             params: {

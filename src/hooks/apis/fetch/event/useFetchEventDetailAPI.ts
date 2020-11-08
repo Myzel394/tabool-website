@@ -10,10 +10,10 @@ const useFetchEventDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
     const fetchRoom = useFetchRoomDetailAPI();
 
-    return useCallback(async (id: string): Promise<EventDetail> => {
+    return useCallback(async (key: string, id: string): Promise<EventDetail> => {
         let {data} = await instance.get(`/api/data/event/${id}/`, await getLoginConfig());
         data = fetchIdsToObject(data, {
-            room: id => id && fetchRoom(id),
+            room: roomId => roomId && fetchRoom(`event_${id}_${roomId}`, roomId),
         });
         convertToDate(data, [
             "startDatetime",

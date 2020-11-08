@@ -6,3 +6,4 @@ export {default as findNextDate} from "./findNextDate";
 export {default as replaceDatetime} from "./replaceDatetime";
 export {default as isAllDay} from "./isAllDay";
 export {default as combineDatetime} from "./combineDatetime";
+export {default as randomNumbersWithGap} from "./randomNumbersWithGap";

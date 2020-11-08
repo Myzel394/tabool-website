@@ -11,17 +11,15 @@ export interface ICalendarManager {
 
 }
 
-const CalendarManager = (props: ICalendarManager) => {
+const CalendarManager = ({}: ICalendarManager) => {
     const startDate = useMemoOne<Dayjs>(() =>
-        findNextDate(dayjs().subtract(6, "day"), 0),
+        findNextDate(dayjs().subtract(4, "day"), 1),
     []);
     const endDate = useMemoOne<Dayjs>(() =>
-        findNextDate(startDate, 4),
+        findNextDate(startDate, 5),
     [startDate]);
 
-    const {lessons, modifications, events, homeworks} = useFetchTimetableState(startDate, endDate);
-
-    console.log(homeworks);
+    const {lessons, modifications, events} = useFetchTimetableState(startDate, endDate);
 
     return (
         <LoadingIndicator isLoading={!lessons && !modifications && !events}>

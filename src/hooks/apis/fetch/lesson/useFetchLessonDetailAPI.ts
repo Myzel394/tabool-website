@@ -13,12 +13,12 @@ const useFetchLessonDetailAPI = () => {
     const fetchRoom = useFetchRoomDetailAPI();
     const fetchCourse = useFetchCourseDetailAPI();
 
-    return useCallback(async (id: string): Promise<LessonDetail> => {
+    return useCallback(async (key: string, id: string): Promise<LessonDetail> => {
         const {data} = await instance.get(`/api/data/lesson/${id}/`, await getLoginConfig());
         const lesson = data;
         lesson.lessonData = await fetchIdsToObject(lesson.lessonData, {
-            room: id => fetchRoom(id),
-            course: id => fetchCourse(id),
+            room: roomId => fetchRoom(`room_${roomId}`, roomId),
+            course: courseId => fetchCourse(`course_${courseId}`, courseId),
         });
         parseDate(lesson, [
             "date", "lessonData.startTime", "lessonData.endTime",

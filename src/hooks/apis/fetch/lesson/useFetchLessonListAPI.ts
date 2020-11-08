@@ -18,6 +18,7 @@ const useFetchLessonListAPI = () => {
         dateMin,
         dateMax,
         page,
+        search,
     }: IFetchLessonsData = {}): Promise<IFetchLessonsResponse> => {
         const {data} = await instance.get("/api/data/lesson/", {
             params: {

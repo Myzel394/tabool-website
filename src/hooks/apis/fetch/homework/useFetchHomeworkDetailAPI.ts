@@ -11,10 +11,10 @@ const useFetchHomeworkDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
     const fetchLesson = useFetchLessonDetailAPI();
 
-    return useCallback(async (id: string): Promise<HomeworkDetail> => {
+    return useCallback(async (key: string, id: string): Promise<HomeworkDetail> => {
         let {data} = await instance.get(`/api/data/homework/${id}/`, await getLoginConfig());
         data = await fetchIdsToObject(data, {
-            lesson: id => fetchLesson(id),
+            lesson: lessonId => fetchLesson(`lesson_${lessonId}`, lessonId),
         });
         parseDate(data, [
             "dueDate",

@@ -17,4 +17,5 @@ export interface Choice {
 
 export interface FetchListData {
     page?: string;
+    search?: string;
 }

@@ -13,11 +13,11 @@ const useFetchCourseDetailAPI = () => {
     const fetchSubject = useFetchSubjectDetailAPI();
     const fetchTeacher = useFetchTeacherDetailAPI();
 
-    return useCallback(async (id: string): Promise<CourseDetail> => {
+    return useCallback(async (key: string, id: string): Promise<CourseDetail> => {
         const {data} = await instance.get(`/api/data/course/${id}/`, await getLoginConfig());
         const course: CourseDetail = await fetchIdsToObject(data, {
-            subject: id => fetchSubject(id),
-            teacher: id => fetchTeacher(id),
+            subject: subjectId => fetchSubject(`subject_${subjectId}`, subjectId),
+            teacher: teacherId => fetchTeacher(`teacher_${teacherId}`, teacherId),
         });
         course.name = `${course.subject.name}${course.courseNumber}`;
 

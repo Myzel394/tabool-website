@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {Dayjs} from "dayjs";
-import {FetchListData, HomeworkApprox, MaterialApprox, PaginatedResponse, SubmissionApprox} from "types";
+import {FetchListData, PaginatedResponse, SubmissionApprox} from "types";
 import {convertToDate, getLoginConfig} from "api";
 
 export interface IFetchSubmissionListData extends FetchListData {
@@ -19,7 +18,7 @@ export type IFetchSubmissionListResponse = PaginatedResponse<SubmissionApprox[]>
 const useFetchSubmissionListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (search: string, {
+    return useCallback(async (key: string, {
         ordering = "is_uploaded",
         page,
         courseId,
@@ -27,6 +26,7 @@ const useFetchSubmissionListAPI = () => {
         lessonId,
         uploadAtMax,
         uploadAtMin,
+        search,
     }: IFetchSubmissionListData = {}): Promise<IFetchSubmissionListResponse> => {
         const {data} = await instance.get("/api/data/submission/", {
             params: {
@@ -37,7 +37,7 @@ const useFetchSubmissionListAPI = () => {
                 lesson: lessonId,
                 is_uploaded: isUploaded,
                 upload_at__gte: uploadAtMin,
-                upload_at__lte: uploadAtMax
+                upload_at__lte: uploadAtMax,
             },
             ...await getLoginConfig(),
         });

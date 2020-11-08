@@ -21,7 +21,7 @@ export type IFetchHomeworkListResponse = PaginatedResponse<HomeworkApprox[]>;
 const useFetchHomeworkListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (search: string, {
+    return useCallback(async (key: string, {
         ordering = "due_date",
         dueDateMax,
         dueDateMin,
@@ -31,6 +31,7 @@ const useFetchHomeworkListAPI = () => {
         completed,
         ignore,
         page,
+        search,
     }: IFetchHomeworkListData = {}): Promise<IFetchHomeworkListResponse> => {
         const {data} = await instance.get("/api/data/homework/", {
             params: {

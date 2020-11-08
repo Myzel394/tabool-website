@@ -1,6 +1,6 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {ClasstestDetail, HomeworkDetail} from "types";
+import {ClasstestDetail} from "types";
 import {fetchIdsToObject} from "utils";
 import {parseDate} from "utils/parsers";
 import {getLoginConfig} from "api";
@@ -12,11 +12,11 @@ const useFetchClasstestDetailAPI = () => {
     const fetchCourse = useFetchCourseDetailAPI();
     const fetchRoom = useFetchRoomDetailAPI();
 
-    return useCallback(async (id: string): Promise<ClasstestDetail> => {
+    return useCallback(async (key: string, id: string): Promise<ClasstestDetail> => {
         let {data} = await instance.get(`/api/data/classtest/${id}/`, await getLoginConfig());
         data = await fetchIdsToObject(data, {
-            course: id => fetchCourse(id),
-            room: id => id && fetchRoom(id),
+            course: courseId => fetchCourse(`course_${courseId}`, courseId),
+            room: roomId => roomId && fetchRoom(`room_${roomId}`, roomId),
         });
         parseDate(data, [
             "targetedDate",

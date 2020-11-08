@@ -96,6 +96,7 @@
     "react-app-rewired": "^2.1.6",
     "react-context-devtool": "^2.0.0",
     "react-test-renderer": "^16.14.0",
+    "static-server": "^2.2.1",
     "ts-jest": "^26.4.1"
   },
   "jest": {

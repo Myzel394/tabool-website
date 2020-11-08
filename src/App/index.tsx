@@ -5,9 +5,11 @@ import light from "themes/light";
 import {BrowserRouter as Router} from "react-router-dom";
 
 import "./global.scss";
+
 import Routes from "./Routes";
 import Contexts from "./Contexts";
 import BottomNavigation from "./BottomNavigation";
+
 
 const App = () => {
     const theme = light;

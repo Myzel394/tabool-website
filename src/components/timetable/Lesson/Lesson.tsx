@@ -42,7 +42,8 @@ const createTheme = (
 
     return update(parentTheme, {
         typography: {
-            $apply: () => isSmall && {
+            $apply: prevValue => isSmall && {
+                ...prevValue,
                 body1: {
                     fontSize: isWidthSmall ? ".8rem" : ".9rem",
                 },
