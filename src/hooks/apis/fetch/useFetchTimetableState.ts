@@ -71,7 +71,7 @@ const useFetchTimetableState = (
         key: string,
     ) => {
         if (!query.isFetching && query.isSuccess && query.data?.results?.length > 0) {
-            const givenData = await defaultFetch(query.data?.results, fetchDetailFn, key);
+            const givenData = await defaultFetch(query.data.results, fetchDetailFn, key);
 
             setFn(givenData);
         }

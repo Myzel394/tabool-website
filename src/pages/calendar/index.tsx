@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, {memo, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {findNextDate} from "utils";
 import {useMemoOne} from "use-memo-one";
@@ -12,9 +12,7 @@ export interface ICalendarManager {
 }
 
 const CalendarManager = ({}: ICalendarManager) => {
-    const startDate = useMemoOne<Dayjs>(() =>
-        findNextDate(dayjs().subtract(4, "day"), 1),
-    []);
+    const [startDate, setStartDate] = useState<Dayjs>(findNextDate(dayjs().subtract(4, "day"), 1));
     const endDate = useMemoOne<Dayjs>(() =>
         findNextDate(startDate, 5),
     [startDate]);
@@ -29,6 +27,7 @@ const CalendarManager = ({}: ICalendarManager) => {
                     events={events}
                     lessons={lessons}
                     modifications={modifications}
+                    onDateChange={setStartDate}
                 />
             }
         </LoadingIndicator>

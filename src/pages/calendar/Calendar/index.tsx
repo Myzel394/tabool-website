@@ -18,34 +18,33 @@ export interface ICalendar {
     modifications?: ModificationDetail[];
     events?: EventDetail[];
     date: Dayjs;
+    onDateChange: (selectedDate: Dayjs) => any;
 }
 
-const Calendar = ({lessons, modifications, events, date}: ICalendar) => {
+const Calendar = ({lessons, modifications, events, date, onDateChange}: ICalendar) => {
     const [activeView, setActiveView] = useState<View>(isMobile ? "day" : "work_week");
     const [width, height] = useWindowSize();
     const randomNumbers = useMemo(() =>
         randomNumbersWithGap(0, 600, 50, lessons?.length ?? 0)
     , [lessons]);
-    const calendarEvents: CalendarEvent[] = useMemo(() => {
-        return [
-            ...(lessons ?? []).map((lesson, index): CalendarEvent => {
-                const start = combineDatetime(lesson.date, lesson.lessonData.startTime),
-                    end = combineDatetime(lesson.date, lesson.lessonData.endTime);
-                const delay = randomNumbers[index];
+    const calendarEvents: CalendarEvent[] = [
+        ...(lessons ?? []).map((lesson, index): CalendarEvent => {
+            const start = combineDatetime(lesson.date, lesson.lessonData.startTime),
+                end = combineDatetime(lesson.date, lesson.lessonData.endTime);
+            const delay = randomNumbers[index];
 
-                return {
-                    start: start.toDate(),
-                    end: end.toDate(),
-                    title: lesson.lessonData.course.name,
-                    allDay: false,
-                    resource: {
-                        ...lesson,
-                        delay,
-                    },
-                };
-            }),
-        ];
-    }, [lessons, randomNumbers]);
+            return {
+                start: start.toDate(),
+                end: end.toDate(),
+                title: lesson.lessonData.course.name,
+                allDay: false,
+                resource: {
+                    ...lesson,
+                    delay,
+                },
+            };
+        }),
+    ];
     const [minTime, maxTime] = useMemo(() => {
         const startTimes = calendarEvents.map(element =>
             replaceDatetime(dayjs(element.start), "date").unix());
@@ -84,6 +83,7 @@ const Calendar = ({lessons, modifications, events, date}: ICalendar) => {
             dayLayoutAlgorithm="overlap"
             min={minTime.toDate()}
             max={maxTime.toDate()}
+            onNavigate={date => onDateChange(dayjs(date))}
         />
     );
 };
