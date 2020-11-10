@@ -28,7 +28,8 @@ const LessonContent = ({
 
     const wrapperStyle = useMemo(() => ({
         backgroundColor: theme.palette.primary.main,
-    }), [theme.palette.primary.main]);
+        padding: isSmall ? ".1em .4em" : ".4em",
+    }), [isSmall, theme.palette.primary.main]);
     const articleClassNames = useMemo(() => clsx(styles.container, {
         [styles.disabled]: isDisabled,
     }), [isDisabled]);
@@ -44,7 +45,6 @@ const LessonContent = ({
             alignItems="flex-start"
             flexWrap="nowrap"
             display="flex"
-            p={1}
             style={wrapperStyle}
             className={articleClassNames}
         >

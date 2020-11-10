@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 
-const useWindowSize = (): [number | undefined, number | undefined] => {
-    const [width, setWidth] = useState<number | undefined>();
-    const [height, setHeight] = useState<number | undefined>();
+const useWindowSize = (): [number, number] => {
+    const [width, setWidth] = useState<number>(window.innerWidth);
+    const [height, setHeight] = useState<number>(window.innerHeight);
 
     useEffect(() => {
         const setSize = () => {

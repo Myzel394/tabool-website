@@ -13,7 +13,7 @@ const useFetchMaterialDetailAPI = () => {
 
     return useCallback(async (key: string, id: string): Promise<SubmissionDetail> => {
         let {data} = await instance.get(`/api/data/submission/${id}/`, await getLoginConfig());
-        data = fetchIdsToObject(data, {
+        data = await fetchIdsToObject(data, {
             lesson: lessonId => fetchLesson(`lesson_${lessonId}`, lessonId),
         });
         parseDate(data, ["uploadAt"]);

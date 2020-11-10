@@ -12,7 +12,7 @@ const useFetchEventDetailAPI = () => {
 
     return useCallback(async (key: string, id: string): Promise<EventDetail> => {
         let {data} = await instance.get(`/api/data/event/${id}/`, await getLoginConfig());
-        data = fetchIdsToObject(data, {
+        data = await fetchIdsToObject(data, {
             room: roomId => roomId && fetchRoom(`event_${id}_${roomId}`, roomId),
         });
         convertToDate(data, [

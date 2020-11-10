@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components/timetable/Lesson";
 import {LessonDetail} from "types";
 import {Grow} from "@material-ui/core";
 import {useQuery} from "react-query";
 import {useFetchHomeworkListAPI, useFetchMaterialListAPI, useQueryOptions} from "hooks";
+import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components/timetable/Lesson";
 
 const stringifyPercent = (value: string | number): string => (typeof value === "string" ? value : `${value}%`);
 
@@ -43,7 +43,7 @@ const Event = (props) => {
     }, [delay]);
 
     return (
-        <Grow in={isGrowIn}>
+        <Grow mountOnEnter unmountOnExit in={isGrowIn}>
             <div style={divStyle}>
                 <Lesson
                     isSmall
