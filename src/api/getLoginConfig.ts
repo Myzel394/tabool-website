@@ -6,7 +6,7 @@ const getLoginConfig = async (): Promise<AxiosRequestConfig> => {
     return {
         withCredentials: true,
         headers: {
-            "X-CSRFTOKEN": await getCSRFToken(),
+            "X-CSRFTOKEN": getCSRFToken(),
         },
     };
 };

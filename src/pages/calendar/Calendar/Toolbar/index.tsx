@@ -1,7 +1,8 @@
 import React from "react";
-import {Container, Box} from "@material-ui/core";
+import {Box, Container} from "@material-ui/core";
 import {NavigateAction, View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
+
 import Navigation from "./Navigation";
 import ViewChanger from "./ViewChanger";
 import TypeChanger, {CalendarType} from "./TypeChanger";
@@ -40,7 +41,7 @@ const Toolbar = ({
                     display="flex"
                     my={2}
                 >
-                    <Navigation onNavigate={onNavigate} label={label} />
+                    <Navigation label={label} onNavigate={onNavigate} />
                 </Box>
                 <Box display="flex" flexDirection="row">
                     {!isMobile && <ViewChanger activeView={view} onChange={onViewChange} />}
@@ -56,9 +57,12 @@ const Toolbar = ({
 const proxyToolbar = (extraProps: {
     onViewChange: (newValue: View) => any;
     onCalendarTypeChange: (newType: CalendarType) => any;
+    calendarType: CalendarType;
 }) => props => Toolbar({
     ...props,
     ...extraProps,
 });
 
 export default proxyToolbar;
+export * from "./TypeChanger";
+export * from "./ViewChanger";

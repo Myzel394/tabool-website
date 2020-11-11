@@ -6,12 +6,12 @@ import {View} from "react-big-calendar";
 export interface IViewChanger {
     activeView: View;
     onChange: (newView: View) => any;
-};
+}
 
-const ViewChanger = ({ activeView, onChange }: IViewChanger) => {
+const ViewChanger = ({activeView, onChange}: IViewChanger) => {
     const getColor = useCallback((targetedView: View) =>
-            (activeView === targetedView ? "primary" : "default"),
-        [activeView]);
+        (activeView === targetedView ? "primary" : "default"),
+    [activeView]);
 
     return (
         <>
@@ -29,6 +29,6 @@ const ViewChanger = ({ activeView, onChange }: IViewChanger) => {
             </IconButton>
         </>
     );
-}
+};
 
 export default ViewChanger;

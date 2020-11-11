@@ -6,9 +6,8 @@ import FillOutData from "pages/auth/FillOutData";
 import {UserContext} from "contexts";
 import SubjectList from "pages/list/Subject";
 import Login from "pages/auth/Login";
-
-import Home from "../../pages/home";
-import Calendar from "../../pages/calendar";
+import Home from "pages/home";
+import Calendar from "pages/calendar/index";
 
 
 export default function Routes() {

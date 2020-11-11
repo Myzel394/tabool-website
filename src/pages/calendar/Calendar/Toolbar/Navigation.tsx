@@ -1,5 +1,5 @@
 import {Tooltip} from "components";
-import {Box, Button, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {navigate as navigationConstants} from "react-big-calendar/lib/utils/constants";
 import {FaCaretLeft, FaCaretRight} from "react-icons/all";
 import React from "react";
@@ -17,22 +17,22 @@ const Navigation = ({onNavigate, label}: INavigation) => {
     return (
         <>
             <Tooltip title={t("Zurück").toString()}>
-                <IconButton onClick={onNavigate.bind(null, navigationConstants.PREVIOUS)}>
+                <IconButton onClick={() => onNavigate(navigationConstants.PREVIOUS)}>
                     <FaCaretLeft />
                 </IconButton>
             </Tooltip>
             <Tooltip title={t("Heute").toString()}>
-                <Button color="default" onClick={onNavigate.bind(null, navigationConstants.TODAY)}>
+                <Button color="default" onClick={() => onNavigate(navigationConstants.TODAY)}>
                     {label}
                 </Button>
             </Tooltip>
             <Tooltip title={t("Weiter").toString()}>
-                <IconButton onClick={onNavigate.bind(null, navigationConstants.NEXT)}>
+                <IconButton onClick={() => onNavigate(navigationConstants.NEXT)}>
                     <FaCaretRight />
                 </IconButton>
             </Tooltip>
         </>
     );
-}
+};
 
 export default Navigation;

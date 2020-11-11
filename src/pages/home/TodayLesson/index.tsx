@@ -23,7 +23,7 @@ const TodayLessonManager = ({onColor}: ITodayLessonManager) => {
     , []);
     const queryFunction = useFetchLessonListAPI();
     const queryOptions = useQueryOptions();
-    const {isLoading, isError, data: rawData} = useQuery(["today_lesson", {
+    const {isLoading, isError, data: rawData} = useQuery(["lesson", {
         startDate: getISODate(today),
         endDate: getISODate(today),
     }], queryFunction, queryOptions);

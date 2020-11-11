@@ -83,6 +83,7 @@
     "@shopify/eslint-plugin": "^39.0.1",
     "@types/axios-case-converter": "^0.3.1",
     "@types/immutability-helper": "^2.6.3",
+    "@types/js-cookie": "^2.2.6",
     "@types/lodash": "^4.14.162",
     "@types/paralleljs": "^0.0.20",
     "@types/react-router-dom": "^5.1.6",
