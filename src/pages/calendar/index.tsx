@@ -72,6 +72,8 @@ const CalendarManager = ({}: ICalendarManager) => {
         findNextDate(startDate, 5),
     [startDate]);
 
+    // Die Syntax - (Musik)
+
     const {
         lessons,
         modifications,
@@ -82,10 +84,7 @@ const CalendarManager = ({}: ICalendarManager) => {
     } = useFetchTimetableState(startDate, endDate);
 
     if (lessonsFetching && (lessons?.length ?? 0) === 0) {
-        return (
-            <>
-                <Skeleton />
-            </>);
+        return <Skeleton />;
     }
 
     const calendarEvents = buildCalendarEvents({
