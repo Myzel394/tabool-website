@@ -1,6 +1,7 @@
 import {EventDetail, LessonDetail, ModificationDetail} from "types";
-import {combineDatetime, randomNumbersWithGap} from "utils";
+import {combineDatetime, findNextDate, randomNumbersWithGap} from "utils";
 import {Event as CalendarEvent} from "react-big-calendar";
+import dayjs, {Dayjs} from "dayjs";
 
 interface IBuildCalendarEvents {
     lessons?: LessonDetail[];
@@ -53,3 +54,15 @@ export const buildCalendarEvents = ({
 
     return calendarLessons;
 };
+
+export const getStartDate = (): Dayjs => findNextDate(dayjs().subtract(4, "day"), 1)
+    .set("hour", 0)
+    .set("minute", 0)
+    .set("second", 0)
+    .set("millisecond", 0);
+
+export const getEndDate = (startDate: Dayjs): Dayjs => findNextDate(startDate, 5)
+    .set("hour", 23)
+    .set("minute", 59)
+    .set("second", 59)
+    .set("millisecond", 9999);

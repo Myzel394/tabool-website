@@ -1,37 +1,15 @@
 import React, {memo, useMemo, useState} from "react";
-import {View} from "react-big-calendar";
-import {useTranslation} from "react-i18next";
-import {findNextDate} from "utils";
-import dayjs, {Dayjs} from "dayjs";
+import {Dayjs} from "dayjs";
 import {useFetchTimetableState} from "hooks";
 
 import {DefaultCalendar, Skeleton} from "../index";
-import {ITypeChanger, IViewChanger} from "../Toolbar";
 
-import {buildCalendarEvents} from "./lessonCalendarUtils";
+import {buildCalendarEvents, getEndDate, getStartDate} from "./lessonCalendarUtils";
+import {IDefaultCalendarManager} from "../DefaultCalendar";
 
-export interface ILessonCalendar {
-    activeView: View;
-    onViewChange: IViewChanger["onChange"];
-    onCalendarTypeChange: ITypeChanger["onChange"];
-}
-
-const getStartDate = (): Dayjs => findNextDate(dayjs().subtract(4, "day"), 1)
-    .set("hour", 0)
-    .set("minute", 0)
-    .set("second", 0)
-    .set("millisecond", 0);
-
-
-const getEndDate = (startDate: Dayjs): Dayjs => findNextDate(startDate, 5)
-    .set("hour", 23)
-    .set("minute", 59)
-    .set("second", 59)
-    .set("millisecond", 9999);
-
+export interface ILessonCalendar extends IDefaultCalendarManager {}
 
 const LessonCalendar = ({activeView, onViewChange, onCalendarTypeChange}: ILessonCalendar) => {
-    const {t} = useTranslation();
     const [startDate, setStartDate] = useState<Dayjs>(getStartDate);
     const endDate = useMemo<Dayjs>(() => getEndDate(startDate),
         [startDate]);

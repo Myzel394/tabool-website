@@ -1,6 +1,12 @@
 import React, {useMemo} from "react";
 import {useWindowSize} from "hooks";
-import {Calendar as BigCalendar, CalendarProps, Event as CalendarEvent, momentLocalizer} from "react-big-calendar";
+import {
+    Calendar as BigCalendar,
+    CalendarProps,
+    Event as CalendarEvent,
+    momentLocalizer,
+    View
+} from "react-big-calendar";
 import moment from "moment";
 import dayjs, {Dayjs} from "dayjs";
 import {replaceDatetime} from "utils";
@@ -26,6 +32,12 @@ export interface IDefaultCalendar extends Omit<CalendarProps,
     calendarType: ITypeChanger["activeType"];
     onDateChange: (newDate: Dayjs) => any;
     date: Dayjs;
+}
+
+export interface IDefaultCalendarManager {
+    activeView: View;
+    onViewChange: IViewChanger["onChange"];
+    onCalendarTypeChange: ITypeChanger["onChange"];
 }
 
 const timePadding = 20;
