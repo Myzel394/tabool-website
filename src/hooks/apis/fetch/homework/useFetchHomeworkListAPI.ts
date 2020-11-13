@@ -48,7 +48,7 @@ const useFetchHomeworkListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(element => convertToDate(element, ["dueDate"]));
+        data.results.forEach(element => convertToDate(element, ["dueDate", "createdAt"]));
 
         return data;
     }, [instance]);
