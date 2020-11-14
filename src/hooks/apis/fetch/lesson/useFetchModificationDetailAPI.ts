@@ -2,28 +2,21 @@ import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {ModificationDetail} from "types";
 import {convertToDate, getLoginConfig} from "api";
-import {fetchIdsToObject} from "utils";
 
-import {useFetchRoomDetailAPI, useFetchSubjectDetailAPI, useFetchTeacherDetailAPI} from "../schoolData";
+export const parseModification = (data: ModificationDetail): void => {
+    convertToDate(data, ["startDatetime", "endDatetime"]);
+};
 
 
 const useFetchModificationDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
-    const fetchRoom = useFetchRoomDetailAPI();
-    const fetchSubject = useFetchSubjectDetailAPI();
-    const fetchTeacher = useFetchTeacherDetailAPI();
 
     return useCallback(async (key: string, id: string): Promise<ModificationDetail> => {
-        let {data} = await instance.get(`/api/data/modification/${id}/`, await getLoginConfig());
-        data = await fetchIdsToObject(data, {
-            newRoom: roomId => roomId && fetchRoom(`room_${roomId}`, roomId),
-            newSubject: subjectId => subjectId && fetchSubject(`subject_${subjectId}`, subjectId),
-            newTeacher: teacherId => teacherId && fetchTeacher(`teacher_${teacherId}`, teacherId),
-        });
-        convertToDate(data, ["startDatetime", "endDatetime"]);
+        const {data} = await instance.get(`/api/data/modification/${id}/`, await getLoginConfig());
+        parseModification(data);
 
         return data;
-    }, [fetchRoom, fetchSubject, fetchTeacher, instance]);
+    }, [instance]);
 };
 
 export default useFetchModificationDetailAPI;

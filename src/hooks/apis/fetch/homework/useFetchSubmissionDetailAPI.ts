@@ -1,25 +1,26 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {SubmissionDetail} from "types";
-import {parseDate} from "utils/parsers";
-import {getLoginConfig} from "api";
-import {fetchIdsToObject} from "utils";
+import {convertToDate, getLoginConfig} from "api";
 
-import useFetchLessonDetailAPI from "../lesson/useFetchLessonDetailAPI";
+import {parseLesson} from "../lesson";
 
-const useFetchMaterialDetailAPI = () => {
-    const {instance} = useContext(AxiosContext);
-    const fetchLesson = useFetchLessonDetailAPI();
-
-    return useCallback(async (key: string, id: string): Promise<SubmissionDetail> => {
-        let {data} = await instance.get(`/api/data/submission/${id}/`, await getLoginConfig());
-        data = await fetchIdsToObject(data, {
-            lesson: lessonId => fetchLesson(`lesson_${lessonId}`, lessonId),
-        });
-        parseDate(data, ["uploadAt"]);
-
-        return data;
-    }, [fetchLesson, instance]);
+export const parseSubmission = (data: SubmissionDetail): void => {
+    convertToDate(data, [
+        "uploadAt",
+    ]);
+    parseLesson(data.lesson);
 };
 
-export default useFetchMaterialDetailAPI;
+const useFetchSubmissionDetailAPI = () => {
+    const {instance} = useContext(AxiosContext);
+
+    return useCallback(async (key: string, id: string): Promise<SubmissionDetail> => {
+        const {data} = await instance.get(`/api/data/submission/${id}/`, await getLoginConfig());
+        parseSubmission(data);
+
+        return data;
+    }, [instance]);
+};
+
+export default useFetchSubmissionDetailAPI;

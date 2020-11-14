@@ -1,11 +1,12 @@
-import React, {useMemo} from "react";
+import React, {ComponentType, useMemo} from "react";
 import {useWindowSize} from "hooks";
 import {
     Calendar as BigCalendar,
     CalendarProps,
     Event as CalendarEvent,
+    EventWrapperProps,
     momentLocalizer,
-    View
+    View,
 } from "react-big-calendar";
 import moment from "moment";
 import dayjs, {Dayjs} from "dayjs";
@@ -13,11 +14,9 @@ import {replaceDatetime} from "utils";
 import update from "immutability-helper";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import Toolbar, {ITypeChanger, IViewChanger} from "./Toolbar";
-import Event from "./Event";
+import Toolbar, {CalendarType, ITypeChanger, IViewChanger} from "./Toolbar";
 
-
-export interface IDefaultCalendar extends Omit<CalendarProps,
+export interface IDefaultCalendar<TEvent extends object = object> extends Omit<CalendarProps,
     "localizer"
     | "components"
     | "step"
@@ -25,19 +24,24 @@ export interface IDefaultCalendar extends Omit<CalendarProps,
     | "min"
     | "max"
     | "dayLayoutAlgorithm"
-    | "date"> {
+    | "date"
+    > {
     events: CalendarEvent[];
     onViewChange: IViewChanger["onChange"];
     onCalendarTypeChange: ITypeChanger["onChange"];
     calendarType: ITypeChanger["activeType"];
     onDateChange: (newDate: Dayjs) => any;
     date: Dayjs;
+    eventComponent: ComponentType<EventWrapperProps<TEvent>>;
 }
 
 export interface IDefaultCalendarManager {
     activeView: View;
+    activeType: CalendarType;
     onViewChange: IViewChanger["onChange"];
     onCalendarTypeChange: ITypeChanger["onChange"];
+    activeDate: Dayjs;
+    onDateChange: (newDate: Dayjs) => any;
 }
 
 const timePadding = 20;
@@ -66,6 +70,7 @@ const DefaultCalendar = ({
     onCalendarTypeChange,
     calendarType,
     onDateChange,
+    eventComponent,
     ...other
 }: IDefaultCalendar) => {
     const height = useWindowSize()[1];
@@ -82,8 +87,8 @@ const DefaultCalendar = ({
             onCalendarTypeChange,
             calendarType,
         }),
-        eventWrapper: Event,
-    }), [calendarType, onCalendarTypeChange, onViewChange]);
+        eventWrapper: eventComponent,
+    }), [calendarType, eventComponent, onCalendarTypeChange, onViewChange]);
     const localizer = useMemo(() => momentLocalizer(moment), []);
 
     return (

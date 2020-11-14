@@ -1,31 +1,26 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {LessonDetail} from "types";
-import {fetchIdsToObject} from "utils";
-import {getLoginConfig} from "api";
-import {parseDate} from "utils/parsers";
+import {convertToDate, getLoginConfig} from "api";
 
-import useFetchRoomDetailAPI from "../schoolData/useFetchRoomDetailAPI";
-import useFetchCourseDetailAPI from "../schoolData/useFetchCourseDetailAPI";
+import {parseCourse} from "../schoolData";
+
+export const parseLesson = (data: LessonDetail) => {
+    convertToDate(data, [
+        "date", "lessonData.startTime", "lessonData.endTime",
+    ]);
+    parseCourse(data.lessonData.course);
+};
 
 const useFetchLessonDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
-    const fetchRoom = useFetchRoomDetailAPI();
-    const fetchCourse = useFetchCourseDetailAPI();
 
     return useCallback(async (key: string, id: string): Promise<LessonDetail> => {
         const {data} = await instance.get(`/api/data/lesson/${id}/`, await getLoginConfig());
-        const lesson = data;
-        lesson.lessonData = await fetchIdsToObject(lesson.lessonData, {
-            room: roomId => fetchRoom(`room_${roomId}`, roomId),
-            course: courseId => fetchCourse(`course_${courseId}`, courseId),
-        });
-        parseDate(lesson, [
-            "date", "lessonData.startTime", "lessonData.endTime",
-        ]);
+        parseLesson(data);
 
-        return lesson;
-    }, [fetchCourse, fetchRoom, instance]);
+        return data;
+    }, [instance]);
 };
 
 export default useFetchLessonDetailAPI;
