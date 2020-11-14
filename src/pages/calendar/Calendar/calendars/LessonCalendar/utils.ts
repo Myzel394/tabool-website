@@ -24,7 +24,7 @@ export const buildCalendarEvents = ({
                 allDay: false,
                 resource: {
                     ...lesson,
-                    delay: 300,
+                    delay: randomNumbers[index],
                 },
             }),
         )];

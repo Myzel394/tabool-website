@@ -37,7 +37,6 @@ const useFetchTimetableAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        console.log(data, "data");
         data.lessons.forEach(lesson => parseLesson(lesson));
         data.modifications.forEach(modification => parseModification(modification));
         data.events.forEach(event => parseEvent(event));

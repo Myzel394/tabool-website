@@ -1,6 +1,7 @@
 import {Dayjs} from "dayjs";
 
 export interface MaterialApprox {
+    lesson: string;
     name: string;
     addedAt: Dayjs;
     id: string;

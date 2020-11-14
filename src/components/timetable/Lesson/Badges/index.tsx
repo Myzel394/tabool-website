@@ -2,7 +2,7 @@ import React, {useMemo} from "react";
 import {Box, Grid, useTheme} from "@material-ui/core";
 
 export interface IBadges {
-    children: JSX.Element[];
+    children: (JSX.Element | false)[];
 }
 
 const SPACING = 2;
@@ -29,7 +29,7 @@ const Badges = ({children}: IBadges) => {
                 style={style}
             >
                 {children.map(element =>
-                    <Grid key={element.props.key} item>
+                    element && <Grid key={element.props.key} item>
                         {element}
                     </Grid>)}
             </Grid>

@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useFetchTimetableAPI, useQueryOptions} from "hooks";
@@ -28,6 +28,7 @@ const Calendar = () => {
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchTimetableAPI();
 
+    const [renderingTimes, setRenderingTimes] = useState<number>(0);
     const [activeView, setActiveView] = useState<View>(isMobile ? "day" : "work_week");
     const [activeType, setActiveType] = useState<CalendarType>("lesson");
     const [startDate, setStartDate] = useState<Dayjs>(getStartDate);
@@ -38,6 +39,17 @@ const Calendar = () => {
         endDatetime: getISODatetime(endDate),
     }], fetchTimetable, queryOptions);
 
+    useEffect(() => {
+        if (!isLoading) {
+            setRenderingTimes(prevState => prevState + 1);
+        }
+    }, [isLoading, data]);
+
+    // Reset rendering times
+    useEffect(() => {
+        setRenderingTimes(0);
+    }, [startDate]);
+
     if (isLoading || !data?.lessons || !data.events || !data.homeworks || !data.modifications || !data.materials) {
         return <Skeleton />;
     }
@@ -46,12 +58,15 @@ const Calendar = () => {
     case "lesson":
         return (
             <LessonCalendar
-                activeDate={startDate}
                 activeView={activeView}
+                homeworks={data.homeworks}
                 activeType={activeType}
                 lessons={data.lessons}
                 events={data.events}
                 modifications={data.modifications}
+                activeDate={startDate}
+                materials={data.materials}
+                hasOnceAnimated={renderingTimes >= 2}
                 onDateChange={setStartDate}
                 onCalendarTypeChange={setActiveType}
                 onViewChange={setActiveView}

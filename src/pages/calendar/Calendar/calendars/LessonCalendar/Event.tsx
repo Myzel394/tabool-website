@@ -1,69 +1,81 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {LessonDetail} from "types";
+import React, {useEffect, useState} from "react";
+import {HomeworkApprox, LessonDetail, MaterialApprox} from "types";
 import {Grow} from "@material-ui/core";
-import {useQuery} from "react-query";
-import {useFetchHomeworkListAPI, useFetchMaterialListAPI, useQueryOptions} from "hooks";
-import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components/timetable/Lesson";
+import {Event as CalendarEvent} from "react-big-calendar";
 
-const stringifyPercent = (value: string | number): string => (typeof value === "string" ? value : `${value}%`);
+import {CalendarType} from "../DefaultCalendar/Toolbar";
+import getDivStyles from "../utils";
 
-const Event = (props) => {
-    const {
-        event,
-        style,
-    } = props;
-    const {height, top, width, xOffset} = style;
-    const [isGrowIn, setIsGrowIn] = useState<boolean>(false);
-    const divStyle = useMemo(() => ({
-        top: stringifyPercent(top),
-        left: stringifyPercent(xOffset),
-        width: stringifyPercent(width),
-        height: stringifyPercent(height),
-        position: "absolute" as "absolute",
-    }), [height, top, width, xOffset]);
-    const lesson: LessonDetail = event.resource;
+import LessonEvent from "./LessonEvent";
+
+interface IEvent {
+    event: CalendarEvent;
+    style: any;
+    homeworks: HomeworkApprox[];
+    materials: MaterialApprox[];
+    animate: boolean;
+    activeType: CalendarType;
+}
+
+const Event = ({
+    event,
+    style,
+    homeworks,
+    materials,
+    animate,
+    activeType,
+}: IEvent) => {
+    const [isGrowIn, setIsGrowIn] = useState<boolean>(!animate);
+
     const delay = event.resource.delay;
+    const divStyle = getDivStyles(style);
 
-    const fetchMaterial = useFetchMaterialListAPI();
-    const fetchHomework = useFetchHomeworkListAPI();
-    const queryOptions = useQueryOptions();
-    const homeworkQuery = useQuery([`lesson_${lesson.id}_homeworks`, {
-        lessonId: lesson.id,
-    }], fetchHomework, queryOptions);
-    const materialQuery = useQuery([`lesson_${lesson.id}_materials`, {
-        lessonId: lesson.id,
-    }], fetchMaterial, queryOptions);
-    const homeworkAmount = homeworkQuery.data?.results?.length;
-    const materialAmount = materialQuery.data?.results?.length;
-
+    // Grow in
     useEffect(() => {
-        const delayTimeout = setTimeout(() => setIsGrowIn(true), delay);
+        const delayTimeout = animate && setTimeout(() => setIsGrowIn(true), delay);
 
-        return () => clearTimeout(delayTimeout);
-    }, [delay]);
+        return () => {
+            if (delayTimeout) {
+                clearTimeout(delayTimeout);
+            }
+        };
+    }, [animate, delay]);
 
-    return (
-        <Grow mountOnEnter unmountOnExit in={isGrowIn}>
+    const children: JSX.Element = <></>;
+
+    const lesson: LessonDetail = event.resource;
+
+    const homeworkCount = homeworks.filter(element => element.lesson === lesson.id).length;
+    const materialCount = materials.filter(element => element.lesson === lesson.id).length;
+
+    if (animate) {
+        return (
             <div style={divStyle}>
-                <Lesson
-                    isSmall
-                    color={lesson.lessonData.course.subject.userRelation.color}
-                    startTime={lesson.lessonData.startTime}
-                    endTime={lesson.lessonData.endTime}
-                >
-                    <Badges>
-                        {homeworkAmount > 0 ? <HomeworkBadge count={homeworkAmount} /> : <></>}
-                        {materialAmount > 0 ? <MaterialBadge count={materialAmount} /> : <></>}
-                    </Badges>
-                    <LessonContent
-                        courseName={lesson.lessonData.course.name}
-                        roomName={lesson.lessonData.room.place}
-                        teacherName={lesson.lessonData.course.teacher.lastName}
+                <Grow mountOnEnter unmountOnExit in={isGrowIn}>
+                    <LessonEvent
+                        homeworkCount={homeworkCount}
+                        materialCount={materialCount}
+                        lesson={lesson}
                     />
-                </Lesson>
+                </Grow>
             </div>
-        </Grow>
-    );
+        );
+    }
+    return children;
 };
 
-export default Event;
+const eventProxy = (
+    homeworks: HomeworkApprox[],
+    materials: MaterialApprox[],
+    animate = true,
+    activeType: CalendarType,
+) => props =>
+    Event({
+        ...props,
+        homeworks,
+        materials,
+        animate,
+        activeType,
+    });
+
+export default eventProxy;

@@ -42,6 +42,7 @@ export interface IDefaultCalendarManager {
     onCalendarTypeChange: ITypeChanger["onChange"];
     activeDate: Dayjs;
     onDateChange: (newDate: Dayjs) => any;
+    hasOnceAnimated: boolean;
 }
 
 const timePadding = 20;

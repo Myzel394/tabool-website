@@ -1,5 +1,5 @@
-import React, {memo} from "react";
-import {EventDetail, LessonDetail, ModificationDetail} from "types";
+import React from "react";
+import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox, ModificationDetail} from "types";
 
 import DefaultCalendar, {IDefaultCalendarManager} from "../DefaultCalendar";
 
@@ -11,18 +11,23 @@ export interface ILessonCalendar extends IDefaultCalendarManager {
     lessons: LessonDetail[];
     modifications: ModificationDetail[];
     events: EventDetail[];
+    homeworks: HomeworkApprox[];
+    materials: MaterialApprox[];
 }
 
 const LessonCalendar = ({
     lessons,
     modifications,
     events,
+    homeworks,
+    materials,
     activeView,
     onCalendarTypeChange,
     onViewChange,
     activeType,
     activeDate,
     onDateChange,
+    hasOnceAnimated,
 
 }: ILessonCalendar) => {
     const calendarEvents = buildCalendarEvents({
@@ -34,7 +39,12 @@ const LessonCalendar = ({
     return (
         <DefaultCalendar
             events={calendarEvents}
-            eventComponent={Event}
+            eventComponent={Event(
+                homeworks,
+                materials,
+                !hasOnceAnimated,
+                activeType,
+            )}
             calendarType={activeType}
             date={activeDate}
             view={activeView}
@@ -45,4 +55,4 @@ const LessonCalendar = ({
     );
 };
 
-export default memo(LessonCalendar);
+export default LessonCalendar;
