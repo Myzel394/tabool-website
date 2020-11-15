@@ -4,7 +4,7 @@ const replaceDatetime = (value: Dayjs, replacement: "date" | "time"): Dayjs => {
     switch (replacement) {
     case "date":
         return value
-            .set("year", 1)
+            .set("year", 2020)
             .set("month", 1)
             .set("date", 1);
     case "time":

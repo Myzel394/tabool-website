@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {HomeworkApprox, LessonDetail, MaterialApprox} from "types";
-import {Grow} from "@material-ui/core";
+import React from "react";
+import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox} from "types";
 import {Event as CalendarEvent} from "react-big-calendar";
 
 import {CalendarType} from "../DefaultCalendar/Toolbar";
 import getDivStyles from "../utils";
 
 import LessonEvent from "./LessonEvent";
+import EventEvent from "./EventEvent";
 
 interface IEvent {
     event: CalendarEvent;
@@ -18,50 +18,46 @@ interface IEvent {
 }
 
 const Event = ({
-    event,
+    event: calendarEvent,
     style,
     homeworks,
     materials,
     animate,
     activeType,
 }: IEvent) => {
-    const [isGrowIn, setIsGrowIn] = useState<boolean>(!animate);
+    const divStyle = getDivStyles(style ?? {});
 
-    const delay = event.resource.delay;
-    const divStyle = getDivStyles(style);
+    let children: JSX.Element = <></>;
 
-    // Grow in
-    useEffect(() => {
-        const delayTimeout = animate && setTimeout(() => setIsGrowIn(true), delay);
+    switch (calendarEvent.resource.type) {
+    case "lesson": {
+        const lesson: LessonDetail = calendarEvent.resource;
+        const homeworkCount = homeworks.filter(element => element.lesson === lesson.id).length;
+        const materialCount = materials.filter(element => element.lesson === lesson.id).length;
 
-        return () => {
-            if (delayTimeout) {
-                clearTimeout(delayTimeout);
-            }
-        };
-    }, [animate, delay]);
+        children = (
+            <LessonEvent
+                lesson={lesson}
+                materialCount={materialCount}
+                homeworkCount={homeworkCount}
+            />
+        );
+        break;
+    }
+    case "event": {
+        const event: EventDetail = calendarEvent.resource;
 
-    const children: JSX.Element = <></>;
-
-    const lesson: LessonDetail = event.resource;
-
-    const homeworkCount = homeworks.filter(element => element.lesson === lesson.id).length;
-    const materialCount = materials.filter(element => element.lesson === lesson.id).length;
-
-    if (animate) {
-        return (
-            <div style={divStyle}>
-                <Grow mountOnEnter unmountOnExit in={isGrowIn}>
-                    <LessonEvent
-                        homeworkCount={homeworkCount}
-                        materialCount={materialCount}
-                        lesson={lesson}
-                    />
-                </Grow>
-            </div>
+        children = (
+            <EventEvent event={event} />
         );
     }
-    return children;
+    }
+
+    return (
+        <div style={divStyle}>
+            {children}
+        </div>
+    );
 };
 
 const eventProxy = (

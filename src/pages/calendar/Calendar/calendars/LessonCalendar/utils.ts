@@ -24,6 +24,7 @@ export const buildCalendarEvents = ({
                 allDay: false,
                 resource: {
                     ...lesson,
+                    type: "lesson",
                     delay: randomNumbers[index],
                 },
             }),
@@ -35,7 +36,10 @@ export const buildCalendarEvents = ({
                 end: modification.endDatetime.toDate(),
                 title: "",
                 allDay: false,
-                resource: modification,
+                resource: {
+                    ...modification,
+                    type: "modification",
+                },
             }),
         ),
     ];
@@ -46,10 +50,17 @@ export const buildCalendarEvents = ({
                 end: event.endDatetime.toDate(),
                 title: event.title,
                 allDay: event.isAllDay,
-                resource: event,
+                resource: {
+                    ...event,
+                    type: "event",
+                },
             }),
         ),
     ];
 
-    return calendarLessons;
+    return [
+        ...calendarLessons,
+        ...calendarModifications,
+        ...calendarEvents,
+    ];
 };

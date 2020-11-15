@@ -7,7 +7,7 @@ dayjs.extend(customParseFormat);
 const convertToDate = (response, paths: string[]): void => {
     for (const path of paths) {
         const value = _.get(response, path),
-            valueAsDate = dayjs(value, ["YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss", "HH:mm:ss", "HH:MM"]);
+            valueAsDate = dayjs(value, ["YYYY-MM-DDTHH:mm:ss", "YYYY-MM-DD", "HH:mm:ss"]);
 
         _.set(response, path, valueAsDate);
     }
