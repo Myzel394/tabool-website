@@ -32,18 +32,19 @@ const LessonCalendar = ({
 }: ILessonCalendar) => {
     const calendarEvents = buildCalendarEvents({
         events,
-        modifications,
         lessons,
     });
 
     return (
         <DefaultCalendar
             events={calendarEvents}
-            eventComponent={Event(
+            eventComponent={Event({
                 homeworks,
                 materials,
-                !hasOnceAnimated,
+                modifications,
                 activeType,
+                animate: !hasOnceAnimated
+            },
             )}
             calendarType={activeType}
             date={activeDate}

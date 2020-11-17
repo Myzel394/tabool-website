@@ -20,4 +20,4 @@ export interface FetchListData {
     search?: string;
 }
 
-export type PreferredIdType<T> = T | string;
+export type PreferredIdType<T> = T;

@@ -5,9 +5,17 @@ import {TeacherDetail} from "./teacher";
 import {Subject} from "./subject";
 import {LessonDetail} from "./lesson";
 import {PreferredIdType} from "./api";
+import {modificationTypeOptions} from "../api";
+
+export enum ModificationTypeOptions {
+    REPLACEMENT,
+    FREE_PERIOD,
+    SELF_LEARN,
+    ROOM_CHANGE,
+}
 
 export interface ModificationApprox {
-    modificationType: string;
+    modificationType: ModificationTypeOptions;
     id: string;
     lesson: string;
 

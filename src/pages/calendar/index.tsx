@@ -10,19 +10,21 @@ import {IFetchTimetableResponse} from "hooks/apis/fetch/useFetchTimetableAPI";
 import {Skeleton} from "./Calendar";
 import {CalendarType} from "./Calendar/calendars/DefaultCalendar/Toolbar";
 import LessonCalendar from "./Calendar/calendars/LessonCalendar";
+import {setBeginTime, setEndTime} from "../../utils/setTime";
 
-const getStartDate = (): Dayjs => findNextDate(dayjs().subtract(4, "day"), 1)
-    .set("hour", 0)
-    .set("minute", 0)
-    .set("second", 0)
-    .set("millisecond", 0);
+const getStartDate = (): Dayjs => setBeginTime(
+    findNextDate(
+        dayjs().subtract(4, "day"),
+        1
+    )
+);
 
-const getEndDate = (startDate: Dayjs): Dayjs => findNextDate(startDate, 5)
-    .set("hour", 23)
-    .set("minute", 59)
-    .set("second", 59)
-    .set("millisecond", 9999);
-
+const getEndDate = (startDate: Dayjs): Dayjs => setEndTime(
+    findNextDate(
+        startDate,
+        5
+    )
+)
 
 const Calendar = () => {
     const queryOptions = useQueryOptions();

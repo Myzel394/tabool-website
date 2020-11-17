@@ -1,5 +1,5 @@
 import React from "react";
-import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox} from "types";
+import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox, ModificationDetail} from "types";
 import {Event as CalendarEvent} from "react-big-calendar";
 
 import {CalendarType} from "../DefaultCalendar/Toolbar";
@@ -13,6 +13,7 @@ interface IEvent {
     style: any;
     homeworks: HomeworkApprox[];
     materials: MaterialApprox[];
+    modifications: ModificationDetail[];
     animate: boolean;
     activeType: CalendarType;
 }
@@ -22,6 +23,7 @@ const Event = ({
     style,
     homeworks,
     materials,
+    modifications,
     animate,
     activeType,
 }: IEvent) => {
@@ -34,12 +36,14 @@ const Event = ({
         const lesson: LessonDetail = calendarEvent.resource;
         const homeworkCount = homeworks.filter(element => element.lesson === lesson.id).length;
         const materialCount = materials.filter(element => element.lesson === lesson.id).length;
+        const modification = modifications.filter(element => element.lesson.id === lesson.id)[0];
 
         children = (
             <LessonEvent
                 lesson={lesson}
                 materialCount={materialCount}
                 homeworkCount={homeworkCount}
+                modification={modification}
             />
         );
         break;
@@ -60,15 +64,24 @@ const Event = ({
     );
 };
 
-const eventProxy = (
-    homeworks: HomeworkApprox[],
-    materials: MaterialApprox[],
+const eventProxy = ({
+    homeworks,
+    activeType,
     animate = true,
-    activeType: CalendarType,
+    materials,
+    modifications,
+}: {
+    homeworks: HomeworkApprox[];
+    materials: MaterialApprox[];
+    modifications: ModificationDetail[];
+    animate: boolean;
+    activeType: CalendarType;
+}
 ) => props =>
     Event({
         ...props,
         homeworks,
+        modifications,
         materials,
         animate,
         activeType,

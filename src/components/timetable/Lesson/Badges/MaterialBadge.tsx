@@ -12,7 +12,9 @@ const MaterialBadge = ({count}: IMaterialBadge) => {
     const {t} = useTranslation();
 
     return (
-        <LessonBadge description={t(`${count} Materialien verfügbar`)} getIcon={props => <HiDocument {...props} />} />
+        <LessonBadge description={t("{{count}} Materialien verfügbar", {
+            count
+        })} getIcon={props => <HiDocument {...props} />} />
     );
 };
 

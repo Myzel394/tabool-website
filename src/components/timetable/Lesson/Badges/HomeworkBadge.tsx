@@ -13,7 +13,9 @@ const HomeworkBadge = ({count}: IHomeworkBadge) => {
 
     return (
         <LessonBadge
-            description={t(`${count} Hausaufgaben verfügbar`)}
+            description={t("{{count}} Hausaufgaben verfügbar", {
+                count
+            })}
             getIcon={props => <FaClipboardList {...props} />}
         />
     );

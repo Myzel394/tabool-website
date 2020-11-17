@@ -84,7 +84,7 @@ const Lesson = ({
     isSingle,
     isSmall,
 }: ILesson) => {
-    const [width, height] = useWindowSize();
+    const [width, x] = useWindowSize();
     const contextValue = useMemo(() => ({
         color,
         startTime,
