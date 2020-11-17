@@ -1,21 +1,18 @@
-import {Dayjs} from "dayjs";
-
 import {Room} from "./room";
 import {TeacherDetail} from "./teacher";
 import {Subject} from "./subject";
 import {LessonDetail} from "./lesson";
 import {PreferredIdType} from "./api";
-import {modificationTypeOptions} from "../api";
 
-export enum ModificationTypeOptions {
-    REPLACEMENT,
-    FREE_PERIOD,
-    SELF_LEARN,
-    ROOM_CHANGE,
+export enum ModificationType {
+    Replacement,
+    FreePeriod,
+    SelfLearn,
+    RoomChange,
 }
 
 export interface ModificationApprox {
-    modificationType: ModificationTypeOptions;
+    modificationType: ModificationType;
     id: string;
     lesson: string;
 

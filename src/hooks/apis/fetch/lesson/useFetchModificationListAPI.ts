@@ -2,8 +2,7 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {convertToDate, getLoginConfig} from "api";
-
-import {FetchListData, ModificationApprox, PaginatedResponse} from "../../../../types";
+import {FetchListData, ModificationApprox, PaginatedResponse} from "types";
 
 export interface IFetchModificationListData extends FetchListData {
     ordering?: "start_datetime" | "-start_datetime" | "end_datetime" | "-end_datetime";

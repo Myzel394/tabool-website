@@ -43,9 +43,8 @@ const LessonCalendar = ({
                 materials,
                 modifications,
                 activeType,
-                animate: !hasOnceAnimated
-            },
-            )}
+                animate: !hasOnceAnimated,
+            })}
             calendarType={activeType}
             date={activeDate}
             view={activeView}

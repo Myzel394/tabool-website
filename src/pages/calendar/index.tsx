@@ -6,25 +6,26 @@ import {useQuery} from "react-query";
 import dayjs, {Dayjs} from "dayjs";
 import {findNextDate, getISODatetime} from "utils";
 import {IFetchTimetableResponse} from "hooks/apis/fetch/useFetchTimetableAPI";
+import {setBeginTime, setEndTime} from "utils/setTime";
 
 import {Skeleton} from "./Calendar";
 import {CalendarType} from "./Calendar/calendars/DefaultCalendar/Toolbar";
 import LessonCalendar from "./Calendar/calendars/LessonCalendar";
-import {setBeginTime, setEndTime} from "../../utils/setTime";
+
 
 const getStartDate = (): Dayjs => setBeginTime(
     findNextDate(
         dayjs().subtract(4, "day"),
-        1
-    )
+        1,
+    ),
 );
 
 const getEndDate = (startDate: Dayjs): Dayjs => setEndTime(
     findNextDate(
         startDate,
-        5
-    )
-)
+        5,
+    ),
+);
 
 const Calendar = () => {
     const queryOptions = useQueryOptions();
