@@ -1,6 +1,7 @@
 import {Dayjs} from "dayjs";
 
 import {Room} from "./room";
+import {PreferredIdType} from "./api";
 
 export interface EventApprox {
     title: string;
@@ -11,7 +12,7 @@ export interface EventApprox {
 }
 
 export interface EventDetail extends EventApprox {
-    room: Room;
+    room: PreferredIdType<Room>;
     userRelation: {
         ignore: boolean;
     };

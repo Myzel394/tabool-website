@@ -1,6 +1,7 @@
 import {Dayjs} from "dayjs";
 
 import {LessonDetail} from "./lesson";
+import {PreferredIdType} from "./api";
 
 export interface HomeworkApprox {
     lesson: string;
@@ -12,7 +13,7 @@ export interface HomeworkApprox {
 }
 
 export interface HomeworkDetail extends Omit<HomeworkApprox, "truncatedInformation"> {
-    lesson: LessonDetail;
+    lesson: PreferredIdType<LessonDetail>;
     isPrivate: boolean;
     information: string;
     type: string;

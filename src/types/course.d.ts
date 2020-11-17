@@ -1,5 +1,6 @@
 import {Subject} from "./subject";
 import {TeacherDetail} from "./teacher";
+import {PreferredIdType} from "./api";
 
 export interface CourseApprox {
     subject: string;
@@ -10,8 +11,8 @@ export interface CourseApprox {
 }
 
 export interface CourseDetail {
-    subject: Subject;
-    teacher: TeacherDetail;
+    subject: PreferredIdType<Subject>;
+    teacher: PreferredIdType<TeacherDetail>;
     courseNumber: number;
     participantsCount: number;
     name: string;

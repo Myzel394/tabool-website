@@ -1,6 +1,7 @@
 import {Dayjs} from "dayjs";
 
 import {LessonDetail} from "./lesson";
+import {PreferredIdType} from "./api";
 
 export interface SubmissionApprox {
     lesson: strin;
@@ -10,6 +11,6 @@ export interface SubmissionApprox {
 }
 
 export interface SubmissionDetail extends SubmissionApprox {
-    lesson: LessonDetail;
+    lesson: PreferredIdType<LessonDetail>;
     isUploaded: boolean;
 }

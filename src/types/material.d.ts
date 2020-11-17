@@ -1,4 +1,6 @@
 import {Dayjs} from "dayjs";
+import {PreferredIdType} from "./api";
+import {LessonDetail} from "./lesson";
 
 export interface MaterialApprox {
     lesson: string;
@@ -10,5 +12,6 @@ export interface MaterialApprox {
 export interface MaterialDetail extends MaterialApprox {
     file?: string;
     scoosoDownloadLink: string;
+    lesson: PreferredIdType<LessonDetail>
 }
 
