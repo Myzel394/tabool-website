@@ -5,8 +5,10 @@ import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import tinycolor from "tinycolor2";
 import update from "immutability-helper";
 import {useWindowSize} from "hooks";
+import clsx from "clsx";
 
 import LessonContext from "./LessonContext";
+import styles from "./Lesson.module.scss";
 
 export interface ILesson {
     children: ReactNode;
@@ -16,6 +18,7 @@ export interface ILesson {
     isDisabled?: boolean;
     isSingle?: boolean;
     isSmall?: boolean;
+    className?: any;
 }
 
 const lightText = {
@@ -83,6 +86,7 @@ const Lesson = ({
     isDisabled,
     isSingle,
     isSmall,
+    className,
 }: ILesson) => {
     const [width, x] = useWindowSize();
     const contextValue = useMemo(() => ({
@@ -95,20 +99,30 @@ const Lesson = ({
     }), [color, startTime, endTime, isDisabled, isSingle, isSmall]);
 
     return (
-        <LessonContext.Provider value={contextValue}>
-            <ThemeProvider
-                theme={(parentTheme: Theme) =>
-                    createTheme(
-                        parentTheme,
-                        color,
-                        isSmall ?? false,
-                        (width ?? 0) < 1200,
-                    )
-                }
-            >
-                {children}
-            </ThemeProvider>
-        </LessonContext.Provider>
+        <div
+            className={clsx(
+                styles.wrapper,
+                {
+                    [styles.isDisabled]: isDisabled,
+                },
+                className,
+            )}
+        >
+            <LessonContext.Provider value={contextValue}>
+                <ThemeProvider
+                    theme={(parentTheme: Theme) =>
+                        createTheme(
+                            parentTheme,
+                            isDisabled ? "#5a5a5a" : color,
+                            isSmall ?? false,
+                            (width ?? 0) < 1200,
+                        )
+                    }
+                >
+                    {children}
+                </ThemeProvider>
+            </LessonContext.Provider>
+        </div>
     );
 };
 

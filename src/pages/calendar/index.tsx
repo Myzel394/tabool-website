@@ -34,6 +34,7 @@ const Calendar = () => {
     const [renderingTimes, setRenderingTimes] = useState<number>(0);
     const [activeView, setActiveView] = useState<View>(isMobile ? "day" : "work_week");
     const [activeType, setActiveType] = useState<CalendarType>("lesson");
+    const [showFreePeriods, setShowFreePeriods] = useState<boolean>(true);
     const [startDate, setStartDate] = useState<Dayjs>(getStartDate);
     const endDate = useMemo<Dayjs>(() => getEndDate(startDate),
         [startDate]);
@@ -61,18 +62,20 @@ const Calendar = () => {
     case "lesson":
         return (
             <LessonCalendar
+                materials={data.materials}
                 activeView={activeView}
-                homeworks={data.homeworks}
                 activeType={activeType}
                 lessons={data.lessons}
                 events={data.events}
                 modifications={data.modifications}
                 activeDate={startDate}
-                materials={data.materials}
+                homeworks={data.homeworks}
                 hasOnceAnimated={renderingTimes >= 2}
-                onDateChange={setStartDate}
+                showFreePeriods={showFreePeriods}
                 onCalendarTypeChange={setActiveType}
                 onViewChange={setActiveView}
+                onDateChange={setStartDate}
+                onShowFreePeriodsChange={setShowFreePeriods}
             />
         );
     }

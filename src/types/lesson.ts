@@ -2,7 +2,6 @@ import {Dayjs} from "dayjs";
 
 import {Room} from "./room";
 import {CourseDetail} from "./course";
-import {PreferredIdType} from "./api";
 
 export interface LessonDataApprox {
     course: string;
@@ -12,9 +11,9 @@ export interface LessonDataApprox {
     id: string;
 }
 
-export interface LessonDataDetail extends LessonDataApprox{
-    course: PreferredIdType<CourseDetail>;
-    room: PreferredIdType<Room>;
+export interface LessonDataDetail extends Omit<LessonDataApprox, "course" | "room"> {
+    course: CourseDetail;
+    room: Room;
 }
 
 
@@ -24,7 +23,7 @@ export interface LessonApprox {
     id: string;
 }
 
-export interface LessonDetail extends LessonApprox {
+export interface LessonDetail extends Omit<LessonApprox, "lessonData"> {
     lessonData: LessonDataDetail;
     userRelation: {
         attendance: boolean;

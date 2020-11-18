@@ -28,12 +28,20 @@ const LessonCalendar = ({
     activeDate,
     onDateChange,
     hasOnceAnimated,
+    onShowFreePeriodsChange,
+    showFreePeriods,
 
 }: ILessonCalendar) => {
     const calendarEvents = buildCalendarEvents({
         events,
         lessons,
+        modifications,
     });
+    const usedModificationsIds = calendarEvents
+        .filter(element => element.resource.type === "modification")
+        .map(element => element.resource.id);
+    const availableModifications = modifications.filter(element =>
+        !usedModificationsIds.includes(element.id));
 
     return (
         <DefaultCalendar
@@ -41,13 +49,16 @@ const LessonCalendar = ({
             eventComponent={Event({
                 homeworks,
                 materials,
-                modifications,
                 activeType,
+                showFreePeriods,
+                modifications: availableModifications,
                 animate: !hasOnceAnimated,
             })}
             calendarType={activeType}
             date={activeDate}
             view={activeView}
+            showFreePeriods={showFreePeriods}
+            onShowFreePeriodsChange={onShowFreePeriodsChange}
             onViewChange={onViewChange}
             onCalendarTypeChange={onCalendarTypeChange}
             onDateChange={onDateChange}

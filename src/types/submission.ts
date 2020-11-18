@@ -1,16 +1,15 @@
 import {Dayjs} from "dayjs";
 
 import {LessonDetail} from "./lesson";
-import {PreferredIdType} from "./api";
 
 export interface SubmissionApprox {
-    lesson: strin;
+    lesson: string;
     filename: string;
     uploadAt: Dayjs;
     id: string;
 }
 
-export interface SubmissionDetail extends SubmissionApprox {
-    lesson: PreferredIdType<LessonDetail>;
+export interface SubmissionDetail extends Omit<SubmissionApprox, "lesson"> {
+    lesson: LessonDetail;
     isUploaded: boolean;
 }

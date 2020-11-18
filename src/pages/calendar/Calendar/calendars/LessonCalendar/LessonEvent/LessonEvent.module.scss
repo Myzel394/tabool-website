@@ -1,0 +1,12 @@
+.wrapper {
+    transition: .2s ease-out;
+    height: 100%;
+}
+
+.isModificationAvailable {
+    box-shadow: .1em .2em .5em rgb(255, 0, 0);
+}
+
+.isReplacement {
+    margin-left: 2em;
+}

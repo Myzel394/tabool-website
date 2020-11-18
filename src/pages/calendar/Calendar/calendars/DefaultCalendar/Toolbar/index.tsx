@@ -6,15 +6,18 @@ import {isMobile} from "react-device-detect";
 import Navigation from "./Navigation";
 import ViewChanger from "./ViewChanger";
 import TypeChanger, {CalendarType} from "./TypeChanger";
+import ShowFreePeriods from "./ShowFreePeriods";
 
 export interface IToolbar {
     onViewChange: (newValue: View) => any;
     onCalendarTypeChange: (newType: CalendarType) => any;
     onNavigate: (newNavigation: NavigateAction) => any;
+    onShowFreePeriodsChange: (value: boolean) => any;
 
     calendarType: CalendarType;
     label: string;
     view: View;
+    showFreePeriods: boolean;
 }
 
 const Toolbar = ({
@@ -24,6 +27,8 @@ const Toolbar = ({
     view,
     calendarType,
     onCalendarTypeChange,
+    onShowFreePeriodsChange,
+    showFreePeriods,
 }: IToolbar) => {
     return (
         <Container maxWidth="md">
@@ -49,6 +54,9 @@ const Toolbar = ({
                 <Box>
                     <TypeChanger activeType={calendarType} onChange={onCalendarTypeChange} />
                 </Box>
+                <Box>
+                    <ShowFreePeriods value={showFreePeriods} onChange={onShowFreePeriodsChange} />
+                </Box>
             </Box>
         </Container>
     );
@@ -58,6 +66,8 @@ const proxyToolbar = (extraProps: {
     onViewChange: (newValue: View) => any;
     onCalendarTypeChange: (newType: CalendarType) => any;
     calendarType: CalendarType;
+    showFreePeriods: boolean;
+    onShowFreePeriodsChange: (value: boolean) => any;
 }) => props => Toolbar({
     ...props,
     ...extraProps,

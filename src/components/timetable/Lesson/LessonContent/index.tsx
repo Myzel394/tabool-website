@@ -1,4 +1,4 @@
-import React, {memo, useContext, useMemo} from "react";
+import React, {useContext, useMemo} from "react";
 import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
 import clsx from "clsx";
 import {Box, useTheme} from "@material-ui/core";
@@ -15,6 +15,7 @@ export interface ILessonContent {
     courseName: string;
     teacherName: string;
     roomName: string;
+    className?: any;
 }
 
 
@@ -22,6 +23,7 @@ const LessonContent = ({
     courseName,
     teacherName,
     roomName,
+    className,
 }: ILessonContent) => {
     const theme = useTheme();
     const {isDisabled, startTime, endTime, isSingle, isSmall} = useContext(LessonContext);
@@ -30,12 +32,20 @@ const LessonContent = ({
         backgroundColor: theme.palette.primary.main,
         padding: isSmall ? ".1em .4em" : ".4em",
     }), [isSmall, theme.palette.primary.main]);
-    const articleClassNames = useMemo(() => clsx(styles.container, {
-        [styles.disabled]: isDisabled,
-    }), [isDisabled]);
-    const dlClassNames = useMemo(() => clsx(styles.information, {
-        [styles.singleLessonInformation]: isSingle ?? false,
-    }), [isSingle]);
+    const articleClassNames = useMemo(() => clsx(
+        styles.container,
+        {
+            [styles.disabled]: isDisabled,
+
+        },
+        className,
+    ), [className, isDisabled]);
+    const dlClassNames = useMemo(() => clsx(
+        styles.information,
+        {
+            [styles.singleLessonInformation]: isSingle ?? false,
+        },
+    ), [isSingle]);
 
     return (
         <Box
@@ -48,14 +58,12 @@ const LessonContent = ({
             style={wrapperStyle}
             className={articleClassNames}
         >
-            <div>
-                <div className={styles.secondary}>
-                    <Time startTime={startTime} endTime={endTime} />
-                </div>
-                <Box my={Number(!isSmall)}>
-                    <Course name={courseName} />
-                </Box>
+            <div className={styles.secondary}>
+                <Time startTime={startTime} endTime={endTime} />
             </div>
+            <Box my={Number(!isSmall)}>
+                <Course name={courseName} />
+            </Box>
             <Box
                 component="dl"
                 display="flex"
@@ -81,4 +89,4 @@ LessonContent.defaultProps = {
     isDisabled: false,
 };
 
-export default memo(LessonContent);
+export default LessonContent;

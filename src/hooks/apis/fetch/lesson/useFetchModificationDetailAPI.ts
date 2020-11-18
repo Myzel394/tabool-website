@@ -3,8 +3,13 @@ import {AxiosContext} from "contexts";
 import {ModificationDetail} from "types";
 import {convertToDate, getLoginConfig} from "api";
 
+import {parseLesson} from "./useFetchLessonDetailAPI";
+
 export const parseModification = (data: ModificationDetail): void => {
     convertToDate(data, ["startDatetime", "endDatetime"]);
+    if (data.lesson) {
+        parseLesson(data.lesson);
+    }
 };
 
 

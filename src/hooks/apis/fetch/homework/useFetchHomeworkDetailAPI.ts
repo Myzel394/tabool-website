@@ -10,7 +10,9 @@ export const parseHomework = (data: HomeworkDetail): void => {
         "dueDate",
         "createdAt",
     ]);
-    parseLesson(data.lesson);
+    if (data.lesson) {
+        parseLesson(data.lesson);
+    }
 };
 
 const useFetchHomeworkDetailAPI = () => {

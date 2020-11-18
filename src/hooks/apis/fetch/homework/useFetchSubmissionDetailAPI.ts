@@ -9,7 +9,9 @@ export const parseSubmission = (data: SubmissionDetail): void => {
     convertToDate(data, [
         "uploadAt",
     ]);
-    parseLesson(data.lesson);
+    if (data.lesson) {
+        parseLesson(data.lesson);
+    }
 };
 
 const useFetchSubmissionDetailAPI = () => {

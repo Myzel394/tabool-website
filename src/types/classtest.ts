@@ -2,7 +2,6 @@ import {Dayjs} from "dayjs";
 
 import {CourseDetail} from "./course";
 import {Room} from "./room";
-import {PreferredIdType} from "./api";
 
 export interface ClasstestApprox {
     course: string;
@@ -12,9 +11,9 @@ export interface ClasstestApprox {
     truncatedInformation: string;
 }
 
-export interface ClasstestDetail extends Omit<ClasstestApprox, "truncatedInformation"> {
-    course: PreferredIdType<CourseDetail>;
-    room?: PreferredIdType<Room>;
+export interface ClasstestDetail extends Omit<ClasstestApprox, "truncatedInformation" | "course"> {
+    course: CourseDetail;
+    room?: Room;
     information: string;
     createdAt: Dayjs;
 }

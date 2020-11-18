@@ -1,8 +1,9 @@
+import {Dayjs} from "dayjs";
+
 import {Room} from "./room";
 import {TeacherDetail} from "./teacher";
 import {Subject} from "./subject";
 import {LessonDetail} from "./lesson";
-import {PreferredIdType} from "./api";
 
 export enum ModificationType {
     Replacement,
@@ -15,14 +16,16 @@ export interface ModificationApprox {
     modificationType: ModificationType;
     id: string;
     lesson: string;
+    startDatetime: Dayjs;
+    endDatetime: Dayjs;
 
     truncatedInformation: string;
 }
 
-export interface ModificationDetail extends Omit<ModificationApprox, "truncatedInformation"> {
-    newRoom?: PreferredIdType<Room>;
-    newTeacher?: PreferredIdType<TeacherDetail>;
-    newSubject?: PreferredIdType<Subject>;
+export interface ModificationDetail extends Omit<ModificationApprox, "truncatedInformation" | "lesson"> {
+    newRoom?: Room;
+    newTeacher?: TeacherDetail;
+    newSubject?: Subject;
     information: string;
-    lesson: PreferredIdType<LessonDetail>;
+    lesson: LessonDetail;
 }

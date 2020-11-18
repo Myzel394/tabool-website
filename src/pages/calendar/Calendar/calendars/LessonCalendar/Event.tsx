@@ -5,8 +5,8 @@ import {Event as CalendarEvent} from "react-big-calendar";
 import {CalendarType} from "../DefaultCalendar/Toolbar";
 import getDivStyles from "../utils";
 
-import LessonEvent from "./LessonEvent";
 import EventEvent from "./EventEvent";
+import LessonEvent from "./LessonEvent";
 
 interface IEvent {
     event: CalendarEvent;
@@ -16,6 +16,7 @@ interface IEvent {
     modifications: ModificationDetail[];
     animate: boolean;
     activeType: CalendarType;
+    showFreePeriods: boolean;
 }
 
 const Event = ({
@@ -24,6 +25,7 @@ const Event = ({
     homeworks,
     materials,
     modifications,
+    showFreePeriods,
     animate,
     activeType,
 }: IEvent) => {
@@ -44,6 +46,7 @@ const Event = ({
                 materialCount={materialCount}
                 homeworkCount={homeworkCount}
                 modification={modification}
+                showWhenFreePeriod={showFreePeriods}
             />
         );
         break;
@@ -70,14 +73,15 @@ const eventProxy = ({
     animate = true,
     materials,
     modifications,
+    showFreePeriods,
 }: {
     homeworks: HomeworkApprox[];
     materials: MaterialApprox[];
     modifications: ModificationDetail[];
     animate: boolean;
     activeType: CalendarType;
-}
-) => props =>
+    showFreePeriods: boolean;
+}) => props =>
     Event({
         ...props,
         homeworks,
@@ -85,6 +89,8 @@ const eventProxy = ({
         materials,
         animate,
         activeType,
+        showFreePeriods,
     });
+
 
 export default eventProxy;

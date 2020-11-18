@@ -9,7 +9,9 @@ export const parseLesson = (data: LessonDetail) => {
     convertToDate(data, [
         "date", "lessonData.startTime", "lessonData.endTime",
     ]);
-    parseCourse(data.lessonData.course);
+    if (data.lessonData) {
+        parseCourse(data.lessonData.course);
+    }
 };
 
 const useFetchLessonDetailAPI = () => {

@@ -33,6 +33,8 @@ export interface IDefaultCalendar<TEvent extends object = object> extends Omit<C
     onDateChange: (newDate: Dayjs) => any;
     date: Dayjs;
     eventComponent: ComponentType<EventWrapperProps<TEvent>>;
+    showFreePeriods: boolean;
+    onShowFreePeriodsChange: (value: boolean) => any;
 }
 
 export interface IDefaultCalendarManager {
@@ -43,6 +45,8 @@ export interface IDefaultCalendarManager {
     activeDate: Dayjs;
     onDateChange: (newDate: Dayjs) => any;
     hasOnceAnimated: boolean;
+    showFreePeriods: boolean;
+    onShowFreePeriodsChange: (value: boolean) => any;
 }
 
 const timePadding = 20;
@@ -80,6 +84,8 @@ const DefaultCalendar = ({
     calendarType,
     onDateChange,
     eventComponent,
+    showFreePeriods,
+    onShowFreePeriodsChange,
     ...other
 }: IDefaultCalendar) => {
     const height = useWindowSize()[1];
@@ -95,9 +101,11 @@ const DefaultCalendar = ({
             onViewChange,
             onCalendarTypeChange,
             calendarType,
+            showFreePeriods,
+            onShowFreePeriodsChange,
         }),
         eventWrapper: eventComponent,
-    }), [calendarType, eventComponent, onCalendarTypeChange, onViewChange]);
+    }), [calendarType, eventComponent, onCalendarTypeChange, onShowFreePeriodsChange, onViewChange, showFreePeriods]);
     const localizer = useMemo(() => momentLocalizer(moment), []);
 
     return (
