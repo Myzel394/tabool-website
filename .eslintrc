@@ -6,8 +6,8 @@
     "rules": {
         "quotes": ["error", "double", "avoid-escape"],
         "jsx-quotes": ["error", "prefer-double"],
-        "indent": ["error", 4],
-        "indent-legacy": ["error", 4],
+        "indent": ["error", 4, {"SwitchCase": 1}],
+        "indent-legacy": ["error", 4, {"SwitchCase": 1}],
         "@typescript-eslint/quotes": ["error", "double"],
         "no-trailing-spaces": "off",
         "one-var": "off",
@@ -27,7 +27,8 @@
         }],
         "@shopify/binary-assignment-parens": "off",
         "no-mixed-operators": "off",
-        "@typescript-eslint/no-extra-parens": "off"
+        "@typescript-eslint/no-extra-parens": "off",
+        "switch-colon-spacing": ["error", {"after": true, "before": false}]
     },
     "env": {
         "browser": true,

@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Container} from "@material-ui/core";
+import {Box, Container, Grid} from "@material-ui/core";
 import {NavigateAction, View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 
@@ -32,31 +32,32 @@ const Toolbar = ({
 }: IToolbar) => {
     return (
         <Container maxWidth="md">
-            <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                m="auto"
-                width="fit-content"
-            >
-                <Box
-                    flexDirection="row"
-                    justifyContent="center"
+            <Box my={2}>
+                <Grid
+                    container
+                    spacing={3}
+                    direction="row"
                     alignItems="center"
-                    display="flex"
-                    my={2}
                 >
-                    <Navigation label={label} onNavigate={onNavigate} />
-                </Box>
-                <Box display="flex" flexDirection="row">
-                    {!isMobile && <ViewChanger activeView={view} onChange={onViewChange} />}
-                </Box>
-                <Box>
-                    <TypeChanger activeType={calendarType} onChange={onCalendarTypeChange} />
-                </Box>
-                <Box>
-                    <ShowFreePeriods value={showFreePeriods} onChange={onShowFreePeriodsChange} />
-                </Box>
+                    <Grid item>
+                        <Navigation label={label} onNavigate={onNavigate} />
+                    </Grid>
+                    {!isMobile && (
+                        <Grid item>
+                            <ViewChanger activeView={view} onChange={onViewChange} />
+                        </Grid>
+                    )}
+                    <Grid item>
+                        <TypeChanger activeType={calendarType} onChange={onCalendarTypeChange} />
+                    </Grid>
+                    <Grid item>
+                        <ShowFreePeriods
+                            value={showFreePeriods}
+                            disabled={calendarType !== "lesson"}
+                            onChange={onShowFreePeriodsChange}
+                        />
+                    </Grid>
+                </Grid>
             </Box>
         </Container>
     );

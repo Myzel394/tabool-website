@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useFetchTimetableAPI, useQueryOptions} from "hooks";
@@ -36,8 +36,7 @@ const Calendar = () => {
     const [activeType, setActiveType] = useState<CalendarType>("lesson");
     const [showFreePeriods, setShowFreePeriods] = useState<boolean>(true);
     const [startDate, setStartDate] = useState<Dayjs>(getStartDate);
-    const endDate = useMemo<Dayjs>(() => getEndDate(startDate),
-        [startDate]);
+    const endDate = getEndDate(startDate);
     const {data, isLoading} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
         startDatetime: getISODatetime(startDate),
         endDatetime: getISODatetime(endDate),
@@ -59,25 +58,26 @@ const Calendar = () => {
     }
 
     switch (activeType) {
-    case "lesson":
-        return (
-            <LessonCalendar
-                materials={data.materials}
-                activeView={activeView}
-                activeType={activeType}
-                lessons={data.lessons}
-                events={data.events}
-                modifications={data.modifications}
-                activeDate={startDate}
-                homeworks={data.homeworks}
-                hasOnceAnimated={renderingTimes >= 2}
-                showFreePeriods={showFreePeriods}
-                onCalendarTypeChange={setActiveType}
-                onViewChange={setActiveView}
-                onDateChange={setStartDate}
-                onShowFreePeriodsChange={setShowFreePeriods}
-            />
-        );
+        case "lesson":
+            return (
+                <LessonCalendar
+                    materials={data.materials}
+                    activeView={activeView}
+                    activeType={activeType}
+                    lessons={data.lessons}
+                    events={data.events}
+                    modifications={data.modifications}
+                    activeDate={startDate}
+                    homeworks={data.homeworks}
+                    hasOnceAnimated={renderingTimes >= 2}
+                    showFreePeriods={showFreePeriods}
+                    onCalendarTypeChange={setActiveType}
+                    onViewChange={setActiveView}
+                    onDateChange={setStartDate}
+                    onShowFreePeriodsChange={setShowFreePeriods}
+                />
+
+            );
     }
 
     return null;

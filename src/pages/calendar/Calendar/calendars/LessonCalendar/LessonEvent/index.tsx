@@ -27,7 +27,6 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
 
     return (
         <Lesson
-            isSmall
             isDisabled={isFreePeriod}
             color={lesson.lessonData.course.subject.userRelation.color}
             startTime={lesson.lessonData.startTime}

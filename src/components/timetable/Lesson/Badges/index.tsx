@@ -25,7 +25,6 @@ const Badges = ({children}: IBadges) => {
             <Grid
                 container
                 justify="flex-end"
-                spacing={SPACING}
                 style={style}
             >
                 {children.map(element =>

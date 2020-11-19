@@ -47,6 +47,8 @@ const LessonContent = ({
         },
     ), [isSingle]);
 
+    console.log(theme);
+
     return (
         <Box
             component="article"
@@ -58,12 +60,14 @@ const LessonContent = ({
             style={wrapperStyle}
             className={articleClassNames}
         >
-            <div className={styles.secondary}>
-                <Time startTime={startTime} endTime={endTime} />
+            <div>
+                <div className={styles.secondary}>
+                    <Time startTime={startTime} endTime={endTime} />
+                </div>
+                <Box my={Number(!isSmall)}>
+                    <Course name={courseName} />
+                </Box>
             </div>
-            <Box my={Number(!isSmall)}>
-                <Course name={courseName} />
-            </Box>
             <Box
                 component="dl"
                 display="flex"
