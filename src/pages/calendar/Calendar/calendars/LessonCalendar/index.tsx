@@ -27,7 +27,6 @@ const LessonCalendar = ({
     activeType,
     activeDate,
     onDateChange,
-    hasOnceAnimated,
     onShowFreePeriodsChange,
     showFreePeriods,
 
@@ -52,7 +51,6 @@ const LessonCalendar = ({
                 activeType,
                 showFreePeriods,
                 modifications: availableModifications,
-                animate: !hasOnceAnimated,
             })}
             calendarType={activeType}
             date={activeDate}

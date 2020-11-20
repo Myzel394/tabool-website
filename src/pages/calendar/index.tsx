@@ -20,38 +20,56 @@ const getStartDate = (): Dayjs => setBeginTime(
     ),
 );
 
-const getEndDate = (startDate: Dayjs): Dayjs => setEndTime(
-    findNextDate(
-        startDate,
-        5,
-    ),
-);
+const getEndDate = (startDate: Dayjs, activeView: View): Dayjs => {
+    switch (activeView) {
+        case "work_week":
+            return setEndTime(
+                findNextDate(
+                    startDate,
+                    5,
+                ),
+            );
+        case "day":
+            return setEndTime(startDate);
+        default:
+            return setEndTime(
+                findNextDate(
+                    startDate,
+                    7,
+                ),
+            );
+    }
+};
 
 const Calendar = () => {
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchTimetableAPI();
 
-    const [renderingTimes, setRenderingTimes] = useState<number>(0);
     const [activeView, setActiveView] = useState<View>(isMobile ? "day" : "work_week");
     const [activeType, setActiveType] = useState<CalendarType>("lesson");
     const [showFreePeriods, setShowFreePeriods] = useState<boolean>(true);
     const [startDate, setStartDate] = useState<Dayjs>(getStartDate);
-    const endDate = getEndDate(startDate);
+    const endDate = getEndDate(startDate, activeView);
     const {data, isLoading} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
         startDatetime: getISODatetime(startDate),
         endDatetime: getISODatetime(endDate),
     }], fetchTimetable, queryOptions);
 
+    // Set start date
     useEffect(() => {
-        if (!isLoading) {
-            setRenderingTimes(prevState => prevState + 1);
+        switch (activeView) {
+            case "work_week":
+                if (startDate.day() !== 1) {
+                    setStartDate(
+                        findNextDate(
+                            startDate.subtract(6, "day"),
+                            1,
+                        ),
+                    );
+                }
         }
-    }, [isLoading, data]);
+    }, [activeView, startDate]);
 
-    // Reset rendering times
-    useEffect(() => {
-        setRenderingTimes(0);
-    }, [startDate]);
 
     if (isLoading || !data?.lessons || !data.events || !data.homeworks || !data.modifications || !data.materials) {
         return <Skeleton />;
@@ -69,14 +87,12 @@ const Calendar = () => {
                     modifications={data.modifications}
                     activeDate={startDate}
                     homeworks={data.homeworks}
-                    hasOnceAnimated={renderingTimes >= 2}
                     showFreePeriods={showFreePeriods}
                     onCalendarTypeChange={setActiveType}
                     onViewChange={setActiveView}
                     onDateChange={setStartDate}
                     onShowFreePeriodsChange={setShowFreePeriods}
                 />
-
             );
     }
 

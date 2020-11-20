@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {ReactNode} from "react";
 import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox, ModificationDetail} from "types";
 import {Event as CalendarEvent} from "react-big-calendar";
 import {Theme, ThemeProvider} from "@material-ui/core";
@@ -23,6 +23,47 @@ interface IEvent {
     showFreePeriods: boolean;
 }
 
+const createTheme = (parentTheme: Theme) => update(parentTheme, {
+    typography: {
+        body1: {
+            fontSize: {
+                $set: ".6rem",
+            },
+            [parentTheme.breakpoints.up("lg")]: {
+                $set: {
+                    fontSize: ".8rem",
+                },
+            },
+        },
+        body2: {
+            fontSize: {
+                $set: ".5rem",
+            },
+            [parentTheme.breakpoints.up("lg")]: {
+                $set: {
+                    fontSize: ".7rem",
+                },
+            },
+        },
+        h5: {
+            $apply: data => {
+                const {fontFamily, fontWeight, letterSpacing, lineHeight} = data;
+
+                return {
+                    fontFamily,
+                    fontWeight,
+                    letterSpacing,
+                    lineHeight,
+                    fontSize: ".9rem",
+                    [parentTheme.breakpoints.up("lg")]: {
+                        fontSize: "1.3rem",
+                    },
+                };
+            },
+        },
+    },
+});
+
 const Event = ({
     event: calendarEvent,
     style,
@@ -30,53 +71,10 @@ const Event = ({
     materials,
     modifications,
     showFreePeriods,
-    animate,
-    activeType,
 }: IEvent) => {
     const divStyle = getDivStyles(style ?? {});
 
-    const createTheme = useCallback((parentTheme: Theme) => update(parentTheme, {
-        typography: {
-            body1: {
-                fontSize: {
-                    $set: ".6rem",
-                },
-                [parentTheme.breakpoints.up("lg")]: {
-                    $set: {
-                        fontSize: ".8rem",
-                    },
-                },
-            },
-            body2: {
-                fontSize: {
-                    $set: ".5rem",
-                },
-                [parentTheme.breakpoints.up("lg")]: {
-                    $set: {
-                        fontSize: ".7rem",
-                    },
-                },
-            },
-            h5: {
-                $apply: data => {
-                    const {fontFamily, fontWeight, letterSpacing, lineHeight} = data;
-
-                    return {
-                        fontFamily,
-                        fontWeight,
-                        letterSpacing,
-                        lineHeight,
-                        fontSize: ".9rem",
-                        [parentTheme.breakpoints.up("lg")]: {
-                            fontSize: "1.3rem",
-                        },
-                    };
-                },
-            },
-        },
-    }), []);
-
-    let children: JSX.Element = <></>;
+    let children: ReactNode = null;
 
     switch (calendarEvent.resource.type) {
         case "lesson": {
@@ -126,7 +124,6 @@ const Event = ({
 const eventProxy = ({
     homeworks,
     activeType,
-    animate = true,
     materials,
     modifications,
     showFreePeriods,
@@ -134,7 +131,6 @@ const eventProxy = ({
     homeworks: HomeworkApprox[];
     materials: MaterialApprox[];
     modifications: ModificationDetail[];
-    animate: boolean;
     activeType: CalendarType;
     showFreePeriods: boolean;
 }) => props =>
@@ -143,7 +139,6 @@ const eventProxy = ({
         homeworks,
         modifications,
         materials,
-        animate,
         activeType,
         showFreePeriods,
     });

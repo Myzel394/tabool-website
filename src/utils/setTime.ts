@@ -10,4 +10,4 @@ export const setEndTime = (value: Dayjs): Dayjs => value
     .set("hour", 23)
     .set("minute", 59)
     .set("second", 59)
-    .set("millisecond", 999)
+    .set("millisecond", 999);

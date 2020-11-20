@@ -12,8 +12,9 @@ import moment from "moment";
 import dayjs, {Dayjs} from "dayjs";
 import {combineDatetime, replaceDatetime} from "utils";
 import update from "immutability-helper";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import localeInstance from "./locale";
 import Toolbar, {CalendarType, ITypeChanger, IViewChanger} from "./Toolbar";
 
 export interface IDefaultCalendar<TEvent extends object = object> extends Omit<CalendarProps,
@@ -44,7 +45,6 @@ export interface IDefaultCalendarManager {
     onCalendarTypeChange: ITypeChanger["onChange"];
     activeDate: Dayjs;
     onDateChange: (newDate: Dayjs) => any;
-    hasOnceAnimated: boolean;
     showFreePeriods: boolean;
     onShowFreePeriodsChange: (value: boolean) => any;
 }
@@ -96,7 +96,7 @@ const DefaultCalendar = ({
             $set: Math.min(2500, Math.max(600, height)),
         },
     }), [givenStyles, height]);
-    const components = useMemo(() => ({
+    const components = {
         toolbar: Toolbar({
             onViewChange,
             onCalendarTypeChange,
@@ -105,13 +105,13 @@ const DefaultCalendar = ({
             onShowFreePeriodsChange,
         }),
         eventWrapper: eventComponent,
-    }), [calendarType, eventComponent, onCalendarTypeChange, onShowFreePeriodsChange, onViewChange, showFreePeriods]);
+    };
     const localizer = useMemo(() => momentLocalizer(moment), []);
 
     return (
         <BigCalendar
             views={["work_week", "day"]}
-            localizer={localizer}
+            localizer={localeInstance}
             style={style}
             min={minTime}
             max={maxTime}

@@ -47,8 +47,6 @@ const LessonContent = ({
         },
     ), [isSingle]);
 
-    console.log(theme);
-
     return (
         <Box
             component="article"
