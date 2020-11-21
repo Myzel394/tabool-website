@@ -1,7 +1,4 @@
 import React from "react";
+import whyDidYouRender from "@welldone-software/why-did-you-render";
 
-const whyDidYouRender = require("@welldone-software/why-did-you-render");
-
-whyDidYouRender(React, {
-    trackAllPureComponents: true,
-});
+whyDidYouRender(React, {});

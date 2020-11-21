@@ -54,7 +54,7 @@ export default function Routes() {
             />
             <Route
                 exact
-                path="/calendar/"
+                path="/timetable/"
                 component={Calendar}
             />
         </Switch>

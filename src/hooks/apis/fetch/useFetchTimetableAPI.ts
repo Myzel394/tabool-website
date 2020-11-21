@@ -2,7 +2,8 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {EventDetail, FetchListData, HomeworkApprox, LessonDetail, MaterialApprox, ModificationDetail} from "types";
-import {getLoginConfig} from "api";
+import {convertToDate, getLoginConfig} from "api";
+import {Dayjs} from "dayjs";
 
 import {parseLesson, parseModification} from "./lesson";
 import {parseEvent} from "./event";
@@ -19,6 +20,8 @@ export interface IFetchTimetableResponse {
     events: EventDetail[];
     homeworks: HomeworkApprox[];
     materials: MaterialApprox[];
+    earliestDateAvailable: Dayjs;
+    latestDateAvailable: Dayjs;
 }
 
 const useFetchTimetableAPI = () => {
@@ -42,6 +45,7 @@ const useFetchTimetableAPI = () => {
         data.events.forEach(event => parseEvent(event));
         data.homeworks.forEach(homework => parseHomework(homework));
         data.materials.forEach(material => parseMaterial(material));
+        convertToDate(data, ["earliestDateAvailable", "latestDateAvailable"]);
 
         return data;
     }, [instance]);

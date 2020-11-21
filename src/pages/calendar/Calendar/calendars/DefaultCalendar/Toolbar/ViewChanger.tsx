@@ -1,29 +1,33 @@
 import {IconButton} from "@material-ui/core";
 import {MdViewDay, MdViewWeek} from "react-icons/all";
-import React, {useCallback} from "react";
+import React, {useContext} from "react";
 import {View} from "react-big-calendar";
 
-export interface IViewChanger {
-    activeView: View;
-    onChange: (newView: View) => any;
-}
+import CalendarContext from "../../../../CalendarContext";
 
-const ViewChanger = ({activeView, onChange}: IViewChanger) => {
-    const getColor = useCallback((targetedView: View) =>
-        (activeView === targetedView ? "primary" : "default"),
-    [activeView]);
+const ViewChanger = () => {
+    const {activeView, onViewChange: onChange} = useContext(CalendarContext);
+
+    const getColor = (targetedView: View) =>
+        (activeView === targetedView ? "primary" : "default");
 
     return (
         <>
             <IconButton
                 color={getColor("day")}
-                onClick={onChange.bind(null, "day")}
+                onClick={event => {
+                    event.stopPropagation();
+                    onChange("day");
+                }}
             >
                 <MdViewDay />
             </IconButton>
             <IconButton
                 color={getColor("work_week")}
-                onClick={onChange.bind(null, "work_week")}
+                onClick={event => {
+                    event.stopPropagation();
+                    onChange("work_week");
+                }}
             >
                 <MdViewWeek />
             </IconButton>

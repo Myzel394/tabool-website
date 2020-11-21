@@ -1,53 +1,56 @@
 import React, {memo} from "react";
-import {Box, Container, Typography} from "@material-ui/core";
-import {Skeleton as MUISkeleton} from "@material-ui/lab";
-import {isMobile} from "react-device-detect";
-import {useTranslation} from "react-i18next";
+import {Event as CalendarEvent} from "react-big-calendar";
+import dayjs, {Dayjs} from "dayjs";
+import {combineDatetime} from "utils";
 
-const WIDTH = isMobile ? 100 : 250;
-const HEIGHT = isMobile ? 80 : 150;
-const AMOUNT = isMobile ? 6 : 12;
+import DefaultCalendar from "../calendars/DefaultCalendar";
 
-const Skeleton = () => {
-    const {t} = useTranslation();
-    const keys = Array.from({length: AMOUNT}, (x, index) => `skeleton_calendar_${index}`);
+import SkeletonEvent from "./SkeletonEvent";
+
+const createTime = (hours: number, minutes = 0): Dayjs => dayjs(new Date(
+    2020, 1, 1, hours, minutes, 0,
+));
+
+const DEFAULT_TIMES = [
+    [createTime(9), createTime(10)],
+    [createTime(13), createTime(14)],
+];
+
+const generateSkeletonEvents = (fromDate: Dayjs, toDate: Dayjs, times: Dayjs[][] = DEFAULT_TIMES): CalendarEvent[] => {
+    const events: CalendarEvent[] = [];
+    const diffInDays = toDate.diff(fromDate, "day");
+    let currentDate = fromDate;
+
+    for (let index = 0; index <= diffInDays; index++) {
+        const isEven = index % 2 === 0;
+
+        // Create events & push them to `events`
+        for (const time of times) {
+            const [startTime, endTime] = time;
+            const startDatetime = combineDatetime(currentDate, startTime);
+            const endDatetime = combineDatetime(currentDate, endTime);
+
+            events.push({
+                start: startDatetime.add(Number(isEven), "hour").toDate(),
+                end: endDatetime.add(Number(isEven), "hour").toDate(),
+                title: "Laden...",
+            });
+        }
+
+        currentDate = currentDate.add(1, "day");
+    }
+
+    return events;
+};
+
+const Skeleton = ({startDate, endDate}) => {
+    const events = generateSkeletonEvents(startDate, endDate);
 
     return (
-        <>
-            <Container maxWidth="sm">
-                <Box
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    mt={1}
-                >
-                    <MUISkeleton variant="rect" width="70%" height={60} />
-                    <MUISkeleton variant="rect" width="20%" height={60} />
-                </Box>
-            </Container>
-            <Box
-                my={5}
-            >
-                <Box
-                    display="flex"
-                    flexDirection="row"
-                    flexWrap="wrap"
-                    justifyContent="space-between"
-                >
-                    {keys.map(key => {
-                        return (
-                            <Box key={key} m={1}>
-                                <MUISkeleton variant="rect" width={WIDTH} height={HEIGHT} />
-                            </Box>
-                        );
-                    })}
-                </Box>
-                <Typography color="textSecondary" align="center" variant="h4">
-                    {t("Stundenplan laden...")}
-                </Typography>
-            </Box>
-        </>
+        <DefaultCalendar
+            events={events}
+            eventComponent={SkeletonEvent}
+        />
     );
 };
 

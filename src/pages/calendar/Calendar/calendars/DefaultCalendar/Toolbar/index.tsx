@@ -1,79 +1,60 @@
-import React from "react";
-import {Box, Container, Grid} from "@material-ui/core";
-import {NavigateAction, View} from "react-big-calendar";
+import React, {useState} from "react";
+import {Accordion, AccordionDetails, AccordionSummary, Box, Container, Grid, Typography} from "@material-ui/core";
 import {isMobile} from "react-device-detect";
+import {useDeviceWidth} from "hooks";
+import {useTranslation} from "react-i18next";
+import {FaCog} from "react-icons/all";
+import {ToolbarProps} from "react-big-calendar";
 
 import Navigation from "./Navigation";
 import ViewChanger from "./ViewChanger";
-import TypeChanger, {CalendarType} from "./TypeChanger";
+import TypeChanger from "./TypeChanger";
 import ShowFreePeriods from "./ShowFreePeriods";
 
-export interface IToolbar {
-    onViewChange: (newValue: View) => any;
-    onCalendarTypeChange: (newType: CalendarType) => any;
-    onNavigate: (newNavigation: NavigateAction) => any;
-    onShowFreePeriodsChange: (value: boolean) => any;
+const Toolbar = ({label, onNavigate}: ToolbarProps) => {
+    const {t} = useTranslation();
+    const {isMD} = useDeviceWidth();
+    const [isExpanded, setIsExpanded] = useState<boolean>(!isMobile);
 
-    calendarType: CalendarType;
-    label: string;
-    view: View;
-    showFreePeriods: boolean;
-}
-
-const Toolbar = ({
-    onNavigate,
-    label,
-    onViewChange,
-    view,
-    calendarType,
-    onCalendarTypeChange,
-    onShowFreePeriodsChange,
-    showFreePeriods,
-}: IToolbar) => {
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
             <Box my={2}>
-                <Grid
-                    container
-                    spacing={3}
-                    direction="row"
-                    alignItems="center"
-                >
-                    <Grid item>
-                        <Navigation label={label} onNavigate={onNavigate} />
-                    </Grid>
-                    {!isMobile && (
-                        <Grid item>
-                            <ViewChanger activeView={view} onChange={onViewChange} />
+                <Accordion expanded={isExpanded} onClick={() => setIsExpanded(prevState => !prevState)}>
+                    <AccordionSummary expandIcon={<FaCog />}>
+                        <Typography>{t("Einstellungen")}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Grid
+                            container
+                            spacing={4}
+                            direction={isMD ? "row" : "column"}
+                            alignItems="center"
+                            onClick={event => event.stopPropagation()}
+                            onFocus={event => event.stopPropagation()}
+                        >
+                            <Navigation
+                                label={label}
+                                onNavigate={onNavigate}
+                            />
+                            {!isMobile && (
+                                <Grid item>
+                                    <ViewChanger />
+                                </Grid>
+                            )}
+                            <Grid item>
+                                <TypeChanger />
+                            </Grid>
+                            <Grid item>
+                                <ShowFreePeriods />
+                            </Grid>
                         </Grid>
-                    )}
-                    <Grid item>
-                        <TypeChanger activeType={calendarType} onChange={onCalendarTypeChange} />
-                    </Grid>
-                    <Grid item>
-                        <ShowFreePeriods
-                            value={showFreePeriods}
-                            disabled={calendarType !== "lesson"}
-                            onChange={onShowFreePeriodsChange}
-                        />
-                    </Grid>
-                </Grid>
+                    </AccordionDetails>
+                </Accordion>
             </Box>
         </Container>
     );
 };
 
-const proxyToolbar = (extraProps: {
-    onViewChange: (newValue: View) => any;
-    onCalendarTypeChange: (newType: CalendarType) => any;
-    calendarType: CalendarType;
-    showFreePeriods: boolean;
-    onShowFreePeriodsChange: (value: boolean) => any;
-}) => props => Toolbar({
-    ...props,
-    ...extraProps,
-});
-
-export default proxyToolbar;
+export default Toolbar;
 export * from "./TypeChanger";
 export * from "./ViewChanger";

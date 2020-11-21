@@ -17,6 +17,7 @@ export interface ILesson {
     color: string;
     isDisabled?: boolean;
     className?: any;
+    style?: any;
 }
 
 
@@ -27,6 +28,7 @@ const Lesson = ({
     color,
     isDisabled,
     className,
+    style,
 }: ILesson) => {
     const theme = useTheme();
     const contextValue = useMemo(() => ({
@@ -43,6 +45,7 @@ const Lesson = ({
                 styles.wrapper,
                 className,
             )}
+            style={style}
         >
             <LessonContext.Provider value={contextValue}>
                 <ColoredContainer

@@ -33,7 +33,7 @@ const formats: Formats = {
     timeGutterFormat: "LT",
 
     monthHeaderFormat: "MMMM YYYY",
-    dayHeaderFormat: "ll",
+    dayHeaderFormat: "ddd, ll",
     dayRangeHeaderFormat: weekRangeFormat,
     agendaHeaderFormat: dateRangeFormat,
 

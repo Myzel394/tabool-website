@@ -13,3 +13,4 @@ export {default as Tooltip} from "./Tooltip";
 export {default as TransparentLink} from "./TransparentLink";
 export {default as ColoredBox} from "./ColoredBox";
 export {default as ColoredContainer} from "./ColoredContainer";
+export {default as ResponsiveBox} from "./ResponsiveBox";

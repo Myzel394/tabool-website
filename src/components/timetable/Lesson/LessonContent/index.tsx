@@ -1,13 +1,13 @@
 import React, {useContext, useMemo} from "react";
 import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
 import clsx from "clsx";
-import {Box, useTheme} from "@material-ui/core";
+import {Box, Typography, useTheme} from "@material-ui/core";
+import {useDeviceWidth} from "hooks";
+import DayJSEl from "react-dayjs";
 
 import LessonContext from "../LessonContext";
 import styles from "../LessonContent.module.scss";
 
-import Time from "./Time";
-import Course from "./Course";
 import Information from "./Information";
 
 
@@ -18,6 +18,7 @@ export interface ILessonContent {
     className?: any;
 }
 
+const TIME_FORMAT = "LT";
 
 const LessonContent = ({
     courseName,
@@ -26,26 +27,13 @@ const LessonContent = ({
     className,
 }: ILessonContent) => {
     const theme = useTheme();
-    const {isDisabled, startTime, endTime, isSingle, isSmall} = useContext(LessonContext);
+    const {isDisabled, startTime, endTime} = useContext(LessonContext);
+    const {isMD} = useDeviceWidth();
 
     const wrapperStyle = useMemo(() => ({
         backgroundColor: theme.palette.primary.main,
-        padding: isSmall ? ".1em .4em" : ".4em",
-    }), [isSmall, theme.palette.primary.main]);
-    const articleClassNames = useMemo(() => clsx(
-        styles.container,
-        {
-            [styles.disabled]: isDisabled,
-
-        },
-        className,
-    ), [className, isDisabled]);
-    const dlClassNames = useMemo(() => clsx(
-        styles.information,
-        {
-            [styles.singleLessonInformation]: isSingle ?? false,
-        },
-    ), [isSingle]);
+        padding: isMD ? ".4em" : ".1em .4em",
+    }), [isMD, theme.palette.primary.main]);
 
     return (
         <Box
@@ -53,17 +41,38 @@ const LessonContent = ({
             flexDirection="column"
             justifyContent="space-between"
             alignItems="flex-start"
-            flexWrap="nowrap"
+            flexWrap="wrap"
             display="flex"
             style={wrapperStyle}
-            className={articleClassNames}
+            className={clsx(
+                styles.container,
+                {
+                    [styles.disabled]: isDisabled,
+
+                },
+                className,
+            )}
         >
             <div>
                 <div className={styles.secondary}>
-                    <Time startTime={startTime} endTime={endTime} />
+                    {/* <Time> */}
+                    <Typography variant="body2" color="textSecondary">
+                        <DayJSEl format={TIME_FORMAT}>{startTime}</DayJSEl> -
+                        <DayJSEl format={TIME_FORMAT}>{endTime}</DayJSEl>
+                    </Typography>
+                    {/* </Time> */}
                 </div>
-                <Box my={Number(!isSmall)}>
-                    <Course name={courseName} />
+                <Box my={Number(!isMD)}>
+                    {/* <Course> */}
+                    <Typography
+                        variant="h5"
+                        component="h1"
+                        className={styles.title}
+                        color="textPrimary"
+                    >
+                        {courseName}
+                    </Typography>
+                    {/* </Course> */}
                 </Box>
             </div>
             <Box
@@ -72,7 +81,9 @@ const LessonContent = ({
                 flexDirection="row"
                 flexWrap="wrap"
                 m={0}
-                className={dlClassNames}
+                className={clsx(
+                    styles.information,
+                )}
             >
                 <Information
                     getIcon={props => <FaGraduationCap {...props} />}
@@ -85,10 +96,6 @@ const LessonContent = ({
             </Box>
         </Box>
     );
-};
-
-LessonContent.defaultProps = {
-    isDisabled: false,
 };
 
 export default LessonContent;

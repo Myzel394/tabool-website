@@ -1,36 +1,14 @@
-import React from "react";
-import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox, ModificationDetail} from "types";
+import React, {useContext} from "react";
 
-import DefaultCalendar, {IDefaultCalendarManager} from "../DefaultCalendar";
+import DefaultCalendar from "../DefaultCalendar";
+import CalendarContext from "../../../CalendarContext";
 
-import Event from "./Event";
 import {buildCalendarEvents} from "./utils";
+import Event from "./Event";
 
+const LessonCalendar = () => {
+    const {lessons, modifications, events, homeworks, materials, showFreePeriods, animate} = useContext(CalendarContext);
 
-export interface ILessonCalendar extends IDefaultCalendarManager {
-    lessons: LessonDetail[];
-    modifications: ModificationDetail[];
-    events: EventDetail[];
-    homeworks: HomeworkApprox[];
-    materials: MaterialApprox[];
-}
-
-const LessonCalendar = ({
-    lessons,
-    modifications,
-    events,
-    homeworks,
-    materials,
-    activeView,
-    onCalendarTypeChange,
-    onViewChange,
-    activeType,
-    activeDate,
-    onDateChange,
-    onShowFreePeriodsChange,
-    showFreePeriods,
-
-}: ILessonCalendar) => {
     const calendarEvents = buildCalendarEvents({
         events,
         lessons,
@@ -46,20 +24,12 @@ const LessonCalendar = ({
         <DefaultCalendar
             events={calendarEvents}
             eventComponent={Event({
+                modifications: availableModifications,
                 homeworks,
                 materials,
-                activeType,
                 showFreePeriods,
-                modifications: availableModifications,
+                animate,
             })}
-            calendarType={activeType}
-            date={activeDate}
-            view={activeView}
-            showFreePeriods={showFreePeriods}
-            onShowFreePeriodsChange={onShowFreePeriodsChange}
-            onViewChange={onViewChange}
-            onCalendarTypeChange={onCalendarTypeChange}
-            onDateChange={onDateChange}
         />
     );
 };

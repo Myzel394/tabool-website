@@ -3,6 +3,7 @@ import {UserContext} from "contexts";
 import {BottomNavigation as MuiBottomNavigation, BottomNavigationAction} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {FaTable, MdEventNote, MdHome} from "react-icons/all";
+import {useHistory, useLocation} from "react-router";
 
 import styles from "./BottomNavigation.module.scss";
 
@@ -10,19 +11,24 @@ import styles from "./BottomNavigation.module.scss";
 const BottomNavigation = () => {
     const {t} = useTranslation();
     const {state} = useContext(UserContext);
+    const location = useLocation();
+    const history = useHistory();
+    const baseLocation = location.pathname.split("/")[1];
 
     if (state.isFullyRegistered) {
         return (
-            <MuiBottomNavigation value="home" className={styles.container}>
+            <MuiBottomNavigation value={baseLocation} className={styles.container}>
                 <BottomNavigationAction
                     label={t("Start").toString()}
                     icon={<MdHome />}
-                    value="home"
+                    value=""
+                    onClick={() => history.push("/")}
                 />
                 <BottomNavigationAction
                     label={t("Stundenplan").toString()}
                     icon={<FaTable />}
                     value="timetable"
+                    onClick={() => history.push("/timetable/")}
                 />
                 <BottomNavigationAction
                     label={t("Kalendar").toString()}

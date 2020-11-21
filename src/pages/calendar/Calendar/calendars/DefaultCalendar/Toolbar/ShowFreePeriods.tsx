@@ -1,23 +1,21 @@
-import React from "react";
+import React, {useContext} from "react";
 import {FormControlLabel, FormGroup, Switch} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
-export interface IShowFreePeriods {
-    value: boolean;
-    onChange: (value: boolean) => any;
-    disabled: boolean;
-}
+import CalendarContext from "../../../../CalendarContext";
 
-const ShowFreePeriods = ({value, onChange, disabled}: IShowFreePeriods) => {
+const ShowFreePeriods = () => {
+    const {showFreePeriods, calendarType, onShowFreePeriodsChange: onChange} = useContext(CalendarContext);
     const {t} = useTranslation();
+    const isDisabled = calendarType !== "lesson";
 
     return (
         <FormGroup>
             <FormControlLabel
                 control={(
                     <Switch
-                        checked={value}
-                        disabled={disabled}
+                        checked={showFreePeriods}
+                        disabled={isDisabled}
                         color="primary"
                         onChange={event => onChange(event.target.checked)}
                     />

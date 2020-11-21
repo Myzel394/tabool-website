@@ -4,23 +4,21 @@ import {Event as CalendarEvent} from "react-big-calendar";
 import {Theme, ThemeProvider} from "@material-ui/core";
 import update from "immutability-helper";
 
-import {CalendarType} from "../DefaultCalendar/Toolbar";
 import getDivStyles from "../utils";
 
 import EventEvent from "./EventEvent";
-import LessonEvent from "./LessonEvent";
 import ModificationEvent from "./ModificationEvent";
+import LessonEvent from "./LessonEvent";
 
 
 interface IEvent {
     event: CalendarEvent;
     style: any;
+    modifications: ModificationDetail[];
     homeworks: HomeworkApprox[];
     materials: MaterialApprox[];
-    modifications: ModificationDetail[];
-    animate: boolean;
-    activeType: CalendarType;
     showFreePeriods: boolean;
+    animate: boolean;
 }
 
 const createTheme = (parentTheme: Theme) => update(parentTheme, {
@@ -67,10 +65,11 @@ const createTheme = (parentTheme: Theme) => update(parentTheme, {
 const Event = ({
     event: calendarEvent,
     style,
+    modifications,
     homeworks,
     materials,
-    modifications,
     showFreePeriods,
+    animate,
 }: IEvent) => {
     const divStyle = getDivStyles(style ?? {});
 
@@ -83,6 +82,7 @@ const Event = ({
             const materialCount = materials.filter(element => element.lesson === lesson.id).length;
             const modification = modifications.filter(element => element.lesson.id === lesson.id)[0];
 
+
             children = (
                 <LessonEvent
                     lesson={lesson}
@@ -90,6 +90,7 @@ const Event = ({
                     homeworkCount={homeworkCount}
                     modification={modification}
                     showWhenFreePeriod={showFreePeriods}
+                    animate={animate}
                 />
             );
             break;
@@ -122,25 +123,25 @@ const Event = ({
 };
 
 const eventProxy = ({
-    homeworks,
-    activeType,
-    materials,
     modifications,
     showFreePeriods,
+    materials,
+    homeworks,
+    animate,
 }: {
-    homeworks: HomeworkApprox[];
-    materials: MaterialApprox[];
-    modifications: ModificationDetail[];
-    activeType: CalendarType;
-    showFreePeriods: boolean;
+    modifications: IEvent["modifications"];
+    materials: IEvent["materials"];
+    homeworks: IEvent["homeworks"];
+    showFreePeriods: IEvent["showFreePeriods"];
+    animate: IEvent["animate"];
 }) => props =>
     Event({
         ...props,
-        homeworks,
         modifications,
         materials,
-        activeType,
+        homeworks,
         showFreePeriods,
+        animate,
     });
 
 
