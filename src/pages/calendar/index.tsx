@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useState} from "react";
+import React, {ReactNode, useState} from "react";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useFetchTimetableAPI, useQueryOptions} from "hooks";
@@ -19,25 +19,13 @@ const getStartDate = (): Dayjs => setBeginTime(
     ),
 );
 
-const getEndDate = (startDate: Dayjs, activeView: View): Dayjs => {
-    switch (activeView) {
-        case "work_week":
-            return setEndTime(
-                findNextDate(
-                    startDate,
-                    5,
-                ),
-            );
-        case "day":
-            return setEndTime(startDate);
-        default:
-            return setEndTime(
-                findNextDate(
-                    startDate,
-                    7,
-                ),
-            );
-    }
+const getEndDate = (startDate: Dayjs): Dayjs => {
+    return setEndTime(
+        findNextDate(
+            startDate,
+            5,
+        ),
+    );
 };
 
 const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFetchTimetableResponse => {
@@ -70,46 +58,57 @@ const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFe
 };
 
 const Calendar = () => {
+    // Options
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchTimetableAPI();
 
-    const [isSettingsExpanded, setIsSettingsExpanded] = useState<boolean>(!isMobile);
+    // States
     const [activeView, setActiveView] = useState<View>(isMobile ? "day" : "work_week");
     const [activeType, setActiveType] = useState<CalendarType>("lesson");
     const [activeDate, setActiveDate] = useState<Dayjs>(getStartDate);
-    const [isCalendarOpened, setIsCalendarOpened] = useState<boolean>(false);
     const [showFreePeriods, setShowFreePeriods] = useState<boolean>(true);
+    const [showDetails, setShowDetails] = useState<boolean>(false);
     const [startDate, setStartDate] = useState<Dayjs>(activeDate);
-    const endDate = getEndDate(startDate, activeView);
-    const {data, isLoading, isFetchedAfterMount} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
+
+    // Data
+    const endDate = getEndDate(startDate);
+    const {data, isLoading} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
         startDatetime: getISODatetime(startDate),
         endDatetime: getISODatetime(endDate),
     }], fetchTimetable, queryOptions);
-    let children: ReactNode;
 
-    // Set start date
-    useEffect(() => {
-        if (startDate.day() !== 1 || !activeDate.isSame(startDate, "week")) {
-            setStartDate(
-                findNextDate(
-                    activeDate.subtract(6, "day"),
-                    1,
-                ),
-            );
+    // Values
+    const changeDate = (rawValue: Dayjs) => {
+        let value: Dayjs = rawValue;
+
+        switch (rawValue.day()) {
+            case 0:
+                value = rawValue.subtract(2, "day");
+                break;
+            case 6:
+                value = rawValue.add(2, "day");
         }
-    }, [activeDate, activeView, startDate]);
 
+        setActiveDate(value);
+
+        setStartDate(
+            findNextDate(
+                value.subtract(6, "day"),
+                1,
+            ),
+        );
+    };
+    let children: ReactNode;
+    let contextData: IFetchTimetableResponse | undefined = data;
 
     if (isLoading || !data?.lessons || !data.events || !data.homeworks || !data.modifications || !data.materials) {
         children = <Skeleton startDate={startDate} endDate={endDate} />;
     } else {
         switch (activeType) {
             case "lesson": {
-                let lessonData: IFetchTimetableResponse = data;
-
                 switch (activeView) {
                     case "day":
-                        lessonData = constrainWeekToDayData(data, activeDate);
+                        contextData = constrainWeekToDayData(data, activeDate);
                 }
 
                 children = <LessonCalendar />;
@@ -123,24 +122,21 @@ const Calendar = () => {
             value={{
                 activeView,
                 showFreePeriods,
-                isSettingsExpanded,
-                isCalendarOpened,
-                lessons: data?.lessons ?? [],
-                homeworks: data?.homeworks ?? [],
-                modifications: data?.modifications ?? [],
-                materials: data?.materials ?? [],
-                events: data?.events ?? [],
+                showDetails,
+                lessons: contextData?.lessons ?? [],
+                homeworks: contextData?.homeworks ?? [],
+                modifications: contextData?.modifications ?? [],
+                materials: contextData?.materials ?? [],
+                events: contextData?.events ?? [],
                 calendarType: activeType,
                 date: activeDate,
-                earliestDateAvailable: data?.earliestDateAvailable,
-                latestDateAvailable: data?.latestDateAvailable,
-                animate: !isFetchedAfterMount,
+                earliestDateAvailable: contextData?.earliestDateAvailable,
+                latestDateAvailable: contextData?.latestDateAvailable,
                 onCalendarTypeChange: setActiveType,
-                onDateChange: setActiveDate,
+                onDateChange: changeDate,
                 onViewChange: setActiveView,
                 onShowFreePeriodsChange: setShowFreePeriods,
-                onIsSettingsExpandedChange: setIsSettingsExpanded,
-                onCalendarOpenedChange: setIsCalendarOpened,
+                onShowDetailsChange: setShowDetails,
             }}
         >
             {children}

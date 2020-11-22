@@ -14,3 +14,4 @@ export {default as TransparentLink} from "./TransparentLink";
 export {default as ColoredBox} from "./ColoredBox";
 export {default as ColoredContainer} from "./ColoredContainer";
 export {default as ResponsiveBox} from "./ResponsiveBox";
+export {default as ContextMenu} from "./ContextMenu";

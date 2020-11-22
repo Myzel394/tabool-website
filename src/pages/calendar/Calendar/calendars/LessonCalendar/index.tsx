@@ -7,7 +7,7 @@ import {buildCalendarEvents} from "./utils";
 import Event from "./Event";
 
 const LessonCalendar = () => {
-    const {lessons, modifications, events, homeworks, materials, showFreePeriods, animate} = useContext(CalendarContext);
+    const {lessons, modifications, events, homeworks, materials, showFreePeriods, animate, showDetails} = useContext(CalendarContext);
 
     const calendarEvents = buildCalendarEvents({
         events,
@@ -29,6 +29,7 @@ const LessonCalendar = () => {
                 materials,
                 showFreePeriods,
                 animate,
+                showDetails,
             })}
         />
     );

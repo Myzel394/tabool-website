@@ -56,14 +56,13 @@ const DefaultCalendar = ({
     eventComponent,
     ...other
 }: IDefaultCalendar) => {
-    const {date, activeView, onDateChange} = useContext(CalendarContext);
+    const {date, activeView, onDateChange, toolbarHeight, isSettingsExpanded} = useContext(CalendarContext);
 
     const [x, height] = useWindowSize();
-
     const [minTime, maxTime] = getMinMaxTime(events);
     const style = useMemo(() => update(givenStyles, {
         height: {
-            $set: Math.min(2500, Math.max(600, height)),
+            $set: Math.min(2500, Math.max(800, height)),
         },
     }), [givenStyles, height]);
     const components = useMemo(() => ({

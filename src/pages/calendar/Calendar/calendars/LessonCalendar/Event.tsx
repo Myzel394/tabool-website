@@ -19,6 +19,7 @@ interface IEvent {
     materials: MaterialApprox[];
     showFreePeriods: boolean;
     animate: boolean;
+    showDetails: boolean;
 }
 
 const createTheme = (parentTheme: Theme) => update(parentTheme, {
@@ -70,6 +71,7 @@ const Event = ({
     materials,
     showFreePeriods,
     animate,
+    showDetails,
 }: IEvent) => {
     const divStyle = getDivStyles(style ?? {});
 
@@ -91,6 +93,7 @@ const Event = ({
                     modification={modification}
                     showWhenFreePeriod={showFreePeriods}
                     animate={animate}
+                    showDetails={showDetails}
                 />
             );
             break;
@@ -128,12 +131,14 @@ const eventProxy = ({
     materials,
     homeworks,
     animate,
+    showDetails,
 }: {
     modifications: IEvent["modifications"];
     materials: IEvent["materials"];
     homeworks: IEvent["homeworks"];
     showFreePeriods: IEvent["showFreePeriods"];
     animate: IEvent["animate"];
+    showDetails: IEvent["showDetails"];
 }) => props =>
     Event({
         ...props,
@@ -142,6 +147,7 @@ const eventProxy = ({
         homeworks,
         showFreePeriods,
         animate,
+        showDetails,
     });
 
 

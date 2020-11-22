@@ -19,7 +19,7 @@ const useElementSize = ($ref): [number | undefined, number | undefined] => {
         }
 
         return () => element && element.removeEventListener("resize", setSize);
-    }, [$ref.current]);
+    }, [$ref]);
 
     return [width, height];
 };

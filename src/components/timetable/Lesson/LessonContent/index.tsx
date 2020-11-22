@@ -1,8 +1,8 @@
 import React, {useContext, useMemo} from "react";
-import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
 import clsx from "clsx";
 import {Box, Typography, useTheme} from "@material-ui/core";
 import {useDeviceWidth} from "hooks";
+import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
 import DayJSEl from "react-dayjs";
 
 import LessonContext from "../LessonContext";
@@ -15,7 +15,9 @@ export interface ILessonContent {
     courseName: string;
     teacherName: string;
     roomName: string;
+
     className?: any;
+    showDetails?: boolean;
 }
 
 const TIME_FORMAT = "LT";
@@ -25,6 +27,7 @@ const LessonContent = ({
     teacherName,
     roomName,
     className,
+    showDetails,
 }: ILessonContent) => {
     const theme = useTheme();
     const {isDisabled, startTime, endTime} = useContext(LessonContext);
@@ -53,17 +56,52 @@ const LessonContent = ({
                 className,
             )}
         >
-            <div>
-                <div className={styles.secondary}>
-                    {/* <Time> */}
-                    <Typography variant="body2" color="textSecondary">
-                        <DayJSEl format={TIME_FORMAT}>{startTime}</DayJSEl> -
-                        <DayJSEl format={TIME_FORMAT}>{endTime}</DayJSEl>
-                    </Typography>
-                    {/* </Time> */}
-                </div>
-                <Box my={Number(!isMD)}>
-                    {/* <Course> */}
+            <Box my={Number(!isMD)}>
+                {showDetails ? (
+                    <>
+                        <div>
+                            <div className={styles.secondary}>
+                                {/* <Time> */}
+                                <Typography variant="body2" color="textSecondary">
+                                    <DayJSEl format={TIME_FORMAT}>{startTime}</DayJSEl> -
+                                    <DayJSEl format={TIME_FORMAT}>{endTime}</DayJSEl>
+                                </Typography>
+                                {/* </Time> */}
+                            </div>
+                            <Box>
+                                {/* <Course> */}
+                                <Typography
+                                    variant="h5"
+                                    component="h1"
+                                    className={styles.title}
+                                    color="textPrimary"
+                                >
+                                    {courseName}
+                                </Typography>
+                                {/* </Course> */}
+                            </Box>
+                        </div>
+                        <Box
+                            component="dl"
+                            display="flex"
+                            flexDirection="row"
+                            flexWrap="wrap"
+                            m={0}
+                            className={clsx(
+                                styles.information,
+                            )}
+                        >
+                            <Information
+                                getIcon={props => <FaGraduationCap {...props} />}
+                                text={teacherName}
+                            />
+                            <Information
+                                getIcon={props => <FaMapMarkerAlt {...props} />}
+                                text={roomName}
+                            />
+                        </Box>
+                    </>
+                ) : (
                     <Typography
                         variant="h5"
                         component="h1"
@@ -72,27 +110,7 @@ const LessonContent = ({
                     >
                         {courseName}
                     </Typography>
-                    {/* </Course> */}
-                </Box>
-            </div>
-            <Box
-                component="dl"
-                display="flex"
-                flexDirection="row"
-                flexWrap="wrap"
-                m={0}
-                className={clsx(
-                    styles.information,
                 )}
-            >
-                <Information
-                    getIcon={props => <FaGraduationCap {...props} />}
-                    text={teacherName}
-                />
-                <Information
-                    getIcon={props => <FaMapMarkerAlt {...props} />}
-                    text={roomName}
-                />
             </Box>
         </Box>
     );

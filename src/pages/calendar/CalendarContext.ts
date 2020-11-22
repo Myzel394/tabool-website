@@ -6,6 +6,11 @@ import {View} from "react-big-calendar";
 
 export type CalendarType = "lesson" | "homeworkDue" | "homeworkCreated";
 
+export interface CalendarPosition {
+    x: number;
+    y: number;
+}
+
 export interface ICalendarContext<TEvent extends object = object> {
     lessons: LessonDetail[];
     modifications: ModificationDetail[];
@@ -13,28 +18,23 @@ export interface ICalendarContext<TEvent extends object = object> {
     homeworks: HomeworkApprox[];
     materials: MaterialApprox[];
 
-    onViewChange: (newView: View) => any;
+    onViewChange: (view: View) => any;
     activeView: View;
 
-    onCalendarTypeChange: (newType: CalendarType) => any;
+    onCalendarTypeChange: (type: CalendarType) => any;
     calendarType: CalendarType;
 
-    onDateChange: (newDate: Dayjs) => any;
+    onDateChange: (date: Dayjs) => any;
     date: Dayjs;
 
     showFreePeriods: boolean;
-    onShowFreePeriodsChange: (value: boolean) => any;
+    onShowFreePeriodsChange: (showFreePeriods: boolean) => any;
 
-    isSettingsExpanded: boolean;
-    onIsSettingsExpanded: (value: boolean) => any;
-
-    isCalendarOpened: boolean;
-    onCalendarOpenedChange: (value: boolean) => any;
+    showDetails: boolean;
+    onShowDetailsChange: (showDetails: boolean) => any;
 
     earliestDateAvailable: Dayjs;
     latestDateAvailable: Dayjs;
-
-    animate: boolean;
 }
 
 
