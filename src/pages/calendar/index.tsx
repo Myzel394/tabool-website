@@ -1,15 +1,10 @@
-import React, {ReactNode, useState} from "react";
-import {View} from "react-big-calendar";
-import {isMobile} from "react-device-detect";
-import {useFetchTimetableAPI, useQueryOptions} from "hooks";
-import {useQuery} from "react-query";
+import React from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {combineDatetime, findNextDate, getISODatetime} from "utils";
+import {combineDatetime, findNextDate} from "utils";
 import {IFetchTimetableResponse} from "hooks/apis/fetch/useFetchTimetableAPI";
 import {setBeginTime, setEndTime} from "utils/setTime";
 
-import {LessonCalendar, Skeleton} from "./Calendar";
-import CalendarContext, {CalendarType} from "./CalendarContext";
+import Homework from "../../components/timetable/Homework/Homework";
 
 
 const getStartDate = (): Dayjs => setBeginTime(
@@ -58,6 +53,22 @@ const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFe
 };
 
 const Calendar = () => {
+    return (
+        <Homework
+            creationDate={dayjs()}
+            subject={{
+                name: "Geschichte",
+                shortName: "G",
+                id: "123",
+                userRelation: {
+                    color: "#F2B517",
+                },
+            }}
+            information="blabla"
+        />
+    );
+
+/*
     // Options
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchTimetableAPI();
@@ -141,7 +152,7 @@ const Calendar = () => {
         >
             {children}
         </CalendarContext.Provider>
-    );
+    );*/
 };
 
 export default Calendar;
