@@ -56,6 +56,7 @@ const Calendar = () => {
     return (
         <Homework
             creationDate={dayjs()}
+            dueDate={dayjs()}
             subject={{
                 name: "Geschichte",
                 shortName: "G",

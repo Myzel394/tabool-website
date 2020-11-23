@@ -1,5 +1,4 @@
 .container {
-    border-radius: .5em;
     height: 100%;
 
     &.disabled {
@@ -20,12 +19,6 @@
             @media (min-width: 1200px) {
                 letter-spacing: .1em;
             }
-        }
-    }
-
-    .information {
-        > *:not(:nth-child(1)) {
-            margin-left: clamp(.1em, 1vw, .5em);
         }
     }
 }

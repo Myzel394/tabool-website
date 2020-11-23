@@ -3,8 +3,11 @@
     align-items: center;
     width: fit-content !important;
 
-    dd {
-        margin: 0 0 0 .2em;
-        padding: 0;
+    > *:not(:nth-child(1)) {
+        margin-left: .2em;
     }
+}
+
+.text {
+    display: inline-block;
 }

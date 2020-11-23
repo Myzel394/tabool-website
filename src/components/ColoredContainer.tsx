@@ -41,6 +41,11 @@ const createTheme = (parentTheme: Theme | undefined, color: string): Theme => {
             text: {
                 $set: isLight ? darkText : lightText,
             },
+            action: {
+                active: {
+                    $set: "#fff",
+                },
+            },
         },
     });
 };

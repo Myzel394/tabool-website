@@ -7,8 +7,7 @@ import DayJSEl from "react-dayjs";
 
 import LessonContext from "../LessonContext";
 import styles from "../LessonContent.module.scss";
-
-import Information from "./Information";
+import Information from "../../../Information";
 
 
 export interface ILessonContent {
@@ -36,7 +35,8 @@ const LessonContent = ({
     const wrapperStyle = useMemo(() => ({
         backgroundColor: theme.palette.primary.main,
         padding: isMD ? ".4em" : ".1em .4em",
-    }), [isMD, theme.palette.primary.main]);
+        borderRadius: theme.shape.borderRadius,
+    }), [isMD, theme.palette.primary.main, theme.shape.borderRadius]);
 
     return (
         <Box
@@ -51,7 +51,6 @@ const LessonContent = ({
                 styles.container,
                 {
                     [styles.disabled]: isDisabled,
-
                 },
                 className,
             )}
