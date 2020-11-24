@@ -11,21 +11,21 @@ const ShowDetails = () => {
     const isDisabled = calendarType !== "lesson";
 
     return (
-        <Tooltip title={t("Die Anzeige wird detaillierter, dauert aber auch länger um berechnet zu werden.").toString()}>
-            <FormGroup>
-                <FormControlLabel
-                    control={(
+        <FormGroup>
+            <FormControlLabel
+                control={(
+                    <Tooltip title={t("Die Anzeige wird detaillierter, dauert aber auch länger um berechnet zu werden.").toString()}>
                         <Switch
                             checked={showDetails}
-                            disabled={isDisabled}
                             color="primary"
                             onChange={event => onShowDetailsChange(event.target.checked)}
                         />
-                    )}
-                    label={t("Details anzeigen")}
-                />
-            </FormGroup>
-        </Tooltip>
+                    </Tooltip>
+                )}
+                disabled={isDisabled}
+                label={t("Details anzeigen")}
+            />
+        </FormGroup>
     );
 };
 

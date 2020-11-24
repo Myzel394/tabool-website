@@ -15,11 +15,11 @@ const ShowFreePeriods = () => {
                 control={(
                     <Switch
                         checked={showFreePeriods}
-                        disabled={isDisabled}
                         color="primary"
                         onChange={event => onChange(event.target.checked)}
                     />
                 )}
+                disabled={isDisabled}
                 label={t("Freistunden anzeigen")}
             />
         </FormGroup>

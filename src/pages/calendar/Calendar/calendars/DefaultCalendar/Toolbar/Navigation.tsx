@@ -1,11 +1,11 @@
 import {Tooltip} from "components";
 import {Box, Button, ButtonProps, IconButton} from "@material-ui/core";
 import {navigate as navigationConstants} from "react-big-calendar/lib/utils/constants";
-import {FaCaretLeft, FaCaretRight} from "react-icons/all";
+import {FaAngleDoubleLeft, FaAngleDoubleRight, FaAngleLeft, FaAngleRight} from "react-icons/all";
 import React, {useContext} from "react";
 import {useTranslation} from "react-i18next";
 import {ToolbarProps} from "react-big-calendar";
-import {findNextDate} from "utils";
+import {isMobile} from "react-device-detect";
 
 import CalendarContext from "../../../../CalendarContext";
 
@@ -19,6 +19,7 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
         earliestDateAvailable,
         latestDateAvailable,
         date,
+        onDateChange,
     } = useContext(CalendarContext);
     const {t} = useTranslation();
     const noDataAvailableText = t("Es gibt für diesen Zeitraum noch keine Daten").toString();
@@ -26,22 +27,42 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
         date.isAfter(earliestDateAvailable)
     );
     const disableNext = latestDateAvailable && !(
-        findNextDate(
-            date.add(1, "day"), 5,
-        ).subtract(1, "day").isBefore(latestDateAvailable)
+        date.isBefore(latestDateAvailable)
+    );
+    const disablePreviousWeek = earliestDateAvailable && !(
+        date.subtract(6, "day").isAfter(earliestDateAvailable)
+    );
+    const disableNextWeek = latestDateAvailable && !(
+        date.add(6, "day").isBefore(latestDateAvailable)
     );
 
     return (
         <Box flexDirection="row" display="flex" justifyContent="center">
+            {isMobile && (
+                <Tooltip title={disablePreviousWeek ? noDataAvailableText : t("Springe eine Woche zurück").toString()}>
+                    <span>
+                        <IconButton
+                            disabled={disablePreviousWeek}
+                            onClick={event => {
+                                event.stopPropagation();
+                                onDateChange(date.subtract(7, "day"));
+                            }}
+                        >
+                            <FaAngleDoubleLeft />
+                        </IconButton>
+                    </span>
+                </Tooltip>
+            )}
             <Tooltip title={disablePrevious ? noDataAvailableText : t("Zurück").toString()}>
                 <span>
                     <IconButton
-                        disabled={disablePrevious} onClick={event => {
+                        disabled={disablePrevious}
+                        onClick={event => {
                             event.stopPropagation();
                             onNavigate(navigationConstants.PREVIOUS);
                         }}
                     >
-                        <FaCaretLeft />
+                        <FaAngleLeft />
                     </IconButton>
                 </span>
             </Tooltip>
@@ -66,10 +87,25 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
                             onNavigate(navigationConstants.NEXT);
                         }}
                     >
-                        <FaCaretRight />
+                        <FaAngleRight />
                     </IconButton>
                 </span>
             </Tooltip>
+            {isMobile && (
+                <Tooltip title={disableNextWeek ? noDataAvailableText : t("Springe eine Woche weiter").toString()}>
+                    <span>
+                        <IconButton
+                            disabled={disableNextWeek}
+                            onClick={event => {
+                                event.stopPropagation();
+                                onDateChange(date.add(7, "day"));
+                            }}
+                        >
+                            <FaAngleDoubleRight />
+                        </IconButton>
+                    </span>
+                </Tooltip>
+            )}
         </Box>
     );
 };

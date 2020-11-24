@@ -4,12 +4,7 @@ import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox, ModificationD
 import {Dayjs} from "dayjs";
 import {View} from "react-big-calendar";
 
-export type CalendarType = "lesson" | "homeworkDue" | "homeworkCreated";
-
-export interface CalendarPosition {
-    x: number;
-    y: number;
-}
+export type CalendarType = "lesson" | "homework";
 
 export interface ICalendarContext<TEvent extends object = object> {
     lessons: LessonDetail[];

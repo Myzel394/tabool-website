@@ -25,7 +25,11 @@ export interface IDefaultCalendar<TEvent extends object = object> extends Omit<C
     eventComponent: ComponentType<EventWrapperProps<TEvent>>;
 }
 
-const timePadding = 20;
+const TIME_PADDING = 20;
+const DEFAULT_MIN_TIME = dayjs().set("hour", 8).set("minute", 0)
+    .set("second", 0);
+const DEFAULT_MAX_TIME = dayjs().set("hour", 16).set("minute", 0)
+    .set("second", 0);
 
 const getMinMaxTime = (events: CalendarEvent[]): [Date, Date] => {
     const notAllDayEvents = events.filter(element => !element.allDay);
@@ -40,12 +44,12 @@ const getMinMaxTime = (events: CalendarEvent[]): [Date, Date] => {
     const minTime = dayjs.unix(minUnix);
     const maxTime = dayjs.unix(maxUnix);
 
-    const minDatetime = combineDatetime(dayjs(), minTime);
-    const maxDatetime = combineDatetime(dayjs(), maxTime);
+    const minDatetime = combineDatetime(dayjs(), minTime).subtract(TIME_PADDING, "minute");
+    const maxDatetime = combineDatetime(dayjs(), maxTime).add(TIME_PADDING, "minute");
 
     return [
-        minDatetime.subtract(timePadding, "minute").toDate(),
-        maxDatetime.add(timePadding, "minute").toDate(),
+        (minDatetime.isValid() ? minDatetime : DEFAULT_MIN_TIME).toDate(),
+        (maxDatetime.isValid() ? maxDatetime : DEFAULT_MAX_TIME).toDate(),
     ];
 };
 
@@ -56,7 +60,7 @@ const DefaultCalendar = ({
     eventComponent,
     ...other
 }: IDefaultCalendar) => {
-    const {date, activeView, onDateChange, toolbarHeight, isSettingsExpanded} = useContext(CalendarContext);
+    const {date, activeView, onDateChange} = useContext(CalendarContext);
 
     const [x, height] = useWindowSize();
     const [minTime, maxTime] = getMinMaxTime(events);
@@ -82,7 +86,7 @@ const DefaultCalendar = ({
             dayLayoutAlgorithm="no-overlap"
             date={date.toDate()}
             components={components}
-            events={events}
+            events={events.length === 0 ? [] : events}
             onNavigate={date => {
                 let value = dayjs(date);
 

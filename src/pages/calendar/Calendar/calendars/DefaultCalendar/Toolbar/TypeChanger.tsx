@@ -10,8 +10,7 @@ const TypeChanger = () => {
     const {t} = useTranslation();
     const calendarTypes = [
         ["lesson", t("Stundenplan"), t("Zeige den Standard-Stundenplan")],
-        ["homeworkDue", t("Hausaufgabenheft"), t("Zeige nach wann die Hausaufgaben aufgegeben wurden")],
-        ["homeworkCreated", t("Hausaufgabenplan"), t("Zeige nach Fälligkeitsdatum der Hausaufgaben")],
+        ["homework", t("Hausaufgabenheft"), t("Zeige nach wann Hausaufgaben aufgegeben wurden")],
     ];
     const labelId = useUniqueId();
     const renderValue = (givenValue): ReactNode => {

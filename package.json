@@ -49,6 +49,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-svg": "^11.0.44",
+    "react-transition-group": "^4.4.1",
     "react-virtualized": "^9.22.2",
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.5",

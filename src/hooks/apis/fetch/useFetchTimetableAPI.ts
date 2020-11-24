@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {EventDetail, FetchListData, HomeworkApprox, LessonDetail, MaterialApprox, ModificationDetail} from "types";
+import {EventDetail, FetchListData, HomeworkDetail, LessonDetail, MaterialApprox, ModificationDetail} from "types";
 import {convertToDate, getLoginConfig} from "api";
 import {Dayjs} from "dayjs";
 
@@ -18,7 +18,7 @@ export interface IFetchTimetableResponse {
     lessons: LessonDetail[];
     modifications: ModificationDetail[];
     events: EventDetail[];
-    homeworks: HomeworkApprox[];
+    homeworks: HomeworkDetail[];
     materials: MaterialApprox[];
     earliestDateAvailable: Dayjs;
     latestDateAvailable: Dayjs;

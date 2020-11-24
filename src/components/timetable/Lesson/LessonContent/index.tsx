@@ -54,63 +54,62 @@ const LessonContent = ({
                 },
                 className,
             )}
+            py={Number(!isMD)}
         >
-            <Box my={Number(!isMD)}>
-                {showDetails ? (
-                    <>
-                        <div>
-                            <div className={styles.secondary}>
-                                {/* <Time> */}
-                                <Typography variant="body2" color="textSecondary">
-                                    <DayJSEl format={TIME_FORMAT}>{startTime}</DayJSEl> -
-                                    <DayJSEl format={TIME_FORMAT}>{endTime}</DayJSEl>
-                                </Typography>
-                                {/* </Time> */}
-                            </div>
-                            <Box>
-                                {/* <Course> */}
-                                <Typography
-                                    variant="h5"
-                                    component="h1"
-                                    className={styles.title}
-                                    color="textPrimary"
-                                >
-                                    {courseName}
-                                </Typography>
-                                {/* </Course> */}
-                            </Box>
+            {showDetails ? (
+                <>
+                    <div>
+                        <div className={styles.secondary}>
+                            {/* <Time> */}
+                            <Typography variant="body2" color="textSecondary">
+                                <DayJSEl format={TIME_FORMAT}>{startTime}</DayJSEl> -
+                                <DayJSEl format={TIME_FORMAT}>{endTime}</DayJSEl>
+                            </Typography>
+                            {/* </Time> */}
                         </div>
-                        <Box
-                            component="dl"
-                            display="flex"
-                            flexDirection="row"
-                            flexWrap="wrap"
-                            m={0}
-                            className={clsx(
-                                styles.information,
-                            )}
-                        >
-                            <Information
-                                getIcon={props => <FaGraduationCap {...props} />}
-                                text={teacherName}
-                            />
-                            <Information
-                                getIcon={props => <FaMapMarkerAlt {...props} />}
-                                text={roomName}
-                            />
+                        <Box>
+                            {/* <Course> */}
+                            <Typography
+                                variant="h5"
+                                component="h1"
+                                className={styles.title}
+                                color="textPrimary"
+                            >
+                                {courseName}
+                            </Typography>
+                            {/* </Course> */}
                         </Box>
-                    </>
-                ) : (
-                    <Typography
-                        variant="h5"
-                        component="h1"
-                        className={styles.title}
-                        color="textPrimary"
+                    </div>
+                    <Box
+                        component="dl"
+                        display="flex"
+                        flexDirection="row"
+                        flexWrap="wrap"
+                        m={0}
+                        className={clsx(
+                            styles.information,
+                        )}
                     >
-                        {courseName}
-                    </Typography>
-                )}
-            </Box>
+                        <Information
+                            getIcon={props => <FaGraduationCap {...props} />}
+                            text={teacherName}
+                        />
+                        <Information
+                            getIcon={props => <FaMapMarkerAlt {...props} />}
+                            text={roomName}
+                        />
+                    </Box>
+                </>
+            ) : (
+                <Typography
+                    variant="h5"
+                    component="h1"
+                    className={styles.title}
+                    color="textPrimary"
+                >
+                    {courseName}
+                </Typography>
+            )}
         </Box>
     );
 };

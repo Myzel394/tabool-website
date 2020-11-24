@@ -1,10 +1,18 @@
-import React from "react";
+import React, {ReactNode, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {combineDatetime, findNextDate} from "utils";
+import {combineDatetime, findNextDate, getISODatetime} from "utils";
 import {IFetchTimetableResponse} from "hooks/apis/fetch/useFetchTimetableAPI";
 import {setBeginTime, setEndTime} from "utils/setTime";
+import {View} from "react-big-calendar";
+import {isMobile} from "react-device-detect";
+import {useQuery} from "react-query";
 
-import Homework from "../../components/timetable/Homework/Homework";
+import {useFetchTimetableAPI, useQueryOptions} from "../../hooks";
+
+import CalendarContext, {CalendarType} from "./CalendarContext";
+import {Skeleton} from "./Calendar/states";
+import {LessonCalendar} from "./Calendar/calendars";
+import HomeworkCalendar from "./Calendar/calendars/HomeworkCalendar";
 
 
 const getStartDate = (): Dayjs => setBeginTime(
@@ -36,7 +44,7 @@ const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFe
     const constrainedEvents = events.filter(event =>
         event.startDatetime.isAfter(startDatetime) && event.endDatetime.isBefore(endDatetime));
     const constrainedHomeworks = homeworks.filter(homework =>
-        lessonIds.includes(homework.lesson));
+        lessonIds.includes(homework.lesson.id));
     const constrainedMaterials = materials.filter(material =>
         lessonIds.includes(material.lesson));
     const constrainedModifications = modifications.filter(modification =>
@@ -53,23 +61,6 @@ const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFe
 };
 
 const Calendar = () => {
-    return (
-        <Homework
-            creationDate={dayjs()}
-            dueDate={dayjs()}
-            subject={{
-                name: "Geschichte",
-                shortName: "G",
-                id: "123",
-                userRelation: {
-                    color: "#F2B517",
-                },
-            }}
-            information="blabla"
-        />
-    );
-
-/*
     // Options
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchTimetableAPI();
@@ -84,12 +75,12 @@ const Calendar = () => {
 
     // Data
     const endDate = getEndDate(startDate);
-    const {data, isLoading} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
+    const {data, isLoading, updatedAt} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
         startDatetime: getISODatetime(startDate),
         endDatetime: getISODatetime(endDate),
     }], fetchTimetable, queryOptions);
 
-    // Values
+    // Functions
     const changeDate = (rawValue: Dayjs) => {
         let value: Dayjs = rawValue;
 
@@ -110,22 +101,30 @@ const Calendar = () => {
             ),
         );
     };
+
+    // Values
     let children: ReactNode;
     let contextData: IFetchTimetableResponse | undefined = data;
 
     if (isLoading || !data?.lessons || !data.events || !data.homeworks || !data.modifications || !data.materials) {
         children = <Skeleton startDate={startDate} endDate={endDate} />;
     } else {
+        // Type
         switch (activeType) {
             case "lesson": {
-                switch (activeView) {
-                    case "day":
-                        contextData = constrainWeekToDayData(data, activeDate);
-                }
-
                 children = <LessonCalendar />;
                 break;
             }
+            case "homework": {
+                children = <HomeworkCalendar />;
+                break;
+            }
+        }
+
+        // View
+        switch (activeView) {
+            case "day":
+                contextData = constrainWeekToDayData(data, activeDate);
         }
     }
 
@@ -153,7 +152,7 @@ const Calendar = () => {
         >
             {children}
         </CalendarContext.Provider>
-    );*/
+    );
 };
 
 export default Calendar;
