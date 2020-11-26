@@ -38,6 +38,11 @@ const createTheme = (parentTheme: Theme | undefined, color: string): Theme => {
                     $set: isLight ? "#222" : "#fff",
                 },
             },
+            secondary: {
+                main: {
+                    $set: isLight ? "#222" : "#fff",
+                },
+            },
             text: {
                 $set: isLight ? darkText : lightText,
             },

@@ -1,0 +1,43 @@
+$grayscale: grayscale(.5);
+$transform: scale(.92);
+
+@keyframes animateIn {
+    0% {
+        transform: none;
+        filter: none;
+    }
+    100% {
+        transform: $transform;
+        filter: $grayscale;
+    }
+}
+
+@keyframes animateOut {
+    0% {
+        transform: $transform;
+        filter: $grayscale;
+    }
+    100% {
+        transform: none;
+        filter: none;
+    }
+}
+
+.container {
+    will-change: transform;
+
+    &.animateEntering {
+        animation: animateIn .1s ease-out;
+    }
+
+    &.animateExiting {
+        animation: animateOut .1s ease-out;
+    }
+
+    &.animateOn {
+        filter: $grayscale;
+        transform: $transform;
+    }
+
+    &.animateOff {}
+}

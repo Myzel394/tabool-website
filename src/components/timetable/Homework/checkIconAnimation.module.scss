@@ -1,0 +1,54 @@
+$transform: none;
+
+@keyframes animateIn {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: $transform;
+    }
+}
+
+@keyframes animateOut {
+    0% {
+        transform: $transform;
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+
+.animationEntering {
+    animation: animateIn .3s cubic-bezier(.3,1.23,.53,1.22);
+}
+
+.animateExiting {
+    animation: animateOut .2s ease-out;
+}
+
+.animateOff {
+    transform: scale(0);
+}
+
+.animateOn {
+    transform: $transform;
+}
+
+
+.checkIconContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    pointer-events: none;
+
+    .checkIcon {
+        width: 100%;
+        height: 100%;
+        opacity: .2;
+    }
+}

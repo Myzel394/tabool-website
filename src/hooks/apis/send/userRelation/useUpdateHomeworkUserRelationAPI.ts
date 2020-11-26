@@ -9,7 +9,7 @@ export interface IUpdateHomeworkUserRelationData {
     id: string;
 }
 
-export type IUpdateHomeworkUserRelationResponse = HomeworkDetail;
+export type IUpdateHomeworkUserRelationResponse = HomeworkDetail["userRelation"];
 
 
 const useUpdateHomeworkUserRelationAPI = () => {

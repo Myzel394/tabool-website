@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {combineDatetime, findNextDate, getISODatetime} from "utils";
 import {IFetchTimetableResponse} from "hooks/apis/fetch/useFetchTimetableAPI";
@@ -7,7 +7,7 @@ import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useQuery} from "react-query";
 
-import {useFetchTimetableAPI, useQueryOptions} from "../../hooks";
+import {useDeviceWidth, useFetchTimetableAPI, useQueryOptions} from "../../hooks";
 
 import CalendarContext, {CalendarType} from "./CalendarContext";
 import {Skeleton} from "./Calendar/states";
@@ -64,6 +64,7 @@ const Calendar = () => {
     // Options
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchTimetableAPI();
+    const {isMD} = useDeviceWidth();
 
     // States
     const [activeView, setActiveView] = useState<View>(isMobile ? "day" : "work_week");
@@ -75,7 +76,7 @@ const Calendar = () => {
 
     // Data
     const endDate = getEndDate(startDate);
-    const {data, isLoading, updatedAt} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
+    const {data, isLoading, refetch} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
         startDatetime: getISODatetime(startDate),
         endDatetime: getISODatetime(endDate),
     }], fetchTimetable, queryOptions);
@@ -101,6 +102,14 @@ const Calendar = () => {
             ),
         );
     };
+
+    // Effects
+    // When homework selected, force day view on small devices
+    useEffect(() => {
+        if (!isMD && activeType === "homework" && activeView !== "day") {
+            setActiveView("day");
+        }
+    }, [activeType, activeView, isMD]);
 
     // Values
     let children: ReactNode;
@@ -134,6 +143,7 @@ const Calendar = () => {
                 activeView,
                 showFreePeriods,
                 showDetails,
+                refetch,
                 lessons: contextData?.lessons ?? [],
                 homeworks: contextData?.homeworks ?? [],
                 modifications: contextData?.modifications ?? [],

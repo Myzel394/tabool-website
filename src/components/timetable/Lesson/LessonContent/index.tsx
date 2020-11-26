@@ -4,6 +4,7 @@ import {Box, Typography, useTheme} from "@material-ui/core";
 import {useDeviceWidth} from "hooks";
 import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
 import DayJSEl from "react-dayjs";
+import {isMobile} from "react-device-detect";
 
 import LessonContext from "../LessonContext";
 import styles from "../LessonContent.module.scss";
@@ -34,7 +35,7 @@ const LessonContent = ({
 
     const wrapperStyle = useMemo(() => ({
         backgroundColor: theme.palette.primary.main,
-        padding: isMD ? ".4em" : ".1em .4em",
+        padding: isMD ? ".4em" : ".1em",
         borderRadius: theme.shape.borderRadius,
     }), [isMD, theme.palette.primary.main, theme.shape.borderRadius]);
 
@@ -44,7 +45,7 @@ const LessonContent = ({
             flexDirection="column"
             justifyContent="space-between"
             alignItems="flex-start"
-            flexWrap="wrap"
+            flexWrap={isMobile ? "no-wrap" : "wrap"}
             display="flex"
             style={wrapperStyle}
             className={clsx(

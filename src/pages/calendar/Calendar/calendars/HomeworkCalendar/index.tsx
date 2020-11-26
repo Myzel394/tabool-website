@@ -7,14 +7,16 @@ import {buildCalendarEvents} from "./utils";
 import Event from "./Event";
 
 const HomeworkCalendar = () => {
-    const {homeworks} = useContext(CalendarContext);
+    const {homeworks, refetch} = useContext(CalendarContext);
 
     const calendarEvents = buildCalendarEvents(homeworks);
 
     return (
         <DefaultCalendar
             events={calendarEvents}
-            eventComponent={Event}
+            eventComponent={Event({
+                refetch,
+            })}
         />
     );
 };

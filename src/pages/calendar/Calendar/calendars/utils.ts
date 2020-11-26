@@ -1,6 +1,8 @@
+import {Event as CalendarEvent} from "react-big-calendar";
+
 const stringifyPercent = (value: string | number): string => (typeof value === "string" ? value : `${value}%`);
 
-const getDivStyles = (style: any) => {
+const getDivStyles = (style: any, event?: CalendarEvent): any => {
     const {height, top, width, xOffset} = style;
 
     return {
@@ -8,7 +10,7 @@ const getDivStyles = (style: any) => {
         left: stringifyPercent(xOffset),
         width: stringifyPercent(width),
         height: stringifyPercent(height),
-        position: "absolute" as "absolute",
+        position: event?.allDay ? "" : "absolute" as "absolute",
     };
 };
 

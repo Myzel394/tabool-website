@@ -26,7 +26,7 @@ const createTheme = (parentTheme: Theme) => update(parentTheme, {
     typography: {
         body1: {
             fontSize: {
-                $set: ".6rem",
+                $set: ".5rem",
             },
             [parentTheme.breakpoints.up("lg")]: {
                 $set: {
@@ -36,7 +36,7 @@ const createTheme = (parentTheme: Theme) => update(parentTheme, {
         },
         body2: {
             fontSize: {
-                $set: ".5rem",
+                $set: ".4rem",
             },
             [parentTheme.breakpoints.up("lg")]: {
                 $set: {
@@ -53,7 +53,7 @@ const createTheme = (parentTheme: Theme) => update(parentTheme, {
                     fontWeight,
                     letterSpacing,
                     lineHeight,
-                    fontSize: ".9rem",
+                    fontSize: ".7rem",
                     [parentTheme.breakpoints.up("lg")]: {
                         fontSize: "1.3rem",
                     },
@@ -73,7 +73,10 @@ const Event = ({
     animate,
     showDetails,
 }: IEvent) => {
-    const divStyle = getDivStyles(style ?? {});
+    const divStyle = {
+        ...getDivStyles(style ?? {}, calendarEvent),
+        wordBreak: "break-all" as "break-all",
+    };
 
     let children: ReactNode = null;
 

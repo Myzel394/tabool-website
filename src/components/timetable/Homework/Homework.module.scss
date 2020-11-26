@@ -1,60 +1,7 @@
-@keyframes animateIn {
-    0% {
-        transform: scale(0);
-    }
-    100% {
-        transform: none;
-    }
-}
-
-@keyframes animateOut {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1.5);
-        opacity: 0;
-    }
-}
-
-.container {
+.wrapper {
     position: relative;
-    transition: .2s;
 
-    .animationContainer {
-        overflow: hidden;
-
-        .animationEntering {
-            animation: animateIn .3s cubic-bezier(.3,1.23,.53,1.22);
-        }
-
-        .animateExiting {
-            animation: animateOut .2s ease-out;
-        }
-
-        .animateOff {
-            transform: scale(0);
-        }
-
-        .animateOn {
-            transform: none;
-        }
-    }
-
-    .checkIcon {
-        width: 100%;
-        height: 100%;
-        opacity: .2;
-    }
-
-    .checkIconContainer {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        right: 0;
-        pointer-events: none;
+    .completed {
+        text-decoration: line-through;
     }
 }
-

@@ -29,7 +29,7 @@ const Toolbar = ({label, onNavigate}: ToolbarProps) => {
     const {isMD} = useDeviceWidth();
     const [isOpen, setIsOpen] = useState<boolean>(isCalendarOpened);
     const elements = [
-        !isMobile && <ViewChanger key="view_changer" />,
+        <ViewChanger key="view_changer" />,
         <TypeChanger key="type_changer" />,
         <div key="switchers">
             <ShowFreePeriods />
@@ -39,7 +39,7 @@ const Toolbar = ({label, onNavigate}: ToolbarProps) => {
 
     return (
         <>
-            <Grid container direction="row" alignItems="center" justify="center">
+            <Grid container direction={isMD ? "row" : "column"} alignItems="center" justify="center">
                 <Grid item>
                     <Navigation
                         label={label}
@@ -74,7 +74,7 @@ const Toolbar = ({label, onNavigate}: ToolbarProps) => {
                                 <Calendar />
                                 <Grid container spacing={1} direction="column" alignItems="center">
                                     {elements.map(element => (
-                                        <Grid key={element === false ? "view_changer" : element.key} item>
+                                        <Grid key={element.key} item>
                                             {element}
                                         </Grid>
                                     ))}
@@ -83,7 +83,7 @@ const Toolbar = ({label, onNavigate}: ToolbarProps) => {
                         ) : (
                             <Grid container spacing={1} direction="column" alignItems="center">
                                 {elements.map(element => (
-                                    <Grid key={element === false ? "view_changer" : element.key} item>
+                                    <Grid key={element.key} item>
                                         {element}
                                     </Grid>
                                 ))}

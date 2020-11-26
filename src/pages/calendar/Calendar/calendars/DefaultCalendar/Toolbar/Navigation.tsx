@@ -20,25 +20,27 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
         latestDateAvailable,
         date,
         onDateChange,
+        activeView,
     } = useContext(CalendarContext);
     const {t} = useTranslation();
+    const isDayView = activeView === "day";
     const noDataAvailableText = t("Es gibt für diesen Zeitraum noch keine Daten").toString();
-    const disablePrevious = earliestDateAvailable && !(
-        date.isAfter(earliestDateAvailable)
-    );
-    const disableNext = latestDateAvailable && !(
-        date.isBefore(latestDateAvailable)
-    );
     const disablePreviousWeek = earliestDateAvailable && !(
         date.subtract(6, "day").isAfter(earliestDateAvailable)
     );
     const disableNextWeek = latestDateAvailable && !(
         date.add(6, "day").isBefore(latestDateAvailable)
     );
+    const disablePrevious = isDayView ? earliestDateAvailable && !(
+        date.isAfter(earliestDateAvailable)
+    ) : disablePreviousWeek;
+    const disableNext = isDayView ? latestDateAvailable && !(
+        date.isBefore(latestDateAvailable)
+    ) : disableNextWeek;
 
     return (
         <Box flexDirection="row" display="flex" justifyContent="center">
-            {isMobile && (
+            {isMobile && isDayView && (
                 <Tooltip title={disablePreviousWeek ? noDataAvailableText : t("Springe eine Woche zurück").toString()}>
                     <span>
                         <IconButton
@@ -91,7 +93,7 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
                     </IconButton>
                 </span>
             </Tooltip>
-            {isMobile && (
+            {isMobile && isDayView && (
                 <Tooltip title={disableNextWeek ? noDataAvailableText : t("Springe eine Woche weiter").toString()}>
                     <span>
                         <IconButton

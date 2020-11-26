@@ -49,9 +49,11 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
                     endTime={lesson.lessonData.endTime}
                 >
                     <Badges>
-                        {hasHomeworkBadge && <HomeworkBadge key={`homework_${lesson.id}`} count={homeworkCount} />}
-                        {hasMaterialBadge && <MaterialBadge key={`material_${lesson.id}`} count={materialCount} />}
-                        {hasModificationBadge && <RoomChangeBadge key={`room_${lesson.id}`} />}
+                        {[
+                            hasHomeworkBadge && <HomeworkBadge key={`homework_${lesson.id}`} count={homeworkCount} />,
+                            hasMaterialBadge && <MaterialBadge key={`material_${lesson.id}`} count={materialCount} />,
+                            hasModificationBadge && <RoomChangeBadge key={`room_${lesson.id}`} />,
+                        ]}
                     </Badges>
                     <LessonContent
                         courseName={courseName}
