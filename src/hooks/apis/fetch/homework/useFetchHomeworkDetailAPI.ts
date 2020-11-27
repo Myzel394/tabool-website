@@ -18,7 +18,7 @@ export const parseHomework = (data: HomeworkDetail): void => {
 const useFetchHomeworkDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, id: string): Promise<HomeworkDetail> => {
+    return useCallback(async (id: string): Promise<HomeworkDetail> => {
         const {data} = await instance.get(`/api/data/homework/${id}/`, await getLoginConfig());
         parseHomework(data);
 

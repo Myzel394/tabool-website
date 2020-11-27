@@ -1,21 +1,25 @@
 import React, {useMemo, useState} from "react";
 import {Dayjs} from "dayjs";
 import {HomeworkDetail, Subject} from "types";
-import {Box, CircularProgress, Grid, Typography, useTheme} from "@material-ui/core";
+import {Box, CircularProgress, Grid, Link, Typography, useTheme} from "@material-ui/core";
 import DayJSEl from "react-dayjs";
 import {FaCheck, FaCheckCircle, FaExclamationTriangle, HiBan, HiClock} from "react-icons/all";
 import {CSSTransition} from "react-transition-group";
 import clsx from "clsx";
 import {useMutation} from "react-query";
 import {useUpdateHomeworkUserRelationAPI} from "hooks";
+import {generatePath} from "react-router";
+import {useTranslation} from "react-i18next";
 
 import ColoredBox from "../../ColoredBox";
 import Information from "../../Information";
+import {SecondaryButton} from "../../buttons";
 
 import styles from "./Homework.module.scss";
 import Action from "./Action";
 import checkIconAnimation from "./checkIconAnimation.module.scss";
 import ignoreAnimation from "./ignoreAnimation.module.scss";
+
 
 export interface IHomework {
     id: string;
@@ -48,6 +52,7 @@ const Homework = ({
     onServerUpdate,
 }: IHomework) => {
     const theme = useTheme();
+    const {t} = useTranslation();
     const [loading, setLoading] = useState<boolean>(false);
     const [_updateRelationRaw] = useMutation(useUpdateHomeworkUserRelationAPI(), {
         onSuccess: (data, variables) => {
@@ -94,7 +99,7 @@ const Homework = ({
                             container
                             direction="column"
                             justify="space-between"
-                            spacing={4}
+                            spacing={2}
                         >
                             <Grid item>
                                 <Grid container spacing={1} direction="column">
@@ -139,33 +144,45 @@ const Homework = ({
                                             )}
                                         />
                                     </Box>
-                                    <Box display="flex" flexDirection="row">
-                                        {loading && <CircularProgress color="secondary" />}
-                                        <Action
-                                            icon={<FaCheckCircle />}
-                                            isActive={isCompleted}
-                                            disabled={ignore}
-                                            onClick={() => {
-                                                if (onCompletedChange()) {
-                                                    updateRelation({
-                                                        id,
-                                                        completed: !completed,
-                                                    });
-                                                }
-                                            }}
-                                        />
-                                        <Action
-                                            icon={<HiBan />}
-                                            isActive={ignore}
-                                            onClick={() => {
-                                                if (onIgnoreChange()) {
-                                                    updateRelation({
-                                                        id,
-                                                        ignore: !ignore,
-                                                    });
-                                                }
-                                            }}
-                                        />
+                                    <Box display="flex" flexDirection="column" alignItems="flex-end">
+                                        <Box display="flex" flexDirection="row">
+                                            {loading && <CircularProgress color="secondary" />}
+                                            <Action
+                                                icon={<FaCheckCircle />}
+                                                isActive={isCompleted}
+                                                disabled={ignore}
+                                                onClick={() => {
+                                                    if (onCompletedChange()) {
+                                                        updateRelation({
+                                                            id,
+                                                            completed: !completed,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                            <Action
+                                                icon={<HiBan />}
+                                                isActive={ignore}
+                                                onClick={() => {
+                                                    if (onIgnoreChange()) {
+                                                        updateRelation({
+                                                            id,
+                                                            ignore: !ignore,
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                        </Box>
+                                        <Box>
+                                            <Link
+                                                href={generatePath("/homework/:id/", {
+                                                    id,
+                                                })}
+                                                component={SecondaryButton}
+                                            >
+                                                {t("Zur Hausaufgabe")}
+                                            </Link>
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Grid>

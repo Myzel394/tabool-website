@@ -8,6 +8,7 @@ import SubjectList from "pages/list/Subject";
 import Login from "pages/auth/Login";
 import Home from "pages/home";
 import Calendar from "pages/calendar/index";
+import {HomeworkPage} from "pages";
 
 
 export default function Routes() {
@@ -56,6 +57,11 @@ export default function Routes() {
                 exact
                 path="/timetable/"
                 component={Calendar}
+            />
+            <Route
+                exact
+                path="/homework/:id/"
+                component={HomeworkPage}
             />
         </Switch>
     );

@@ -1,4 +1,4 @@
-import React, {memo, useContext, useMemo, useState} from "react";
+import React, {useContext, useMemo, useState} from "react";
 import {Box, Container, Grid} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {UserContext} from "contexts";
@@ -6,9 +6,9 @@ import _ from "lodash";
 import tinycolor from "tinycolor2";
 
 import Homeworks from "./Homeworks";
-import {ColorType} from "./TodayLesson/LessonManager";
 import TodayLessonManager from "./TodayLesson";
 import Heading from "./Heading";
+import {ColorType} from "./TodayLesson/LessonManager";
 
 const Home = () => {
     const {t} = useTranslation();
@@ -66,4 +66,4 @@ const Home = () => {
     );
 };
 
-export default memo(Home);
+export default Home;

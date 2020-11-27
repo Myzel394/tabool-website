@@ -6,8 +6,7 @@ import {setBeginTime, setEndTime} from "utils/setTime";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useQuery} from "react-query";
-
-import {useDeviceWidth, useFetchTimetableAPI, useQueryOptions} from "../../hooks";
+import {useDeviceWidth, useFetchTimetableAPI, usePersistentStorage, useQueryOptions} from "hooks";
 
 import CalendarContext, {CalendarType} from "./CalendarContext";
 import {Skeleton} from "./Calendar/states";
@@ -67,11 +66,11 @@ const Calendar = () => {
     const {isMD} = useDeviceWidth();
 
     // States
-    const [activeView, setActiveView] = useState<View>(isMobile ? "day" : "work_week");
-    const [activeType, setActiveType] = useState<CalendarType>("lesson");
+    const [activeView, setActiveView] = useState<View>(() => (isMobile ? "day" : "work_week"));
+    const [activeType, setActiveType] = usePersistentStorage<CalendarType>("lesson", "timetable_calendarType");
     const [activeDate, setActiveDate] = useState<Dayjs>(getStartDate);
-    const [showFreePeriods, setShowFreePeriods] = useState<boolean>(true);
-    const [showDetails, setShowDetails] = useState<boolean>(false);
+    const [showFreePeriods, setShowFreePeriods] = usePersistentStorage<boolean>(true, "timetable_showFreePeriods");
+    const [showDetails, setShowDetails] = usePersistentStorage<boolean>(!isMobile, "timetable_showDetails");
     const [startDate, setStartDate] = useState<Dayjs>(activeDate);
 
     // Data
@@ -109,7 +108,7 @@ const Calendar = () => {
         if (!isMD && activeType === "homework" && activeView !== "day") {
             setActiveView("day");
         }
-    }, [activeType, activeView, isMD]);
+    }, [activeType, activeView, isMD, setActiveView]);
 
     // Values
     let children: ReactNode;

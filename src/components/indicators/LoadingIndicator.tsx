@@ -3,11 +3,11 @@ import {CircularProgress} from "@material-ui/core";
 import {SimpleCenter} from "components/index";
 
 export interface ILoadingIndicator {
-    children: () => JSX.Element;
+    children?: () => JSX.Element;
     isLoading?: boolean;
 }
 
-const LoadingIndicator = ({isLoading, children}: ILoadingIndicator): JSX.Element => {
+const LoadingIndicator = ({isLoading, children}: ILoadingIndicator) => {
     if (isLoading) {
         return (
             <SimpleCenter>
@@ -16,7 +16,7 @@ const LoadingIndicator = ({isLoading, children}: ILoadingIndicator): JSX.Element
         );
     }
 
-    return children();
+    return children ? children() : null;
 };
 
 LoadingIndicator.defaultProps = {
