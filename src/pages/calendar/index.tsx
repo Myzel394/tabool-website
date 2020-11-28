@@ -67,7 +67,7 @@ const Calendar = () => {
 
     // States
     const [activeView, setActiveView] = useState<View>(() => (isMobile ? "day" : "work_week"));
-    const [activeType, setActiveType] = usePersistentStorage<CalendarType>("lesson", "timetable_calendarType");
+    const [activeType, setActiveType] = useState<CalendarType>("lesson");
     const [activeDate, setActiveDate] = useState<Dayjs>(getStartDate);
     const [showFreePeriods, setShowFreePeriods] = usePersistentStorage<boolean>(true, "timetable_showFreePeriods");
     const [showDetails, setShowDetails] = usePersistentStorage<boolean>(!isMobile, "timetable_showDetails");
