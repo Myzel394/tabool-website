@@ -1,4 +1,4 @@
-import React, {memo, useContext, useMemo, useRef} from "react";
+import React, {memo, useContext, useMemo, useRef, useState} from "react";
 import {Box, Grid, IconButton, Paper, Typography, useTheme} from "@material-ui/core";
 import {GoThreeBars} from "react-icons/all";
 import {DraggableProvidedDragHandleProps} from "react-beautiful-dnd";
@@ -22,6 +22,7 @@ const ANIMATION_DURATION = 300;
 const Information = ({icon, title, information, isElevated, dragHandleProps}: IInformation) => {
     const {enableReordering} = useContext(DetailContext);
     const theme = useTheme();
+    const [animationDuration, setAnimationDuration] = useState<number>(0);
     const style = useMemo(() => ({
         borderRadius: theme.shape.borderRadius,
         height: "100%",
@@ -45,9 +46,9 @@ const Information = ({icon, title, information, isElevated, dragHandleProps}: II
         },
     }), [buttonWidth]);
     const defaultStyle = useMemo(() => ({
-        transition: `${ANIMATION_DURATION}ms`,
+        transition: `${animationDuration}ms`,
         willChange: "transform",
-    }), []);
+    }), [animationDuration]);
     const elevation = (() => {
         let value = 1;
 
@@ -63,7 +64,15 @@ const Information = ({icon, title, information, isElevated, dragHandleProps}: II
             elevation={elevation}
             style={style}
         >
-            <Transition in={enableReordering} timeout={300}>
+            <Transition
+                in={enableReordering}
+                timeout={animationDuration}
+                onEnter={() => {
+                    if (animationDuration !== ANIMATION_DURATION) {
+                        setAnimationDuration(ANIMATION_DURATION);
+                    }
+                }}
+            >
                 {state => (
                     <div
                         style={{
