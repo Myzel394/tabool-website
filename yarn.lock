@@ -1911,6 +1911,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/bezier-easing@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@types/bezier-easing/-/bezier-easing-2.1.2.tgz#04ce5a6e148543f5dca4e6066db363b19a6f294a"
+  integrity sha512-1f9PSSooB7VBfwNQm5nKE8i7XXWWtjKPmm1apg52pxq/mmuyJNZpvEzR2n+c0+XPs0ldLoVWWp54tqkXsKxFsA==
+  dependencies:
+    bezier-easing "*"
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
@@ -3148,6 +3155,11 @@ bcrypt-pbkdf@^1.0.0:
   integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
   dependencies:
     tweetnacl "^0.14.3"
+
+bezier-easing@*, bezier-easing@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/bezier-easing/-/bezier-easing-2.1.0.tgz#c04dfe8b926d6ecaca1813d69ff179b7c2025d86"
+  integrity sha1-wE3+i5JtbsrKGBPWn/F5t8ICXYY=
 
 big.js@^5.2.2:
   version "5.2.2"
@@ -10862,6 +10874,11 @@ react-scripts@3.4.3:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.1.2"
+
+react-simple-pull-to-refresh@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-simple-pull-to-refresh/-/react-simple-pull-to-refresh-1.2.0.tgz#52b28b423d7d4303322fd0effe72cb71f04b9195"
+  integrity sha512-pCE8iTegYTkXVWR5fPFb9XbcloVxj2MYZm0S0gv5pww9TrLjqzntklOQeQUR80S51BC7oDBezrpzHQjAJW0Y9g==
 
 react-svg@^11.0.44:
   version "11.0.44"

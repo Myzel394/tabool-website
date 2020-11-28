@@ -20,6 +20,7 @@
     "animate.css": "^4.1.1",
     "axios": "^0.20.0",
     "axios-case-converter": "^0.6.0",
+    "bezier-easing": "^2.1.0",
     "camelcase-keys": "^6.2.2",
     "clsx": "^1.1.1",
     "common-validators": "^0.3.0",
@@ -49,6 +50,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-simple-pull-to-refresh": "^1.2.0",
     "react-svg": "^11.0.44",
     "react-transition-group": "^4.4.1",
     "react-virtualized": "^9.22.2",
@@ -86,6 +88,7 @@
   "devDependencies": {
     "@shopify/eslint-plugin": "^39.0.1",
     "@types/axios-case-converter": "^0.3.1",
+    "@types/bezier-easing": "^2.1.2",
     "@types/immutability-helper": "^2.6.3",
     "@types/js-cookie": "^2.2.6",
     "@types/lodash": "^4.14.162",

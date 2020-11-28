@@ -2,6 +2,7 @@ export * from "./useSendLoginAPI";
 export * from "./useSendFillOutDataAPI";
 export * from "./useSendConfirmEmailAPI";
 export * from "./useSendRegistrationAPI";
+export * from "./update";
 
 export {default as useSendLoginAPI} from "./useSendLoginAPI";
 export {default as useSendFillOutDataAPI} from "./useSendFillOutDataAPI";

@@ -6,8 +6,9 @@ import update from "immutability-helper";
 import Information from "./Information";
 import DetailContext from "./DetailContext";
 
+
 const InformationList = () => {
-    const {setElevatedKey, ordering, setOrdering, data, elevatedKey, enableReordering} = useContext(DetailContext);
+    const {setElevatedKey, ordering, setOrdering, data, elevatedKey, forms, forceEdit} = useContext(DetailContext);
     const onDragEnd = (result: DropResult) => {
         setElevatedKey(undefined);
         const {destination, source, draggableId} = result;
@@ -51,6 +52,9 @@ const InformationList = () => {
                         {ordering.map((key, index) => {
                             const information = data[key];
                             const isElevated = key === elevatedKey;
+                            const form = forms[key];
+                            const forceEditMode = forceEdit?.includes(key) ?? false;
+                            const onEditModeLeft = form?.onEditModeLeft;
 
                             return (
                                 <Draggable
@@ -72,6 +76,9 @@ const InformationList = () => {
                                                 information={information.information}
                                                 isElevated={isElevated}
                                                 dragHandleProps={provided.dragHandleProps}
+                                                form={form}
+                                                forceEdit={forceEditMode}
+                                                onEditModeLeft={onEditModeLeft}
                                             />
                                         </Grid>
                                     )}

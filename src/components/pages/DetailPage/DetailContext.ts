@@ -7,6 +7,12 @@ export interface Data {
     icon: JSX.Element;
 }
 
+export interface Form {
+    input: JSX.Element;
+    onEditModeLeft: () => any;
+    helpText?: string;
+}
+
 export interface IDetailContext {
     ordering: string[];
     elevatedKey: string;
@@ -14,10 +20,15 @@ export interface IDetailContext {
     data: {
         [key: string]: Data;
     };
+    forms?: {
+        [key: string]: Form;
+    };
+    forceEdit?: string[];
 
     setOrdering: (ordering: string[]) => any;
     setElevatedKey: (key: string) => any;
     setEnableReordering: (enabled: boolean) => any;
+
 }
 
 // @ts-ignore

@@ -21,3 +21,10 @@ export interface HomeworkDetail extends Omit<HomeworkApprox, "truncatedInformati
         ignore: boolean;
     };
 }
+
+export interface EditableHomeworkData {
+    isPrivate: boolean;
+    information: string;
+    type: string;
+    dueDate: Dayjs;
+}

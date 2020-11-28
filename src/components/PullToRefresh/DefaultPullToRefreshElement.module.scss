@@ -1,0 +1,11 @@
+.container {
+    transition: .3s;
+}
+
+.on {
+    transform: rotate(180deg)
+}
+
+.off {
+    transform: none;
+}
