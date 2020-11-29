@@ -67,10 +67,10 @@ const PullToRefresh = ({
             transform: `translateY(${endDragAmount}px)`,
         },
         exiting: {
-            transform: `translateY(${isRefreshing ? loadingElementHeight : 0}px)`,
+            transform: isRefreshing ? `translateY(${loadingElementHeight}px)` : "",
         },
         exited: {
-            transform: `translateY(${isRefreshing ? loadingElementHeight : 0}px)`,
+            transform: isRefreshing ? `translateY(${loadingElementHeight}px)` : "",
         },
     }), [endDragAmount, isRefreshing, loadingElementHeight]);
     const handleTouchStart = useCallback(event => {
@@ -124,7 +124,6 @@ const PullToRefresh = ({
                 enter: 0,
                 appear: 0,
             }}
-
         >
             {state => (
                 <div

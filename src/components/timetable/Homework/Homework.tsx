@@ -13,7 +13,6 @@ import {useTranslation} from "react-i18next";
 
 import ColoredBox from "../../ColoredBox";
 import Information from "../../Information";
-import {SecondaryButton} from "../../buttons";
 
 import styles from "./Homework.module.scss";
 import Action from "./Action";
@@ -37,7 +36,6 @@ export interface IHomework {
 }
 
 const TIME_FORMAT = "ll";
-const MARGIN = 2;
 
 const Homework = ({
     id,
@@ -75,144 +73,142 @@ const Homework = ({
         <ColoredBox
             style={style} className={styles.wrapper} color={subject.userRelation.color}
         >
-            <Box mx={MARGIN} mt={MARGIN}>
-                <CSSTransition
-                    in={ignore}
-                    timeout={{
-                        enter: 100,
-                        exit: 100,
-                    }}
-                    classNames={{
-                        enterActive: ignoreAnimation.animateEntering,
-                        exitActive: ignoreAnimation.animateExiting,
-                        enterDone: ignoreAnimation.animateOn,
-                        exitDone: ignoreAnimation.animateOff,
-                    }}
-                >
-                    <div
-                        className={clsx(
-                            ignoreAnimation.container,
-                            ignore ? ignoreAnimation.animateOn : ignoreAnimation.animateOff,
-                        )}
-                    >
-                        <Grid
-                            container
-                            direction="column"
-                            justify="space-between"
-                            spacing={2}
-                        >
-                            <Grid item>
-                                <Grid container spacing={1} direction="column">
-                                    <Grid item>
-                                        <Typography
-                                            variant="h4"
-                                            component="h1"
-                                            color="textPrimary"
+            <Link
+                href={generatePath("/homework/:id/", {
+                    id,
+                })}
+            >
+                <Box m={2}>
 
-                                        >
-                                            <Box fontWeight={900}>
-                                                {subject.name}
-                                            </Box>
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="body1" color="textPrimary">
-                                            {information}
-                                        </Typography>
+                    <CSSTransition
+                        in={ignore}
+                        timeout={{
+                            enter: 100,
+                            exit: 100,
+                        }}
+                        classNames={{
+                            enterActive: ignoreAnimation.animateEntering,
+                            exitActive: ignoreAnimation.animateExiting,
+                            enterDone: ignoreAnimation.animateOn,
+                            exitDone: ignoreAnimation.animateOff,
+                        }}
+                    >
+                        <div
+                            className={clsx(
+                                ignoreAnimation.container,
+                                ignore ? ignoreAnimation.animateOn : ignoreAnimation.animateOff,
+                            )}
+                        >
+                            <Grid
+                                container
+                                direction="column"
+                                justify="space-between"
+                                spacing={2}
+                            >
+                                <Grid item>
+                                    <Grid container spacing={1} direction="column">
+                                        <Grid item>
+                                            <Typography
+                                                variant="h5"
+                                                component="h1"
+                                                color="textPrimary"
+                                            >
+                                                <Box fontWeight={900}>
+                                                    {subject.name}
+                                                </Box>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body1" color="textPrimary">
+                                                {information}
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item>
-                                <Box flexDirection="row" display="flex" alignItems="flex-end" justifyContent="space-between">
-                                    <Box display="flex" flexDirection="column">
-                                        {dueDate && (
+                                <Grid item>
+                                    <Box flexDirection="row" display="flex" alignItems="flex-end" justifyContent="space-between">
+                                        <Box display="flex" flexDirection="column">
+                                            {dueDate && (
+                                                <Information
+                                                    getIcon={props => <FaExclamationTriangle {...props} />}
+                                                    text={(
+                                                        <DayJSEl format={TIME_FORMAT}>
+                                                            {dueDate}
+                                                        </DayJSEl>
+                                                    )}
+                                                />
+                                            )}
                                             <Information
-                                                getIcon={props => <FaExclamationTriangle {...props} />}
+                                                getIcon={props => <HiClock {...props} />}
                                                 text={(
                                                     <DayJSEl format={TIME_FORMAT}>
-                                                        {dueDate}
+                                                        {creationDate}
                                                     </DayJSEl>
                                                 )}
                                             />
-                                        )}
-                                        <Information
-                                            getIcon={props => <HiClock {...props} />}
-                                            text={(
-                                                <DayJSEl format={TIME_FORMAT}>
-                                                    {creationDate}
-                                                </DayJSEl>
-                                            )}
-                                        />
-                                    </Box>
-                                    <Box display="flex" flexDirection="column" alignItems="flex-end">
-                                        <Box display="flex" flexDirection="row">
-                                            {loading && <CircularProgress color="secondary" />}
-                                            <Action
-                                                icon={<FaCheckCircle />}
-                                                isActive={isCompleted}
-                                                disabled={ignore}
-                                                onClick={() => {
-                                                    if (onCompletedChange()) {
-                                                        updateRelation({
-                                                            id,
-                                                            completed: !completed,
-                                                        });
-                                                    }
-                                                }}
-                                            />
-                                            <Action
-                                                icon={<HiBan />}
-                                                isActive={ignore}
-                                                onClick={() => {
-                                                    if (onIgnoreChange()) {
-                                                        updateRelation({
-                                                            id,
-                                                            ignore: !ignore,
-                                                        });
-                                                    }
-                                                }}
-                                            />
                                         </Box>
-                                        <Box>
-                                            <Link
-                                                href={generatePath("/homework/:id/", {
-                                                    id,
-                                                })}
-                                                component={SecondaryButton}
-                                            >
-                                                {t("Zur Hausaufgabe")}
-                                            </Link>
+                                        <Box display="flex" flexDirection="column" alignItems="flex-end">
+                                            <Box display="flex" flexDirection="row">
+                                                {loading && <CircularProgress color="secondary" />}
+                                                <Action
+                                                    icon={<FaCheckCircle />}
+                                                    isActive={isCompleted}
+                                                    disabled={ignore}
+                                                    onClick={event => {
+                                                        event.preventDefault();
+                                                        if (onCompletedChange()) {
+                                                            updateRelation({
+                                                                id,
+                                                                completed: !completed,
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                                <Action
+                                                    icon={<HiBan />}
+                                                    isActive={ignore}
+                                                    onClick={event => {
+                                                        event.preventDefault();
+                                                        if (onIgnoreChange()) {
+                                                            updateRelation({
+                                                                id,
+                                                                ignore: !ignore,
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                            </Box>
                                         </Box>
                                     </Box>
-                                </Box>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </div>
-                </CSSTransition>
-                <CSSTransition
-                    in={isCompleted}
-                    timeout={{
-                        enter: 300,
-                        exit: 200,
-                    }}
-                    classNames={{
-                        enterActive: checkIconAnimation.animationEntering,
-                        exitActive: checkIconAnimation.animateExiting,
-                        enterDone: checkIconAnimation.animateOn,
-                        exitDone: checkIconAnimation.animateOff,
-                    }}
-                >
-                    <Box
-                        color="text.primary"
-                        className={clsx(
-                            checkIconAnimation.checkIconContainer,
-                            isCompleted ? checkIconAnimation.animateOn : checkIconAnimation.animateOff,
-                        )}
+                        </div>
+                    </CSSTransition>
+                    <CSSTransition
+                        in={isCompleted}
+                        timeout={{
+                            enter: 300,
+                            exit: 200,
+                        }}
+                        classNames={{
+                            enterActive: checkIconAnimation.animationEntering,
+                            exitActive: checkIconAnimation.animateExiting,
+                            enterDone: checkIconAnimation.animateOn,
+                            exitDone: checkIconAnimation.animateOff,
+                        }}
                     >
-                        <FaCheck className={checkIconAnimation.checkIcon} />
-                    </Box>
-                </CSSTransition>
-            </Box>
+                        <Box
+                            color="text.primary"
+                            className={clsx(
+                                checkIconAnimation.checkIconContainer,
+                                isCompleted ? checkIconAnimation.animateOn : checkIconAnimation.animateOff,
+                            )}
+                        >
+                            <FaCheck className={checkIconAnimation.checkIcon} />
+                        </Box>
+                    </CSSTransition>
+                </Box>
+            </Link>
         </ColoredBox>
     );
 };

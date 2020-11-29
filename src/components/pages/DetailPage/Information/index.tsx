@@ -4,26 +4,33 @@ import {GoThreeBars} from "react-icons/all";
 import {DraggableProvidedDragHandleProps} from "react-beautiful-dnd";
 import {useElementSize} from "hooks";
 
-import {Form} from "../DetailContext";
-
-import Content from "./Content";
+import Content, {IContent} from "./Content";
 import TransitionWrapper from "./TransitionWrapper";
 
-export interface IInformation {
-    icon: JSX.Element;
-    title: string;
-    information: string;
-    key: string;
-
-    forceEdit: boolean;
+export interface IInformation extends Omit<IContent, "showEdit"> {
+    reorder: boolean;
+    isElevated: boolean;
 
     dragHandleProps?: DraggableProvidedDragHandleProps;
-    isElevated?: boolean;
-    form?: Form;
-    onEditModeLeft?: () => any;
 }
 
-const Information = ({icon, title, information, isElevated, dragHandleProps, form, forceEdit, onEditModeLeft}: IInformation) => {
+const Information = ({
+    icon,
+    title,
+    information,
+    isElevated,
+    dragHandleProps,
+    input,
+    forceEdit,
+    onEditModeLeft,
+    isUpdating,
+    disableShowMore,
+    helpText,
+    errors,
+    reset,
+    reorder,
+    subInformation,
+}: IInformation) => {
     const $button = useRef<any>();
     const theme = useTheme();
     const [buttonWidth, buttonHeight] = useElementSize($button);
@@ -52,7 +59,7 @@ const Information = ({icon, title, information, isElevated, dragHandleProps, for
             elevation={elevation}
             style={style}
         >
-            <TransitionWrapper offsetAmount={buttonWidth}>
+            <TransitionWrapper active={reorder} offsetAmount={buttonWidth}>
                 {style => (
                     <Box
                         display="flex"
@@ -66,11 +73,18 @@ const Information = ({icon, title, information, isElevated, dragHandleProps, for
                             </IconButton>
                         </div>
                         <Content
-                            icon={icon}
-                            title={title}
+                            disableShowMore={disableShowMore}
+                            isUpdating={isUpdating}
                             information={information}
-                            form={form}
+                            input={input}
                             forceEdit={forceEdit}
+                            showEdit={(errors ?? []).length > 0}
+                            title={title}
+                            icon={icon}
+                            helpText={helpText}
+                            errors={errors}
+                            reset={reset}
+                            subInformation={subInformation}
                             onEditModeLeft={onEditModeLeft}
                         />
                     </Box>

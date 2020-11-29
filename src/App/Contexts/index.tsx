@@ -13,11 +13,11 @@ const queryCache = new QueryCache();
 const Contexts = ({children}: IContexts) => {
     return (
         <ReactQueryCacheProvider queryCache={queryCache}>
-            <UserContextHandler>
-                <AxiosContextHandler>
+            <AxiosContextHandler>
+                <UserContextHandler>
                     {children}
-                </AxiosContextHandler>
-            </UserContextHandler>
+                </UserContextHandler>
+            </AxiosContextHandler>
         </ReactQueryCacheProvider>
     );
 };

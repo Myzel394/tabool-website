@@ -1,17 +1,15 @@
-import React, {memo, useContext, useMemo, useState} from "react";
+import React, {memo, useMemo, useState} from "react";
 import {Transition} from "react-transition-group";
-
-import DetailContext from "../DetailContext";
 
 export interface ITransitionWrapper {
     children: (style: any) => JSX.Element;
+    active: boolean;
     offsetAmount?: number;
 }
 
 const TRANSITION_DURATION = 150;
 
-const TransitionWrapper = ({children: childrenFn, offsetAmount}: ITransitionWrapper) => {
-    const {enableReordering} = useContext(DetailContext);
+const TransitionWrapper = ({children: childrenFn, offsetAmount, active}: ITransitionWrapper) => {
     const [animationDuration, setAnimationDuration] = useState<number>(0);
     const transitionStyles = useMemo(() => ({
         entering: {
@@ -34,7 +32,7 @@ const TransitionWrapper = ({children: childrenFn, offsetAmount}: ITransitionWrap
 
     return (
         <Transition
-            in={enableReordering}
+            in={active}
             timeout={animationDuration}
             onEnter={() => {
                 if (animationDuration !== TRANSITION_DURATION) {

@@ -1,16 +1,16 @@
 import React, {ReactNode, useMemo} from "react";
 import {Tooltip} from "components";
-import {Typography, useTheme} from "@material-ui/core";
+import {Typography, TypographyProps, useTheme} from "@material-ui/core";
 
 import styles from "./Information.module.scss";
 
-export interface IInformation {
+export interface IInformation extends TypographyProps {
     getIcon: (props) => ReactNode;
     text: ReactNode;
     tooltip?: string;
 }
 
-const Information = ({getIcon, text, tooltip}: IInformation) => {
+const Information = ({getIcon, text, tooltip, ...other}: IInformation) => {
     const theme = useTheme();
     const iconProps = useMemo(() => ({
         color: theme.palette.text.primary,
@@ -22,6 +22,7 @@ const Information = ({getIcon, text, tooltip}: IInformation) => {
             variant="body1"
             component="dd"
             color="textSecondary"
+            {...other}
         >
             {text}
         </Typography>;

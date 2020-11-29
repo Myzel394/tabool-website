@@ -8,7 +8,8 @@ export interface IAction extends IconButtonProps {
 
 const Action = ({icon, isActive, style, ...other}: IAction) => {
     const buttonStyle = useMemo(() => ({
-        ...style ?? {},
+        ...(style ?? {
+        }),
         opacity: isActive ? 1 : 0.5,
     }), [isActive, style]);
 

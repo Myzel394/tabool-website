@@ -6,7 +6,6 @@ import update from "immutability-helper";
 import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
 
-
 const usePersistedReducer = createPersistedReducer("state");
 
 export interface IUserContextHandler {
@@ -15,83 +14,83 @@ export interface IUserContextHandler {
 
 const reducer = (state: IUser, action: ActionType): IUser => {
     switch (action.type) {
-    case "logout": {
-        return initialUserState;
-    }
+        case "logout": {
+            return initialUserState;
+        }
 
+        case "login": {
+            const {isFullyRegistered, isEmailVerified, firstName, lastName, email, id} = action.payload;
+            const func = value => update(value || {
+            }, {
+                firstName: {
+                    $set: firstName,
+                },
+                lastName: {
+                    $set: lastName,
+                },
+                email: {
+                    $set: email,
+                },
+                id: {
+                    $set: id,
+                },
+            });
 
-    case "login": {
-        const {isFullyRegistered, isEmailVerified, firstName, lastName, email, id} = action.payload;
-        const func = value => update(value || {}, {
-            firstName: {
-                $set: firstName,
-            },
-            lastName: {
-                $set: lastName,
-            },
-            email: {
-                $set: email,
-            },
-            id: {
-                $set: id,
-            },
-        });
+            return update(
+                state,
+                {
+                    isAuthenticated: {
+                        $set: true,
+                    },
+                    isFullyRegistered: {
+                        $set: isFullyRegistered,
+                    },
+                    isEmailVerified: {
+                        $set: isEmailVerified,
+                    },
+                    data: {
+                        $apply: func,
+                    },
+                },
+            );
+        }
 
-        return update(
-            state,
-            {
-                isAuthenticated: {
-                    $set: true,
+        case "verify-email": {
+            return update(
+                state,
+                {
+                    isEmailVerified: {
+                        $set: true,
+                    },
                 },
-                isFullyRegistered: {
-                    $set: isFullyRegistered,
-                },
-                isEmailVerified: {
-                    $set: isEmailVerified,
-                },
-                data: {
-                    $apply: func,
-                },
-            },
-        );
-    }
+            );
+        }
 
-    case "verify-email": {
-        return update(
-            state,
-            {
-                isEmailVerified: {
-                    $set: true,
+        case "fill-out-data": {
+            return update(
+                state,
+                {
+                    isFullyRegistered: {
+                        $set: true,
+                    },
                 },
-            },
-        );
-    }
+            );
+        }
 
-    case "fill-out-data": {
-        return update(
-            state,
-            {
-                isFullyRegistered: {
-                    $set: true,
+        case "register": {
+            return update(
+                state,
+                {
+                    isAuthenticated: {
+                        $set: true,
+                    },
                 },
-            },
-        );
-    }
+            );
+        }
 
-    case "register": {
-        return update(
-            state,
-            {
-                isAuthenticated: {
-                    $set: true,
-                },
-            },
-        );
-    }
-
-    default: {
-        throw new Error();
-    }
+        default: {
+            throw new Error();
+        }
     }
 };
 
@@ -99,7 +98,11 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
     const [state, dispatch] = usePersistedReducer(reducer, initialUserState);
 
     return (
-        <UserContext.Provider value={{state, dispatch}}>
+        <UserContext.Provider
+            value={{
+                state, dispatch,
+            }}
+        >
             {children}
             <ContextDevTool context={UserContext} id="userContextId" displayName="UserContext" />
             <UserContext.Consumer>
@@ -110,7 +113,9 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
                         if (window._REACT_CONTEXT_DEVTOOL) {
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
-                            window._REACT_CONTEXT_DEVTOOL({id: "uniqContextId", displayName: "Context Display Name", values});
+                            window._REACT_CONTEXT_DEVTOOL({
+                                id: "uniqContextId", displayName: "Context Display Name", values,
+                            });
                         }
                         return null;
                     }

@@ -33,7 +33,7 @@ const UpdatedAt = ({value, frequency}: IUpdatedAt) => {
             onClick={() => setPrefersStatic(prevState => !prevState)}
         >
             <Box p={1}>
-                <Typography variant="subtitle1" align="left">
+                <Typography variant="body2" align="left">
                     {format}
                 </Typography>
             </Box>

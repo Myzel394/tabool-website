@@ -1,16 +1,54 @@
-import React, {memo, useContext} from "react";
+import React, {memo} from "react";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import {Grid} from "@material-ui/core";
 import update from "immutability-helper";
 
 import Information from "./Information";
-import DetailContext from "./DetailContext";
+
+export interface Data {
+    information: string | JSX.Element;
+    title: string;
+    icon: JSX.Element;
+
+    reset?: () => any;
+    isUpdating?: boolean;
+    input?: JSX.Element;
+    onEditModeLeft?: () => any;
+    disableShowMore?: boolean;
+    helpText?: string;
+    subInformation?: JSX.Element;
+}
+
+export interface IInformationList {
+    ordering: string[];
+    elevatedKey: string;
+    data: {
+        [key: string]: Data;
+    };
+
+    forceEdit?: string[];
+    errors?: {
+        [key: string]: string[];
+    };
+
+    setOrdering: (ordering: string[]) => any;
+    setElevatedKey: (key: string) => any;
+    reorder: boolean;
+}
 
 
-const InformationList = () => {
-    const {setElevatedKey, ordering, setOrdering, data, elevatedKey, forms, forceEdit} = useContext(DetailContext);
+const InformationList = ({
+    data,
+    elevatedKey,
+    errors,
+    forceEdit,
+    ordering,
+    setElevatedKey,
+    setOrdering,
+    reorder,
+}: IInformationList) => {
     const onDragEnd = (result: DropResult) => {
-        setElevatedKey(undefined);
+        setElevatedKey("");
         const {destination, source, draggableId} = result;
 
         if (!destination) {
@@ -50,11 +88,22 @@ const InformationList = () => {
                         {...provided.droppableProps}
                     >
                         {ordering.map((key, index) => {
-                            const information = data[key];
-                            const isElevated = key === elevatedKey;
-                            const form = forms[key];
+                            const informationData = data[key];
+                            const {
+                                isUpdating = false,
+                                onEditModeLeft,
+                                information,
+                                title,
+                                icon,
+                                input,
+                                disableShowMore,
+                                helpText,
+                                reset,
+                                subInformation,
+                            } = informationData;
+                            const givenErrors = errors?.[key];
                             const forceEditMode = forceEdit?.includes(key) ?? false;
-                            const onEditModeLeft = form?.onEditModeLeft;
+                            const isElevated = key === elevatedKey;
 
                             return (
                                 <Draggable
@@ -71,13 +120,20 @@ const InformationList = () => {
                                         >
                                             <Information
                                                 key={key}
-                                                icon={information.icon}
-                                                title={information.title}
-                                                information={information.information}
+                                                subInformation={subInformation}
+                                                errors={givenErrors}
+                                                title={title}
+                                                information={information}
                                                 isElevated={isElevated}
+                                                icon={icon}
+                                                reset={reset}
+                                                reorder={reorder}
+                                                input={input}
                                                 dragHandleProps={provided.dragHandleProps}
-                                                form={form}
                                                 forceEdit={forceEditMode}
+                                                disableShowMore={disableShowMore}
+                                                helpText={helpText}
+                                                isUpdating={isUpdating}
                                                 onEditModeLeft={onEditModeLeft}
                                             />
                                         </Grid>

@@ -87,8 +87,16 @@ const Toolbar = ({label, onNavigate}: ToolbarProps) => {
                                         {element}
                                     </Grid>
                                 ))}
-                                <Grid item>
-                                    <Box mt={5}>
+                                <Grid
+                                    item
+                                    style={{
+                                        overflow: "scroll",
+                                        maxWidth: "100%",
+                                    }}
+                                >
+                                    <Box
+                                        mt={5}
+                                    >
                                         <Calendar />
                                     </Box>
                                 </Grid>

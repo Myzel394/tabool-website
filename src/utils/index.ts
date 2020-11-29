@@ -8,3 +8,4 @@ export {default as isAllDay} from "./isAllDay";
 export {default as combineDatetime} from "./combineDatetime";
 export {default as randomNumbersWithGap} from "./randomNumbersWithGap";
 export {default as isDateEqual} from "./isDateEqual";
+export {default as getKeysByTrueValues} from "./getKeysByTrueValues";
