@@ -6,7 +6,7 @@ import update from "immutability-helper";
 import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
 
-const usePersistedReducer = createPersistedReducer("state");
+const usePersistedReducer = createPersistedReducer("user");
 
 export interface IUserContextHandler {
     children: ReactNode;

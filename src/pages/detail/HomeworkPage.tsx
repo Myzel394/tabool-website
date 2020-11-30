@@ -142,137 +142,135 @@ const HomeworkPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <>
-            <DetailPage
-                title={homework.lesson.lessonData.course.subject.name}
-                color={homework.lesson.lessonData.course.subject.userRelation.color}
-                defaultOrdering={[
-                    "information", "dueDate", "createdAt", "type", "lesson", "isPrivate",
-                ]}
-                refetch={refetch}
-                updatedAt={dayjs(updatedAt)}
-                isRefreshing={isFetching}
-                errors={camelcaseKeys(
-                    mutationError?.response?.data ?? {
-                    },
-                )}
-                data={{
-                    information: {
-                        icon: <FaInfoCircle />,
-                        title: t("Information"),
-                        information: homework.information,
-                        input: (
-                            <TextInput
-                                multiline
-                                value={information}
-                                onChange={event => setInformation(event.target.value)}
+        <DetailPage
+            title={homework.lesson.lessonData.course.subject.name}
+            color={homework.lesson.lessonData.course.subject.userRelation.color}
+            defaultOrdering={[
+                "information", "dueDate", "type", "isPrivate", "createdAt", "lesson",
+            ]}
+            refetch={refetch}
+            updatedAt={dayjs(updatedAt)}
+            isRefreshing={isFetching}
+            errors={camelcaseKeys(
+                mutationError?.response?.data ?? {
+                },
+            )}
+            data={{
+                information: {
+                    icon: <FaInfoCircle />,
+                    title: t("Information"),
+                    information: homework.information,
+                    input: (
+                        <TextInput
+                            multiline
+                            value={information}
+                            onChange={event => setInformation(event.target.value)}
+                        />
+                    ),
+                    isUpdating: isUpdatingHomework && homework.information !== information,
+                    onEditModeLeft: updateHomework,
+                    reset: () => setInformation(homework.information),
+                },
+                dueDate: {
+                    icon: getDueDateIcon(
+                        dueDate,
+                        dueDate.isSame(homework.dueDate) ||
+                        !(homework.userRelation.ignore || homework.userRelation.completed),
+                    ),
+                    title: t("Fälligkeitsdatum"),
+                    information: homework.dueDate.format("L"),
+                    input: (
+                        <MuiPickersUtilsProvider utils={DayjsUtils}>
+                            <KeyboardDatePicker
+                                format="DD/MM/YYYY"
+                                value={dueDate?.toDate()}
+                                onChange={date => date && setDueDate(dayjs(date))}
                             />
-                        ),
-                        isUpdating: isUpdatingHomework && homework.information !== information,
-                        onEditModeLeft: updateHomework,
-                        reset: () => setInformation(homework.information),
-                    },
-                    dueDate: {
-                        icon: getDueDateIcon(
-                            dueDate,
-                            dueDate.isSame(homework.dueDate) ||
-                            !(homework.userRelation.ignore || homework.userRelation.completed),
-                        ),
-                        title: t("Fälligkeitsdatum"),
-                        information: homework.dueDate.format("L"),
-                        input: (
-                            <MuiPickersUtilsProvider utils={DayjsUtils}>
-                                <KeyboardDatePicker
-                                    format="DD/MM/YYYY"
-                                    value={dueDate?.toDate()}
-                                    onChange={date => date && setDueDate(dayjs(date))}
-                                />
-                            </MuiPickersUtilsProvider>
-                        ),
-                        isUpdating: isUpdatingHomework && !homework.dueDate.isSame(dueDate),
-                        onEditModeLeft: updateHomework,
-                        disableShowMore: true,
-                        reset: () => setDueDate(homework.dueDate),
-                    },
-                    type: {
-                        icon: <BiBarChartSquare />,
-                        title: t("Typ"),
-                        information: homework.type,
-                        input: (
-                            <TextInput
-                                value={type}
-                                onChange={event => setType(event.target.value)}
-                            />
-                        ),
-                        isUpdating: isUpdatingHomework && homework.type !== type,
-                        onEditModeLeft: updateHomework,
-                        disableShowMore: true,
-                        reset: () => setType(homework.type),
-                    },
-                    isPrivate: {
-                        icon: homework.isPrivate ? <MdLock /> : <MdLockOpen />,
-                        title: t("Privat"),
-                        information: <BooleanStatus value={homework.isPrivate} />,
-                        input: (
-                            <Switch
-                                value={isPrivate}
-                                disabled={!homework.isPrivate}
-                                onChange={event => setIsPrivate(event.target.checked)}
-                            />
-                        ),
-                        onEditModeLeft: updateHomework,
-                        isUpdating: isUpdatingHomework && homework.isPrivate !== isPrivate,
-                        helpText: t("Hausaufgaben können nicht mehr privat gestellt werden, sobald sie einmal für den Kurs veröffentlicht wurden."),
-                        reset: () => setIsPrivate(homework.isPrivate),
-                    },
-                    createdAt: {
-                        icon: <FaClock />,
-                        title: t("Einstellungsdatum"),
-                        information: homework.createdAt.format("LT"),
-                        disableShowMore: true,
-                    },
-                    lesson: {
-                        icon: <FaTable />,
-                        title: t("Stunde"),
-                        information: formatLesson(homework.lesson),
-                        disableShowMore: true,
-                        subInformation: (
-                            <Link
-                                component={Button}
-                                href={generatePath("/lesson/:id/", {
-                                    id: homework.lesson.id,
-                                })}
-                            >
-                                {t("Zur Stunde")}
-                            </Link>
-                        ),
-                    },
-                }}
-                orderingStorageName="detail:ordering:homework_detail"
-                forceEdit={forceEdit}
-                bottomNode={(
-                    <LoadingOverlay isLoading={isUpdatingRelation}>
-                        <ToggleButtonGroup
-                            value={relation}
-                            size="large"
-                            onChange={(event, newRelation) => {
-                                setRelation(newRelation);
-                                updateHomeworkRelation(newRelation);
-                            }}
+                        </MuiPickersUtilsProvider>
+                    ),
+                    isUpdating: isUpdatingHomework && !homework.dueDate.isSame(dueDate),
+                    onEditModeLeft: updateHomework,
+                    disableShowMore: true,
+                    reset: () => setDueDate(homework.dueDate),
+                },
+                type: {
+                    icon: <BiBarChartSquare />,
+                    title: t("Typ"),
+                    information: homework.type,
+                    input: (
+                        <TextInput
+                            value={type}
+                            onChange={event => setType(event.target.value)}
+                        />
+                    ),
+                    isUpdating: isUpdatingHomework && homework.type !== type,
+                    onEditModeLeft: updateHomework,
+                    disableShowMore: true,
+                    reset: () => setType(homework.type),
+                },
+                isPrivate: {
+                    icon: homework.isPrivate ? <MdLock /> : <MdLockOpen />,
+                    title: t("Privat"),
+                    information: <BooleanStatus value={homework.isPrivate} />,
+                    input: (
+                        <Switch
+                            value={isPrivate}
+                            disabled={!homework.isPrivate}
+                            onChange={event => setIsPrivate(event.target.checked)}
+                        />
+                    ),
+                    onEditModeLeft: updateHomework,
+                    isUpdating: isUpdatingHomework && homework.isPrivate !== isPrivate,
+                    helpText: t("Hausaufgaben können nicht mehr privat gestellt werden, sobald sie einmal für den Kurs veröffentlicht wurden."),
+                    reset: () => setIsPrivate(homework.isPrivate),
+                },
+                createdAt: {
+                    icon: <FaClock />,
+                    title: t("Einstellungsdatum"),
+                    information: homework.createdAt.format("LT"),
+                    disableShowMore: true,
+                },
+                lesson: {
+                    icon: <FaTable />,
+                    title: t("Stunde"),
+                    information: formatLesson(homework.lesson),
+                    disableShowMore: true,
+                    subInformation: (
+                        <Link
+                            component={Button}
+                            href={generatePath("/lesson/:id/", {
+                                id: homework.lesson.id,
+                            })}
                         >
-                            <ToggleButton value="completed">
-                                <MdCheck />
-                                {t("Erledigt")}
-                            </ToggleButton>
-                            <ToggleButton value="ignore">
-                                <MdBlock />
-                                {t("Ignorieren")}
-                            </ToggleButton>
-                        </ToggleButtonGroup>
-                    </LoadingOverlay>
-                )}
-            />
-        </>
+                            {t("Zur Stunde")}
+                        </Link>
+                    ),
+                },
+            }}
+            orderingStorageName="detail:ordering:homework_detail"
+            forceEdit={forceEdit}
+            bottomNode={(
+                <LoadingOverlay isLoading={isUpdatingRelation}>
+                    <ToggleButtonGroup
+                        value={relation}
+                        size="large"
+                        onChange={(event, newRelation) => {
+                            setRelation(newRelation);
+                            updateHomeworkRelation(newRelation);
+                        }}
+                    >
+                        <ToggleButton value="completed">
+                            <MdCheck />
+                            {t("Erledigt")}
+                        </ToggleButton>
+                        <ToggleButton value="ignore">
+                            <MdBlock />
+                            {t("Ignorieren")}
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </LoadingOverlay>
+            )}
+        />
     );
 };
 

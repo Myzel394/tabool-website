@@ -1,8 +1,9 @@
-export interface ActionType {
-    type: string;
-    payload: {
-        [key: string]: any;
-    };
+export interface ActionType<
+    Type extends string = string,
+    Payload = {[key: string]: any}
+    > {
+    type: Type;
+    payload: Payload;
 }
 
 
