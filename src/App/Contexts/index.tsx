@@ -3,7 +3,8 @@ import {QueryCache, ReactQueryCacheProvider} from "react-query";
 
 import UserContextHandler from "./UserContextHandler";
 import AxiosContextHandler from "./AxiosContextHandler";
-import {ErrorContext} from "contexts";
+import ErrorContextHandler from "./ErrorContextHandler";
+
 
 export interface IContexts {
     children: ReactNode;
@@ -16,9 +17,9 @@ const Contexts = ({children}: IContexts) => {
         <ReactQueryCacheProvider queryCache={queryCache}>
             <AxiosContextHandler>
                 <UserContextHandler>
-                    <ErrorContext>
+                    <ErrorContextHandler>
                         {children}
-                    </ErrorContext>
+                    </ErrorContextHandler>
                 </UserContextHandler>
             </AxiosContextHandler>
         </ReactQueryCacheProvider>

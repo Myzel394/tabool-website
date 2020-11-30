@@ -1,42 +1,38 @@
-import {createContext} from "react";
-import {ActionType} from "../types";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import {createContext, ReactNode} from "react";
+import {ActionType} from "types";
+
+export interface ErrorType {
+    status: number;
+    title?: string;
+    message?: string;
+    avoidReloading: boolean;
+    onRetry?: () => any;
+    dialog?: ReactNode;
+}
 
 export interface IError {
-    errors: {
-        [key: string]: {
-            status: number;
-            message: string;
-            avoidReloading: boolean;
-            onRetry?: () => any;
-            dialog?: JSX.Element;
-            dialogText?: string;
-        };
-    }
+    error?: ErrorType;
 }
 
 export const initialErrorState: IError = {
-    errors: {}
+    error: undefined,
 };
 
 interface IAddError {
-    id: string;
-
-    avoidReloading?: boolean;
+    title?: string;
     message?: string;
     status?: number;
+    avoidReloading?: boolean;
     onRetry?: () => any;
-    dialog?: JSX.Element;
-    dialogText?: string;
-}
-
-interface IRemoveError {
-    id: string;
+    dialog?: ReactNode;
 }
 
 export type DispatchType = ActionType<
-    "addError" | "removeError" | "clearErrors",
-    {} | IAddError | IRemoveError
+    "setError" | "removeError",
+    IAddError
     >;
+
 
 // @ts-ignore
 const ErrorContext = createContext<{

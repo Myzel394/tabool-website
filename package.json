@@ -34,6 +34,7 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
+    "notistack": "^1.0.2",
     "paralleljs": "^1.1.0",
     "react": "^16.14.0",
     "react-adaptive-hooks": "^0.0.8",

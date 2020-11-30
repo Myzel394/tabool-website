@@ -1,12 +1,15 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useMutation, useQuery} from "react-query";
-import {useFetchHomeworkDetailAPI,
+import {
+    useFetchHomeworkDetailAPI,
     useQueryOptions,
     useUpdateHomeworkDataAPI,
-    useUpdateHomeworkUserRelationAPI} from "hooks";
+    useUpdateHomeworkUserRelationAPI,
+} from "hooks";
 import {BooleanStatus, DetailPage, LoadingIndicator, LoadingOverlay, TextInput} from "components";
 import {useTranslation} from "react-i18next";
-import {BiBarChartSquare,
+import {
+    BiBarChartSquare,
     FaClock,
     FaHourglassEnd,
     FaHourglassHalf,
@@ -17,7 +20,8 @@ import {BiBarChartSquare,
     MdBlock,
     MdCheck,
     MdLock,
-    MdLockOpen} from "react-icons/all";
+    MdLockOpen,
+} from "react-icons/all";
 import dayjs, {Dayjs} from "dayjs";
 import {formatLesson} from "format";
 import {HomeworkDetail} from "types";
@@ -28,6 +32,8 @@ import camelcaseKeys from "camelcase-keys";
 import {getISODatetime, getKeysByTrueValues} from "utils";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import {generatePath} from "react-router";
+import {AxiosError} from "axios";
+import {ErrorContext} from "contexts";
 
 const getDueDateIcon = (dueDate: Dayjs, ignore: boolean): JSX.Element => {
     // Ignore guard
@@ -49,6 +55,7 @@ const getDueDateIcon = (dueDate: Dayjs, ignore: boolean): JSX.Element => {
 
 const HomeworkPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
+    const {dispatch: dispatchError} = useContext(ErrorContext);
     const queryOptions = useQueryOptions();
     const updateHomeworkDataMutation = useUpdateHomeworkDataAPI();
     const updateHomeworkRelationMutation = useUpdateHomeworkUserRelationAPI();
@@ -74,6 +81,14 @@ const HomeworkPage = ({match: {params: {id}}}) => {
     const {isLoading, isError, updatedAt, refetch, isFetching} = useQuery(id, fetchHomework, {
         ...queryOptions,
         onSuccess: setHomework,
+        onError: (error: AxiosError) => !homework && dispatchError({
+            type: "setError",
+            payload: {
+                title: t("Fehler beim Laden der Hausaufgabe"),
+                message: error.message,
+                status: error.code,
+            },
+        }),
     });
 
     const updateHomework = useCallback(() => {
@@ -137,7 +152,11 @@ const HomeworkPage = ({match: {params: {id}}}) => {
         return <LoadingIndicator />;
     }
 
-    if (isError || !homework) {
+    if (!homework) {
+        dispatchError({
+            type: "setError",
+            payload: {},
+        });
         return null;
     }
 

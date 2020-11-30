@@ -1,65 +1,79 @@
-import React, {memo} from "react";
+import React, {memo, ReactNode, useReducer} from "react";
 import ErrorContext, {DispatchType, IError, initialErrorState} from "contexts/ErrorContext";
-import {ActionType} from "types";
 import update from "immutability-helper";
-import _ from "lodash";
-import createPersistedReducer from "use-persisted-reducer";
 
-const usePersistedReducer = createPersistedReducer("error");
+import ErrorComponent from "../Error";
 
 export interface IErrorContext {
-    children: JSX.Element;
+    children: ReactNode;
 }
 
 const reducer = (
     state: IError,
-    action: DispatchType
+    action: DispatchType,
 ): IError => {
     switch (action.type) {
-        case "addError": {
-            // @ts-ignore
-            const {avoidReloading = false, status = 500, message, onRetry, dialog, string, id} = action.payload;
+        case "setError": {
+            const {
+                avoidReloading = false,
+                status = 500,
+                message,
+                onRetry,
+                dialog,
+            } = action.payload;
             const data = {
                 avoidReloading,
                 status,
                 message,
                 onRetry,
                 dialog,
-                string,
             };
 
-            return update(state, {
-                errors: {
-                    [id]: {
-                        $set: data
-                    }
-                }
-            });
+            return update(state, {error: {$set: data}});
         }
         case "removeError": {
-            // @ts-ignore
-            const {id} = action.payload;
-
-            // @ts-ignore
-            return _.omit(state, [`errors.${id}`]);
-        }
-        case "clearErrors": {
             return initialErrorState;
         }
+        default:
+            throw new Error("Invalid type");
     }
-}
+};
 
 const ErrorContextHandler = ({children}: IErrorContext) => {
-    const [state, dispatch] = usePersistedReducer(reducer, initialErrorState);
+    const [state, dispatch]: [IError, any] = useReducer(reducer, initialErrorState);
+
+    if (state.error) {
+        const {
+            avoidReloading,
+            dialog,
+            message,
+            onRetry,
+            status,
+            title,
+        } = state.error;
+
+        return (
+            <ErrorComponent
+                avoidReloading={avoidReloading}
+                dialog={dialog}
+                message={message}
+                status={status}
+                title={title}
+                onRetry={onRetry}
+            />
+        );
+    }
 
     return (
-        <ErrorContext.Provider value={{
-            state,
-            dispatch
-        }}>
+        <ErrorContext.Provider
+            value={{
+                state,
+                dispatch,
+            }}
+        >
             {children}
         </ErrorContext.Provider>
     );
-}
+};
 
 export default memo(ErrorContextHandler);

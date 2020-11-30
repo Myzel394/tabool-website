@@ -15,17 +15,13 @@ const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
     const {dispatch} = useContext(UserContext);
     const location = useLocation();
     const client: IAxios = useMemoOne(() => {
-        const instance = axios.create({
-            baseURL: "http://127.0.0.1:8000/",
-        });
+        const instance = axios.create({baseURL: "http://127.0.0.1:8000/"});
 
         // Logout user on authentication error
         instance.interceptors.response.use(response => response, (error: AxiosError) => {
             if (error.response?.status === 401 && location.pathname !== "/auth/login/") {
-                dispatch({
-                    type: "logout",
-                    payload: {},
-                });
+                dispatch({type: "logout",
+                    payload: {}});
             }
 
             return Promise.reject(error);
@@ -46,9 +42,7 @@ const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
             return config;
         });
 
-        return {
-            instance,
-        };
+        return {instance};
     }, [dispatch, location]);
 
     return (

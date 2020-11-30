@@ -28,13 +28,7 @@
         "@shopify/binary-assignment-parens": "off",
         "no-mixed-operators": "off",
         "@typescript-eslint/no-extra-parens": "off",
-        "switch-colon-spacing": ["error", {"after": true, "before": false}],
-        "object-curly-newline": ["error", {
-            "ObjectExpression": "always",
-            "ObjectPattern": { "multiline": true },
-            "ImportDeclaration": "never",
-            "ExportDeclaration": { "multiline": true, "minProperties": 4 }
-        }]
+        "switch-colon-spacing": ["error", {"after": true, "before": false}]
     },
     "env": {
         "browser": true,
