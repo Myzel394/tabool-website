@@ -17,7 +17,6 @@ export interface Choice {
 
 export interface FetchListData {
     page?: string;
-    search?: string;
 }
 
 export type PreferredIdType<T> = T;

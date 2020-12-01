@@ -1,1 +1,1 @@
-export {default as HomeworkPage} from "./HomeworkPage";
+export {default as HomeworkPage} from "./HomeworkDetailPage";

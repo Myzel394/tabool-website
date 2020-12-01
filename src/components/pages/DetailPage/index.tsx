@@ -1,5 +1,5 @@
 import React, {ReactNode, useEffect, useState} from "react";
-import {Box, Container, FormControlLabel, Switch, Typography} from "@material-ui/core";
+import {Box, Button, ButtonGroup, Container, FormControlLabel, Switch, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {usePersistentStorage} from "hooks";
 import {Dayjs} from "dayjs";
@@ -7,9 +7,14 @@ import {QueryResult} from "react-query";
 import {PullToRefresh, UpdatedAt} from "components";
 import _ from "lodash";
 import {StorageType} from "hooks/usePersistentStorage";
+import {ButtonProps} from "@material-ui/core/Button";
 
 import Title, {ITitle} from "./Title";
 import InformationList, {IInformationList} from "./InformationList";
+
+interface IButton extends ButtonProps {
+    title: string;
+}
 
 export interface IDetailPage<D = any> {
     title: ITitle["title"];
@@ -28,6 +33,7 @@ export interface IDetailPage<D = any> {
     headerNode?: ReactNode;
     bottomNode?: ReactNode;
     footerNode?: ReactNode;
+    buttons?: IButton[];
 }
 
 const STORAGE_METHOD = localStorage;
@@ -46,6 +52,7 @@ const DetailPage = ({
     bottomNode,
     footerNode,
     headerNode,
+    buttons,
 }: IDetailPage) => {
     const {t} = useTranslation();
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
@@ -77,6 +84,15 @@ const DetailPage = ({
                         )}
                         label={t("Elemente neu anordnen")}
                     />
+                    {buttons && (
+                        <ButtonGroup variant="outlined" orientation="vertical">
+                            {buttons.map(({title, ...other}) => (
+                                <Button key={title} {...other}>
+                                    {title}
+                                </Button>
+                            ))}
+                        </ButtonGroup>
+                    )}
                     <Box py={3}>
                         <InformationList
                             elevatedKey={elevatedKey}

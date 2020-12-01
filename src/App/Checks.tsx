@@ -1,4 +1,4 @@
-import React, {memo, ReactNode} from "react";
+import React, {ReactNode} from "react";
 
 export interface IChecks {
     children: ReactNode;
@@ -6,8 +6,10 @@ export interface IChecks {
 
 const Checks = ({children}: IChecks) => {
     return (
-
+        <>
+            {children}
+        </>
     );
 };
 
-export default memo(Checks);
+export default Checks;

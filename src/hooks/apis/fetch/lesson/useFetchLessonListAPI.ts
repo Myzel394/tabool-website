@@ -14,11 +14,10 @@ export type IFetchLessonsResponse = PaginatedResponse<LessonApprox[]>;
 const useFetchLessonListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async (search: string, {
         dateMin,
         dateMax,
         page,
-        search,
     }: IFetchLessonsData = {}): Promise<IFetchLessonsResponse> => {
         const {data} = await instance.get("/api/data/lesson/", {
             params: {

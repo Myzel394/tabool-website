@@ -1,9 +1,8 @@
 import React, {memo, useCallback, useMemo, useState} from "react";
 import {TextField, TextFieldProps} from "@material-ui/core";
-import {useTranslation} from "react-i18next";
 import {useLengthValidator} from "hooks/validators";
 
-export type ITextInput = Omit<TextFieldProps, "variant" | "helperText"> & {
+export type ITextInput = Omit<TextFieldProps, "helperText"> & {
     validators?: ((value: string) => undefined | string)[];
     error?: boolean;
     errorMessages?: string[];
@@ -19,9 +18,9 @@ const TextInput = ({
     errorMessages,
     minLength,
     maxLength,
+    variant = "standard",
     ...other
 }: ITextInput) => {
-    const {t} = useTranslation();
     const [value, setValue] = useState();
     const [validationError, setValidationError] = useState<string | null>(null);
     const lengthValidator = useLengthValidator(minLength, maxLength);
@@ -57,9 +56,11 @@ const TextInput = ({
     const areErrorMessagesSet = errorMessages && errorMessages.length > 0;
 
     return (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         <TextField
+            variant={variant}
             {...other}
-            variant="outlined"
             error={error || areErrorMessagesSet || validationError != null}
             helperText={
                 <>
@@ -83,7 +84,7 @@ const TextInput = ({
 
                 setValue(event.target.value);
 
-                // Just call validators when there is already an error. (Better UX)
+                // Just call validators when there is already an error. (Eager evaluation)
                 if (validationError) {
                     callValidators(value);
                 }
@@ -96,6 +97,7 @@ TextInput.defaultProps = {
     validators: [],
     error: false,
     errorMessages: [],
+    variant: "outlined",
 };
 
 export default memo(TextInput);

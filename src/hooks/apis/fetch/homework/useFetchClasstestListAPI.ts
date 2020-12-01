@@ -18,9 +18,8 @@ export type IFetchClasstestListResponse = PaginatedResponse<ClasstestApprox[]>;
 const useFetchClasstestListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async (search: string, {
         page,
-        search,
         courseId,
         ordering,
         subjectId,

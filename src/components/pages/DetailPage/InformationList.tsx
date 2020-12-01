@@ -21,7 +21,7 @@ export interface Data {
 
 export interface IInformationList {
     ordering: string[];
-    elevatedKey: string;
+    reorder: boolean;
     data: {
         [key: string]: Data;
     };
@@ -30,10 +30,10 @@ export interface IInformationList {
     errors?: {
         [key: string]: string[];
     };
+    elevatedKey?: string;
 
-    setOrdering: (ordering: string[]) => any;
-    setElevatedKey: (key: string) => any;
-    reorder: boolean;
+    setOrdering?: (ordering: string[]) => any;
+    setElevatedKey?: (key: string) => any;
 }
 
 
@@ -48,35 +48,41 @@ const InformationList = ({
     reorder,
 }: IInformationList) => {
     const onDragEnd = (result: DropResult) => {
-        setElevatedKey("");
-        const {destination, source, draggableId} = result;
-
-        if (!destination) {
-            return;
+        if (setElevatedKey) {
+            setElevatedKey("");
         }
+        if (setOrdering) {
+            const {destination, source, draggableId} = result;
 
-        if (destination.index === source.index) {
-            return;
+            if (!destination) {
+                return;
+            }
+
+            if (destination.index === source.index) {
+                return;
+            }
+
+            const newState = update(
+                ordering,
+                {
+                    $splice: [
+                        [source.index, 1],
+                        [destination.index, 0, draggableId],
+                    ],
+                },
+            );
+            setOrdering(newState);
         }
-
-        const newState = update(
-            ordering,
-            {
-                $splice: [
-                    [source.index, 1],
-                    [destination.index, 0, draggableId],
-                ],
-            },
-        );
-        setOrdering(newState);
     };
 
     return (
         <DragDropContext
             onDragEnd={onDragEnd}
             onDragStart={initial => {
-                const {draggableId} = initial;
-                setElevatedKey(draggableId);
+                if (setElevatedKey) {
+                    const {draggableId} = initial;
+                    setElevatedKey(draggableId);
+                }
             }}
         >
             <Droppable droppableId="information">
@@ -147,6 +153,10 @@ const InformationList = ({
             </Droppable>
         </DragDropContext>
     );
+};
+
+InformationList.defaultProps = {
+    reorder: false,
 };
 
 export default memo(InformationList);

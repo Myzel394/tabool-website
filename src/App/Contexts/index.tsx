@@ -1,6 +1,8 @@
 import React, {ReactNode} from "react";
 import {QueryCache, ReactQueryCacheProvider} from "react-query";
 
+import Checks from "../Checks";
+
 import UserContextHandler from "./UserContextHandler";
 import AxiosContextHandler from "./AxiosContextHandler";
 import ErrorContextHandler from "./ErrorContextHandler";
@@ -18,7 +20,9 @@ const Contexts = ({children}: IContexts) => {
             <AxiosContextHandler>
                 <UserContextHandler>
                     <ErrorContextHandler>
-                        {children}
+                        <Checks>
+                            {children}
+                        </Checks>
                     </ErrorContextHandler>
                 </UserContextHandler>
             </AxiosContextHandler>

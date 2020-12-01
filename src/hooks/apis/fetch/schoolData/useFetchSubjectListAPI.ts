@@ -13,10 +13,9 @@ export type IFetchSubjectResponse = PaginatedResponse<Subject[]>;
 const useFetchSubjectListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async (search: string, {
         ordering = "name",
         page,
-        search,
     }: IFetchSubjectData = {}): Promise<IFetchSubjectResponse> => {
         const {data} = await instance.get("/api/data/subject/", {
             params: {

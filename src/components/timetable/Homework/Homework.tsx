@@ -9,7 +9,6 @@ import clsx from "clsx";
 import {useMutation} from "react-query";
 import {useUpdateHomeworkUserRelationAPI} from "hooks";
 import {generatePath} from "react-router";
-import {useTranslation} from "react-i18next";
 
 import ColoredBox from "../../ColoredBox";
 import Information from "../../Information";
@@ -50,7 +49,6 @@ const Homework = ({
     onServerUpdate,
 }: IHomework) => {
     const theme = useTheme();
-    const {t} = useTranslation();
     const [loading, setLoading] = useState<boolean>(false);
     const [_updateRelationRaw] = useMutation(useUpdateHomeworkUserRelationAPI(), {
         onSuccess: (data, variables) => {
@@ -74,7 +72,7 @@ const Homework = ({
             style={style} className={styles.wrapper} color={subject.userRelation.color}
         >
             <Link
-                href={generatePath("/homework/:id/", {
+                href={generatePath("/homework/detail/:id/", {
                     id,
                 })}
             >

@@ -18,7 +18,7 @@ export type IFetchSubmissionListResponse = PaginatedResponse<SubmissionApprox[]>
 const useFetchSubmissionListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async (search: string, {
         ordering = "is_uploaded",
         page,
         courseId,
@@ -26,7 +26,6 @@ const useFetchSubmissionListAPI = () => {
         lessonId,
         uploadAtMax,
         uploadAtMin,
-        search,
     }: IFetchSubmissionListData = {}): Promise<IFetchSubmissionListResponse> => {
         const {data} = await instance.get("/api/data/submission/", {
             params: {

@@ -53,7 +53,7 @@ const getDueDateIcon = (dueDate: Dayjs, ignore: boolean): JSX.Element => {
     }
 };
 
-const HomeworkPage = ({match: {params: {id}}}) => {
+const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
     const {dispatch: dispatchError} = useContext(ErrorContext);
     const queryOptions = useQueryOptions();
@@ -289,8 +289,14 @@ const HomeworkPage = ({match: {params: {id}}}) => {
                     </ToggleButtonGroup>
                 </LoadingOverlay>
             )}
+            buttons={[
+                {
+                    title: t("Hausaufgabe hinzufügen"),
+                    onClick: () => null,
+                },
+            ]}
         />
     );
 };
 
-export default HomeworkPage;
+export default HomeworkDetailPage;

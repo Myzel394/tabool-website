@@ -8,7 +8,7 @@ import SubjectList from "pages/list/Subject";
 import Login from "pages/auth/Login";
 import Home from "pages/home";
 import Calendar from "pages/calendar/index";
-import {HomeworkPage} from "pages";
+import {HomeworkAddPage, HomeworkListPage, HomeworkPage} from "pages";
 
 
 export default function Routes() {
@@ -60,8 +60,18 @@ export default function Routes() {
             />
             <Route
                 exact
-                path="/homework/:id/"
+                path="/homework/detail/:id/"
                 component={HomeworkPage}
+            />
+            <Route
+                exact
+                path="/homework/add/"
+                component={HomeworkAddPage}
+            />
+            <Route
+                exact
+                path="/homework/"
+                component={HomeworkListPage}
             />
         </Switch>
     );

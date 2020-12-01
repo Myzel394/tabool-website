@@ -18,7 +18,7 @@ export type IFetchModificationListResponse = PaginatedResponse<ModificationAppro
 const useFetchModificationListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async (search: string, {
         ordering = "start_datetime",
         endDateMax,
         endDateMin,
@@ -26,7 +26,6 @@ const useFetchModificationListAPI = () => {
         startDateMax,
         startDateMin,
         page,
-        search,
     }: IFetchModificationListData): Promise<IFetchModificationListResponse> => {
         const {data} = await instance.get("api/data/modification/", {
             params: {
