@@ -1,13 +1,16 @@
 import React, {memo} from "react";
 import {Box, InputBase, Paper} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
+import {MdSearch} from "react-icons/all";
 
 export interface ISearchBar {
     value: string;
     onChange: (search: string) => any;
+
+    onSearch?: () => any;
 }
 
-const SearchBar = ({value, onChange}: ISearchBar) => {
+const SearchBar = ({value, onChange, onSearch}: ISearchBar) => {
     const {t} = useTranslation();
 
     return (
@@ -19,6 +22,9 @@ const SearchBar = ({value, onChange}: ISearchBar) => {
                     inputMode="search"
                     onChange={event => onChange(event.target.value)}
                 />
+                {onSearch && (
+                    <MdSearch />
+                )}
             </Box>
         </Paper>
     );

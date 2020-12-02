@@ -8,7 +8,7 @@ import {useHistory, useLocation} from "react-router";
 import styles from "./BottomNavigation.module.scss";
 
 
-const BottomNavigation = () => {
+const BottomNavigation = ({innerRef}) => {
     const {t} = useTranslation();
     const {state} = useContext(UserContext);
     const location = useLocation();
@@ -17,25 +17,27 @@ const BottomNavigation = () => {
 
     if (state.isFullyRegistered) {
         return (
-            <MuiBottomNavigation value={baseLocation} className={styles.container}>
-                <BottomNavigationAction
-                    label={t("Start").toString()}
-                    icon={<MdHome />}
-                    value=""
-                    onClick={() => history.push("/")}
-                />
-                <BottomNavigationAction
-                    label={t("Stundenplan").toString()}
-                    icon={<FaTable />}
-                    value="timetable"
-                    onClick={() => history.push("/timetable/")}
-                />
-                <BottomNavigationAction
-                    label={t("Kalendar").toString()}
-                    icon={<MdEventNote />}
-                    value="calendar"
-                />
-            </MuiBottomNavigation>
+            <div ref={innerRef}>
+                <MuiBottomNavigation value={baseLocation} className={styles.container}>
+                    <BottomNavigationAction
+                        label={t("Start").toString()}
+                        icon={<MdHome />}
+                        value=""
+                        onClick={() => history.push("/")}
+                    />
+                    <BottomNavigationAction
+                        label={t("Stundenplan").toString()}
+                        icon={<FaTable />}
+                        value="timetable"
+                        onClick={() => history.push("/timetable/")}
+                    />
+                    <BottomNavigationAction
+                        label={t("Kalendar").toString()}
+                        icon={<MdEventNote />}
+                        value="calendar"
+                    />
+                </MuiBottomNavigation>
+            </div>
         );
     }
 

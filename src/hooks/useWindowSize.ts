@@ -18,7 +18,7 @@ const useWindowSize = (): [number, number] => {
         setSize();
 
         return () => window.removeEventListener("resize", setSize);
-    });
+    }, []);
 
     return [width, height];
 };

@@ -24,11 +24,11 @@ export interface IHomework {
     creationDate: Dayjs;
     subject: Subject;
     information: string;
-    onServerUpdate: (homework: HomeworkDetail["userRelation"]) => any;
 
     onCompletedChange: () => boolean;
     onIgnoreChange: () => boolean;
 
+    onServerUpdate?: (homework: HomeworkDetail["userRelation"]) => any;
     dueDate?: Dayjs;
     completed?: boolean;
     ignore?: boolean;
@@ -53,7 +53,9 @@ const Homework = ({
     const [_updateRelationRaw] = useMutation(useUpdateHomeworkUserRelationAPI(), {
         onSuccess: (data, variables) => {
             setLoading(false);
-            onServerUpdate(data);
+            if (onServerUpdate) {
+                onServerUpdate(data);
+            }
         },
     });
     const style = useMemo(() => ({
@@ -148,33 +150,37 @@ const Homework = ({
                                         <Box display="flex" flexDirection="column" alignItems="flex-end">
                                             <Box display="flex" flexDirection="row">
                                                 {loading && <CircularProgress color="secondary" />}
-                                                <Action
-                                                    icon={<FaCheckCircle />}
-                                                    isActive={isCompleted}
-                                                    disabled={ignore}
-                                                    onClick={event => {
-                                                        event.preventDefault();
-                                                        if (onCompletedChange()) {
-                                                            updateRelation({
-                                                                id,
-                                                                completed: !completed,
-                                                            });
-                                                        }
-                                                    }}
-                                                />
-                                                <Action
-                                                    icon={<HiBan />}
-                                                    isActive={ignore}
-                                                    onClick={event => {
-                                                        event.preventDefault();
-                                                        if (onIgnoreChange()) {
-                                                            updateRelation({
-                                                                id,
-                                                                ignore: !ignore,
-                                                            });
-                                                        }
-                                                    }}
-                                                />
+                                                {completed === undefined ? null : (
+                                                    <Action
+                                                        icon={<FaCheckCircle />}
+                                                        isActive={isCompleted}
+                                                        disabled={ignore}
+                                                        onClick={event => {
+                                                            event.preventDefault();
+                                                            if (onCompletedChange()) {
+                                                                updateRelation({
+                                                                    id,
+                                                                    completed: !completed,
+                                                                });
+                                                            }
+                                                        }}
+                                                    />
+                                                )}
+                                                {ignore === undefined ? null : (
+                                                    <Action
+                                                        icon={<HiBan />}
+                                                        isActive={ignore}
+                                                        onClick={event => {
+                                                            event.preventDefault();
+                                                            if (onIgnoreChange()) {
+                                                                updateRelation({
+                                                                    id,
+                                                                    ignore: !ignore,
+                                                                });
+                                                            }
+                                                        }}
+                                                    />
+                                                )}
                                             </Box>
                                         </Box>
                                     </Box>
@@ -212,8 +218,6 @@ const Homework = ({
 };
 
 Homework.defaultProps = {
-    completed: false,
-    ignore: false,
     onIgnoreChange: () => true,
     onCompletedChange: () => true,
     beforeMutating: () => null,

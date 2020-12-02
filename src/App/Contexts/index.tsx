@@ -6,23 +6,27 @@ import Checks from "../Checks";
 import UserContextHandler from "./UserContextHandler";
 import AxiosContextHandler from "./AxiosContextHandler";
 import ErrorContextHandler from "./ErrorContextHandler";
+import UtilsContextHandler from "./UtilsContextHandler";
 
 
 export interface IContexts {
     children: ReactNode;
+    bottomSheetHeight?: number;
 }
 
 const queryCache = new QueryCache();
 
-const Contexts = ({children}: IContexts) => {
+const Contexts = ({children, bottomSheetHeight}: IContexts) => {
     return (
         <ReactQueryCacheProvider queryCache={queryCache}>
             <AxiosContextHandler>
                 <UserContextHandler>
                     <ErrorContextHandler>
-                        <Checks>
-                            {children}
-                        </Checks>
+                        <UtilsContextHandler bottomSheetHeight={bottomSheetHeight}>
+                            <Checks>
+                                {children}
+                            </Checks>
+                        </UtilsContextHandler>
                     </ErrorContextHandler>
                 </UserContextHandler>
             </AxiosContextHandler>
