@@ -1,5 +1,5 @@
 import React, {CSSProperties, useContext, useEffect, useMemo, useRef, useState} from "react";
-import {Box, CircularProgress, Container, Grid, IconButton, Typography} from "@material-ui/core";
+import {Box, CircularProgress, Container, Typography} from "@material-ui/core";
 import {FixedSizeList} from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -46,6 +46,8 @@ export interface ISearchPage<DataType = any> {
     orderings: IOrderingDialog["orderings"];
     ordering: string;
     onOrderingChange: (ordering: string) => any;
+
+    title: string;
 }
 
 const SearchPage = <T extends unknown = any>({
@@ -63,6 +65,7 @@ const SearchPage = <T extends unknown = any>({
     orderings,
     ordering,
     onOrderingChange,
+    title,
 }: ISearchPage<T>) => {
     const {t} = useTranslation();
     const {bottomSheetHeight} = useContext(UtilsContext);
@@ -159,22 +162,18 @@ const SearchPage = <T extends unknown = any>({
 
     return (
         <>
-            <Container maxWidth="sm" style={style}>
+            <Container maxWidth="md" style={style}>
                 <div ref={$header}>
-                    <Grid container direction="row">
-                        <Grid item>
-                            <Typography variant="h3" component="h1">
-                            Titel
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <IconButton color="default" onClick={() => setIsOrderingOpen(true)}>
-                                {sortIcon}
-                            </IconButton>
-                        </Grid>
-                    </Grid>
+                    <Typography variant="h2" component="h1">
+                        {title}
+                    </Typography>
                     <Box mt={2}>
-                        <SearchBar value={search} onChange={onSearchChange} />
+                        <SearchBar
+                            value={search}
+                            onChange={onSearchChange}
+                            onSortDialogOpen={() => setIsOrderingOpen(true)}
+                            onFilterDialogOpen={() => setIsOrderingOpen(true)}
+                        />
                     </Box>
                 </div>
                 {children}

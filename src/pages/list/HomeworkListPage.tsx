@@ -6,8 +6,10 @@ import {Box} from "@material-ui/core";
 import {HomeworkApprox} from "types";
 import {Homework} from "components";
 import {useDebouncedValue} from "@shopify/react-hooks";
+import {useTranslation} from "react-i18next";
 
 const HomeworkListPage = () => {
+    const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchHomework = useFetchHomeworkListAPI();
 
@@ -41,6 +43,7 @@ const HomeworkListPage = () => {
 
     return (
         <SearchPage<HomeworkApprox>
+            title={t("Hausaufgaben suchen")}
             search={search}
             ordering={ordering}
             fullAmount={rawDataGroups?.[0].count ?? 0}

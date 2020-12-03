@@ -1,7 +1,7 @@
 import React, {memo} from "react";
-import {Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography} from "@material-ui/core";
+import {Dialog, DialogActions, DialogTitle, Grid, List, ListItem, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {MdArrowDownward, MdArrowUpward, MdSort} from "react-icons/all";
+import {MdArrowDownward, MdArrowUpward} from "react-icons/all";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 
 import {PrimaryButton} from "../../buttons";
@@ -23,12 +23,11 @@ const OrderingDialog = ({isOpen, onClose, orderings, value, onValueChange}: IOrd
     return (
         <Dialog open={isOpen} onBackdropClick={onClose}>
             <DialogTitle>
-                <MdSort />
                 {t("Sortieren")}
             </DialogTitle>
-            <DialogContent>
+            <List>
                 {orderings.map(ordering => (
-                    <Box key={ordering.value} display="flex" flexDirection="row">
+                    <ListItem key={ordering.value}>
                         <Typography variant="body1" color="textSecondary">
                             <Grid container spacing={3} direction="row" alignItems="center">
                                 <Grid item>
@@ -54,9 +53,9 @@ const OrderingDialog = ({isOpen, onClose, orderings, value, onValueChange}: IOrd
                                 </Grid>
                             </Grid>
                         </Typography>
-                    </Box>
+                    </ListItem>
                 ))}
-            </DialogContent>
+            </List>
             <DialogActions>
                 <PrimaryButton onClick={onClose}>
                     {t("Schließen")}
