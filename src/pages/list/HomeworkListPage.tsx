@@ -1,12 +1,12 @@
-import React, {memo, useState} from "react";
+import React, {useState} from "react";
 import {useInfiniteQuery} from "react-query";
 import {useFetchHomeworkListAPI, useQueryOptions} from "hooks";
-import SearchPage from "components/pages/SearchPage";
-import {Box} from "@material-ui/core";
+import {Box, FormControlLabel} from "@material-ui/core";
 import {HomeworkApprox} from "types";
-import {Homework} from "components";
+import {Homework, SearchPage} from "components";
 import {useDebouncedValue} from "@shopify/react-hooks";
 import {useTranslation} from "react-i18next";
+import FlipMove from "react-flip-move";
 
 const HomeworkListPage = () => {
     const {t} = useTranslation();
@@ -43,37 +43,45 @@ const HomeworkListPage = () => {
 
     return (
         <SearchPage<HomeworkApprox>
-            title={t("Hausaufgaben suchen")}
-            search={search}
-            ordering={ordering}
-            fullAmount={rawDataGroups?.[0].count ?? 0}
-            isFetching={isLoading}
-            containsMore={canFetchMore ?? false}
-            fetchMore={fetchMore}
             orderings={[
                 {
                     name: "Fälligkeitsdatum",
                     value: "due_date",
                 },
             ]}
+            title={t("Hausaufgaben suchen")}
+            ordering={ordering}
+            fullAmount={rawDataGroups?.[0].count ?? 0}
+            isFetching={isLoading}
+            containsMore={canFetchMore ?? false}
+            fetchMore={fetchMore}
+            search={search}
             data={homeworks}
             sampleElement={renderElement}
             renderElement={({data, style}) => {
                 return (
-                    <Box
+                    <FlipMove
                         key={data.id}
-                        style={style}
-                        py={1}
                     >
-                        <Homework
-                            subject={data.subject}
-                            information={data.truncatedInformation}
-                            id={data.id}
-                            creationDate={data.createdAt}
-                        />
-                    </Box>
+                        <Box
+                            style={style}
+                            py={1}
+                        >
+                            <Homework
+                                subject={data.subject}
+                                information={data.truncatedInformation}
+                                id={data.id}
+                                creationDate={data.createdAt}
+                            />
+                        </Box>
+                    </FlipMove>
                 );
             }}
+            filtering={(
+                <>
+                    <FormControlLabel label={t("")} />
+                </>
+            )}
             onOrderingChange={setOrdering}
             onSearchChange={setSearch}
         />
@@ -81,4 +89,4 @@ const HomeworkListPage = () => {
 };
 
 
-export default memo(HomeworkListPage);
+export default HomeworkListPage;

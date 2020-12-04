@@ -7,3 +7,4 @@ export {default as useFetchLessonListAPI} from "./useFetchLessonListAPI";
 export {default as useFetchLessonDetailAPI} from "./useFetchLessonDetailAPI";
 export {default as useFetchModificationListAPI} from "./useFetchModificationListAPI";
 export {default as useFetchModificationDetailAPI} from "./useFetchModificationDetailAPI";
+export {default as useFetchLessonDataAPI} from "./useFetchLessonDataAPI";

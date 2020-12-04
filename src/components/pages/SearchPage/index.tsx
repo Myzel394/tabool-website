@@ -1,4 +1,4 @@
-import React, {CSSProperties, useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {CSSProperties, ReactNode, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {Box, CircularProgress, Container, Typography} from "@material-ui/core";
 import {FixedSizeList} from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
@@ -18,6 +18,7 @@ import {useElementSize} from "hooks";
 import {SearchBar} from "../../inputs";
 
 import OrderingDialog, {IOrderingDialog} from "./OrderingDialog";
+import FilterDialog from "./FilterDialog";
 
 
 interface IRenderElement<DataType = any> {
@@ -47,6 +48,8 @@ export interface ISearchPage<DataType = any> {
     ordering: string;
     onOrderingChange: (ordering: string) => any;
 
+    filtering: ReactNode;
+
     title: string;
 }
 
@@ -66,10 +69,12 @@ const SearchPage = <T extends unknown = any>({
     ordering,
     onOrderingChange,
     title,
+    filtering,
 }: ISearchPage<T>) => {
     const {t} = useTranslation();
     const {bottomSheetHeight} = useContext(UtilsContext);
 
+    const [isFilteringOpen, setIsFilteringOpen] = useState<boolean>(false);
     const [isOrderingOpen, setIsOrderingOpen] = useState<boolean>(false);
     const [$element, set$Element] = useState<any>();
     const [elementHeight, setElementHeight] = useState<number>();
@@ -117,17 +122,17 @@ const SearchPage = <T extends unknown = any>({
         </AutoSizer>
     );
     const children = (() => {
-        if (isFetching) {
-            return (
-                <Box my={2} display="flex" justifyContent="center" alignItems="center">>
-                    <CircularProgress />
-                </Box>
-            );
-        }
         if (!elementHeight) {
             return renderSampleElement();
         }
         if (data.length === 0) {
+            if (isFetching) {
+                return (
+                    <Box my={2} display="flex" justifyContent="center" alignItems="center">>
+                        <CircularProgress />
+                    </Box>
+                );
+            }
             return (
                 <Box my={2} display="flex" justifyContent="center" alignItems="center">
                     <Typography variant="h4">
@@ -172,7 +177,7 @@ const SearchPage = <T extends unknown = any>({
                             value={search}
                             onChange={onSearchChange}
                             onSortDialogOpen={() => setIsOrderingOpen(true)}
-                            onFilterDialogOpen={() => setIsOrderingOpen(true)}
+                            onFilterDialogOpen={() => setIsFilteringOpen(true)}
                         />
                     </Box>
                 </div>
@@ -185,6 +190,12 @@ const SearchPage = <T extends unknown = any>({
                 onClose={() => setIsOrderingOpen(false)}
                 onValueChange={onOrderingChange}
             />
+            <FilterDialog
+                isOpen={isFilteringOpen}
+                onClose={() => setIsFilteringOpen(false)}
+            >
+                {filtering}
+            </FilterDialog>
         </>
     );
 };
