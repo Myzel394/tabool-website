@@ -2,53 +2,76 @@ import React, {useMemo, useState} from "react";
 import {Button, FormGroup, FormHelperText} from "@material-ui/core";
 import {useQueryOptions} from "hooks";
 import {QueryFunction, useQuery} from "react-query";
+import {useDebouncedValue} from "@shopify/react-hooks";
 
-import SelectMenu from "./SelectMenu";
+import SelectMenu, {ISelectMenu} from "./SelectMenu";
+
+export interface SearchFieldExtend<DataType = any> extends Omit<
+    IBasicSearchField<DataType>,
+    "title"
+    | "renderListElement"
+    | "queryFunction"
+    | "queryKey"
+    | "searchPlaceholder"
+    | "onSelect"
+    | "searchParam"
+    | "extractData"
+    | "filterData"
+    | "modalTitle"
+    | "getKeyFromData"
+    > {
+    onChange: (value: DataType) => void;
+    value: DataType | undefined;
+}
 
 
-export interface IBasicSearchField {
+export interface IBasicSearchField<DataType = any, KeyType = string, QueryFunctionType = any> extends Omit<
+    ISelectMenu<DataType, KeyType>,
+    "title" |
+    "isOpen" |
+    "isError" |
+    "isFetching" |
+    "data" |
+    "onClose" |
+    "onSearch" |
+    "searchValue" |
+        "onSearchChange"
+    > {
     title: string;
-    modalTitle: string;
     queryKey: string;
 
     searchParam: string;
-    searchPlaceholder: string;
-    renderListElement: (element, props, isSelected: boolean) => JSX.Element;
-    filterData: (givenData: any[], searchValueLowerCased: string, searchValue: string) => any[];
-    extractData: (data) => any[];
-    queryFunction: QueryFunction<any>;
-    getKeyFromData: (data: any) => any;
+    filterData: (givenData: DataType[], searchValueLowerCased: string, searchValue: string) => DataType[];
+    extractData: (data: DataType[]) => DataType[];
+    queryFunction: QueryFunction<QueryFunctionType>;
 
-    onSelect: (data) => void;
+    modalTitle: ISelectMenu<DataType, KeyType>["title"];
 
     errorMessages?: string[];
-    listItemSize?: number;
-    value: any;
 }
 
-const BasicSearchField = ({
+const BasicSearchField = <DataType extends any = any, KeyType = string, QueryFunctionType = any>({
     title,
     modalTitle,
-    queryKey,
-    searchParam,
-    renderListElement,
-    extractData,
     queryFunction,
-    searchPlaceholder,
     onSelect,
     filterData,
     errorMessages,
-    listItemSize,
-    getKeyFromData,
-    value,
-}: IBasicSearchField) => {
+    selectedValue,
+    queryKey,
+    extractData,
+    ...other
+}: IBasicSearchField<DataType, KeyType, QueryFunctionType>) => {
+    const queryOptions = useQueryOptions();
+
     const [search, setSearch] = useState<string>("");
     const [searchValue, setSearchValue] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const queryOptions = useQueryOptions();
+    const searchParam = useDebouncedValue(search);
+
     const {isFetching, isError, data: rawData} = useQuery(
-        [queryKey + search],
+        [queryKey, searchParam],
         queryFunction,
         {
             refetchOnWindowFocus: isOpen,
@@ -62,26 +85,6 @@ const BasicSearchField = ({
 
     return (
         <>
-            <SelectMenu
-                getKeyFromData={getKeyFromData}
-                isError={isError}
-                isFetching={isFetching}
-                title={modalTitle}
-                searchValue={searchValue}
-                searchPlaceholder={searchPlaceholder}
-                isOpen={isOpen}
-                data={data}
-                renderListElement={renderListElement}
-                listItemSize={listItemSize || 50}
-                value={value}
-                onClose={() => setIsOpen(false)}
-                onSelect={element => {
-                    setIsOpen(false);
-                    onSelect(element);
-                }}
-                onFetch={value => setSearch(value)}
-                onSearchChange={value => setSearchValue(value)}
-            />
             <FormGroup>
                 <Button
                     variant="outlined"
@@ -96,6 +99,23 @@ const BasicSearchField = ({
                     </FormHelperText>
                 }
             </FormGroup>
+            <SelectMenu
+                {...other}
+                isError={isError}
+                isFetching={isFetching}
+                title={modalTitle}
+                searchValue={searchValue}
+                isOpen={isOpen}
+                data={data}
+                selectedValue={selectedValue}
+                onClose={() => setIsOpen(false)}
+                onSelect={element => {
+                    setIsOpen(false);
+                    onSelect(element);
+                }}
+                onSearch={value => setSearch(value)}
+                onSearchChange={value => setSearchValue(value)}
+            />
         </>
     );
 };

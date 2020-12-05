@@ -2,41 +2,42 @@ import React, {useEffect, useState} from "react";
 import {Box, Dialog, DialogTitle} from "@material-ui/core";
 import {useUniqueId} from "hooks";
 
-import Search from "../../../Search";
+import Search, {ISearch} from "../../../Search";
 
 import ErrorStatus from "./statuses/ErrorStatus";
-import List from "./List";
+import List, {IList} from "./List";
 import Actions from "./Actions";
 
-export interface ISelectMenu {
+export interface ISelectMenu<DataType = any, KeyType = any> {
     isOpen: boolean;
     isError: boolean;
     isFetching: boolean;
 
     title: string;
-    searchPlaceholder: string;
 
-    data: any[];
-    listItemSize: number;
+    data: DataType[];
 
-    onFetch: (value: string) => void;
     onClose: () => void;
-    onSelect: (element) => void;
-    onSearchChange: (value: string) => void;
+    onSelect: (element: DataType) => void;
 
-    getKeyFromData: (data: any) => any;
-    renderListElement: (element, props, isSelected: boolean) => JSX.Element;
+    selectedValue: DataType | undefined;
 
-    value: any;
-    searchValue: string;
+    onSearch: ISearch["onSearch"];
+    searchPlaceholder: ISearch["searchPlaceholder"];
+    searchValue: ISearch["value"];
+    onSearchChange: ISearch["onChange"];
+
+    listItemSize: IList<DataType, KeyType>["itemSize"];
+    renderListElement: IList<DataType, KeyType>["renderListElement"];
+    getKeyFromData: IList<DataType, KeyType>["getKeyFromData"];
 }
 
-const SelectMenu = ({
+const SelectMenu = <DataType extends any = any, KeyType = any>({
     isOpen,
     title,
     isError,
     isFetching,
-    onFetch,
+    onSearch,
     onSelect,
     searchPlaceholder,
     listItemSize,
@@ -44,24 +45,24 @@ const SelectMenu = ({
     data,
     renderListElement,
     getKeyFromData,
-    value,
+    selectedValue,
     onSearchChange,
     searchValue,
-}: ISelectMenu) => {
+}: ISelectMenu<DataType, KeyType>) => {
     const titleId = useUniqueId();
     const [selectedElement, setSelectedElement] = useState<any>();
-    const canConfirm = value !== undefined && selectedElement === undefined || selectedElement !== undefined;
+    const canConfirm = selectedValue !== undefined && selectedElement === undefined || selectedElement !== undefined;
 
     // Update selected element to given value if opens
     useEffect(() => {
         // Element only needs to be updated when dialog is opened
         if (isOpen) {
             // Only update when a value is selected
-            if (value) {
-                setSelectedElement(value);
+            if (selectedValue) {
+                setSelectedElement(selectedValue);
             }
         }
-    }, [value, isOpen]);
+    }, [selectedValue, isOpen]);
 
     return (
         <Dialog
@@ -77,10 +78,10 @@ const SelectMenu = ({
                     searchPlaceholder={searchPlaceholder}
                     value={searchValue}
                     isLoading={isFetching}
-                    onSearch={onFetch}
+                    onSearch={onSearch}
                     onChange={val => onSearchChange(val)}
                 />
-                <List
+                <List<DataType, KeyType>
                     renderListElement={renderListElement}
                     data={data}
                     getKeyFromData={getKeyFromData}

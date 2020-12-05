@@ -2,16 +2,25 @@ import React, {ReactNode, useRef} from "react";
 import {FixedSizeList} from "react-window";
 import {useElementSize, useWindowSize} from "hooks";
 
-export interface IList {
-    data: any[];
-    renderListElement: (element, props, isSelected: boolean) => ReactNode;
+export interface IList<DataType = any, KeyType = string> {
+    data: DataType[];
+    getKeyFromData: (data: DataType) => KeyType;
+
+    renderListElement: (element: DataType, props, isSelected: boolean) => ReactNode;
     itemSize: number;
-    selectedKey: any;
-    getKeyFromData: (data: any) => any;
-    onSelect: (element) => void;
+
+    selectedKey: KeyType;
+    onSelect: (element: DataType | undefined) => void;
 }
 
-const List = ({data, renderListElement, itemSize, selectedKey, getKeyFromData, onSelect}: IList) => {
+const List = <DataType extends any = any, KeyType = any>({
+    data,
+    renderListElement,
+    itemSize,
+    selectedKey,
+    getKeyFromData,
+    onSelect,
+}: IList<DataType, KeyType>) => {
     const $wrapper = useRef<any>();
 
     const [bodyWidth] = useElementSize($wrapper);

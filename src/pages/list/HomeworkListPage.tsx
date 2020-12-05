@@ -8,6 +8,8 @@ import {useDebouncedValue} from "@shopify/react-hooks";
 import {useTranslation} from "react-i18next";
 import FlipMove from "react-flip-move";
 
+import SubjectField from "../../components/inputs/searchFields/SubjectField";
+
 const HomeworkListPage = () => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
@@ -79,7 +81,10 @@ const HomeworkListPage = () => {
             }}
             filtering={(
                 <>
-                    <FormControlLabel label={t("")} />
+                    <FormControlLabel
+                        label={t("")}
+                        control={<SubjectField />}
+                    />
                 </>
             )}
             onOrderingChange={setOrdering}

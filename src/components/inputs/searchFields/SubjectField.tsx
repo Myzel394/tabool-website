@@ -1,35 +1,35 @@
 import React, {memo, useCallback} from "react";
 import {useTranslation} from "react-i18next";
-import {TeacherApprox} from "types/teacher";
-import {IFetchTeacherResponse, useFetchTeacherListAPI} from "hooks/apis/fetch";
+import {IFetchSubjectResponse, useFetchSubjectListAPI} from "hooks";
+import {Subject} from "types";
 
 import SimpleListField, {itemSize} from "../SimpleListField";
 
 import BasicSearchField, {SearchFieldExtend} from "./BasicSearchField";
 
-export type ITeacherField = SearchFieldExtend<TeacherApprox>;
+export type ISubjectField = SearchFieldExtend<Subject>;
 
 
-const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
+const SubjectField = ({onChange, selectedValue, ...other}: ISubjectField) => {
     const {t} = useTranslation();
 
-    const queryFunction = useFetchTeacherListAPI();
+    const queryFunction = useFetchSubjectListAPI();
     // Functions
-    const filterFunc = useCallback((givenData: TeacherApprox[], value: string) =>
+    const filterFunc = useCallback((givenData: Subject[], value: string) =>
         givenData.filter(element => {
-            return element.lastName.toLocaleLowerCase().includes(value) ||
+            return element.name.toLocaleLowerCase().includes(value) ||
                 element.shortName.toLocaleLowerCase().includes(value);
         }), []);
 
-    const defaultTitle = t("Lehrer auswählen");
-    const title = value ? `${value.lastName} (${value.shortName})` : defaultTitle;
+    const defaultTitle = t("Fach auswählen");
+    const title = selectedValue ? `${selectedValue.name} (${selectedValue.shortName})` : defaultTitle;
 
     return (
-        <BasicSearchField<TeacherApprox, string, IFetchTeacherResponse>
+        <BasicSearchField<Subject, string, IFetchSubjectResponse>
             {...other}
             searchPlaceholder={t("Suche nach Nachnamen")}
             title={title}
-            renderListElement={((element, props, isSelected) => (
+            renderListElement={(element, props, isSelected) => (
                 <SimpleListField
                     listItemProps={{
                         button: true,
@@ -37,21 +37,21 @@ const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
                         disableTouchRipple: true,
                     }}
                     isActive={isSelected}
-                    primaryText={element.lastName}
+                    primaryText={element.name}
                     secondaryText={element.shortName}
                     {...props}
-                />
-            ))}
+                />)
+            }
             queryFunction={queryFunction}
-            queryKey="fetch_teachers"
+            queryKey="fetch_subjects"
             modalTitle={defaultTitle}
             filterData={filterFunc}
             listItemSize={itemSize}
             getKeyFromData={(element) => element.id}
-            selectedValue={value}
+            selectedValue={selectedValue}
             onSelect={onChange}
         />
     );
 };
 
-export default memo(TeacherField);
+export default memo(SubjectField);
