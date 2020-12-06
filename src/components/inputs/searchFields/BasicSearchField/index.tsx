@@ -21,7 +21,6 @@ export interface SearchFieldExtend<DataType = any> extends Omit<
     | "getKeyFromData"
     > {
     onChange: (value: DataType) => void;
-    value: DataType | undefined;
 }
 
 

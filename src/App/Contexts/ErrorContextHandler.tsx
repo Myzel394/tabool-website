@@ -16,7 +16,7 @@ const reducer = (
         case "setError": {
             const {
                 avoidReloading = false,
-                status = 500,
+                status,
                 message,
                 onRetry,
                 dialog,

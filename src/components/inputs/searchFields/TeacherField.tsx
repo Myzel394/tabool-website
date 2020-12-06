@@ -10,7 +10,7 @@ import BasicSearchField, {SearchFieldExtend} from "./BasicSearchField";
 export type ITeacherField = SearchFieldExtend<TeacherApprox>;
 
 
-const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
+const TeacherField = ({onChange, selectedValue, ...other}: ITeacherField) => {
     const {t} = useTranslation();
 
     const queryFunction = useFetchTeacherListAPI();
@@ -22,7 +22,7 @@ const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
         }), []);
 
     const defaultTitle = t("Lehrer auswählen");
-    const title = value ? `${value.lastName} (${value.shortName})` : defaultTitle;
+    const title = selectedValue ? `${selectedValue.lastName} (${selectedValue.shortName})` : defaultTitle;
 
     return (
         <BasicSearchField<TeacherApprox, string, IFetchTeacherResponse>
@@ -48,7 +48,7 @@ const TeacherField = ({onChange, value, ...other}: ITeacherField) => {
             filterData={filterFunc}
             listItemSize={itemSize}
             getKeyFromData={(element) => element.id}
-            selectedValue={value}
+            selectedValue={selectedValue}
             onSelect={onChange}
         />
     );

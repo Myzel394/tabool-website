@@ -2,9 +2,9 @@ import React, {cloneElement, memo} from "react";
 import {Box, FormGroup, FormHelperText, Grid, Typography} from "@material-ui/core";
 
 export interface IFormElement {
-    icon: JSX.Element;
     title: string;
     form: JSX.Element;
+    icon?: JSX.Element;
     helpTexts?: string[];
     errors?: string[];
 }

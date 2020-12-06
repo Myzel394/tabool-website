@@ -41,8 +41,8 @@ const useFetchHomeworkListAPI = () => {
                 ordering,
                 lesson: lessonId,
                 subject: subjectId,
-                due_date__lte: dueDateMin,
-                due_date__gte: dueDateMax,
+                due_date__gte: dueDateMin,
+                due_date__lte: dueDateMax,
             },
             ...await getLoginConfig(),
         });

@@ -1,12 +1,15 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useMutation, useQuery} from "react-query";
 import {
+    IUpdateHomeworkUserRelationData,
+    IUpdateHomeworkUserRelationResponse,
     useFetchHomeworkDetailAPI,
     useQueryOptions,
+    useSnackbar,
     useUpdateHomeworkDataAPI,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks";
-import {BooleanStatus, DetailPage, LoadingIndicator, LoadingOverlay, TextInput} from "components";
+import {BooleanStatus, DatePicker, DetailPage, LoadingIndicator, LoadingOverlay, TextInput} from "components";
 import {useTranslation} from "react-i18next";
 import {
     BiBarChartSquare,
@@ -25,8 +28,6 @@ import {
 import dayjs, {Dayjs} from "dayjs";
 import {formatLesson} from "format";
 import {HomeworkDetail} from "types";
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DayjsUtils from "@date-io/dayjs";
 import {Button, Link, Switch} from "@material-ui/core";
 import camelcaseKeys from "camelcase-keys";
 import {getISODatetime, getKeysByTrueValues} from "utils";
@@ -34,6 +35,12 @@ import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import {generatePath} from "react-router";
 import {AxiosError} from "axios";
 import {ErrorContext} from "contexts";
+
+import {PredefinedMessageType} from "../../hooks/useSnackbar";
+import {
+    IUpdateHomeworkDataData,
+    IUpdateHomeworkDataResponse,
+} from "../../hooks/apis/send/update/useUpdateHomeworkDataAPI";
 
 const getDueDateIcon = (dueDate: Dayjs, ignore: boolean): JSX.Element => {
     // Ignore guard
@@ -60,25 +67,45 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const updateHomeworkDataMutation = useUpdateHomeworkDataAPI();
     const updateHomeworkRelationMutation = useUpdateHomeworkUserRelationAPI();
     const fetchHomework = useFetchHomeworkDetailAPI();
+    const {addError} = useSnackbar();
 
     const [homework, setHomework] = useState<HomeworkDetail>();
     // Form
     const [information, setInformation] = useState<HomeworkDetail["information"]>("");
     const [dueDate, setDueDate] = useState<Dayjs>(dayjs());
-    const [type, setType] = useState<HomeworkDetail["type"]>("");
+    const [type, setType] = useState<HomeworkDetail["type"]>(null);
     const [isPrivate, setIsPrivate] = useState<HomeworkDetail["isPrivate"]>(false);
     const [relation, setRelation] = useState<string[]>([]);
 
     const [forceEdit, setForceEdit] = useState<string[]>([]);
 
     // Server
-    const [mutate, {isLoading: isUpdatingHomework, error: mutationError}] = useMutation(updateHomeworkDataMutation, {
-        onSuccess: setHomework,
-    });
-    const [mutateRelation, {isLoading: isUpdatingRelation}] = useMutation(updateHomeworkRelationMutation, {
-        onSuccess: newRelation => setRelation(getKeysByTrueValues(newRelation)),
-    });
-    const {isLoading, isError, updatedAt, refetch, isFetching} = useQuery(id, fetchHomework, {
+    const [
+        mutate,
+        {
+            isLoading: isUpdatingHomework,
+            error: mutationError,
+        },
+    ] = useMutation<IUpdateHomeworkDataResponse, AxiosError, IUpdateHomeworkDataData>(
+        updateHomeworkDataMutation,
+        {
+            onSuccess: setHomework,
+            onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
+        },
+    );
+    const [
+        mutateRelation,
+        {
+            isLoading: isUpdatingRelation,
+        },
+    ] = useMutation<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>(
+        updateHomeworkRelationMutation,
+        {
+            onSuccess: newRelation => setRelation(getKeysByTrueValues(newRelation)),
+            onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
+        },
+    );
+    const {isLoading, updatedAt, refetch, isFetching} = useQuery(id, fetchHomework, {
         ...queryOptions,
         onSuccess: setHomework,
         onError: (error: AxiosError) => !homework && dispatchError({
@@ -92,7 +119,20 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     });
 
     const updateHomework = useCallback(() => {
-        if (homework) {
+        // Update if
+        if (
+            // homework is defined
+            homework &&
+            (
+                // and form changed
+                (
+                    information !== homework.information ||
+                    dueDate !== homework.dueDate ||
+                    type !== homework.type ||
+                    isPrivate !== homework.isPrivate
+                )
+            )
+        ) {
             if (forceEdit.length === 0) {
                 mutate({
                     id: homework.id,
@@ -114,13 +154,12 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
         }
     }, [homework, mutateRelation]);
 
-    // Update form
+    // Update form from server
     const homeworkInformation = homework?.information;
     const homeworkDueDate = homework?.dueDate;
     const homeworkType = homework?.type;
     const homeworkIsPrivate = homework?.isPrivate;
     const homeworkRelation = homework?.userRelation;
-
     useEffect(() => {
         if (homeworkInformation) {
             setInformation(homeworkInformation);
@@ -171,8 +210,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             updatedAt={dayjs(updatedAt)}
             isRefreshing={isFetching}
             errors={camelcaseKeys(
-                mutationError?.response?.data ?? {
-                },
+                mutationError?.response?.data ?? {},
             )}
             data={{
                 information: {
@@ -199,13 +237,10 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     title: t("Fälligkeitsdatum"),
                     information: homework.dueDate.format("L"),
                     input: (
-                        <MuiPickersUtilsProvider utils={DayjsUtils}>
-                            <KeyboardDatePicker
-                                format="DD/MM/YYYY"
-                                value={dueDate?.toDate()}
-                                onChange={date => date && setDueDate(dayjs(date))}
-                            />
-                        </MuiPickersUtilsProvider>
+                        <DatePicker
+                            value={dueDate?.toDate()}
+                            onChange={date => date && setDueDate(dayjs(date))}
+                        />
                     ),
                     isUpdating: isUpdatingHomework && !homework.dueDate.isSame(dueDate),
                     onEditModeLeft: updateHomework,
@@ -215,7 +250,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                 type: {
                     icon: <BiBarChartSquare />,
                     title: t("Typ"),
-                    information: homework.type,
+                    information: homework?.type ?? "",
                     input: (
                         <TextInput
                             value={type}
@@ -289,12 +324,8 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     </ToggleButtonGroup>
                 </LoadingOverlay>
             )}
-            buttons={[
-                {
-                    title: t("Hausaufgabe hinzufügen"),
-                    onClick: () => null,
-                },
-            ]}
+            searchAllPath={generatePath("/homework/")}
+            addPath={generatePath("/homework/add/")}
         />
     );
 };

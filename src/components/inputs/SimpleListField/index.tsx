@@ -27,7 +27,9 @@ const SimpleListField = ({
     listItemProps,
     left,
     right,
-    ...other}: ISimpleListField) => {
+    style: givenStyle,
+    ...other
+}: ISimpleListField) => {
     const theme = useTheme();
     const isSelectedBackgroundColor = useMemo(() => {
         const {palette} = theme;
@@ -40,7 +42,8 @@ const SimpleListField = ({
     const boxStyle = useMemo(() => ({
         backgroundColor: theme.palette.background.paper,
         width: "100%",
-    }), [theme]);
+        ...givenStyle,
+    }), [givenStyle, theme.palette.background.paper]);
     const styleProps = isActive ? {style: {backgroundColor: isSelectedBackgroundColor}} : {};
     const itemProps: any = {
         ...listItemProps,

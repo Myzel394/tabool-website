@@ -5,8 +5,7 @@ import {useHistory} from "react-router-dom";
 import {SecondaryButton} from "components";
 
 export interface IError {
-    status: number;
-
+    status?: number;
     message?: string;
     title?: string;
     avoidReloading?: boolean;
@@ -36,7 +35,7 @@ const Error = ({
                     </Typography>
                     {status && (
                         <Typography variant="h3" color="error">
-                            {status}
+                            {status ? status : ""}
                         </Typography>
                     )}
                     {message && (

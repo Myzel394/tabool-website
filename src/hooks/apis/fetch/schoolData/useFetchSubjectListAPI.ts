@@ -13,7 +13,7 @@ export type IFetchSubjectResponse = PaginatedResponse<Subject[]>;
 const useFetchSubjectListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (search: string, {
+    return useCallback(async (key: string, search: string, {
         ordering = "name",
         page,
     }: IFetchSubjectData = {}): Promise<IFetchSubjectResponse> => {

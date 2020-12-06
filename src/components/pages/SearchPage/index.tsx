@@ -1,6 +1,6 @@
-import React, {CSSProperties, ReactNode, useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {ReactNode, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {Box, CircularProgress, Container, Typography} from "@material-ui/core";
-import {FixedSizeList} from "react-window";
+import {VariableSizeList} from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import AutoSizer from "react-virtualized-auto-sizer";
 import {useTranslation} from "react-i18next";
@@ -14,27 +14,23 @@ import {
 } from "react-icons/all";
 import {UtilsContext} from "contexts";
 import {useElementSize} from "hooks";
+import _ from "lodash";
+import update from "immutability-helper";
+import {Alert} from "@material-ui/lab";
 
 import {SearchBar} from "../../inputs";
 
 import OrderingDialog, {IOrderingDialog} from "./OrderingDialog";
 import FilterDialog from "./FilterDialog";
+import RowElement, {IRowElement} from "./RowElement";
 
-
-interface IRenderElement<DataType = any> {
-    data: DataType;
-    index: number;
-    style: CSSProperties;
-}
+const {innerHeight: initialWindowHeight} = window;
 
 export interface ISearchPage<DataType = any> {
     data: DataType[];
 
     search: string;
     onSearchChange: (search: string) => any;
-
-    renderElement: (data: IRenderElement<DataType>) => any;
-    sampleElement: (data: IRenderElement<DataType>) => JSX.Element;
 
     fetchMore: () => any;
     containsMore: boolean;
@@ -48,9 +44,14 @@ export interface ISearchPage<DataType = any> {
     ordering: string;
     onOrderingChange: (ordering: string) => any;
 
-    filtering: ReactNode;
+    filterNode: ReactNode;
 
     title: string;
+
+    isError: boolean;
+
+    renderElement: IRowElement["renderElement"];
+    footerNode: IRowElement["footer"];
 }
 
 const SearchPage = <T extends unknown = any>({
@@ -61,7 +62,6 @@ const SearchPage = <T extends unknown = any>({
     fetchMore,
     containsMore,
     isFetching,
-    sampleElement,
     fullAmount,
     sortType,
     sorting,
@@ -69,30 +69,29 @@ const SearchPage = <T extends unknown = any>({
     ordering,
     onOrderingChange,
     title,
-    filtering,
+    filterNode,
+    isError,
+    footerNode,
 }: ISearchPage<T>) => {
     const {t} = useTranslation();
     const {bottomSheetHeight} = useContext(UtilsContext);
 
+    // Dialogs
     const [isFilteringOpen, setIsFilteringOpen] = useState<boolean>(false);
     const [isOrderingOpen, setIsOrderingOpen] = useState<boolean>(false);
-    const [$element, set$Element] = useState<any>();
-    const [elementHeight, setElementHeight] = useState<number>();
 
+    // Everything needed for windowing
+    const [$list, set$List] = useState<VariableSizeList>();
+    const [heights, setHeights] = useState<number[]>([]);
     const $header = useRef<any>();
     const [headerWidth, headerHeight] = useElementSize($header);
 
-    const renderSampleElement = () => (
-        data.length > 0 && (
-            <div ref={reference => set$Element(reference)}>
-                {sampleElement({
-                    data: data[0],
-                    index: 0,
-                    style: {},
-                })}
-            </div>
-        )
-    );
+    useEffect(() => {
+        if ($list?.resetAfterIndex) {
+            _.range(heights.length).forEach(index => $list.resetAfterIndex(index));
+        }
+    }, [$list, heights]);
+
     const renderData = () => (
         <AutoSizer>
             {({height, width}) => (
@@ -102,33 +101,48 @@ const SearchPage = <T extends unknown = any>({
                     itemCount={fullAmount}
                 >
                     {({onItemsRendered, ref}) => (
-                        <FixedSizeList
-                            ref={ref}
-                            itemSize={elementHeight ?? 0}
+                        <VariableSizeList
+                            ref={reference => {
+                                if (reference) {
+                                    // eslint-disable-next-line no-param-reassign
+                                    ref = {
+                                        current: reference,
+                                    };
+                                    set$List(reference);
+                                }
+                            }}
+                            itemSize={index => heights[index] ?? initialWindowHeight}
                             width={width}
                             height={height - (headerHeight ?? 0)}
-                            itemCount={data.length}
+                            itemCount={data.length + 1}
                             onItemsRendered={onItemsRendered}
                         >
-                            {({index, style}) => renderElement({
-                                data: data[index],
-                                index,
-                                style,
-                            })}
-                        </FixedSizeList>
+                            {({index, style}) =>
+                                <RowElement
+                                    data={data[index]}
+                                    index={index}
+                                    style={style}
+                                    useFooter={index >= data.length}
+                                    renderElement={renderElement}
+                                    footer={footerNode}
+                                    setHeight={height => setHeights(prevState => update(prevState, {
+                                        [index]: {
+                                            $set: height,
+                                        },
+                                    }))}
+                                />
+                            }
+                        </VariableSizeList>
                     )}
                 </InfiniteLoader>
             )}
         </AutoSizer>
     );
     const children = (() => {
-        if (!elementHeight) {
-            return renderSampleElement();
-        }
         if (data.length === 0) {
             if (isFetching) {
                 return (
-                    <Box my={2} display="flex" justifyContent="center" alignItems="center">>
+                    <Box my={2} display="flex" justifyContent="center" alignItems="center">
                         <CircularProgress />
                     </Box>
                 );
@@ -159,29 +173,34 @@ const SearchPage = <T extends unknown = any>({
         }
     })();
 
-    useEffect(() => {
-        if ($element) {
-            setElementHeight($element.clientHeight);
-        }
-    }, [$element, data]);
-
     return (
         <>
             <Container maxWidth="md" style={style}>
                 <div ref={$header}>
-                    <Typography variant="h2" component="h1">
-                        {title}
-                    </Typography>
-                    <Box mt={2}>
-                        <SearchBar
-                            value={search}
-                            onChange={onSearchChange}
-                            onSortDialogOpen={() => setIsOrderingOpen(true)}
-                            onFilterDialogOpen={() => setIsFilteringOpen(true)}
-                        />
+                    <Box pt={2}>
+                        <Typography variant="h1" component="h1">
+                            {title}
+                        </Typography>
+                        <Box mt={2}>
+                            <SearchBar
+                                value={search}
+                                onChange={onSearchChange}
+                                {...(
+                                    !isError && {
+                                        onSortDialogOpen: () => setIsOrderingOpen(true),
+                                        onFilterDialogOpen: () => setIsFilteringOpen(true),
+                                    }
+                                )}
+                            />
+                        </Box>
                     </Box>
                 </div>
                 {children}
+                {isError && (
+                    <Alert severity="error">
+                        {t("Es gab einen Fehler. Es können keine Daten mehr geladen werden.")}
+                    </Alert>
+                )}
             </Container>
             <OrderingDialog
                 isOpen={isOrderingOpen}
@@ -194,7 +213,7 @@ const SearchPage = <T extends unknown = any>({
                 isOpen={isFilteringOpen}
                 onClose={() => setIsFilteringOpen(false)}
             >
-                {filtering}
+                {filterNode}
             </FilterDialog>
         </>
     );
@@ -203,6 +222,7 @@ const SearchPage = <T extends unknown = any>({
 SearchPage.defaultProps = {
     sortType: "alphabetic",
     sorting: "ascending",
+    isError: false,
 };
 
 

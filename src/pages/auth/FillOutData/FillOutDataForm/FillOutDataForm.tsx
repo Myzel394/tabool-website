@@ -68,8 +68,9 @@ export default function FillOutDataForm({errors, onFillOut}: IFillOutDataForm) {
                             {buildGrid([
                                 <div key="teacher">
                                     <TeacherField
-                                        value={teacher}
+                                        selectedValue={teacher}
                                         errorMessages={ownErrors?.teacher}
+                                        listItemSize={50}
                                         onChange={value => setTeacher(value)}
                                     />
                                 </div>,

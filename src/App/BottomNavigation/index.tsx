@@ -17,27 +17,25 @@ const BottomNavigation = ({innerRef}) => {
 
     if (state.isFullyRegistered) {
         return (
-            <div ref={innerRef}>
-                <MuiBottomNavigation value={baseLocation} className={styles.container}>
-                    <BottomNavigationAction
-                        label={t("Start").toString()}
-                        icon={<MdHome />}
-                        value=""
-                        onClick={() => history.push("/")}
-                    />
-                    <BottomNavigationAction
-                        label={t("Stundenplan").toString()}
-                        icon={<FaTable />}
-                        value="timetable"
-                        onClick={() => history.push("/timetable/")}
-                    />
-                    <BottomNavigationAction
-                        label={t("Kalendar").toString()}
-                        icon={<MdEventNote />}
-                        value="calendar"
-                    />
-                </MuiBottomNavigation>
-            </div>
+            <MuiBottomNavigation ref={innerRef} value={baseLocation} className={styles.container}>
+                <BottomNavigationAction
+                    label={t("Start").toString()}
+                    icon={<MdHome />}
+                    value=""
+                    onClick={() => history.push("/")}
+                />
+                <BottomNavigationAction
+                    label={t("Stundenplan").toString()}
+                    icon={<FaTable />}
+                    value="timetable"
+                    onClick={() => history.push("/timetable/")}
+                />
+                <BottomNavigationAction
+                    label={t("Kalendar").toString()}
+                    icon={<MdEventNote />}
+                    value="calendar"
+                />
+            </MuiBottomNavigation>
         );
     }
 

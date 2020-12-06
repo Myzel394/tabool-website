@@ -2,8 +2,6 @@ import React, {useContext, useState} from "react";
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid} from "@material-ui/core";
 import {isMobile} from "react-device-detect";
 import {ToolbarProps} from "react-big-calendar";
-import {MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DayjsUtils from "@date-io/dayjs";
 import {useDeviceWidth} from "hooks";
 import {useTranslation} from "react-i18next";
 import {FaCog} from "react-icons/all";
@@ -63,53 +61,51 @@ const Toolbar = ({label, onNavigate}: ToolbarProps) => {
                     </Button>
                 </Grid>
             </Grid>
-            <MuiPickersUtilsProvider utils={DayjsUtils}>
-                <Dialog open={isOpen} maxWidth="md" onBackdropClick={() => setIsOpen(false)}>
-                    <DialogTitle>
-                        {t("Einstellungen")}
-                    </DialogTitle>
-                    <DialogContent>
-                        {isMD ? (
-                            <Box display="flex" flexDirection="row">
-                                <Calendar />
-                                <Grid container spacing={1} direction="column" alignItems="center">
-                                    {elements.map(element => (
-                                        <Grid key={element.key} item>
-                                            {element}
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </Box>
-                        ) : (
+            <Dialog open={isOpen} maxWidth="md" onBackdropClick={() => setIsOpen(false)}>
+                <DialogTitle>
+                    {t("Einstellungen")}
+                </DialogTitle>
+                <DialogContent>
+                    {isMD ? (
+                        <Box display="flex" flexDirection="row">
+                            <Calendar />
                             <Grid container spacing={1} direction="column" alignItems="center">
                                 {elements.map(element => (
                                     <Grid key={element.key} item>
                                         {element}
                                     </Grid>
                                 ))}
-                                <Grid
-                                    item
-                                    style={{
-                                        overflow: "scroll",
-                                        maxWidth: "100%",
-                                    }}
-                                >
-                                    <Box
-                                        mt={5}
-                                    >
-                                        <Calendar />
-                                    </Box>
-                                </Grid>
                             </Grid>
-                        )}
-                    </DialogContent>
-                    <DialogActions>
-                        <PrimaryButton onClick={() => setIsOpen(false)}>
-                            {t("Schließen")}
-                        </PrimaryButton>
-                    </DialogActions>
-                </Dialog>
-            </MuiPickersUtilsProvider>
+                        </Box>
+                    ) : (
+                        <Grid container spacing={1} direction="column" alignItems="center">
+                            {elements.map(element => (
+                                <Grid key={element.key} item>
+                                    {element}
+                                </Grid>
+                            ))}
+                            <Grid
+                                item
+                                style={{
+                                    overflow: "scroll",
+                                    maxWidth: "100%",
+                                }}
+                            >
+                                <Box
+                                    mt={5}
+                                >
+                                    <Calendar />
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <PrimaryButton onClick={() => setIsOpen(false)}>
+                        {t("Schließen")}
+                    </PrimaryButton>
+                </DialogActions>
+            </Dialog>
         </>
     );
 };

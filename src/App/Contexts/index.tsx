@@ -19,8 +19,8 @@ const queryCache = new QueryCache();
 const Contexts = ({children, bottomSheetHeight}: IContexts) => {
     return (
         <ReactQueryCacheProvider queryCache={queryCache}>
-            <AxiosContextHandler>
-                <UserContextHandler>
+            <UserContextHandler>
+                <AxiosContextHandler>
                     <ErrorContextHandler>
                         <UtilsContextHandler bottomSheetHeight={bottomSheetHeight}>
                             <Checks>
@@ -28,8 +28,8 @@ const Contexts = ({children, bottomSheetHeight}: IContexts) => {
                             </Checks>
                         </UtilsContextHandler>
                     </ErrorContextHandler>
-                </UserContextHandler>
-            </AxiosContextHandler>
+                </AxiosContextHandler>
+            </UserContextHandler>
         </ReactQueryCacheProvider>
     );
 };

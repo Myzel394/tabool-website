@@ -36,6 +36,12 @@ const light = responsiveFontSizes(
                 paper: "#fff",
             },
         },
+        typography: {
+            h1: {
+                fontSize: "5.5rem",
+                fontWeight: 200,
+            },
+        },
     }),
 );
 

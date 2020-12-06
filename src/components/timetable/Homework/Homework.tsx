@@ -79,7 +79,6 @@ const Homework = ({
                 })}
             >
                 <Box m={2}>
-
                     <CSSTransition
                         in={ignore}
                         timeout={{

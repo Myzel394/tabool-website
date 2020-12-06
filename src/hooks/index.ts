@@ -10,3 +10,4 @@ export {default as useSaveData} from "./useSaveData";
 export {default as useDeviceWidth} from "./useDeviceWidth";
 export {default as usePersistentStorage} from "./usePersistentStorage";
 export {default as useAdaptedColor} from "./useAdaptedColor";
+export {default as useSnackbar} from "./useSnackbar";

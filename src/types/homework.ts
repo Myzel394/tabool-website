@@ -17,7 +17,7 @@ export interface HomeworkDetail extends Omit<HomeworkApprox, "truncatedInformati
     lesson: LessonDetail;
     isPrivate: boolean;
     information: string;
-    type: string;
+    type: string | null;
     userRelation: {
         completed: boolean;
         ignore: boolean;

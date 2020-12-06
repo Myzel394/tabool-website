@@ -1,5 +1,15 @@
-import React, {ReactNode, useEffect, useState} from "react";
-import {Box, Button, ButtonGroup, Container, FormControlLabel, Switch, Typography} from "@material-ui/core";
+import React, {ReactNode, useEffect, useMemo, useState} from "react";
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Container,
+    Divider,
+    FormControlLabel,
+    Link,
+    Switch,
+    Typography,
+} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {usePersistentStorage} from "hooks";
 import {Dayjs} from "dayjs";
@@ -8,6 +18,7 @@ import {PullToRefresh, UpdatedAt} from "components";
 import _ from "lodash";
 import {StorageType} from "hooks/usePersistentStorage";
 import {ButtonProps} from "@material-ui/core/Button";
+import {MdAdd, MdSearch} from "react-icons/all";
 
 import Title, {ITitle} from "./Title";
 import InformationList, {IInformationList} from "./InformationList";
@@ -34,6 +45,9 @@ export interface IDetailPage<D = any> {
     bottomNode?: ReactNode;
     footerNode?: ReactNode;
     buttons?: IButton[];
+
+    searchAllPath?: string;
+    addPath?: string;
 }
 
 const STORAGE_METHOD = localStorage;
@@ -53,11 +67,17 @@ const DetailPage = ({
     footerNode,
     headerNode,
     buttons,
+    addPath,
+    searchAllPath,
 }: IDetailPage) => {
     const {t} = useTranslation();
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
     const [elevatedKey, setElevatedKey] = useState<string>("");
     const [ordering, setOrdering] = usePersistentStorage<string[]>(defaultOrdering, orderingStorageName, StorageType.Local);
+
+    const dividerStyle = useMemo(() => ({
+        width: "100%",
+    }), []);
 
     // If `defaultOrdering` changes and the locally saved ordering doesn't contain the new ordering, reset it.
     useEffect(() => {
@@ -105,13 +125,32 @@ const DetailPage = ({
                             reorder={enableReordering}
                         />
                     </Box>
-                    {bottomNode}
+                    <Box mb={4}>
+                        {bottomNode}
+                    </Box>
+                    <Divider style={dividerStyle} />
                     <Box my={2}>
                         {updatedAt && <UpdatedAt value={updatedAt} />}
                         <Typography variant="body2">
                             {t("Tipp: Ziehe den Titel ganz runter um neuzuladen.")}
                         </Typography>
                     </Box>
+                    {(searchAllPath || addPath) && (
+                        <Box my={2}>
+                            <ButtonGroup orientation="vertical" color="primary">
+                                {searchAllPath && (
+                                    <Link component={Button} href={searchAllPath} endIcon={<MdSearch />}>
+                                        {t("Suchen")}
+                                    </Link>
+                                )}
+                                {addPath && (
+                                    <Link component={Button} href={addPath} endIcon={<MdAdd />}>
+                                        {t("Hinzufügen")}
+                                    </Link>
+                                )}
+                            </ButtonGroup>
+                        </Box>
+                    )}
                     {footerNode}
                 </Box>
             </Container>

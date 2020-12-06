@@ -19,7 +19,7 @@ const Calendar = ({onChange}: ICalendar) => {
 
     return (
         <Grid container direction="column" spacing={2} alignItems="center">
-            <Grid item spacing={2}>
+            <Grid item>
                 <Typography variant="h5" component="h1" align="center">
                     {t("Springe zu einem Tag")}
                 </Typography>

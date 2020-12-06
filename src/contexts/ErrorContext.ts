@@ -3,7 +3,7 @@ import {createContext, ReactNode} from "react";
 import {ActionType} from "types";
 
 export interface ErrorType {
-    status: number;
+    status?: number;
     title?: string;
     message?: string;
     avoidReloading: boolean;

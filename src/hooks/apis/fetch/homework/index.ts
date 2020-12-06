@@ -15,3 +15,5 @@ export {default as useFetchSubmissionDetailAPI} from "./useFetchSubmissionDetail
 export {default as useFetchSubmissionListAPI} from "./useFetchSubmissionListAPI";
 export {default as useFetchClasstestDetailAPI} from "./useFetchClasstestDetailAPI";
 export {default as useFetchClasstestListAPI} from "./useFetchClasstestListAPI";
+
+export {default as useFetchHomeworkInformationAPI} from "./useFetchHomeworkInformationAPI";

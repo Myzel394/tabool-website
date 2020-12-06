@@ -2,6 +2,8 @@ import React, {memo, useCallback} from "react";
 import {useTranslation} from "react-i18next";
 import {IFetchSubjectResponse, useFetchSubjectListAPI} from "hooks";
 import {Subject} from "types";
+import {useTheme} from "@material-ui/core";
+import tinycolor from "tinycolor2";
 
 import SimpleListField, {itemSize} from "../SimpleListField";
 
@@ -12,6 +14,7 @@ export type ISubjectField = SearchFieldExtend<Subject>;
 
 const SubjectField = ({onChange, selectedValue, ...other}: ISubjectField) => {
     const {t} = useTranslation();
+    const theme = useTheme();
 
     const queryFunction = useFetchSubjectListAPI();
     // Functions
@@ -27,9 +30,9 @@ const SubjectField = ({onChange, selectedValue, ...other}: ISubjectField) => {
     return (
         <BasicSearchField<Subject, string, IFetchSubjectResponse>
             {...other}
-            searchPlaceholder={t("Suche nach Nachnamen")}
+            searchPlaceholder={t("Suche nach Fächern")}
             title={title}
-            renderListElement={(element, props, isSelected) => (
+            renderListElement={(element, {style, ...other}, isSelected) => (
                 <SimpleListField
                     listItemProps={{
                         button: true,
@@ -39,7 +42,13 @@ const SubjectField = ({onChange, selectedValue, ...other}: ISubjectField) => {
                     isActive={isSelected}
                     primaryText={element.name}
                     secondaryText={element.shortName}
-                    {...props}
+                    style={{
+                        ...style,
+                        ...(isSelected ? {
+                            backgroundColor: tinycolor(element.userRelation.color).setAlpha(theme.palette.action.activatedOpacity).toString(),
+                        } : {}),
+                    }}
+                    {...other}
                 />)
             }
             queryFunction={queryFunction}
