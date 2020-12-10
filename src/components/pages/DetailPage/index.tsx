@@ -27,17 +27,17 @@ interface IButton extends ButtonProps {
     title: string;
 }
 
-export interface IDetailPage<D = any> {
+export interface IDetailPage<AvailableKeys extends string = string, QueryType = any> {
     title: ITitle["title"];
     color: ITitle["color"];
 
     defaultOrdering: IInformationList["ordering"];
-    data: IInformationList["data"];
-    forceEdit?: IInformationList["forceEdit"];
+    data: IInformationList<AvailableKeys>["data"];
+    forceEdit?: IInformationList<AvailableKeys>["forceEdit"];
     errors?: IInformationList["errors"];
 
     orderingStorageName: string;
-    refetch: QueryResult<D>["refetch"];
+    refetch: QueryResult<QueryType>["refetch"];
     isRefreshing: boolean;
 
     updatedAt?: Dayjs;
@@ -52,7 +52,7 @@ export interface IDetailPage<D = any> {
 
 const STORAGE_METHOD = localStorage;
 
-const DetailPage = ({
+const DetailPage = <AvailableKeys extends string = string, QueryType = any>({
     title,
     color,
     data,
@@ -69,7 +69,7 @@ const DetailPage = ({
     buttons,
     addPath,
     searchAllPath,
-}: IDetailPage) => {
+}: IDetailPage<AvailableKeys, QueryType>) => {
     const {t} = useTranslation();
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
     const [elevatedKey, setElevatedKey] = useState<string>("");

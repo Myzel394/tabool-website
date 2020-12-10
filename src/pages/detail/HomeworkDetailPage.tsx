@@ -1,6 +1,7 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useMutation, useQuery} from "react-query";
 import {
+    IFetchHomeworkListData, IFetchHomeworkListResponse,
     IUpdateHomeworkUserRelationData,
     IUpdateHomeworkUserRelationResponse,
     useFetchHomeworkDetailAPI,
@@ -36,11 +37,13 @@ import {generatePath} from "react-router";
 import {AxiosError} from "axios";
 import {ErrorContext} from "contexts";
 
-import {PredefinedMessageType} from "../../hooks/useSnackbar";
+import {PredefinedMessageType} from "hooks/useSnackbar";
 import {
     IUpdateHomeworkDataData,
     IUpdateHomeworkDataResponse,
-} from "../../hooks/apis/send/update/useUpdateHomeworkDataAPI";
+} from "hooks/apis/send/update/useUpdateHomeworkDataAPI";
+
+type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
 
 const getDueDateIcon = (dueDate: Dayjs, ignore: boolean): JSX.Element => {
     // Ignore guard
@@ -77,7 +80,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const [isPrivate, setIsPrivate] = useState<HomeworkDetail["isPrivate"]>(false);
     const [relation, setRelation] = useState<string[]>([]);
 
-    const [forceEdit, setForceEdit] = useState<string[]>([]);
+    const [forceEdit, setForceEdit] = useState<HomeworkKeys[]>([]);
 
     // Server
     const [
@@ -105,18 +108,27 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
     );
-    const {isLoading, updatedAt, refetch, isFetching} = useQuery(id, fetchHomework, {
-        ...queryOptions,
-        onSuccess: setHomework,
-        onError: (error: AxiosError) => !homework && dispatchError({
-            type: "setError",
-            payload: {
-                title: t("Fehler beim Laden der Hausaufgabe"),
-                message: error.message,
-                status: error.code,
-            },
-        }),
-    });
+    const {
+        isLoading,
+        updatedAt,
+        refetch,
+        isFetching
+    } = useQuery<any, AxiosError>(
+        id,
+        fetchHomework,
+        {
+            ...queryOptions,
+            onSuccess: setHomework,
+            onError: (error: AxiosError) => !homework && dispatchError({
+                type: "setError",
+                payload: {
+                    title: t("Fehler beim Laden der Hausaufgabe"),
+                    message: error.message,
+                    status: error.code,
+                },
+            }),
+        }
+    );
 
     const updateHomework = useCallback(() => {
         // Update if
@@ -200,11 +212,11 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <DetailPage
+        <DetailPage<HomeworkKeys>
             title={homework.lesson.lessonData.course.subject.name}
             color={homework.lesson.lessonData.course.subject.userRelation.color}
             defaultOrdering={[
-                "information", "dueDate", "type", "isPrivate", "createdAt", "lesson",
+                "information", "dueDate", "type", "isPrivate", "createdAt", "lesson"
             ]}
             refetch={refetch}
             updatedAt={dayjs(updatedAt)}

@@ -19,25 +19,25 @@ export interface Data {
     subInformation?: JSX.Element;
 }
 
-export interface IInformationList {
-    ordering: string[];
+export interface IInformationList<AvailableKeys extends string = string> {
+    ordering: AvailableKeys[];
     reorder: boolean;
     data: {
-        [key: string]: Data;
+        [key in AvailableKeys]: Data;
     };
 
-    forceEdit?: string[];
+    forceEdit?: AvailableKeys[];
     errors?: {
-        [key: string]: string[];
+        [key in AvailableKeys]: string[];
     };
-    elevatedKey?: string;
+    elevatedKey?: AvailableKeys;
 
-    setOrdering?: (ordering: string[]) => any;
-    setElevatedKey?: (key: string) => any;
+    setOrdering?: (ordering: AvailableKeys[]) => any;
+    setElevatedKey?: (key: AvailableKeys) => any;
 }
 
 
-const InformationList = ({
+const InformationList = <AvailableKeys extends string = string>({
     data,
     elevatedKey,
     errors,
@@ -46,7 +46,7 @@ const InformationList = ({
     setElevatedKey,
     setOrdering,
     reorder,
-}: IInformationList) => {
+}: IInformationList<AvailableKeys>) => {
     const onDragEnd = (result: DropResult) => {
         if (setElevatedKey) {
             setElevatedKey("");
