@@ -8,7 +8,7 @@ import SubjectList from "pages/list/Subject";
 import Login from "pages/auth/Login";
 import Home from "pages/home";
 import Calendar from "pages/calendar/index";
-import {HomeworkAddPage, HomeworkListPage, HomeworkPage} from "pages";
+import {HomeworkAddPage, HomeworkPage, LessonDetailPage} from "pages";
 
 
 export default function Routes() {
@@ -65,13 +65,13 @@ export default function Routes() {
             />
             <Route
                 exact
-                path="/homework/add/"
-                component={HomeworkAddPage}
+                path="/lesson/detail/:id/"
+                component={LessonDetailPage}
             />
             <Route
                 exact
-                path="/homework/"
-                component={HomeworkListPage}
+                path="/homework/add/"
+                component={HomeworkAddPage}
             />
         </Switch>
     );

@@ -12,3 +12,4 @@ export * from "./classtest";
 export * from "./submission";
 export * from "./validators";
 export * from "./modification";
+export * from "./classBook";

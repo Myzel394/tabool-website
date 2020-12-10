@@ -3,6 +3,7 @@ import {CssBaseline, ThemeProvider} from "@material-ui/core";
 import "fontsource-roboto";
 import light from "themes/light";
 import {BrowserRouter as Router} from "react-router-dom";
+
 import "./global.scss";
 
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";

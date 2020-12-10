@@ -11,3 +11,4 @@ export {default as useDeviceWidth} from "./useDeviceWidth";
 export {default as usePersistentStorage} from "./usePersistentStorage";
 export {default as useAdaptedColor} from "./useAdaptedColor";
 export {default as useSnackbar} from "./useSnackbar";
+export {default as useDetailPageError} from "./useDetailPageError";

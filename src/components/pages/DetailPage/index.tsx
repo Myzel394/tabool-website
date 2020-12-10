@@ -31,7 +31,7 @@ export interface IDetailPage<AvailableKeys extends string = string, QueryType = 
     title: ITitle["title"];
     color: ITitle["color"];
 
-    defaultOrdering: IInformationList["ordering"];
+    defaultOrdering: IInformationList<AvailableKeys>["ordering"];
     data: IInformationList<AvailableKeys>["data"];
     forceEdit?: IInformationList<AvailableKeys>["forceEdit"];
     errors?: IInformationList["errors"];
@@ -72,7 +72,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any>({
 }: IDetailPage<AvailableKeys, QueryType>) => {
     const {t} = useTranslation();
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
-    const [elevatedKey, setElevatedKey] = useState<string>("");
+    const [elevatedKey, setElevatedKey] = useState<string | null>(null);
     const [ordering, setOrdering] = usePersistentStorage<string[]>(defaultOrdering, orderingStorageName, StorageType.Local);
 
     const dividerStyle = useMemo(() => ({

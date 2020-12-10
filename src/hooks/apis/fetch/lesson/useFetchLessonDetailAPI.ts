@@ -17,7 +17,7 @@ export const parseLesson = (data: LessonDetail) => {
 const useFetchLessonDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, id: string): Promise<LessonDetail> => {
+    return useCallback(async (id: string): Promise<LessonDetail> => {
         const {data} = await instance.get(`/api/data/lesson/${id}/`, await getLoginConfig());
         parseLesson(data);
 

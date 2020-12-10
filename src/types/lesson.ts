@@ -2,6 +2,7 @@ import {Dayjs} from "dayjs";
 
 import {Room} from "./room";
 import {CourseDetail} from "./course";
+import {ClassBook} from "./classBook";
 
 export interface LessonDataApprox {
     course: string;
@@ -25,8 +26,13 @@ export interface LessonApprox {
 
 export interface LessonDetail extends Omit<LessonApprox, "lessonData"> {
     lessonData: LessonDataDetail;
+    classBook: ClassBook | null;
     userRelation: {
         attendance: boolean;
     };
+}
+
+export interface LessonTimetable extends Omit<LessonApprox, "lessonData"> {
+    lessonData: LessonDataDetail;
 }
 

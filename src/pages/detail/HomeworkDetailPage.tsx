@@ -1,9 +1,9 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useMutation, useQuery} from "react-query";
 import {
-    IFetchHomeworkListData, IFetchHomeworkListResponse,
     IUpdateHomeworkUserRelationData,
     IUpdateHomeworkUserRelationResponse,
+    useDetailPageError,
     useFetchHomeworkDetailAPI,
     useQueryOptions,
     useSnackbar,
@@ -35,13 +35,9 @@ import {getISODatetime, getKeysByTrueValues} from "utils";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import {generatePath} from "react-router";
 import {AxiosError} from "axios";
-import {ErrorContext} from "contexts";
-
 import {PredefinedMessageType} from "hooks/useSnackbar";
-import {
-    IUpdateHomeworkDataData,
-    IUpdateHomeworkDataResponse,
-} from "hooks/apis/send/update/useUpdateHomeworkDataAPI";
+import {IUpdateHomeworkDataData, IUpdateHomeworkDataResponse} from "hooks/apis/send/update/useUpdateHomeworkDataAPI";
+import {ErrorContext} from "contexts";
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
 
@@ -65,12 +61,13 @@ const getDueDateIcon = (dueDate: Dayjs, ignore: boolean): JSX.Element => {
 
 const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
-    const {dispatch: dispatchError} = useContext(ErrorContext);
     const queryOptions = useQueryOptions();
     const updateHomeworkDataMutation = useUpdateHomeworkDataAPI();
     const updateHomeworkRelationMutation = useUpdateHomeworkUserRelationAPI();
     const fetchHomework = useFetchHomeworkDetailAPI();
+    const {onFetchError} = useDetailPageError();
     const {addError} = useSnackbar();
+    const {dispatch: dispatchError} = useContext(ErrorContext);
 
     const [homework, setHomework] = useState<HomeworkDetail>();
     // Form
@@ -112,22 +109,15 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
         isLoading,
         updatedAt,
         refetch,
-        isFetching
-    } = useQuery<any, AxiosError>(
+        isFetching,
+    } = useQuery<HomeworkDetail, AxiosError>(
         id,
         fetchHomework,
         {
             ...queryOptions,
             onSuccess: setHomework,
-            onError: (error: AxiosError) => !homework && dispatchError({
-                type: "setError",
-                payload: {
-                    title: t("Fehler beim Laden der Hausaufgabe"),
-                    message: error.message,
-                    status: error.code,
-                },
-            }),
-        }
+            onError: (error) => onFetchError(error, Boolean(homework)),
+        },
     );
 
     const updateHomework = useCallback(() => {
@@ -216,11 +206,15 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             title={homework.lesson.lessonData.course.subject.name}
             color={homework.lesson.lessonData.course.subject.userRelation.color}
             defaultOrdering={[
-                "information", "dueDate", "type", "isPrivate", "createdAt", "lesson"
+                "information", "dueDate", "type", "isPrivate", "createdAt", "lesson",
             ]}
             refetch={refetch}
             updatedAt={dayjs(updatedAt)}
             isRefreshing={isFetching}
+            orderingStorageName="detail:ordering:homework"
+            forceEdit={forceEdit}
+            searchAllPath={generatePath("/homework/")}
+            addPath={generatePath("/homework/add/")}
             errors={camelcaseKeys(
                 mutationError?.response?.data ?? {},
             )}
@@ -304,7 +298,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     subInformation: (
                         <Link
                             component={Button}
-                            href={generatePath("/lesson/:id/", {
+                            href={generatePath("/lesson/detail/:id/", {
                                 id: homework.lesson.id,
                             })}
                         >
@@ -313,8 +307,6 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     ),
                 },
             }}
-            orderingStorageName="detail:ordering:homework_detail"
-            forceEdit={forceEdit}
             bottomNode={(
                 <LoadingOverlay isLoading={isUpdatingRelation}>
                     <ToggleButtonGroup
@@ -336,8 +328,6 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     </ToggleButtonGroup>
                 </LoadingOverlay>
             )}
-            searchAllPath={generatePath("/homework/")}
-            addPath={generatePath("/homework/add/")}
         />
     );
 };

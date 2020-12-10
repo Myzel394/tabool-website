@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, {memo} from "react";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import {Grid} from "@material-ui/core";
@@ -30,10 +31,10 @@ export interface IInformationList<AvailableKeys extends string = string> {
     errors?: {
         [key in AvailableKeys]: string[];
     };
-    elevatedKey?: AvailableKeys;
+    elevatedKey?: AvailableKeys | null;
 
     setOrdering?: (ordering: AvailableKeys[]) => any;
-    setElevatedKey?: (key: AvailableKeys) => any;
+    setElevatedKey?: (key: AvailableKeys | null) => any;
 }
 
 
@@ -49,7 +50,7 @@ const InformationList = <AvailableKeys extends string = string>({
 }: IInformationList<AvailableKeys>) => {
     const onDragEnd = (result: DropResult) => {
         if (setElevatedKey) {
-            setElevatedKey("");
+            setElevatedKey(null);
         }
         if (setOrdering) {
             const {destination, source, draggableId} = result;
@@ -64,6 +65,7 @@ const InformationList = <AvailableKeys extends string = string>({
 
             const newState = update(
                 ordering,
+                // @ts-ignore
                 {
                     $splice: [
                         [source.index, 1],
@@ -81,6 +83,7 @@ const InformationList = <AvailableKeys extends string = string>({
             onDragStart={initial => {
                 if (setElevatedKey) {
                     const {draggableId} = initial;
+                    // @ts-ignore
                     setElevatedKey(draggableId);
                 }
             }}
