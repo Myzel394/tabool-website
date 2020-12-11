@@ -10,7 +10,7 @@ import {
     useUpdateHomeworkDataAPI,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks";
-import {BooleanStatus, DatePicker, DetailPage, LoadingIndicator, LoadingOverlay, TextInput} from "components";
+import {BooleanStatus, DatePicker, DetailPage, LoadingIndicator, TextInput} from "components";
 import {useTranslation} from "react-i18next";
 import {
     BiBarChartSquare,
@@ -31,13 +31,13 @@ import {formatLesson} from "format";
 import {HomeworkDetail} from "types";
 import {Button, Link, Switch} from "@material-ui/core";
 import camelcaseKeys from "camelcase-keys";
-import {getISODatetime, getKeysByTrueValues} from "utils";
-import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+import {getISODatetime} from "utils";
 import {generatePath} from "react-router";
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {IUpdateHomeworkDataData, IUpdateHomeworkDataResponse} from "hooks/apis/send/update/useUpdateHomeworkDataAPI";
 import {ErrorContext} from "contexts";
+import update from "immutability-helper";
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
 
@@ -75,7 +75,6 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const [dueDate, setDueDate] = useState<Dayjs>(dayjs());
     const [type, setType] = useState<HomeworkDetail["type"]>(null);
     const [isPrivate, setIsPrivate] = useState<HomeworkDetail["isPrivate"]>(false);
-    const [relation, setRelation] = useState<string[]>([]);
 
     const [forceEdit, setForceEdit] = useState<HomeworkKeys[]>([]);
 
@@ -101,7 +100,11 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     ] = useMutation<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>(
         updateHomeworkRelationMutation,
         {
-            onSuccess: newRelation => setRelation(getKeysByTrueValues(newRelation)),
+            onSuccess: newRelation => setHomework(prevState => update(prevState, {
+                userRelation: {
+                    $set: newRelation,
+                },
+            })),
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
     );
@@ -146,22 +149,12 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             }
         }
     }, [dueDate, forceEdit.length, homework, information, isPrivate, mutate, type]);
-    const updateHomeworkRelation = useCallback((newRelation) => {
-        if (homework) {
-            mutateRelation({
-                id: homework.id,
-                completed: newRelation.includes("completed"),
-                ignore: newRelation.includes("ignore"),
-            });
-        }
-    }, [homework, mutateRelation]);
 
     // Update form from server
     const homeworkInformation = homework?.information;
     const homeworkDueDate = homework?.dueDate;
     const homeworkType = homework?.type;
     const homeworkIsPrivate = homework?.isPrivate;
-    const homeworkRelation = homework?.userRelation;
     useEffect(() => {
         if (homeworkInformation) {
             setInformation(homeworkInformation);
@@ -175,10 +168,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
         if (homeworkIsPrivate) {
             setIsPrivate(homeworkIsPrivate);
         }
-        if (homeworkRelation) {
-            setRelation(getKeysByTrueValues(homeworkRelation));
-        }
-    }, [homeworkDueDate, homeworkInformation, homeworkIsPrivate, homeworkRelation, homeworkType]);
+    }, [homeworkDueDate, homeworkInformation, homeworkIsPrivate, homeworkType]);
 
     // Form validation
     useEffect(() => {
@@ -202,7 +192,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <DetailPage<HomeworkKeys>
+        <DetailPage<HomeworkKeys, any, "completed" | "ignore">
             title={homework.lesson.lessonData.course.subject.name}
             color={homework.lesson.lessonData.course.subject.userRelation.color}
             defaultOrdering={[
@@ -218,6 +208,28 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             errors={camelcaseKeys(
                 mutationError?.response?.data ?? {},
             )}
+            relation={{
+                buttons: [
+                    {
+                        value: "completed" as "completed",
+                        icon: <MdCheck />,
+                        title: t("Erledigt"),
+                    },
+                    {
+                        value: "ignore" as "ignore",
+                        icon: <MdBlock />,
+                        title: t("Ignorieren"),
+                    },
+                ],
+                isUpdating: isUpdatingRelation,
+                value: homework.userRelation,
+                onChange: (newRelation) =>
+                    mutateRelation({
+                        id: homework.id,
+                        completed: newRelation.completed,
+                        ignore: newRelation.ignore,
+                    }),
+            }}
             data={{
                 information: {
                     icon: <FaInfoCircle />,
@@ -307,27 +319,6 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     ),
                 },
             }}
-            bottomNode={(
-                <LoadingOverlay isLoading={isUpdatingRelation}>
-                    <ToggleButtonGroup
-                        value={relation}
-                        size="large"
-                        onChange={(event, newRelation) => {
-                            setRelation(newRelation);
-                            updateHomeworkRelation(newRelation);
-                        }}
-                    >
-                        <ToggleButton value="completed">
-                            <MdCheck />
-                            {t("Erledigt")}
-                        </ToggleButton>
-                        <ToggleButton value="ignore">
-                            <MdBlock />
-                            {t("Ignorieren")}
-                        </ToggleButton>
-                    </ToggleButtonGroup>
-                </LoadingOverlay>
-            )}
         />
     );
 };

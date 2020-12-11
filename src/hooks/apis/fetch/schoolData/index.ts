@@ -13,3 +13,4 @@ export {default as useFetchTeacherListAPI} from "./useFetchTeacherListAPI";
 export {default as useFetchTeacherDetailAPI} from "./useFetchTeacherDetailAPI";
 export {default as useFetchCourseDetailAPI} from "./useFetchCourseDetailAPI";
 export {default as useFetchSubjectDetailAPI} from "./useFetchSubjectDetailAPI";
+export {default as useFetchTeacherInformationAPI} from "./useFetchTeacherInformationAPI";

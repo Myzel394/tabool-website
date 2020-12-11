@@ -4,9 +4,10 @@ import {HomeworkDetail} from "types";
 import {getLoginConfig} from "api";
 
 export interface IUpdateHomeworkUserRelationData {
+    id: string;
+
     completed?: boolean;
     ignore?: boolean;
-    id: string;
 }
 
 export type IUpdateHomeworkUserRelationResponse = HomeworkDetail["userRelation"];

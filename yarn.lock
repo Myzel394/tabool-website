@@ -2925,6 +2925,11 @@ asn1@~0.2.3:
   dependencies:
     safer-buffer "~2.1.0"
 
+assert-ok@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/assert-ok/-/assert-ok-1.0.0.tgz#5b5cf795f9275c59c714d66c3a06d7de70e43ec8"
+  integrity sha1-W1z3lfknXFnHFNZsOgbX3nDkPsg=
+
 assert-plus@1.0.0, assert-plus@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-1.0.0.tgz#f12e0f3c5d77b0b1cdd9146942e4e96c1e4dd525"
@@ -3722,6 +3727,13 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
+
+cast-array@~1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/cast-array/-/cast-array-1.0.1.tgz#264ef1129e5888bc48cac40fe914e9f69b8d189d"
+  integrity sha1-Jk7xEp5YiLxIysQP6RTp9puNGJ0=
+  dependencies:
+    isarray "0.0.1"
 
 chalk@2.4.2, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.4.1, chalk@^2.4.2:
   version "2.4.2"
@@ -8420,6 +8432,16 @@ lz-string@^1.4.4:
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.4.4.tgz#c0d8eaf36059f705796e1e344811cf4c498d3a26"
   integrity sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY=
 
+mailto-link@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/mailto-link/-/mailto-link-1.0.0.tgz#f52aa9fcc1173cb380915df164db31491891525d"
+  integrity sha1-9Sqp/MEXPLOAkV3xZNsxSRiRUl0=
+  dependencies:
+    assert-ok "~1.0.0"
+    cast-array "~1.0.0"
+    object-filter "~1.0.2"
+    query-string "~2.4.1"
+
 make-dir@^1.0.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.3.0.tgz#79c1033b80515bd6d24ec9933e860ca75ee27f0c"
@@ -9142,6 +9164,11 @@ object-copy@^0.1.0:
     copy-descriptor "^0.1.0"
     define-property "^0.2.5"
     kind-of "^3.0.3"
+
+object-filter@~1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/object-filter/-/object-filter-1.0.2.tgz#af0b797ffebeaf8a52c6637cedbe8816cfec1bc8"
+  integrity sha1-rwt5f/6+r4pSxmN87b6IFs/sG8g=
 
 object-hash@^2.0.1:
   version "2.0.3"
@@ -10624,6 +10651,13 @@ query-string@^4.1.0:
   integrity sha1-u7aTucqRXCMlFbIosaArYJBD2+s=
   dependencies:
     object-assign "^4.1.0"
+    strict-uri-encode "^1.0.0"
+
+query-string@~2.4.1:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-2.4.2.tgz#7db0666420804baa92ae9f268962855a76143dfb"
+  integrity sha1-fbBmZCCAS6qSrp8miWKFWnYUPfs=
+  dependencies:
     strict-uri-encode "^1.0.0"
 
 querystring-es3@^0.2.0:

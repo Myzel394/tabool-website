@@ -9,7 +9,7 @@ export enum PredefinedMessageType {
 }
 
 export interface IUseSnackbar {
-    addError: (error: AxiosError, message?: string, predefinedMessage?: PredefinedMessageType) => any;
+    addError: (error?: AxiosError, message?: string, predefinedMessage?: PredefinedMessageType) => any;
     addWarning: (message: string) => any;
     addSuccess: (message: string) => any;
     addSnackbar: ProviderContext["enqueueSnackbar"];
@@ -25,7 +25,7 @@ const useSnackbar = (): IUseSnackbar => {
         message = "",
         predefinedMessage,
     ) => {
-        let snackbarMessage = "";
+        let snackbarMessage = message;
 
         switch (predefinedMessage) {
             case PredefinedMessageType.ErrorLoading:
@@ -34,12 +34,11 @@ const useSnackbar = (): IUseSnackbar => {
             case PredefinedMessageType.ErrorMutating:
                 snackbarMessage = t("Es gab einen Fehler beim Updaten der Daten.");
                 break;
-            default:
-                snackbarMessage = message;
-                break;
         }
 
-        snackbarMessage = `${snackbarMessage} (Status: ${error.code}; Nachricht: ${error.message})`;
+        if (error) {
+            snackbarMessage = `${snackbarMessage} (Status: ${error.code}; Nachricht: ${error.message})`;
+        }
 
         addSnackbar(snackbarMessage, {
             variant: "error",

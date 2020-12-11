@@ -20,3 +20,4 @@ export {default as PullToRefresh} from "./PullToRefresh";
 export {default as UpdatedAt} from "./UpdatedAt";
 export {default as BooleanStatus} from "./BooleanStatus";
 export {default as FormElement} from "./FormElement";
+export {default as GenderStatus} from "./GenderStatus";

@@ -1,17 +1,30 @@
 import React, {memo, useContext, useState} from "react";
-import {useDetailPageError, useFetchLessonDetailAPI, useQueryOptions} from "hooks";
-import {useQuery} from "react-query";
+import {
+    useDetailPageError,
+    useFetchLessonDetailAPI,
+    useQueryOptions,
+    useSnackbar,
+    useUpdateLessonUserRelationAPI,
+} from "hooks";
+import {useMutation, useQuery} from "react-query";
 import {LessonDetail} from "types";
 import {AxiosError} from "axios";
 import {DetailPage, LoadingIndicator} from "components";
 import {ErrorContext} from "contexts";
 import dayjs from "dayjs";
-import {FaChalkboardTeacher, FiMonitor, MdPlace} from "react-icons/all";
+import {FaChalkboardTeacher, FaRunning, FiMonitor, MdPlace} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {CourseIcon, TeacherIcon} from "components/icons";
 import _ from "lodash";
-import {Button, Link} from "@material-ui/core";
+import {Button, Collapse, Link} from "@material-ui/core";
 import {generatePath} from "react-router";
+import update from "immutability-helper";
+import {
+    IUpdateLessonUserRelationData,
+    IUpdateLessonUserRelationResponse,
+} from "hooks/apis/send/userRelation/useUpdateLessonUserRelationAPI";
+import {PredefinedMessageType} from "hooks/useSnackbar";
+import IllEmailButton from "components/buttons/IllEmailButton";
 
 type LessonKeys = "presenceContent" | "distanceContent" | "room" | "course" | "teacher";
 
@@ -19,8 +32,10 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchLesson = useFetchLessonDetailAPI();
+    const updateLessonUserRelation = useUpdateLessonUserRelationAPI();
     const {onFetchError} = useDetailPageError();
     const {dispatch: dispatchError} = useContext(ErrorContext);
+    const {addError} = useSnackbar();
 
     const [lesson, setLesson] = useState<LessonDetail>();
 
@@ -36,6 +51,21 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             ...queryOptions,
             onSuccess: setLesson,
             onError: (error) => onFetchError(error, Boolean(lesson)),
+        },
+    );
+    const [
+        mutateRelation,
+        {
+            isLoading: isUpdatingRelation,
+        },
+    ] = useMutation<IUpdateLessonUserRelationResponse, AxiosError, IUpdateLessonUserRelationData>(
+        updateLessonUserRelation, {
+            onSuccess: newRelation => setLesson(prevState => update(prevState, {
+                userRelation: {
+                    $set: newRelation,
+                },
+            })),
+            onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
     );
 
@@ -77,7 +107,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             subInformation: (
                 <Link
                     component={Button}
-                    href={generatePath("/lesson/teacher/detail/:id/", {
+                    href={generatePath("/teacher/detail/:id/", {
                         id: lesson.lessonData.course.teacher.id,
                     })}
                 >
@@ -94,7 +124,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     }, _.negate(_.isUndefined));
 
     return (
-        <DetailPage<LessonKeys>
+        <DetailPage<LessonKeys, any, "attendance">
             title={lesson.lessonData.course.name}
             color={lesson.lessonData.course.subject.userRelation.color}
             defaultOrdering={[
@@ -105,6 +135,26 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             isRefreshing={isFetching}
             updatedAt={dayjs(updatedAt)}
             data={data}
+            relation={{
+                buttons: [
+                    {
+                        title: t("Anwesend"),
+                        value: "attendance",
+                        icon: <FaRunning />,
+                    },
+                ],
+                isUpdating: isUpdatingRelation,
+                value: lesson.userRelation,
+                onChange: (newRelation) => mutateRelation({
+                    id: lesson.id,
+                    attendance: newRelation.attendance,
+                }),
+            }}
+            bottomNode={
+                <Collapse in={!lesson.userRelation.attendance}>
+                    <IllEmailButton />
+                </Collapse>
+            }
         />
     );
 };
