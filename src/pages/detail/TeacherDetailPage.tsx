@@ -13,6 +13,7 @@ import {Grid, Link, Typography} from "@material-ui/core";
 import createMailToLink from "mailto-link";
 import dayjs from "dayjs";
 import {IFetchTeacherInformationResponse} from "hooks/apis/fetch/schoolData/useFetchTeacherInformationAPI";
+import {generatePath} from "react-router-dom";
 
 
 type TeacherKeys = "name" | "shortName" | "email" | "gender";
@@ -69,6 +70,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
             refetch={refetch}
             isRefreshing={isFetching}
             updatedAt={dayjs(updatedAt)}
+            searchAllPath={generatePath("/teacher/")}
             defaultOrdering={[
                 "name", "shortName", "email", "gender",
             ]}
@@ -114,8 +116,8 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
                 ];
 
                 return (
-                    <>
-                        <Typography variant="h4">
+                    <article>
+                        <Typography variant="h2">
                             {t("Informationen")}
                         </Typography>
                         <Grid container component="ul" spacing={1}>
@@ -126,7 +128,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
                                     </Typography>
                                 </Grid>)}
                         </Grid>
-                    </>
+                    </article>
                 );
             })()}
             data={{

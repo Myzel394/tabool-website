@@ -20,3 +20,5 @@ export interface FetchListData {
 }
 
 export type PreferredIdType<T> = T;
+
+export type PageType = number;

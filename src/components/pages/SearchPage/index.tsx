@@ -50,8 +50,8 @@ export interface ISearchPage<DataType = any> {
 
     isError: boolean;
 
-    renderElement: IRowElement["renderElement"];
-    footerNode: IRowElement["footer"];
+    renderElement: IRowElement<DataType>["renderElement"];
+    footerNode: IRowElement<DataType>["footer"];
 }
 
 const SearchPage = <T extends unknown = any>({

@@ -2,7 +2,7 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {Dayjs} from "dayjs";
-import {FetchListData, HomeworkApprox, PaginatedResponse} from "types";
+import {FetchListData, HomeworkApprox, PageType, PaginatedResponse} from "types";
 import {convertToDate, getLoginConfig} from "api";
 
 export interface IFetchHomeworkListData extends FetchListData {
@@ -21,7 +21,7 @@ export type IFetchHomeworkListResponse = PaginatedResponse<HomeworkApprox[]>;
 const useFetchHomeworkListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (search: string, page = 1, {
+    return useCallback(async (search: string, {
         ordering = "due_date",
         dueDateMax,
         dueDateMin,
@@ -30,7 +30,7 @@ const useFetchHomeworkListAPI = () => {
         subjectId,
         completed,
         ignore,
-    }: IFetchHomeworkListData = {}): Promise<IFetchHomeworkListResponse> => {
+    }: IFetchHomeworkListData = {}, page: PageType = 1): Promise<IFetchHomeworkListResponse> => {
         const {data} = await instance.get("/api/data/homework/", {
             params: {
                 search,

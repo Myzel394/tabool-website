@@ -116,7 +116,6 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                                 <Switch
                                     value={enableReordering}
                                     onChange={event => setEnableReordering(event.target.checked)}
-
                                 />
                             )}
                             label={t("Elemente neu anordnen")}

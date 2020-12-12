@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from "react";
 import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge, RoomChangeBadge} from "components";
 import {LessonDetail, ModificationDetail, ModificationType} from "types";
 import {useMemoOne} from "use-memo-one";
+import {Link} from "@material-ui/core";
+import {generatePath} from "react-router-dom";
 
 import PureSkeleton from "../../../states/PureSkeleton";
 
@@ -42,33 +44,39 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
             const hasModificationBadge = modification?.modificationType === ModificationType.RoomChange;
 
             $children.current = (
-                <Lesson
-                    isDisabled={isFreePeriod}
-                    color={lesson.lessonData.course.subject.userRelation.color}
-                    startTime={lesson.lessonData.startTime}
-                    endTime={lesson.lessonData.endTime}
+                <Link
+                    href={generatePath("/lesson/detail/:id/", {
+                        id: lesson.id,
+                    })}
                 >
-                    <Badges>
-                        {[
-                            hasHomeworkBadge && <HomeworkBadge key={`homework_${lesson.id}`} count={homeworkCount} />,
-                            hasMaterialBadge && <MaterialBadge key={`material_${lesson.id}`} count={materialCount} />,
-                            hasModificationBadge && <RoomChangeBadge key={`room_${lesson.id}`} />,
-                        ]}
-                    </Badges>
-                    <LessonContent
-                        courseName={courseName}
-                        roomName={roomName}
-                        teacherName={teacherName}
-                        className={[
-                            styles.wrapper,
-                            {
-                                [styles.isModificationAvailable]: modification !== undefined,
-                                [styles.isReplacement]: modification?.modificationType === ModificationType.Replacement,
-                            },
-                        ]}
-                        showDetails={showDetails}
-                    />
-                </Lesson>
+                    <Lesson
+                        isDisabled={isFreePeriod}
+                        color={lesson.lessonData.course.subject.userRelation.color}
+                        startTime={lesson.lessonData.startTime}
+                        endTime={lesson.lessonData.endTime}
+                    >
+                        <Badges>
+                            {[
+                                hasHomeworkBadge && <HomeworkBadge key={`homework_${lesson.id}`} count={homeworkCount} />,
+                                hasMaterialBadge && <MaterialBadge key={`material_${lesson.id}`} count={materialCount} />,
+                                hasModificationBadge && <RoomChangeBadge key={`room_${lesson.id}`} />,
+                            ]}
+                        </Badges>
+                        <LessonContent
+                            courseName={courseName}
+                            roomName={roomName}
+                            teacherName={teacherName}
+                            className={[
+                                styles.wrapper,
+                                {
+                                    [styles.isModificationAvailable]: modification !== undefined,
+                                    [styles.isReplacement]: modification?.modificationType === ModificationType.Replacement,
+                                },
+                            ]}
+                            showDetails={showDetails}
+                        />
+                    </Lesson>
+                </Link>
             );
         };
 

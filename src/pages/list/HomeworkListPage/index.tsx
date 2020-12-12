@@ -10,10 +10,10 @@ import update from "immutability-helper";
 import {ToggleButton} from "@material-ui/lab";
 import {FaChalkboardTeacher, MdAdd, MdCheck} from "react-icons/all";
 import {Dayjs} from "dayjs";
-import {getISODatetime, setBeginTime, setEndTime} from "utils";
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {generatePath} from "react-router-dom";
+import {getISODatetime, setBeginTime, setEndTime} from "utils";
 
 import useHomeworkInformation from "./useHomeworkInformation";
 
@@ -36,16 +36,13 @@ const HomeworkListPage = () => {
         dueDateStart: null,
         dueDateEnd: null,
     });
-    const [page, setPage] = useState<number>(1);
     const [ordering, setOrdering] = useState<string>("due_date");
     const [search, setSearch] = useState<string>("");
     const [homeworks, setHomeworks] = useState<HomeworkApprox[]>([]);
-    const [heights, setHeights] = useState<number[]>([]);
 
     const debouncedSearch = useDebouncedValue<string>(search);
     const queryKey = [
         debouncedSearch,
-        page,
         {
             ordering,
             subjectId: filter?.subject?.id,
@@ -65,20 +62,15 @@ const HomeworkListPage = () => {
         queryKey,
         fetchHomework,
         {
-            ...queryOptions,
-            onSuccess: data => {
-                const resultsLength = data[data.length - 1].results.length;
-
-                setHomeworks(
-                    data.reduce((previousValue: any, currentValue) => [
-                        ...previousValue,
-                        ...currentValue.results,
-                    ], []),
-                );
-                setHeights(Array(resultsLength).fill(999));
+            onSuccess: data => setHomeworks(data.reduce((previousValue: any, currentValue) => [
+                ...previousValue,
+                ...currentValue.results,
+            ], [])),
+            getFetchMore: lastPage => {
+                return parseInt(lastPage.next, 10) ?? false;
             },
-            getFetchMore: (lastPage => lastPage.next),
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorLoading),
+            refetchOnWindowFocus: false,
         },
     );
 
@@ -240,6 +232,5 @@ const HomeworkListPage = () => {
         />
     );
 };
-
 
 export default HomeworkListPage;

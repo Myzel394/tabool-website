@@ -6,8 +6,11 @@ export interface IRowElement<DataType = any, ElementType = any> {
     index: number;
     style: CSSProperties;
     renderElement: ({
-        data: DataType,
-        index: number,
+        data,
+        index,
+    }: {
+        data: DataType;
+        index: number;
     }) => ElementType;
     setHeight: (height: number) => any;
     useFooter: boolean;
