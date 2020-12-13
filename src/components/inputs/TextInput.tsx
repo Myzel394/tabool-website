@@ -21,7 +21,7 @@ const TextInput = ({
     variant = "standard",
     ...other
 }: ITextInput) => {
-    const [value, setValue] = useState();
+    const [value, setValue] = useState<string>();
     const [validationError, setValidationError] = useState<string | null>(null);
     const lengthValidator = useLengthValidator(minLength, maxLength);
 
@@ -74,7 +74,9 @@ const TextInput = ({
                     onBlur(event);
                 }
 
-                callValidators(value);
+                if (typeof value === "string") {
+                    callValidators(value);
+                }
             }}
             onChange={event => {
                 // Super
@@ -82,7 +84,11 @@ const TextInput = ({
                     onChange(event);
                 }
 
-                setValue(event.target.value);
+                const value = event?.target?.value;
+
+                if (value === "string") {
+                    setValue(value);
+                }
 
                 // Just call validators when there is already an error. (Eager evaluation)
                 if (validationError) {

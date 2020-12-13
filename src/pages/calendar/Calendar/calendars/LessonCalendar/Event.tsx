@@ -1,5 +1,5 @@
 import React, {ReactNode} from "react";
-import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox, ModificationDetail} from "types";
+import {EventDetail, LessonDetail, ModificationDetail} from "types";
 import {Event as CalendarEvent} from "react-big-calendar";
 import {Theme, ThemeProvider} from "@material-ui/core";
 import update from "immutability-helper";
@@ -14,9 +14,6 @@ import LessonEvent from "./LessonEvent";
 interface IEvent {
     event: CalendarEvent;
     style: any;
-    modifications: ModificationDetail[];
-    homeworks: HomeworkApprox[];
-    materials: MaterialApprox[];
     showFreePeriods: boolean;
     animate: boolean;
     showDetails: boolean;
@@ -66,9 +63,6 @@ const createTheme = (parentTheme: Theme) => update(parentTheme, {
 const Event = ({
     event: calendarEvent,
     style,
-    modifications,
-    homeworks,
-    materials,
     showFreePeriods,
     animate,
     showDetails,
@@ -83,10 +77,9 @@ const Event = ({
     switch (calendarEvent.resource.type) {
         case "lesson": {
             const lesson: LessonDetail = calendarEvent.resource;
-            const homeworkCount = homeworks.filter(element => element.lesson === lesson.id).length;
-            const materialCount = materials.filter(element => element.lesson === lesson.id).length;
-            const modification = modifications.filter(element => element.lesson.id === lesson.id)[0];
-
+            const homeworkCount = lesson.homeworks.length;
+            const materialCount = lesson.materials.length;
+            const modification = lesson.modifications[0];
 
             children = (
                 <LessonEvent
@@ -129,25 +122,16 @@ const Event = ({
 };
 
 const eventProxy = ({
-    modifications,
     showFreePeriods,
-    materials,
-    homeworks,
     animate,
     showDetails,
 }: {
-    modifications: IEvent["modifications"];
-    materials: IEvent["materials"];
-    homeworks: IEvent["homeworks"];
     showFreePeriods: IEvent["showFreePeriods"];
     animate: IEvent["animate"];
     showDetails: IEvent["showDetails"];
 }) => props =>
     Event({
         ...props,
-        modifications,
-        materials,
-        homeworks,
         showFreePeriods,
         animate,
         showDetails,

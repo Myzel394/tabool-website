@@ -44,7 +44,7 @@ export interface IDetailPage<AvailableKeys extends string = string, QueryType = 
 
     updatedAt?: Dayjs;
     headerNode?: ReactNode;
-    bottomNode?: ReactNode;
+    bottomNode?: ReactNode | ReactNode[];
     footerNode?: ReactNode;
     buttons?: IButton[];
     relation?: {
@@ -64,11 +64,12 @@ export interface IDetailPage<AvailableKeys extends string = string, QueryType = 
 
     searchAllPath?: string;
     addPath?: string;
+    subTitle?: ITitle["subTitle"];
 }
 
 const STORAGE_METHOD = localStorage;
 
-const dividerStyle = {
+const fullWidthStyle = {
     width: "100%",
 };
 
@@ -90,6 +91,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
     addPath,
     searchAllPath,
     relation,
+    subTitle,
 }: IDetailPage<AvailableKeys, QueryType, RelationKeys>) => {
     const {t} = useTranslation();
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
@@ -106,11 +108,11 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
 
     return (
         <PullToRefresh isRefreshing={isRefreshing} onRefresh={refetch}>
-            <Title title={title} color={color} />
-            {headerNode}
+            <Title title={title} color={color} subTitle={subTitle} />
             <Container maxWidth="md" onTouchStart={event => event.stopPropagation()}>
+                {headerNode}
                 <Grid container spacing={4} alignItems="center" direction="column">
-                    <Grid item>
+                    <Grid item style={fullWidthStyle}>
                         <FormControlLabel
                             control={(
                                 <Switch
@@ -122,7 +124,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                         />
                     </Grid>
                     {buttons &&
-                        <Grid item>
+                        <Grid item style={fullWidthStyle}>
                             <ButtonGroup variant="outlined" orientation="vertical">
                                 {buttons.map(({title, ...other}) => (
                                     <Button key={title} {...other}>
@@ -132,7 +134,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                             </ButtonGroup>
                         </Grid>
                     }
-                    <Grid item>
+                    <Grid item style={fullWidthStyle}>
                         <InformationList
                             elevatedKey={elevatedKey}
                             ordering={ordering}
@@ -145,7 +147,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                         />
                     </Grid>
                     {relation &&
-                        <Grid item>
+                        <Grid item style={fullWidthStyle}>
                             <LoadingOverlay isLoading={relation.isUpdating}>
                                 <ToggleButtonGroup
                                     size="large"
@@ -171,20 +173,34 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                             </LoadingOverlay>
                         </Grid>
                     }
-                    {bottomNode &&
-                        <Grid item>
-                            {bottomNode}
-                        </Grid>
-                    }
-                    <Divider style={dividerStyle} />
-                    <Grid item>
+                    {(() => {
+                        if (Array.isArray(bottomNode)) {
+                            return (
+                                <>
+                                    {bottomNode.map(node =>
+                                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                        // @ts-ignore: If array given, nodes do have keys set
+                                        <Grid key={node.key} item style={fullWidthStyle}>
+                                            {node}
+                                        </Grid>)}
+                                </>
+                            );
+                        }
+                        return (
+                            <Grid item>
+                                {bottomNode}
+                            </Grid>
+                        );
+                    })()}
+                    <Divider style={fullWidthStyle} />
+                    <Grid item style={fullWidthStyle}>
                         {updatedAt && <UpdatedAt value={updatedAt} />}
                         <Typography variant="body2">
                             {t("Tipp: Ziehe den Titel ganz runter um neuzuladen.")}
                         </Typography>
                     </Grid>
                     {(searchAllPath || addPath) && (
-                        <Grid item>
+                        <Grid item style={fullWidthStyle}>
                             <ButtonGroup orientation="vertical" color="primary">
                                 {searchAllPath && (
                                     <Link component={Button} href={searchAllPath} endIcon={<MdSearch />}>
@@ -200,7 +216,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                         </Grid>
                     )}
                     {footerNode &&
-                        <Grid item>
+                        <Grid item style={fullWidthStyle}>
                             {footerNode}
                         </Grid>
                     }

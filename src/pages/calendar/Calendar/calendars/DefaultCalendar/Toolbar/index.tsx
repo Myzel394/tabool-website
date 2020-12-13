@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid} from "@material-ui/core";
 import {isMobile} from "react-device-detect";
 import {ToolbarProps} from "react-big-calendar";
@@ -6,8 +6,6 @@ import {useDeviceWidth} from "hooks";
 import {useTranslation} from "react-i18next";
 import {FaCog} from "react-icons/all";
 import {PrimaryButton} from "components";
-
-import CalendarContext from "../../../../CalendarContext";
 
 import Navigation from "./Navigation";
 import ViewChanger from "./ViewChanger";
@@ -18,14 +16,9 @@ import ShowDetails from "./ShowDetails";
 
 
 const Toolbar = ({label, onNavigate}: ToolbarProps) => {
-    const {
-        onCalendarPositionChange,
-        isCalendarOpened,
-        onCalendarOpenedChange,
-    } = useContext(CalendarContext);
     const {t} = useTranslation();
     const {isMD} = useDeviceWidth();
-    const [isOpen, setIsOpen] = useState<boolean>(isCalendarOpened);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const elements = [
         <ViewChanger key="view_changer" />,
         <TypeChanger key="type_changer" />,
@@ -46,11 +39,6 @@ const Toolbar = ({label, onNavigate}: ToolbarProps) => {
                             if (!isMobile) {
                                 event.preventDefault();
                                 setIsOpen(true);
-                                onCalendarPositionChange({
-                                    x: event.clientX,
-                                    y: event.clientY,
-                                });
-                                onCalendarOpenedChange(true);
                             }
                         }}
                     />

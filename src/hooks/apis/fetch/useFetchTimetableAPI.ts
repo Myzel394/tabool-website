@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {EventDetail, FetchListData, HomeworkDetail, LessonDetail, MaterialApprox, ModificationDetail} from "types";
+import {EventDetail, FetchListData, HomeworkDetail, LessonDetail, MaterialList, ModificationDetail} from "types";
 import {convertToDate, getLoginConfig} from "api";
 import {Dayjs} from "dayjs";
 
-import {parseLesson, parseModification} from "./lesson";
+import {parseLesson} from "./lesson";
 import {parseEvent} from "./event";
-import {parseHomework, parseMaterial} from "./homework";
 
 export interface IFetchTimetableData extends FetchListData {
     startDatetime: string;
@@ -19,7 +18,7 @@ export interface IFetchTimetableResponse {
     modifications: ModificationDetail[];
     events: EventDetail[];
     homeworks: HomeworkDetail[];
-    materials: MaterialApprox[];
+    materials: MaterialList[];
     earliestDateAvailable: Dayjs;
     latestDateAvailable: Dayjs;
 }
@@ -41,10 +40,7 @@ const useFetchTimetableAPI = () => {
             ...await getLoginConfig(),
         });
         data.lessons.forEach(lesson => parseLesson(lesson));
-        data.modifications.forEach(modification => parseModification(modification));
         data.events.forEach(event => parseEvent(event));
-        data.homeworks.forEach(homework => parseHomework(homework));
-        data.materials.forEach(material => parseMaterial(material));
         convertToDate(data, ["earliestDateAvailable", "latestDateAvailable"]);
 
         return data;

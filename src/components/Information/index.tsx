@@ -13,9 +13,9 @@ export interface IInformation extends TypographyProps {
 const Information = ({getIcon, text, tooltip, ...other}: IInformation) => {
     const theme = useTheme();
     const iconProps = useMemo(() => ({
-        color: theme.palette.text.primary,
+        color: theme.palette.text.secondary,
         fontSize: theme.typography.body1.fontSize,
-    }), [theme.palette.text.primary, theme.typography.body1.fontSize]);
+    }), [theme.palette.text.secondary, theme.typography.body1.fontSize]);
     const textNode =
         <Typography
             className={styles.text}

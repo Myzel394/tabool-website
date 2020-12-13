@@ -17,3 +17,4 @@ export {default as useFetchClasstestDetailAPI} from "./useFetchClasstestDetailAP
 export {default as useFetchClasstestListAPI} from "./useFetchClasstestListAPI";
 
 export {default as useFetchHomeworkInformationAPI} from "./useFetchHomeworkInformationAPI";
+export {default as useFetchMaterialDownloadLinkAPI} from "./useFetchMaterialDownloadLinkAPI";

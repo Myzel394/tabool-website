@@ -77,11 +77,11 @@ const DefaultCalendar = ({
     return (
         <BigCalendar
             views={["work_week", "day"]}
-            localizer={localeInstance}
+            view={activeView}
             style={style}
             min={minTime}
             max={maxTime}
-            view={activeView}
+            localizer={localeInstance}
             step={30}
             dayLayoutAlgorithm="no-overlap"
             date={date.toDate()}

@@ -14,3 +14,4 @@ export {default as useSnackbar} from "./useSnackbar";
 export {default as useDetailPageError} from "./useDetailPageError";
 export {default as useEmailContacts} from "./useEmailContacts";
 export {default as useUser} from "./useUser";
+export {default as useModificationDescription} from "./useModificationDescription";

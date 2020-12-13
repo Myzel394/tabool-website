@@ -9,14 +9,14 @@ import {
 import {useMutation, useQuery} from "react-query";
 import {LessonDetail} from "types";
 import {AxiosError} from "axios";
-import {DetailPage, LoadingIndicator} from "components";
+import {DetailPage, Homework, LoadingIndicator} from "components";
 import {ErrorContext} from "contexts";
 import dayjs from "dayjs";
 import {FaChalkboardTeacher, FaRunning, FiMonitor, MdPlace} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {CourseIcon, TeacherIcon} from "components/icons";
 import _ from "lodash";
-import {Button, Collapse, Link} from "@material-ui/core";
+import {Button, Collapse, Grid, Link, Typography} from "@material-ui/core";
 import {generatePath} from "react-router";
 import update from "immutability-helper";
 import {
@@ -25,6 +25,17 @@ import {
 } from "hooks/apis/send/userRelation/useUpdateLessonUserRelationAPI";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import IllEmailButton from "components/buttons/IllEmailButton";
+import Material from "components/Material";
+import {Alert} from "@material-ui/lab";
+
+import {combineDatetime} from "../../../utils";
+
+import ModificationsNode from "./ModificationsNode";
+import Submissions from "./Submissions";
+
+const gridItemStyle = {
+    width: "100%",
+};
 
 type LessonKeys = "presenceContent" | "distanceContent" | "room" | "course" | "teacher";
 
@@ -39,6 +50,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
 
     const [lesson, setLesson] = useState<LessonDetail>();
 
+    // Lesson
     const {
         isLoading,
         updatedAt,
@@ -53,6 +65,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             onError: (error) => onFetchError(error, Boolean(lesson)),
         },
     );
+    // Relation
     const [
         mutateRelation,
         {
@@ -123,9 +136,12 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
         },
     }, _.negate(_.isUndefined));
 
+    const subTitle = `${lesson.date.format("ll")}, ${combineDatetime(lesson.date, lesson.lessonData.startTime).format("LT")} - ${combineDatetime(lesson.date, lesson.lessonData.endTime).format("LT")}`;
+
     return (
         <DetailPage<LessonKeys, any, "attendance">
             title={lesson.lessonData.course.name}
+            subTitle={subTitle}
             color={lesson.lessonData.course.subject.userRelation.color}
             defaultOrdering={[
                 "presenceContent", "distanceContent", "room", "teacher", "course",
@@ -150,13 +166,66 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                     attendance: newRelation.attendance,
                 }),
             }}
-            bottomNode={
-                <Collapse in={!lesson.userRelation.attendance}>
+            headerNode={lesson?.modifications.length > 0 && <ModificationsNode lesson={lesson} />}
+            bottomNode={[
+                <Collapse key="write_illness_email" in={!lesson.userRelation.attendance}>
                     <IllEmailButton />
-                </Collapse>
-            }
+                </Collapse>,
+                <div key="materials">
+                    <Typography variant="h2">
+                        {t("Materialien")}
+                    </Typography>
+                    {lesson.materials.length > 0 ? (
+                        <Grid container spacing={1}>
+                            {lesson.materials.map(material =>
+                                <Grid key={material.id} item style={gridItemStyle}>
+                                    <Material
+                                        key={material.id}
+                                        id={material.id}
+                                        name={material.name}
+                                        addedAt={material.addedAt}
+                                        size={material.size}
+                                    />
+                                </Grid>)}
+                        </Grid>
+                    ) : (
+                        <Alert severity="info">
+                            {t("Keine Materialien verfügbar.")}
+                        </Alert>
+                    )}
+                </div>,
+                <div key="homeworks">,
+                    <Typography variant="h2">
+                        {t("Hausaufgaben")}
+                    </Typography>
+                    {lesson.homeworks.length > 0 ? (
+                        <Grid container spacing={1}>
+                            {lesson.homeworks.map(homework =>
+                                <Grid key={homework.id} item style={gridItemStyle}>
+                                    <Homework
+                                        subject={lesson.lessonData.course.subject}
+                                        information={homework.information}
+                                        id={homework.id}
+                                        creationDate={homework.createdAt}
+                                    />
+                                </Grid>)}
+                        </Grid>
+                    ) : (
+                        <Alert severity="info">
+                            {t("Keine Hausaufgaben, yay!")}
+                        </Alert>
+                    )}
+                </div>,
+                <div key="submissions">
+                    <Typography variant="h2">
+                        {t("Einsendungen")}
+                    </Typography>
+                    <Submissions lessonId={lesson.id} />
+                </div>,
+            ]}
         />
     );
 };
+
 
 export default memo(LessonDetailPage);

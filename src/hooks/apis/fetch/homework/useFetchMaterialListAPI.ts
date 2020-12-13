@@ -20,7 +20,7 @@ export type IFetchMaterialListResponse = PaginatedResponse<MaterialApprox[]>;
 const useFetchMaterialListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (search: string, {
+    return useCallback(async (key: string, search: string, {
         ordering = "-added_at",
         addedAtDate,
         addedAtMax,

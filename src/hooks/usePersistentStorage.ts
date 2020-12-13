@@ -17,8 +17,8 @@ const usePersistentStorage = <S = undefined>(
     defaultValue: S | (() => S),
     key: string,
     storageMethod: StorageType = StorageType.Local,
-    serialize: ((S) => string) = JSON.stringify,
-    deserialize: ((string) => S) = JSON.parse,
+    serialize: ((value: S) => string) = JSON.stringify,
+    deserialize: ((string: string) => S) = JSON.parse,
 ): [S, Dispatch<SetStateAction<S>>] => {
     const activeStorage = STORAGE_MAP[storageMethod];
 

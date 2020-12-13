@@ -4,6 +4,9 @@ import {LessonDetail} from "types";
 import {convertToDate, getLoginConfig} from "api";
 
 import {parseCourse} from "../schoolData";
+import {parseHomework, parseMaterial} from "../homework";
+
+import {parseModification} from "./useFetchModificationDetailAPI";
 
 export const parseLesson = (data: LessonDetail) => {
     convertToDate(data, [
@@ -12,6 +15,9 @@ export const parseLesson = (data: LessonDetail) => {
     if (data.lessonData) {
         parseCourse(data.lessonData.course);
     }
+    data.materials.forEach(material => parseMaterial(material));
+    data.homeworks.forEach(homework => parseHomework(homework));
+    data.modifications.forEach(modification => parseModification(modification));
 };
 
 const useFetchLessonDetailAPI = () => {

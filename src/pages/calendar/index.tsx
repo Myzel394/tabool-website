@@ -34,28 +34,18 @@ const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFe
     const startDatetime = setBeginTime(date).subtract(1, "millisecond");
     const endDatetime = setEndTime(date).add(1, "millisecond");
 
-    const {events, homeworks, lessons, materials, modifications} = data;
+    const {events, lessons} = data;
 
     const constrainedLessons = lessons.filter(lesson =>
         combineDatetime(lesson.date, lesson.lessonData.startTime).isAfter(startDatetime) &&
         combineDatetime(lesson.date, lesson.lessonData.endTime).isBefore(endDatetime));
-    const lessonIds = constrainedLessons.map(lesson => lesson.id);
     const constrainedEvents = events.filter(event =>
         event.startDatetime.isAfter(startDatetime) && event.endDatetime.isBefore(endDatetime));
-    const constrainedHomeworks = homeworks.filter(homework =>
-        lessonIds.includes(homework.lesson.id));
-    const constrainedMaterials = materials.filter(material =>
-        lessonIds.includes(material.lesson));
-    const constrainedModifications = modifications.filter(modification =>
-        lessonIds.includes(modification.lesson.id));
 
     return {
         ...data,
         events: constrainedEvents,
-        homeworks: constrainedHomeworks,
         lessons: constrainedLessons,
-        materials: constrainedMaterials,
-        modifications: constrainedModifications,
     };
 };
 
@@ -114,7 +104,7 @@ const Calendar = () => {
     let children: ReactNode;
     let contextData: IFetchTimetableResponse | undefined = data;
 
-    if (isLoading || !data?.lessons || !data.events || !data.homeworks || !data.modifications || !data.materials) {
+    if (isLoading || !data?.lessons || !data.events) {
         children = <Skeleton startDate={startDate} endDate={endDate} />;
     } else {
         // Type
@@ -144,9 +134,6 @@ const Calendar = () => {
                 showDetails,
                 refetch,
                 lessons: contextData?.lessons ?? [],
-                homeworks: contextData?.homeworks ?? [],
-                modifications: contextData?.modifications ?? [],
-                materials: contextData?.materials ?? [],
                 events: contextData?.events ?? [],
                 calendarType: activeType,
                 date: activeDate,

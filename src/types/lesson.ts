@@ -3,6 +3,9 @@ import {Dayjs} from "dayjs";
 import {Room} from "./room";
 import {CourseDetail} from "./course";
 import {ClassBook} from "./classBook";
+import {MaterialDetail} from "./material";
+import {HomeworkDetail} from "./homework";
+import {ModificationDetail} from "./modification";
 
 export interface LessonDataApprox {
     course: string;
@@ -27,6 +30,9 @@ export interface LessonApprox {
 export interface LessonDetail extends Omit<LessonApprox, "lessonData"> {
     lessonData: LessonDataDetail;
     classBook: ClassBook | null;
+    materials: MaterialDetail[];
+    homeworks: HomeworkDetail[];
+    modifications: ModificationDetail[];
     userRelation: {
         attendance: boolean;
     };

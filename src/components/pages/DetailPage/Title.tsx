@@ -1,19 +1,26 @@
 import React, {memo, useMemo} from "react";
-import {Box, Container, Typography} from "@material-ui/core";
+import {Box, Container, Typography, useTheme} from "@material-ui/core";
 import {useAdaptedColor} from "hooks";
+import tinycolor from "tinycolor2";
 
 export interface ITitle {
     title: string;
     color: string;
+
+    subTitle?: string;
 }
 
-const Title = ({title, color}: ITitle) => {
+const Title = ({title, color, subTitle}: ITitle) => {
+    const theme = useTheme();
     const [backgroundColor, textColor] = useAdaptedColor(color);
     const divStyle = useMemo(() => ({
         backgroundColor,
     }), [backgroundColor]);
     const textStyle = useMemo(() => ({
         color: textColor,
+    }), [textColor]);
+    const subTitleStyle = useMemo(() => ({
+        color: tinycolor(textColor).setAlpha(0.8).toString(),
     }), [textColor]);
 
     return (
@@ -27,6 +34,16 @@ const Title = ({title, color}: ITitle) => {
                 >
                     {title}
                 </Typography>
+                {subTitle &&
+                    <Typography
+                        variant="h5"
+                        component="h2"
+                        align="center"
+                        style={subTitleStyle}
+                    >
+                        {subTitle}
+                    </Typography>
+                }
             </Container>
         </Box>
     );

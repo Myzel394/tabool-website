@@ -3,7 +3,6 @@ import clsx from "clsx";
 import {Box, Typography, useTheme} from "@material-ui/core";
 import {useDeviceWidth} from "hooks";
 import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
-import DayJSEl from "react-dayjs";
 import {isMobile} from "react-device-detect";
 
 import LessonContext from "../LessonContext";
@@ -63,8 +62,7 @@ const LessonContent = ({
                         <div className={styles.secondary}>
                             {/* <Time> */}
                             <Typography variant="body2" color="textSecondary">
-                                <DayJSEl format={TIME_FORMAT}>{startTime}</DayJSEl> -
-                                <DayJSEl format={TIME_FORMAT}>{endTime}</DayJSEl>
+                                {startTime.format(TIME_FORMAT)} - {endTime.format(TIME_FORMAT)}
                             </Typography>
                             {/* </Time> */}
                         </div>
