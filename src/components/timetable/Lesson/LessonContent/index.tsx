@@ -58,7 +58,7 @@ const LessonContent = ({
         >
             {showDetails ? (
                 <>
-                    <div>
+                    <section>
                         <div className={styles.secondary}>
                             {/* <Time> */}
                             <Typography variant="body2" color="textSecondary">
@@ -78,7 +78,7 @@ const LessonContent = ({
                             </Typography>
                             {/* </Course> */}
                         </Box>
-                    </div>
+                    </section>
                     <Box
                         component="dl"
                         display="flex"

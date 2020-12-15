@@ -1,8 +1,9 @@
 import React, {useMemo, useState} from "react";
 import {Button, FormGroup, FormHelperText} from "@material-ui/core";
 import {useQueryOptions} from "hooks";
-import {QueryFunction, useQuery} from "react-query";
+import {useQuery} from "react-query";
 import {useDebouncedValue} from "@shopify/react-hooks";
+import {AxiosError} from "axios";
 
 import SelectMenu, {ISelectMenu} from "./SelectMenu";
 
@@ -24,7 +25,7 @@ export interface SearchFieldExtend<DataType = any> extends Omit<
 }
 
 
-export interface IBasicSearchField<DataType = any, KeyType = string, QueryFunctionType = any> extends Omit<
+export interface IBasicSearchField<DataType = any, KeyType = string> extends Omit<
     ISelectMenu<DataType, KeyType>,
     "title" |
     "isOpen" |
@@ -34,7 +35,7 @@ export interface IBasicSearchField<DataType = any, KeyType = string, QueryFuncti
     "onClose" |
     "onSearch" |
     "searchValue" |
-        "onSearchChange"
+    "onSearchChange"
     > {
     title: string;
     queryKey: string;
@@ -42,25 +43,28 @@ export interface IBasicSearchField<DataType = any, KeyType = string, QueryFuncti
     searchParam: string;
     filterData: (givenData: DataType[], searchValueLowerCased: string, searchValue: string) => DataType[];
     extractData: (data: DataType[]) => DataType[];
-    queryFunction: QueryFunction<QueryFunctionType>;
+    queryFunction: (...args: any[]) => any;
 
     modalTitle: ISelectMenu<DataType, KeyType>["title"];
 
     errorMessages?: string[];
 }
 
-const BasicSearchField = <DataType extends any = any, KeyType = string, QueryFunctionType = any>({
-    title,
-    modalTitle,
-    queryFunction,
-    onSelect,
-    filterData,
-    errorMessages,
-    selectedValue,
-    queryKey,
-    extractData,
-    ...other
-}: IBasicSearchField<DataType, KeyType, QueryFunctionType>) => {
+const BasicSearchField = <
+    DataType extends any = any,
+    KeyType = string,
+    >({
+        title,
+        modalTitle,
+        queryFunction,
+        onSelect,
+        filterData,
+        errorMessages,
+        selectedValue,
+        queryKey,
+        extractData,
+        ...other
+    }: IBasicSearchField<DataType, KeyType>) => {
     const queryOptions = useQueryOptions();
 
     const [search, setSearch] = useState<string>("");
@@ -69,7 +73,11 @@ const BasicSearchField = <DataType extends any = any, KeyType = string, QueryFun
 
     const searchParam = useDebouncedValue(search);
 
-    const {isFetching, isError, data: rawData} = useQuery(
+    const {
+        isFetching,
+        isError,
+        data: rawData,
+    } = useQuery<any, AxiosError>(
         [queryKey, searchParam],
         queryFunction,
         {
@@ -79,7 +87,13 @@ const BasicSearchField = <DataType extends any = any, KeyType = string, QueryFun
         },
     );
     const data = useMemo(() => {
-        return filterData(extractData(rawData), searchValue.toLocaleLowerCase(), searchValue);
+        return rawData
+            ? filterData(
+                extractData(rawData),
+                searchValue.toLocaleLowerCase(),
+                searchValue,
+            )
+            : [];
     }, [rawData, filterData, extractData, searchValue]);
 
     return (

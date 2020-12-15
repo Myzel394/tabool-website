@@ -5,7 +5,6 @@ import EmailVerification from "pages/auth/EmailVerification";
 import FillOutData from "pages/auth/FillOutData";
 import {UserContext} from "contexts";
 import Login from "pages/auth/Login";
-import Home from "pages/home";
 import Calendar from "pages/calendar/index";
 import {HomeworkAddPage, HomeworkDetailPage, HomeworkListPage, LessonDetailPage, TeacherDetailPage} from "pages";
 
@@ -42,11 +41,6 @@ export default function Routes() {
                 redirectUrl="/auth/login/"
             />
             {!user.isFullyRegistered && <Redirect to="/auth/full-registration/" />}
-            <Route
-                exact
-                path="/"
-                component={Home}
-            />
             <Route
                 exact
                 path="/timetable/"

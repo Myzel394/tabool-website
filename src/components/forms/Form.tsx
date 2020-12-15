@@ -9,9 +9,9 @@ export interface IForm {
 
 export const buildGrid = (elements: JSX.Element[]): JSX.Element =>
     <Grid container spacing={2}>
-        {elements.map((element, index) =>
+        {elements.map(element =>
             <Grid
-                key={index}
+                key={element.key}
                 item
                 xs={12}
                 md={6}

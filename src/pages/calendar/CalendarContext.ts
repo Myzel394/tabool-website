@@ -1,18 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {createContext} from "react";
-import {EventDetail, HomeworkApprox, LessonDetail, MaterialApprox, ModificationDetail} from "types";
+import {EventDetail, LessonDetail} from "types";
 import {Dayjs} from "dayjs";
 import {View} from "react-big-calendar";
-import {RefetchOptions} from "react-query/types/core/query";
+import {RefetchOptions} from "react-query";
 
 export type CalendarType = "lesson" | "homework";
 
-export interface ICalendarContext<TEvent extends object = object> {
+export interface ICalendarContext<TEvent extends Record<string, any> = Record<string, any>> {
     lessons: LessonDetail[];
-    modifications: ModificationDetail[];
     events: EventDetail[];
-    homeworks: HomeworkApprox[];
-    materials: MaterialApprox[];
 
     onViewChange: (view: View) => any;
     activeView: View;
@@ -29,8 +26,8 @@ export interface ICalendarContext<TEvent extends object = object> {
     showDetails: boolean;
     onShowDetailsChange: (showDetails: boolean) => any;
 
-    earliestDateAvailable: Dayjs;
-    latestDateAvailable: Dayjs;
+    earliestDateAvailable?: Dayjs;
+    latestDateAvailable?: Dayjs;
 
     refetch: (options?: RefetchOptions) => Promise<any>;
 }

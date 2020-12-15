@@ -118,7 +118,7 @@ const SearchPage = <T extends unknown = any>({
                             onItemsRendered={onItemsRendered}
                         >
                             {({index, style}) =>
-                                <RowElement
+                                <RowElement<T>
                                     data={data[index]}
                                     index={index}
                                     style={style}

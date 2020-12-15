@@ -14,6 +14,6 @@ const Logo = () => {
             />
         </SimpleCenter>
     );
-}
+};
 
 export default Logo;

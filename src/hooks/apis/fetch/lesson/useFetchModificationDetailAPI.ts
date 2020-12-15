@@ -1,6 +1,6 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {ModificationDetail} from "types";
+import {ModificationDetail} from "types/modification";
 import {convertToDate, getLoginConfig} from "api";
 
 import {parseLesson} from "./useFetchLessonDetailAPI";

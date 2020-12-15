@@ -42,6 +42,7 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
         <Box flexDirection="row" display="flex" justifyContent="center">
             {isMobile && isDayView && (
                 <Tooltip title={disablePreviousWeek ? noDataAvailableText : t("Springe eine Woche zurück").toString()}>
+                    {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
                     <span>
                         <IconButton
                             disabled={disablePreviousWeek}
@@ -56,6 +57,7 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
                 </Tooltip>
             )}
             <Tooltip title={disablePrevious ? noDataAvailableText : t("Zurück").toString()}>
+                {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
                 <span>
                     <IconButton
                         disabled={disablePrevious}
@@ -81,6 +83,7 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
                 </Button>
             </Tooltip>
             <Tooltip title={disableNext ? noDataAvailableText : t("Weiter").toString()}>
+                {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
                 <span>
                     <IconButton
                         disabled={disableNext}
@@ -95,6 +98,7 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
             </Tooltip>
             {isMobile && isDayView && (
                 <Tooltip title={disableNextWeek ? noDataAvailableText : t("Springe eine Woche weiter").toString()}>
+                    {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
                     <span>
                         <IconButton
                             disabled={disableNextWeek}

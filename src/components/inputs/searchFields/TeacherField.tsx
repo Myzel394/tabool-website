@@ -1,7 +1,7 @@
 import React, {memo, useCallback} from "react";
 import {useTranslation} from "react-i18next";
 import {TeacherApprox} from "types/teacher";
-import {IFetchTeacherResponse, useFetchTeacherListAPI} from "hooks/apis/fetch";
+import {useFetchTeacherListAPI} from "hooks/apis/fetch";
 
 import SimpleListField, {itemSize} from "../SimpleListField";
 
@@ -25,7 +25,7 @@ const TeacherField = ({onChange, selectedValue, ...other}: ITeacherField) => {
     const title = selectedValue ? `${selectedValue.lastName} (${selectedValue.shortName})` : defaultTitle;
 
     return (
-        <BasicSearchField<TeacherApprox, string, IFetchTeacherResponse>
+        <BasicSearchField<TeacherApprox>
             {...other}
             searchPlaceholder={t("Suche nach Nachnamen")}
             title={title}

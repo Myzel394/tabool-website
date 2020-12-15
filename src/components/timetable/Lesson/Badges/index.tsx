@@ -1,14 +1,13 @@
 import React, {useMemo} from "react";
-import {Box, Grid, useTheme} from "@material-ui/core";
+import {Box, Grid} from "@material-ui/core";
+
+type BadgeType = JSX.Element | null;
 
 export interface IBadges {
-    children: (JSX.Element | false)[];
+    children: BadgeType[];
 }
 
-const SPACING = 2;
-
 const Badges = ({children}: IBadges) => {
-    const theme = useTheme();
     const boxStyle = useMemo(() => ({
         height: 0,
     }), []);

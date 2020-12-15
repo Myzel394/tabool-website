@@ -1,7 +1,7 @@
 export interface ActionType<
     Type extends string = string,
-    Payload = {[key: string]: any}
-    > {
+    Payload = Record<string, any>,
+> {
     type: Type;
     payload: Payload;
 }

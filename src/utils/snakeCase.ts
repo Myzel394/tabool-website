@@ -3,9 +3,9 @@ import _ from "lodash";
 
 _.mixin({
     deep(obj, mapper) {
-        return mapper(_.mapValues(obj, (v) => {
+        return mapper(_.mapValues(obj, (value) => {
             // @ts-ignore
-            return _.isPlainObject(v) ? _.deep(v, mapper) : v;
+            return _.isPlainObject(value) ? _.deep(value, mapper) : value;
         }));
     },
 });
@@ -21,9 +21,7 @@ const snakeCaseKeys = (data) => {
     // @ts-ignore
     return _.deep(data, (x) =>
         _.mapKeys(x, (value, key) =>
-            snakeCase(key)
-        )
-    );
+            snakeCase(key)));
 };
 
 export default snakeCaseKeys;

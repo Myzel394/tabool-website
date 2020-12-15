@@ -65,11 +65,11 @@ const InformationList = <AvailableKeys extends string = string>({
 
             const newState = update(
                 ordering,
-                // @ts-ignore
                 {
+                    // @ts-ignore
                     $splice: [
                         [source.index, 1],
-                        [destination.index, 0, draggableId],
+                        [destination.index - 1, 0, draggableId],
                     ],
                 },
             );

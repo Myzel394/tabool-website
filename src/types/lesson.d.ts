@@ -38,7 +38,3 @@ export interface LessonDetail extends Omit<LessonApprox, "lessonData"> {
     };
 }
 
-export interface LessonTimetable extends Omit<LessonApprox, "lessonData"> {
-    lessonData: LessonDataDetail;
-}
-

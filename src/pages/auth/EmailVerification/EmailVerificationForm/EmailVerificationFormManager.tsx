@@ -3,7 +3,8 @@ import {useMutation} from "react-query";
 import {LoadingOverlay} from "components/overlays";
 import {useParams} from "react-router-dom";
 import {UserContext} from "contexts";
-import {useSendConfirmEmailAPI} from "hooks/apis/send";
+import {IConfirmEmailData, IConfirmEmailResponse, useSendConfirmEmailAPI} from "hooks/apis/send";
+import {AxiosError} from "axios";
 
 import EmailVerificationForm from "./EmailVerificationForm";
 
@@ -12,12 +13,22 @@ export interface IEmailVerificationFormManager {
 }
 
 const EmailVerificationFormManager = ({onVerified}: IEmailVerificationFormManager) => {
-    const {code} = useParams();
+    const {code} = useParams<{
+        code: string;
+    }>();
     const {dispatch} = useContext(UserContext);
     const sendConfirmEmail = useSendConfirmEmailAPI();
-    const [mutate, {isLoading, error}] = useMutation(sendConfirmEmail, {
-        onSuccess: () => onVerified(),
-    });
+    const [
+        mutate,
+        {
+            isLoading,
+            error,
+        }] = useMutation<IConfirmEmailResponse, AxiosError, IConfirmEmailData>(
+            sendConfirmEmail,
+            {
+                onSuccess: () => onVerified(),
+            },
+        );
     const verifyCode = useCallback(token => {
         dispatch({
             type: "verify-email",

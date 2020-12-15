@@ -13,7 +13,6 @@ import {
 import {useTranslation} from "react-i18next";
 import {usePersistentStorage} from "hooks";
 import {Dayjs} from "dayjs";
-import {QueryResult} from "react-query";
 import {LoadingOverlay, PullToRefresh, UpdatedAt} from "components";
 import _ from "lodash";
 import {StorageType} from "hooks/usePersistentStorage";
@@ -39,7 +38,7 @@ export interface IDetailPage<AvailableKeys extends string = string, QueryType = 
     errors?: IInformationList["errors"];
 
     orderingStorageName: string;
-    refetch: QueryResult<QueryType>["refetch"];
+    refetch: () => Promise<any>;
     isRefreshing: boolean;
 
     updatedAt?: Dayjs;

@@ -5,7 +5,6 @@ export interface PaginatedResponse<T> {
     results: T;
 }
 
-
 export interface ErrorResponse {
     [key: string]: string[];
 }
@@ -18,7 +17,5 @@ export interface Choice {
 export interface FetchListData {
     page?: string;
 }
-
-export type PreferredIdType<T> = T;
 
 export type PageType = number;

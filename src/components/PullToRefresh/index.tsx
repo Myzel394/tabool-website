@@ -16,7 +16,7 @@ export interface IPullToRefresh {
     // Props with default values
     minDragAmountForRefresh: number;
     maxOffset: number;
-    getLoadingElement: (state: State) => JSX.Element;
+    getLoadingElement: (state: State) => ReactNode;
 
     maxDragAmount?: number;
 }
@@ -155,7 +155,9 @@ const PullToRefresh = ({
 PullToRefresh.defaultProps = {
     maxOffset: 100,
     minDragAmountForRefresh: 200,
-    getLoadingElement: (state => <DefaultPullToRefreshObject state={state} />),
+    getLoadingElement(state) {
+        return <DefaultPullToRefreshObject state={state} />;
+    },
     loadingElementHeight: 80,
     autoMountLoadingElement: true,
 };

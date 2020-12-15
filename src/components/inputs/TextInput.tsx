@@ -2,8 +2,10 @@ import React, {memo, useCallback, useMemo, useState} from "react";
 import {TextField, TextFieldProps} from "@material-ui/core";
 import {useLengthValidator} from "hooks/validators";
 
+type ValidatorFunction = (value: string) => undefined | string;
+
 export type ITextInput = Omit<TextFieldProps, "helperText"> & {
-    validators?: ((value: string) => undefined | string)[];
+    validators?: ValidatorFunction[];
     error?: boolean;
     errorMessages?: string[];
     minLength?: number;
@@ -25,7 +27,7 @@ const TextInput = ({
     const [validationError, setValidationError] = useState<string | null>(null);
     const lengthValidator = useLengthValidator(minLength, maxLength);
 
-    const allValidators = useMemo((): Function[] => {
+    const allValidators = useMemo(() => {
         const allValidators = validators || [];
 
         allValidators.push(lengthValidator);

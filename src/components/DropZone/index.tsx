@@ -86,6 +86,7 @@ const DropZone = <FileType extends any = any>({
 };
 
 DropZone.defaultProps = {
+    // eslint-disable-next-line react/display-name
     renderList: (files) => (
         <List>
             {files.map(file =>

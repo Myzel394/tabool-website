@@ -4,7 +4,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
+      "esnext"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,8 +19,12 @@
     "noEmit": true,
     "jsx": "react",
     "baseUrl": "src",
-    "types": ["node", "jest"],
-    "noImplicitAny": false
+    "types": [
+      "node",
+      "jest"
+    ],
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

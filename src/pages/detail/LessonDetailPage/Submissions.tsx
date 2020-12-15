@@ -24,16 +24,15 @@ const Submissions = ({lessonId}: ISubmissions) => {
     const {addError} = useSnackbar();
 
     const [files, setFiles] = useState<SubmissionFile[]>([]);
-    const [
-        mutate,
-        {
-            isLoading,
-        },
-    ] = useMutation<ISendSubmissionResponse, AxiosError, ISendSubmissionData>(
+    const {
+        mutateAsync,
+        isLoading,
+    } = useMutation<ISendSubmissionResponse, AxiosError, ISendSubmissionData>(
         sendFiles,
         {
             ...queryOptions,
             onError: error => {
+                // eslint-disable-next-line no-console
                 console.log(error.response);
                 addError(error, undefined, PredefinedMessageType.ErrorMutating);
             },
@@ -42,7 +41,7 @@ const Submissions = ({lessonId}: ISubmissions) => {
     );
 
     const uploadFiles = () => {
-        mutate(
+        mutateAsync(
             files.map((file): SingleData => ({
                 file: file.nativeFile,
                 lessonId,

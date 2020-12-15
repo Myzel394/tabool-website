@@ -3,10 +3,10 @@ import {Box, Container, useTheme} from "@material-ui/core";
 import {BackButton, Tooltip} from "components";
 import {useTranslation} from "react-i18next";
 
+import Logo from "../../Logo";
 import BasePage from "../BasePage";
 
 import Title from "./Title";
-import Logo from "../../Logo";
 
 export interface IFocusedPage {
     children: ReactNode;
@@ -38,6 +38,7 @@ export default function FocusedPage({children, title, important, disableBackButt
                         {!disableBackButton &&
                             <Box display="flex" justifyContent="flex-end">
                                 <Tooltip title={t("Zurück gehen").toString()}>
+                                    {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
                                     <span>
                                         <BackButton confirm={important} />
                                     </span>

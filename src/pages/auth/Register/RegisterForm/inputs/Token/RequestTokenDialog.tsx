@@ -28,19 +28,25 @@ const RequestTokenDialog = ({open, onClose}: IRequestTokenDialog) => {
     const {t} = useTranslation();
     const medias = useMemo(() => [
         {
-            getIcon: props => <FaWhatsapp {...props} />,
+            getIcon(props) {
+                return <FaWhatsapp {...props} />;
+            },
             name: "Whatsapp",
             color: "#25D366",
             address: `https://wa.me/${CONTACT_NUMBER}`,
         },
         {
-            getIcon: props => <MdEmail {...props} />,
+            getIcon(props) {
+                return <MdEmail {...props} />;
+            },
             name: t("E-Mail"),
             color: "#888",
             address: `mailto:${CONTACT_EMAIL}`,
         },
         {
-            getIcon: props => <FaSmile {...props} />,
+            getIcon(props) {
+                return <FaSmile {...props} />;
+            },
             name: t("Realität"),
             color: "#ffbf00",
         },

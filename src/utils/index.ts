@@ -9,4 +9,5 @@ export {default as combineDatetime} from "./combineDatetime";
 export {default as randomNumbersWithGap} from "./randomNumbersWithGap";
 export {default as isDateEqual} from "./isDateEqual";
 export {default as getKeysByTrueValues} from "./getKeysByTrueValues";
+export {default as canCastToNumber} from "./canCastToNumber";
 export {setEndTime, setBeginTime} from "./setTime";

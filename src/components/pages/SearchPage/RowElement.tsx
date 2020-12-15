@@ -1,4 +1,4 @@
-import React, {CSSProperties, memo, ReactNode, useEffect, useRef} from "react";
+import React, {CSSProperties, ReactNode, useEffect, useRef} from "react";
 import {useElementSize} from "hooks";
 
 export interface IRowElement<DataType = any, ElementType = any> {
@@ -50,4 +50,4 @@ const RowElement = <DataType extends any = any, ElementType = any>({
     );
 };
 
-export default memo(RowElement);
+export default RowElement;

@@ -44,15 +44,13 @@ const ContextMenu = ({isOpen, children, left, top, onClose}: IContextMenu) => {
     }, [height, left, theme.zIndex.appBar, top, width, windowHeight, windowWidth]);
 
     return (
-        <Grow in={isOpen} style={style} timeout={isOpen ? "auto" : 100}>
-            <div>
-                <ClickAwayListener onClickAway={onClose}>
-                    <Paper ref={$div} elevation={12}>
-                        {children}
-                    </Paper>
-                </ClickAwayListener>
-            </div>
-        </Grow>
+        <ClickAwayListener onClickAway={onClose}>
+            <Grow in={isOpen} style={style} timeout={isOpen ? "auto" : 100}>
+                <Paper ref={$div} elevation={12}>
+                    {children}
+                </Paper>
+            </Grow>
+        </ClickAwayListener>
     );
 };
 

@@ -17,7 +17,7 @@ const LoadingOverlay = ({isLoading, children}: ILoadingOverlay) => {
             backgroundColor: tinycolor(theme.palette.background.paper).setAlpha(0.8).toString(),
             zIndex: theme.zIndex.modal - 1,
         } : {display: "none"};
-    }, [isLoading]);
+    }, [isLoading, theme.palette.background.paper, theme.zIndex.modal]);
     const containerClasses = useMemo(() => clsx([
         classes.overlay,
         {

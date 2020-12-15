@@ -57,6 +57,7 @@ const useSendSubmissionAPI = () => {
         const formData = await Promise.allSettled(
             sendDataArray.map(getFormData),
         );
+        // eslint-disable-next-line no-console
         console.log(formData);
 
         const {data} = await instance.post(

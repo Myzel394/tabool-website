@@ -11,7 +11,7 @@ import CalendarContext from "../../../CalendarContext";
 import localeInstance from "./locale";
 import Toolbar from "./Toolbar";
 
-export interface IDefaultCalendar<TEvent extends object = object> extends Omit<CalendarProps,
+export interface IDefaultCalendar<TEvent extends Record<string, any> = Record<string, any>> extends Omit<CalendarProps,
     "localizer"
     | "components"
     | "step"
@@ -62,7 +62,7 @@ const DefaultCalendar = ({
 }: IDefaultCalendar) => {
     const {date, activeView, onDateChange} = useContext(CalendarContext);
 
-    const [x, height] = useWindowSize();
+    const [, height] = useWindowSize();
     const [minTime, maxTime] = getMinMaxTime(events);
     const style = useMemo(() => update(givenStyles, {
         height: {

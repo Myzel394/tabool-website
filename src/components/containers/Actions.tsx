@@ -9,8 +9,8 @@ export interface IActions extends GridProps{
 }
 
 const Actions = ({spacing, direction, children, ...other}: IActions) => {
-    const renderChild = useCallback((child, index: number) =>
-        <Grid item key={index}>
+    const renderChild = useCallback(child =>
+        <Grid key={child.key} item>
             {child}
         </Grid>, []);
 

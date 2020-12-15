@@ -1,7 +1,7 @@
 import {AxiosError} from "axios";
 import {useCallback, useContext} from "react";
-
-import {ErrorContext} from "../contexts";
+import {ErrorContext} from "contexts";
+import {canCastToNumber} from "utils";
 
 import {PredefinedMessageType} from "./useSnackbar";
 
@@ -22,7 +22,7 @@ const useDetailPageError = (): IUseDetailPageError => {
             dispatchError({
                 type: "setError",
                 payload: {
-                    status: error.code,
+                    status: (error.code && canCastToNumber(error.code)) ? Number(error.code) : undefined,
                     message: error.message,
                 },
             });

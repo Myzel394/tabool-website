@@ -38,9 +38,9 @@ const ConfirmationDialog = (props: IConfirmationDialog) => {
     return (
         <Dialog
             open={open}
-            onBackdropClick={onCancel}
             aria-labelledby={titleId}
             aria-describedby={contentId}
+            onBackdropClick={onCancel}
         >
             <DialogTitle id={titleId}>{title}</DialogTitle>
             <DialogContent>

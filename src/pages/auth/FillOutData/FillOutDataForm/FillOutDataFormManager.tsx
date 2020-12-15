@@ -1,8 +1,9 @@
 import React, {memo, useCallback} from "react";
-import {useSendFillOutDataAPI} from "hooks";
+import {IFillOutDataData, useSendFillOutDataAPI} from "hooks";
 import {useMutation} from "react-query";
 import {LoadingOverlay} from "components/overlays";
 import {IFillOutDataResponse} from "hooks/apis/send/useSendFillOutDataAPI";
+import {AxiosError} from "axios";
 
 import FillOutDataForm, {SubmitState} from "./FillOutDataForm";
 
@@ -12,9 +13,17 @@ export interface IFillOutDataFormManager {
 
 const FillOutDataFormManager = ({onFilledOut}: IFillOutDataFormManager) => {
     const sendFillOutData = useSendFillOutDataAPI();
-    const [mutate, {isLoading: isSending, error}] = useMutation(sendFillOutData, {
-        onSuccess: data => onFilledOut(data),
-    });
+    const [
+        mutate,
+        {
+            isLoading: isSending,
+            error,
+        }] = useMutation<IFillOutDataResponse, AxiosError, IFillOutDataData>(
+            sendFillOutData,
+            {
+                onSuccess: data => onFilledOut(data),
+            },
+        );
     const handleFillOut = useCallback(({
         teacher,
         classNumber,

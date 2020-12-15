@@ -5,7 +5,7 @@ const useElementSize = ($ref): [number | undefined, number | undefined] => {
     const [height, setHeight] = useState<number | undefined>();
 
     useEffect(() => {
-        const element = $ref !== undefined ? $ref.current : $ref;
+        const element = $ref === undefined ? $ref : $ref.current;
         const setSize = () => {
             const {clientWidth, clientHeight} = element;
 

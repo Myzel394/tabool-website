@@ -5,7 +5,7 @@ import {UserContext} from "contexts";
 import {EmailVerificationFormManager} from "./EmailVerificationForm";
 
 const EmailVerificationManager = () => {
-    const {dispatch, state} = useContext(UserContext);
+    const {dispatch} = useContext(UserContext);
     const history = useHistory();
 
     return (

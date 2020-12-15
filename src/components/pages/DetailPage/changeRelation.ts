@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import _ from "lodash";
 
 type RelationObject<AvailableKeys extends string = string> = {
@@ -14,12 +15,12 @@ export const toObject = <AvailableKeys extends string = string>(
     array: RelationArray,
     availableKeys: string[],
 ): RelationObject<AvailableKeys> =>
+        // @ts-ignore
         availableKeys.reduce<RelationObject<AvailableKeys>>(
             (object, value) => {
                 object[value] = array.includes(value);
                 return object;
             },
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             {},
         );
