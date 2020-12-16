@@ -1,5 +1,6 @@
+import {TeacherDetail} from "../api/serverType/teacher";
+
 import {Subject} from "./subject";
-import {TeacherDetail} from "./teacher";
 
 export interface CourseApprox {
     subject: string;

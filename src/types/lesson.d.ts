@@ -1,11 +1,12 @@
 import {Dayjs} from "dayjs";
 
+import {ModificationDetail} from "../api/serverType/modification";
+
 import {Room} from "./room";
 import {CourseDetail} from "./course";
 import {ClassBook} from "./classBook";
 import {MaterialDetail} from "./material";
 import {HomeworkDetail} from "./homework";
-import {ModificationDetail} from "./modification";
 
 export interface LessonDataApprox {
     course: string;

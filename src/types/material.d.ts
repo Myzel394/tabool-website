@@ -8,10 +8,3 @@ export interface MaterialApprox {
 }
 
 export interface MaterialDetail extends Omit<MaterialApprox, "lesson"> {}
-
-export interface MaterialList {
-    name: string;
-    addedAt: Dayjs;
-    id: string;
-    lesson: string;
-}
