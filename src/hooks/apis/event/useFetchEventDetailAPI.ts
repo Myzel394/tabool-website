@@ -9,7 +9,7 @@ import parseEvent from "./parseEvent";
 const useFetchEventDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, id: string): Promise<EventDetail> => {
+    return useCallback(async (id: string): Promise<EventDetail> => {
         const {data} = await instance.get(`/api/data/event/${id}/`, await getLoginConfig());
         parseEvent(data);
 

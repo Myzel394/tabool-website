@@ -4,7 +4,7 @@ import {AxiosContext} from "contexts";
 import {FetchListData, PaginatedResponse, SubmissionApprox} from "types";
 import {getLoginConfig} from "api";
 
-import {parseSubmission} from "./useFetchSubmissionDetailAPI";
+import parseSubmission from "./parseSubmission";
 
 export interface IFetchSubmissionListData extends FetchListData {
     ordering?: "upload_at" | "-upload_at" | "is_uploaded" | "-is_uploaded";
@@ -20,7 +20,7 @@ export type IFetchSubmissionListResponse = PaginatedResponse<SubmissionApprox[]>
 const useFetchSubmissionListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, search: string, {
+    return useCallback(async (search: string, {
         ordering = "is_uploaded",
         courseId,
         isUploaded,

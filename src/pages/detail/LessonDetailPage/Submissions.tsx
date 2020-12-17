@@ -5,11 +5,11 @@ import {List, Typography} from "@material-ui/core";
 import update from "immutability-helper";
 import {useTranslation} from "react-i18next";
 import {useMutation} from "react-query";
-import {useQueryOptions, useSendSubmissionAPI, useSnackbar} from "hooks";
+import {useQueryOptions, useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {AxiosError} from "axios";
-import {ISendSubmissionData, ISendSubmissionResponse, SingleData} from "hooks/apis/send/useSendSubmissionAPI";
 import {getISODatetime} from "utils";
+import {ISendSubmissionData, ISendSubmissionResponse, SingleData, useSendSubmissionAPI} from "hooks/apis";
 
 import SubmissionElement, {SubmissionFile} from "./SubmissionElement";
 
@@ -25,7 +25,7 @@ const Submissions = ({lessonId}: ISubmissions) => {
 
     const [files, setFiles] = useState<SubmissionFile[]>([]);
     const {
-        mutateAsync,
+        mutate,
         isLoading,
     } = useMutation<ISendSubmissionResponse, AxiosError, ISendSubmissionData>(
         sendFiles,
@@ -41,7 +41,7 @@ const Submissions = ({lessonId}: ISubmissions) => {
     );
 
     const uploadFiles = () => {
-        mutateAsync(
+        mutate(
             files.map((file): SingleData => ({
                 file: file.nativeFile,
                 lessonId,

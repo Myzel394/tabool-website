@@ -10,14 +10,20 @@ export interface IOrderingDialog {
     isOpen: boolean;
     onClose: () => any;
     orderings: {
-        value: string;
+        value: any;
         name: string;
     }[];
-    value: string;
-    onValueChange: (value: string) => any;
+    value: any;
+    onValueChange: (value: any) => any;
 }
 
-const OrderingDialog = ({isOpen, onClose, orderings, value, onValueChange}: IOrderingDialog) => {
+const OrderingDialog = ({
+    isOpen,
+    onClose,
+    orderings,
+    value,
+    onValueChange,
+}: IOrderingDialog) => {
     const {t} = useTranslation();
 
     return (

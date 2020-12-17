@@ -1,15 +1,14 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useMutation, useQuery} from "react-query";
 import {
+    IUpdateHomeworkDataData,
+    IUpdateHomeworkDataResponse,
     IUpdateHomeworkUserRelationData,
     IUpdateHomeworkUserRelationResponse,
-    useDetailPageError,
     useFetchHomeworkDetailAPI,
-    useQueryOptions,
-    useSnackbar,
     useUpdateHomeworkDataAPI,
     useUpdateHomeworkUserRelationAPI,
-} from "hooks";
+} from "hooks/apis";
 import {BooleanStatus, DatePicker, DetailPage, LoadingIndicator, TextInput} from "components";
 import {useTranslation} from "react-i18next";
 import {
@@ -35,9 +34,9 @@ import {getISODatetime} from "utils";
 import {generatePath} from "react-router";
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
-import {IUpdateHomeworkDataData, IUpdateHomeworkDataResponse} from "hooks/apis/send/update/useUpdateHomeworkDataAPI";
 import {ErrorContext} from "contexts";
 import update from "immutability-helper";
+import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
 
@@ -79,25 +78,21 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const [forceEdit, setForceEdit] = useState<HomeworkKeys[]>([]);
 
     // Server
-    const [
+    const {
         mutate,
-        {
-            isLoading: isUpdatingHomework,
-            error: mutationError,
-        },
-    ] = useMutation<IUpdateHomeworkDataResponse, AxiosError, IUpdateHomeworkDataData>(
+        isLoading: isUpdatingHomework,
+        error: mutationError,
+    } = useMutation<IUpdateHomeworkDataResponse, AxiosError, IUpdateHomeworkDataData>(
         updateHomeworkDataMutation,
         {
             onSuccess: setHomework,
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
     );
-    const [
-        mutateRelation,
-        {
-            isLoading: isUpdatingRelation,
-        },
-    ] = useMutation<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>(
+    const {
+        mutate: mutateRelation,
+        isLoading: isUpdatingRelation,
+    } = useMutation<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>(
         updateHomeworkRelationMutation,
         {
             onSuccess: newRelation => setHomework(prevState => update(prevState, {
@@ -110,12 +105,12 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     );
     const {
         isLoading,
-        updatedAt,
+        dataUpdatedAt,
         refetch,
         isFetching,
     } = useQuery<HomeworkDetail, AxiosError>(
-        id,
-        fetchHomework,
+        `fetch_homework_${id}`,
+        () => fetchHomework(id),
         {
             ...queryOptions,
             onSuccess: setHomework,
@@ -183,7 +178,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
         return <LoadingIndicator />;
     }
 
-    if (!homework) {
+    if (!homework?.lesson) {
         dispatchError({
             type: "setError",
             payload: {},
@@ -199,7 +194,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                 "information", "dueDate", "type", "isPrivate", "createdAt", "lesson",
             ]}
             refetch={refetch}
-            updatedAt={dayjs(updatedAt)}
+            updatedAt={dayjs(dataUpdatedAt)}
             isRefreshing={isFetching}
             orderingStorageName="detail:ordering:homework"
             forceEdit={forceEdit}

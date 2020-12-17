@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Homework} from "components";
 import {Event as CalendarEvent} from "react-big-calendar";
 import {HomeworkDetail} from "types";
 import update from "immutability-helper";
 
 import {ICalendarContext} from "../../../CalendarContext";
+import {ErrorContext} from "../../../../../contexts";
 
 export interface IEvent {
     event: CalendarEvent;
@@ -12,21 +13,31 @@ export interface IEvent {
     style?: any;
 }
 
-const Event = ({event, style, refetch}: IEvent) => {
-    const [data, setData] = useState<HomeworkDetail>(event.resource);
+const Event = ({event, style}: IEvent) => {
+    const {dispatch: dispatchError} = useContext(ErrorContext);
+
+    const [homework, setHomework] = useState<HomeworkDetail>(event.resource);
+
+    if (!homework.lesson) {
+        dispatchError({
+            type: "setError",
+            payload: {},
+        });
+        return null;
+    }
 
     return (
         <div style={style}>
             <Homework
-                subject={data.lesson.lessonData.course.subject}
-                information={data.information}
-                creationDate={data.createdAt}
-                dueDate={data.dueDate}
-                completed={data.userRelation.completed}
-                ignore={data.userRelation.ignore}
-                id={data.id}
+                subject={homework.lesson.lessonData.course.subject}
+                information={homework.information}
+                creationDate={homework.createdAt}
+                dueDate={homework.dueDate}
+                completed={homework.userRelation.completed}
+                ignore={homework.userRelation.ignore}
+                id={homework.id}
                 onServerUpdate={homeworkRelationData => {
-                    setData(prevState => update(prevState, {
+                    setHomework(prevState => update(prevState, {
                         userRelation: {
                             $set: homeworkRelationData,
                         },

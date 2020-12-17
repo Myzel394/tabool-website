@@ -8,7 +8,7 @@ import parseSubmission from "./parseSubmission";
 const useFetchSubmissionDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, id: string): Promise<SubmissionDetail> => {
+    return useCallback(async (id: string): Promise<SubmissionDetail> => {
         const {data} = await instance.get(`/api/data/submission/${id}/`, await getLoginConfig());
         parseSubmission(data);
 

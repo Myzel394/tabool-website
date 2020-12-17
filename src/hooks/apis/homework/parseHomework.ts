@@ -1,15 +1,15 @@
 import {convertToDate} from "api";
 import {HomeworkDetail} from "types";
 
-import {parseLesson} from "../lesson";
 
-const parseHomework = (homework: HomeworkDetail): void => {
+const parseHomework = async (homework: HomeworkDetail): Promise<void> => {
     convertToDate(homework, [
         "dueDate",
         "createdAt",
     ]);
     if (homework.lesson) {
-        parseLesson(homework.lesson);
+        const lesson = await import("../lesson");
+        lesson.parseLesson(homework.lesson);
     }
 };
 

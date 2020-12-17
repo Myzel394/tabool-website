@@ -1,21 +1,19 @@
-import React, {useMemo} from "react";
+import React from "react";
 import {Box, Grid} from "@material-ui/core";
 
-type BadgeType = JSX.Element | null;
-
 export interface IBadges {
-    children: BadgeType[];
+    badges: JSX.Element[];
 }
 
-const Badges = ({children}: IBadges) => {
-    const boxStyle = useMemo(() => ({
-        height: 0,
-    }), []);
-    const style = useMemo(() => ({
-        transform: "translateY(-50%)",
-        height: "fit-content",
-    }), []);
+const boxStyle = {
+    height: 0,
+};
+const style = {
+    transform: "translateY(-50%)",
+    height: "fit-content",
+};
 
+const Badges = ({badges}: IBadges) => {
     return (
         <Box
             mr={1}
@@ -26,8 +24,8 @@ const Badges = ({children}: IBadges) => {
                 justify="flex-end"
                 style={style}
             >
-                {children.map(element =>
-                    element && <Grid key={element.props.key} item>
+                {badges.map(element =>
+                    element && <Grid key={element.key} item>
                         {element}
                     </Grid>)}
             </Grid>

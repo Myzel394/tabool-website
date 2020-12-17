@@ -1,11 +1,11 @@
 import React, {memo} from "react";
-import {useFetchMaterialDownloadLinkAPI, useQueryOptions} from "hooks";
+import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
-import {IFetchMaterialDownloadLinkResponse} from "hooks/apis/fetch/homework/useFetchMaterialDownloadLinkAPI";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Grid, Link} from "@material-ui/core";
+import {IFetchMaterialDownloadLinkResponse, useFetchMaterialDownloadLinkAPI} from "hooks/apis";
 
 import {LoadingIndicator} from "../indicators";
 import {PrimaryButton} from "../buttons";
@@ -29,21 +29,14 @@ const GetDownloadLink = ({materialId, onClose, onDownload}: IGetDownloadLink) =>
         isLoading,
         refetch,
     } = useQuery<IFetchMaterialDownloadLinkResponse, AxiosError>(
-        [
-            `fetch_material_download_link_${materialId}`,
-            {
-                id: materialId,
-            },
-        ],
-        fetchDownloadLink,
+        `fetch_material_download_link_${materialId}`,
+        () => fetchDownloadLink(materialId),
         {
             ...queryOptions,
             onSuccess: materialDownloadLink => {
                 window.open(materialDownloadLink.file, "download");
                 onClose();
-                if (onDownload) {
-                    onDownload();
-                }
+                onDownload?.();
             },
         },
     );
@@ -82,9 +75,7 @@ const GetDownloadLink = ({materialId, onClose, onDownload}: IGetDownloadLink) =>
             href={data?.file}
             onClick={() => {
                 onClose();
-                if (onDownload) {
-                    onDownload();
-                }
+                onDownload?.();
             }}
         >
             {t("Datei runterladen")}

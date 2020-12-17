@@ -1,6 +1,5 @@
 import {useTranslation} from "react-i18next";
-
-import {ModificationType} from "../types";
+import {ModificationType} from "api";
 
 const useModificationDescription = (modificationType: ModificationType): string | undefined => {
     const {t} = useTranslation();

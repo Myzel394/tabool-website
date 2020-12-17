@@ -1,23 +1,21 @@
 import {useMemo} from "react";
-import {QueryConfig} from "react-query";
+import {UseQueryOptions} from "react-query/types/react/types";
 
 import useSaveData from "./useSaveData";
 
-
-type ConfigType = QueryConfig<any, any>;
+type ConfigType = UseQueryOptions<any, any, any>;
 
 const useQueryOptions = (): ConfigType => {
     const saveData = useSaveData();
     const options = useMemo<ConfigType>(() => {
-        if (saveData) {
-            return {
+        return saveData
+            ? {
                 refetchOnWindowFocus: false,
                 refetchOnMount: true,
                 retry: 1,
                 refetchOnReconnect: false,
-            };
-        }
-        return {};
+            }
+            : {};
     }, [saveData]);
 
     return options;

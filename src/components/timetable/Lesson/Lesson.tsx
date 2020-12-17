@@ -2,9 +2,9 @@ import React, {ReactNode, useMemo} from "react";
 import {Dayjs} from "dayjs";
 import clsx from "clsx";
 import {useTheme} from "@material-ui/core";
-import {ModificationType} from "types";
 
 import ColoredContainer from "../../ColoredContainer";
+import {ModificationType} from "../../../api";
 
 import LessonContext from "./LessonContext";
 import styles from "./Lesson.module.scss";

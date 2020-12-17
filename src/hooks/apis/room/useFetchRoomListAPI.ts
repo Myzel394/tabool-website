@@ -9,7 +9,7 @@ const useFetchRoomListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
 
-    return useCallback(async (key: string, search: string): Promise<IFetchRoomResponse> => {
+    return useCallback(async (search: string): Promise<IFetchRoomResponse> => {
         const {data} = await instance.get("/api/data/room/", {
             params: {
                 search,

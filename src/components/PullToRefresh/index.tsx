@@ -1,8 +1,7 @@
 import React, {ReactNode, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import BezierEasing from "bezier-easing";
 import {Transition} from "react-transition-group";
-
-import {useWindowSize} from "../../hooks";
+import {useWindowSize} from "hooks";
 
 import DefaultPullToRefreshObject from "./DefaultPullToRefreshElement";
 import State from "./State";
@@ -35,7 +34,7 @@ const PullToRefresh = ({
     loadingElementHeight,
 }: IPullToRefresh) => {
     const $div = useRef<any>();
-    const [windowWidth, windowHeight] = useWindowSize();
+    const [, windowHeight] = useWindowSize();
 
     const [scrollAmount, setScrollAmount] = useState<number>(0);
     const [startY, setStartY] = useState<number>(-1);

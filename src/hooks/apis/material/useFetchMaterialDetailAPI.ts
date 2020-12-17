@@ -8,7 +8,7 @@ import parseMaterial from "./parseMaterial";
 const useFetchMaterialDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, id: string): Promise<MaterialDetail> => {
+    return useCallback(async (id: string): Promise<MaterialDetail> => {
         const {data} = await instance.get(`/api/data/material/${id}/`, await getLoginConfig());
         parseMaterial(data);
 

@@ -14,7 +14,7 @@ export type IFetchTimetableResponse = Timetable;
 const useFetchTimetableAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async ({
         endDatetime,
         startDatetime,
     }: IFetchTimetableData, page = 1): Promise<IFetchTimetableResponse> => {

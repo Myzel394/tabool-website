@@ -1,7 +1,7 @@
 import React, {memo, useCallback} from "react";
 import {useTranslation} from "react-i18next";
-import {TeacherApprox} from "api/serverType/teacher";
-import {useFetchTeacherListAPI} from "hooks/apis/fetch";
+import {TeacherApprox} from "types";
+import {useFetchTeacherListAPI} from "hooks/apis";
 
 import SimpleListField, {itemSize} from "../SimpleListField";
 

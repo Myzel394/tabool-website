@@ -1,4 +1,5 @@
-import {ModificationType} from "types";
+import {ModificationType} from "api";
+
 
 const COLORS = {
     [ModificationType.FreePeriod]: "#919191",

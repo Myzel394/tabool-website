@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {Dayjs} from "dayjs";
 import {FetchListData, HomeworkApprox, PaginatedResponse} from "types";
 import {getLoginConfig} from "api";
 
 import parseHomeworkApprox from "./parseHomeworkApprox";
 
+export type OrderingTypes = "due_date" | "-due_date";
+
 export interface IFetchHomeworkListData extends FetchListData {
-    dueDateMax?: Dayjs;
-    dueDateMin?: Dayjs;
+    dueDateMax?: string;
+    dueDateMin?: string;
     type?: string;
     lessonId?: string;
     subjectId?: string;
     completed?: boolean;
     ignore?: boolean;
-    ordering?: "due_date" | "-due_date";
+    ordering?: OrderingTypes;
 }
 
 export type IFetchHomeworkListResponse = PaginatedResponse<HomeworkApprox[]>;
@@ -23,7 +24,7 @@ export type IFetchHomeworkListResponse = PaginatedResponse<HomeworkApprox[]>;
 const useFetchHomeworkListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async ({
         ordering = "due_date",
         dueDateMax,
         dueDateMin,

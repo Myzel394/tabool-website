@@ -2,9 +2,7 @@ import React, {memo, ReactElement, useMemo, useState} from "react";
 import {InputAdornment, useTheme} from "@material-ui/core";
 import {IconBaseProps} from "react-icons";
 
-import {ITextInput} from "./TextInput";
-
-import {TextInput} from "./index";
+import TextInput, {ITextInput} from "./TextInput";
 
 export type IInputWithIcon = ITextInput & {
     renderIcon: (props: IconBaseProps) => ReactElement;

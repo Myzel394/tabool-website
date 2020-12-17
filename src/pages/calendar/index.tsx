@@ -1,12 +1,15 @@
 import React, {ReactNode, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {combineDatetime, findNextDate, getISODatetime} from "utils";
-import {IFetchTimetableResponse} from "hooks/apis/fetch/useFetchTimetableAPI";
 import {setBeginTime, setEndTime} from "utils/setTime";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useQuery} from "react-query";
-import {useDeviceWidth, useFetchTimetableAPI, usePersistentStorage, useQueryOptions} from "hooks";
+import {useDeviceWidth, usePersistentStorage, useQueryOptions} from "hooks";
+import {AxiosError} from "axios";
+
+import {IFetchTimetableResponse} from "../../hooks/apis";
+import useFetchTimetableAPI from "../../hooks/apis/useFetchTimetableAPI";
 
 import CalendarContext, {CalendarType} from "./CalendarContext";
 import {Skeleton} from "./Calendar/states";
@@ -65,10 +68,18 @@ const Calendar = () => {
 
     // Data
     const endDate = getEndDate(startDate);
-    const {data, isLoading, refetch} = useQuery<IFetchTimetableResponse>(["fetch_timetable", {
-        startDatetime: getISODatetime(startDate),
-        endDatetime: getISODatetime(endDate),
-    }], fetchTimetable, queryOptions);
+    const {
+        data,
+        isLoading,
+        refetch,
+    } = useQuery<IFetchTimetableResponse, AxiosError>(
+        "fetch_timetable",
+        () => fetchTimetable({
+            startDatetime: getISODatetime(startDate),
+            endDatetime: getISODatetime(endDate),
+        }),
+        queryOptions,
+    );
 
     // Functions
     const changeDate = (rawValue: Dayjs) => {

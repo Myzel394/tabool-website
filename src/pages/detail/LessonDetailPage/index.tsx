@@ -1,11 +1,5 @@
 import React, {memo, useContext, useState} from "react";
-import {
-    useDetailPageError,
-    useFetchLessonDetailAPI,
-    useQueryOptions,
-    useSnackbar,
-    useUpdateLessonUserRelationAPI,
-} from "hooks";
+import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
 import {useMutation, useQuery} from "react-query";
 import {LessonDetail} from "types";
 import {AxiosError} from "axios";
@@ -19,19 +13,21 @@ import _ from "lodash";
 import {Button, Collapse, Grid, Link, Typography} from "@material-ui/core";
 import {generatePath} from "react-router";
 import update from "immutability-helper";
-import {
-    IUpdateLessonUserRelationData,
-    IUpdateLessonUserRelationResponse,
-} from "hooks/apis/send/userRelation/useUpdateLessonUserRelationAPI";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import IllEmailButton from "components/buttons/IllEmailButton";
 import Material from "components/Material";
 import {Alert} from "@material-ui/lab";
-
-import {combineDatetime} from "../../../utils";
+import {combineDatetime} from "utils";
+import {
+    IUpdateLessonUserRelationData,
+    IUpdateLessonUserRelationResponse,
+    useFetchLessonDetailAPI,
+    useUpdateLessonUserRelationAPI,
+} from "hooks/apis";
 
 import ModificationsNode from "./ModificationsNode";
 import Submissions from "./Submissions";
+
 
 const gridItemStyle = {
     width: "100%",
@@ -53,12 +49,12 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     // Lesson
     const {
         isLoading,
-        updatedAt,
+        dataUpdatedAt,
         refetch,
         isFetching,
     } = useQuery<LessonDetail, AxiosError>(
-        id,
-        fetchLesson,
+        `fetch_lesson_${id}`,
+        () => fetchLesson(id),
         {
             ...queryOptions,
             onSuccess: setLesson,
@@ -66,12 +62,10 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
         },
     );
     // Relation
-    const [
-        mutateRelation,
-        {
-            isLoading: isUpdatingRelation,
-        },
-    ] = useMutation<IUpdateLessonUserRelationResponse, AxiosError, IUpdateLessonUserRelationData>(
+    const {
+        mutate: mutateRelation,
+        isLoading: isUpdatingRelation,
+    } = useMutation<IUpdateLessonUserRelationResponse, AxiosError, IUpdateLessonUserRelationData>(
         updateLessonUserRelation, {
             onSuccess: newRelation => setLesson(prevState => update(prevState, {
                 userRelation: {
@@ -149,7 +143,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             orderingStorageName="detail:ordering:lesson"
             refetch={refetch}
             isRefreshing={isFetching}
-            updatedAt={dayjs(updatedAt)}
+            updatedAt={dayjs(dataUpdatedAt)}
             data={data}
             relation={{
                 buttons: [

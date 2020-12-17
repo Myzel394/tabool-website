@@ -21,7 +21,7 @@ export type IFetchEventListResponse = PaginatedResponse<EventApprox[]>;
 const useFetchEventListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async ({
         ordering = "start_datetime",
         ignore,
         roomId,

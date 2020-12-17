@@ -1,6 +1,5 @@
 import {useQuery} from "react-query";
-import {useFetchHomeworkInformationAPI} from "hooks";
-import {IFetchHomeworkInformationResponse} from "hooks/apis/fetch/homework/useFetchHomeworkInformationAPI";
+import {IFetchHomeworkInformationResponse, useFetchHomeworkInformationAPI} from "hooks/apis";
 
 const useHomeworkInformation = (): IFetchHomeworkInformationResponse | null => {
     const fetchInformation = useFetchHomeworkInformationAPI();

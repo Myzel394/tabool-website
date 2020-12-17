@@ -2,7 +2,7 @@ import genderColor from "constants/genderColor";
 
 import React, {memo, useContext} from "react";
 import {useTranslation} from "react-i18next";
-import {useDetailPageError, useFetchTeacherDetailAPI, useFetchTeacherInformationAPI, useQueryOptions} from "hooks";
+import {useDetailPageError, useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {TeacherDetail} from "types";
@@ -12,8 +12,8 @@ import {CgCompress, FaTransgenderAlt, MdEmail, MdTextFields} from "react-icons/a
 import {Grid, Link, Typography} from "@material-ui/core";
 import createMailToLink from "mailto-link";
 import dayjs from "dayjs";
-import {IFetchTeacherInformationResponse} from "hooks/apis/fetch/schoolData/useFetchTeacherInformationAPI";
 import {generatePath} from "react-router-dom";
+import {IFetchTeacherInformationResponse, useFetchTeacherDetailAPI, useFetchTeacherInformationAPI} from "hooks/apis";
 
 
 type TeacherKeys = "name" | "shortName" | "email" | "gender";
@@ -31,10 +31,10 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
         isLoading,
         refetch,
         isFetching,
-        updatedAt,
+        dataUpdatedAt,
     } = useQuery<TeacherDetail, AxiosError>(
-        ["fetch_teacher", id],
-        fetchTeacher,
+        "fetch_teacher",
+        () => fetchTeacher(id),
         {
             ...queryOptions,
             onError: error => onFetchError(error, Boolean(teacher)),
@@ -44,8 +44,8 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
     const {
         data: teacherInformation,
     } = useQuery<IFetchTeacherInformationResponse, AxiosError>(
-        ["fetch_teacher_information", id],
-        fetchTeacherInformation,
+        "fetch_teacher_information",
+        () => fetchTeacherInformation(id),
         queryOptions,
     );
 
@@ -69,7 +69,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
             orderingStorageName="detail:ordering:teacher"
             refetch={refetch}
             isRefreshing={isFetching}
-            updatedAt={dayjs(updatedAt)}
+            updatedAt={dayjs(dataUpdatedAt)}
             searchAllPath={generatePath("/teacher/")}
             defaultOrdering={[
                 "name", "shortName", "email", "gender",

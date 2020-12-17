@@ -16,7 +16,7 @@ export type IFetchLessonsResponse = PaginatedResponse<LessonApprox[]>;
 const useFetchLessonListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async ({
         dateMin,
         dateMax,
         search,

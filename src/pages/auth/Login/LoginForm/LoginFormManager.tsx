@@ -1,9 +1,8 @@
 import React, {memo} from "react";
 import {useMutation} from "react-query";
 import {LoadingOverlay} from "components/overlays";
-import {ILoginData, useSendLoginAPI} from "hooks/apis/send";
-import {ILoginResponse} from "hooks/apis/send/useSendLoginAPI";
 import {AxiosError} from "axios";
+import {ILoginData, ILoginResponse, useSendLoginAPI} from "hooks/apis";
 
 import LoginForm from "./LoginForm";
 
@@ -13,19 +12,18 @@ export interface ILoginFormManager {
 
 const LoginFormManager = ({onLoggedIn}: ILoginFormManager) => {
     const sendLogin = useSendLoginAPI();
-    const [
+    const {
         mutate,
+        isLoading,
+        error,
+    } = useMutation<ILoginResponse, AxiosError, ILoginData>(
+        sendLogin,
         {
-            isLoading,
-            error,
-        }] = useMutation<ILoginResponse, AxiosError, ILoginData>(
-            sendLogin,
-            {
-                onSuccess: (data: ILoginResponse) => {
-                    onLoggedIn(data);
-                },
+            onSuccess: (data: ILoginResponse) => {
+                onLoggedIn(data);
             },
-        );
+        },
+    );
 
     return (
         <LoadingOverlay isLoading={isLoading}>

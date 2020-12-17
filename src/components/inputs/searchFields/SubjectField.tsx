@@ -1,9 +1,9 @@
 import React, {memo, useCallback} from "react";
 import {useTranslation} from "react-i18next";
-import {IFetchSubjectResponse, useFetchSubjectListAPI} from "hooks";
 import {Subject} from "types";
 import {useTheme} from "@material-ui/core";
 import tinycolor from "tinycolor2";
+import {useFetchSubjectListAPI} from "hooks/apis";
 
 import SimpleListField, {itemSize} from "../SimpleListField";
 
@@ -28,7 +28,7 @@ const SubjectField = ({onChange, selectedValue, ...other}: ISubjectField) => {
     const title = selectedValue ? `${selectedValue.name} (${selectedValue.shortName})` : defaultTitle;
 
     return (
-        <BasicSearchField<Subject, string, IFetchSubjectResponse>
+        <BasicSearchField<Subject, string>
             {...other}
             searchPlaceholder={t("Suche nach Fächern")}
             title={title}

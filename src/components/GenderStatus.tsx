@@ -1,7 +1,8 @@
 import React, {memo} from "react";
-import {Gender} from "types";
 import {FaGenderless, FaQuestion, IoMdFemale, IoMdMale} from "react-icons/all";
 import {useTranslation} from "react-i18next";
+
+import {Gender} from "../api";
 
 import Information from "./Information";
 

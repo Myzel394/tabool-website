@@ -6,7 +6,6 @@ import {ErrorResponse} from "types";
 import Form, {buildGrid} from "components/forms/Form";
 import EmailInput from "components/inputs/EmailInput";
 import {useEmailValidator, usePasswordValidator} from "hooks/validators";
-import {TransparentLink} from "components";
 import {generatePath} from "react-router";
 
 import Password from "./inputs/Password";

@@ -18,7 +18,7 @@ export interface IFetchTeacherInformationResponse {
 const useFetchTeacherInformationAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, id: string): Promise<IFetchTeacherInformationResponse> => {
+    return useCallback(async (id: string): Promise<IFetchTeacherInformationResponse> => {
         const {data} = await instance.get(`/api/data/teacher/${id}/information/`, await getLoginConfig());
         return data;
     }, [instance]);

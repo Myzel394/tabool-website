@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {useMemo} from "react";
 import {Dayjs} from "dayjs";
 import {HomeworkDetail, Subject} from "types";
 import {Box, CircularProgress, Grid, Link, Typography, useTheme} from "@material-ui/core";
@@ -7,11 +7,15 @@ import {FaCheck, FaCheckCircle, FaExclamationTriangle, HiBan, HiClock} from "rea
 import {CSSTransition} from "react-transition-group";
 import clsx from "clsx";
 import {useMutation} from "react-query";
-import {useUpdateHomeworkUserRelationAPI} from "hooks";
 import {generatePath} from "react-router";
+import {ColoredBox, Information} from "components";
+import {AxiosError} from "axios";
 
-import ColoredBox from "../../ColoredBox";
-import Information from "../../Information";
+import {
+    IUpdateHomeworkUserRelationData,
+    IUpdateHomeworkUserRelationResponse,
+    useUpdateHomeworkUserRelationAPI,
+} from "../../../hooks/apis";
 
 import styles from "./Homework.module.scss";
 import Action from "./Action";
@@ -49,25 +53,23 @@ const Homework = ({
     onServerUpdate,
 }: IHomework) => {
     const theme = useTheme();
-    const [loading, setLoading] = useState<boolean>(false);
-    const [_updateRelationRaw] = useMutation(useUpdateHomeworkUserRelationAPI(), {
-        onSuccess: (data, variables) => {
-            setLoading(false);
-            if (onServerUpdate) {
-                onServerUpdate(data);
-            }
+    const updateHomeworkRelation = useUpdateHomeworkUserRelationAPI();
+
+    const {
+        mutate: updateRelation,
+        isLoading,
+    } = useMutation<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>(
+        updateHomeworkRelation,
+        {
+            onSuccess: data => onServerUpdate?.(data),
         },
-    });
+    );
     const style = useMemo(() => ({
         borderRadius: theme.shape.borderRadius,
         filter: ignore ? "grayscale(.5)" : "",
         opacity: ignore ? 0.8 : 1,
     }), [ignore, theme.shape.borderRadius]);
     const isCompleted = !ignore && completed;
-    const updateRelation = (...data) => {
-        setLoading(true);
-        _updateRelationRaw(...data);
-    };
 
     return (
         <ColoredBox
@@ -148,7 +150,7 @@ const Homework = ({
                                         </Box>
                                         <Box display="flex" flexDirection="column" alignItems="flex-end">
                                             <Box display="flex" flexDirection="row">
-                                                {loading && <CircularProgress color="secondary" />}
+                                                {isLoading && <CircularProgress color="secondary" />}
                                                 {completed === undefined ? null : (
                                                     <Action
                                                         icon={<FaCheckCircle />}

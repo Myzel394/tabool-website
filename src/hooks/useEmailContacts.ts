@@ -1,15 +1,24 @@
 import {useQuery} from "react-query";
+import {AxiosError} from "axios";
 
-import useFetchContactsAPI, {IFetchContactsResponse} from "./apis/fetch/useFetchContactsAPI";
 import useQueryOptions from "./useQueryOptions";
+import {IFetchContactsResponse} from "./apis";
+import useFetchContactsAPI from "./apis/useFetchContactsAPI";
 
 const useEmailContacts = (): IFetchContactsResponse | null => {
     const queryOptions = useQueryOptions();
     const fetchContacts = useFetchContactsAPI();
 
-    const {data, isSuccess} = useQuery("fetch_email_contacts", fetchContacts, queryOptions);
+    const {
+        data,
+        isSuccess,
+    } = useQuery<IFetchContactsResponse, AxiosError>(
+        "fetch_email_contacts",
+        fetchContacts,
+        queryOptions,
+    );
 
-    return isSuccess ? data : null;
+    return (isSuccess && data) ? data : null;
 };
 
 export default useEmailContacts;

@@ -20,7 +20,7 @@ export type IFetchModificationListResponse = PaginatedResponse<ModificationAppro
 const useFetchModificationListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async ({
         ordering = "start_datetime",
         endDateMax,
         endDateMin,

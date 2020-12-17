@@ -26,7 +26,7 @@ import RowElement, {IRowElement} from "./RowElement";
 
 const {innerHeight: initialWindowHeight} = window;
 
-export interface ISearchPage<DataType = any> {
+export interface ISearchPage<DataType = any, OrderingType = string> {
     data: DataType[];
 
     search: string;
@@ -41,8 +41,8 @@ export interface ISearchPage<DataType = any> {
     sorting: "ascending" | "descending";
 
     orderings: IOrderingDialog["orderings"];
-    ordering: string;
-    onOrderingChange: (ordering: string) => any;
+    ordering: OrderingType;
+    onOrderingChange: (ordering: OrderingType) => any;
 
     filterNode: ReactNode;
 
@@ -54,7 +54,7 @@ export interface ISearchPage<DataType = any> {
     footerNode: IRowElement<DataType>["footer"];
 }
 
-const SearchPage = <T extends unknown = any>({
+const SearchPage = <DataType extends unknown = any, OrderingType = string>({
     data,
     onSearchChange,
     renderElement,
@@ -72,7 +72,7 @@ const SearchPage = <T extends unknown = any>({
     filterNode,
     isError,
     footerNode,
-}: ISearchPage<T>) => {
+}: ISearchPage<DataType, OrderingType>) => {
     const {t} = useTranslation();
     const {bottomSheetHeight} = useContext(UtilsContext);
 
@@ -84,7 +84,7 @@ const SearchPage = <T extends unknown = any>({
     const [$list, set$List] = useState<VariableSizeList>();
     const [heights, setHeights] = useState<number[]>([]);
     const $header = useRef<any>();
-    const [headerWidth, headerHeight] = useElementSize($header);
+    const [, headerHeight] = useElementSize($header);
 
     useEffect(() => {
         if ($list?.resetAfterIndex) {
@@ -118,7 +118,7 @@ const SearchPage = <T extends unknown = any>({
                             onItemsRendered={onItemsRendered}
                         >
                             {({index, style}) =>
-                                <RowElement<T>
+                                <RowElement<DataType>
                                     data={data[index]}
                                     index={index}
                                     style={style}

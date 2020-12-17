@@ -1,8 +1,9 @@
 import React from "react";
-import {LessonDetail, ModificationDetail, ModificationType} from "types";
+import {LessonDetail, ModificationDetail} from "types";
 import {Link} from "@material-ui/core";
 import {generatePath} from "react-router-dom";
 import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge, RoomChangeBadge} from "components";
+import {ModificationType} from "api";
 
 import styles from "./LessonEvent.module.scss";
 
@@ -13,7 +14,6 @@ export interface ILessonEvent {
     lesson: LessonDetail;
     showWhenFreePeriod: boolean;
     showDetails: boolean;
-    animate: boolean;
 
     modification?: ModificationDetail;
 }
@@ -30,6 +30,14 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
     const hasMaterialBadge = materialCount > 0;
     const hasModificationBadge = modification?.modificationType === ModificationType.RoomChange;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Filter is ignored
+    const badges: JSX.Element[] = ([
+        hasHomeworkBadge && <HomeworkBadge key={`homework_${lesson.id}`} count={homeworkCount} />,
+        hasMaterialBadge && <MaterialBadge key={`material_${lesson.id}`} count={materialCount} />,
+        hasModificationBadge && <RoomChangeBadge key={`room_${lesson.id}`} />,
+    ].filter(Boolean));
+
     return (!showWhenFreePeriod && isFreePeriod) ? null : (
         <Link
             href={generatePath("/lesson/detail/:id/", {
@@ -42,13 +50,9 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
                 startTime={lesson.lessonData.startTime}
                 endTime={lesson.lessonData.endTime}
             >
-                <Badges>
-                    {[
-                        hasHomeworkBadge && <HomeworkBadge key={`homework_${lesson.id}`} count={homeworkCount} />,
-                        hasMaterialBadge && <MaterialBadge key={`material_${lesson.id}`} count={materialCount} />,
-                        hasModificationBadge && <RoomChangeBadge key={`room_${lesson.id}`} />,
-                    ].filter(Boolean)}
-                </Badges>
+                <Badges
+                    badges={badges}
+                />
                 <LessonContent
                     courseName={courseName}
                     roomName={roomName}

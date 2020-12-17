@@ -3,9 +3,7 @@ import {useCallback, useContext} from "react";
 import {ErrorContext} from "contexts";
 import {canCastToNumber} from "utils";
 
-import {PredefinedMessageType} from "./useSnackbar";
-
-import {useSnackbar} from "./index";
+import useSnackbar, {PredefinedMessageType} from "./useSnackbar";
 
 export interface IUseDetailPageError {
     onFetchError: (error: AxiosError, containsData: boolean) => void;

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useInfiniteQuery} from "react-query";
-import {IFetchHomeworkListResponse, useFetchHomeworkListAPI, useQueryOptions, useSnackbar} from "hooks";
+import {useQueryOptions, useSnackbar} from "hooks";
 import {Box, FormControlLabel, FormLabel, Grid, Link, Typography} from "@material-ui/core";
 import {HomeworkApprox, Subject} from "types";
 import {DatePicker, FormElement, Homework, SearchPage, SecondaryButton, SubjectField} from "components";
@@ -14,6 +14,7 @@ import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {generatePath} from "react-router-dom";
 import {getISODatetime, setBeginTime, setEndTime} from "utils";
+import {IFetchHomeworkListResponse, OrderingTypes, useFetchHomeworkListAPI} from "hooks/apis";
 
 import useHomeworkInformation from "./useHomeworkInformation";
 
@@ -36,37 +37,35 @@ const HomeworkListPage = () => {
         dueDateStart: null,
         dueDateEnd: null,
     });
-    const [ordering, setOrdering] = useState<string>("due_date");
+    const [ordering, setOrdering] = useState<OrderingTypes>("due_date");
     const [search, setSearch] = useState<string>("");
     const [homeworks, setHomeworks] = useState<HomeworkApprox[]>([]);
 
     const debouncedSearch = useDebouncedValue<string>(search);
-    const queryKey = [
-        debouncedSearch,
-        {
+    const {
+        data: rawDataGroups,
+        isLoading,
+        fetchNextPage,
+        isError,
+        hasNextPage,
+    } = useInfiniteQuery<IFetchHomeworkListResponse, AxiosError>(
+        `fetch_homework_list_${debouncedSearch}`,
+        () => fetchHomework({
             ordering,
             subjectId: filter?.subject?.id,
             completed: filter?.completed,
             ignore: filter?.ignore,
             dueDateMin: filter?.dueDateStart ? getISODatetime(setBeginTime(filter.dueDateStart)) : undefined,
             dueDateMax: filter?.dueDateEnd ? getISODatetime(setEndTime(filter.dueDateEnd)) : undefined,
-        },
-    ];
-    const {
-        data: rawDataGroups,
-        isLoading,
-        fetchMore,
-        isError,
-        canFetchMore,
-    } = useInfiniteQuery<IFetchHomeworkListResponse, AxiosError>(
-        queryKey,
-        fetchHomework,
+            search: debouncedSearch,
+        }),
         {
-            onSuccess: data => setHomeworks(data.reduce((previousValue: any, currentValue) => [
+            ...queryOptions,
+            onSuccess: data => setHomeworks(data.pages.reduce((previousValue: any, currentValue) => [
                 ...previousValue,
                 ...currentValue.results,
             ], [])),
-            getFetchMore: lastPage => {
+            getNextPageParam: lastPage => {
                 return parseInt(lastPage.next, 10) ?? false;
             },
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorLoading),
@@ -90,7 +89,7 @@ const HomeworkListPage = () => {
     };
 
     return (
-        <SearchPage<HomeworkApprox>
+        <SearchPage<HomeworkApprox, OrderingTypes>
             orderings={[
                 {
                     name: t("Fälligkeitsdatum"),
@@ -102,8 +101,8 @@ const HomeworkListPage = () => {
             fullAmount={rawDataGroups?.[0].count ?? 0}
             isFetching={isLoading}
             isError={isError}
-            containsMore={canFetchMore ?? false}
-            fetchMore={fetchMore}
+            containsMore={hasNextPage ?? false}
+            fetchMore={fetchNextPage}
             search={search}
             data={homeworks}
             renderElement={renderElement}

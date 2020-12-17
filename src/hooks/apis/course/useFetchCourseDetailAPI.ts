@@ -9,7 +9,7 @@ import parseCourse from "./parseCourse";
 const useFetchCourseDetailAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, id: string): Promise<CourseDetail> => {
+    return useCallback(async (id: string): Promise<CourseDetail> => {
         const {data} = await instance.get(`/api/data/course/${id}/`, await getLoginConfig());
         parseCourse(data);
 

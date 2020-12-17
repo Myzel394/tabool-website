@@ -1,4 +1,5 @@
-import {Gender} from "types";
+import {Gender} from "api";
+
 
 const genderColor = {
     [Gender.Male]: "#356FCB",

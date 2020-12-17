@@ -1,5 +1,6 @@
 import React from "react";
-import {useFetchTeacherListAPI} from "hooks";
+
+import {useFetchTeacherListAPI} from "../../hooks/apis";
 
 const TeacherListPage = () => {
     const fetchTeacher = useFetchTeacherListAPI();

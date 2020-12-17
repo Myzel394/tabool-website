@@ -15,7 +15,6 @@ interface IEvent {
     event: CalendarEvent;
     style: any;
     showFreePeriods: boolean;
-    animate: boolean;
     showDetails: boolean;
 }
 
@@ -64,7 +63,6 @@ const Event = ({
     event: calendarEvent,
     style,
     showFreePeriods,
-    animate,
     showDetails,
 }: IEvent) => {
     const divStyle = {
@@ -88,7 +86,6 @@ const Event = ({
                     homeworkCount={homeworkCount}
                     modification={modification}
                     showWhenFreePeriod={showFreePeriods}
-                    animate={animate}
                     showDetails={showDetails}
                 />
             );
@@ -123,17 +120,14 @@ const Event = ({
 
 const eventProxy = ({
     showFreePeriods,
-    animate,
     showDetails,
 }: {
     showFreePeriods: IEvent["showFreePeriods"];
-    animate: IEvent["animate"];
     showDetails: IEvent["showDetails"];
 }) => props =>
     Event({
         ...props,
         showFreePeriods,
-        animate,
         showDetails,
     });
 
