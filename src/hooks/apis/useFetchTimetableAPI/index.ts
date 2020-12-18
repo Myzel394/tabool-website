@@ -4,6 +4,8 @@ import {AxiosContext} from "contexts";
 import {FetchListData, Timetable} from "types";
 import {getLoginConfig} from "api";
 
+import parseTimetable from "./parseTimetable";
+
 export interface IFetchTimetableData extends FetchListData {
     startDatetime: string;
     endDatetime: string;
@@ -26,6 +28,8 @@ const useFetchTimetableAPI = () => {
             },
             ...await getLoginConfig(),
         });
+
+        await parseTimetable(data);
 
         return data;
     }, [instance]);

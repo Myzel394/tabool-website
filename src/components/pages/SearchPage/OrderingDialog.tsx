@@ -6,13 +6,15 @@ import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 
 import {PrimaryButton} from "../../buttons";
 
+interface OrderingType {
+    value: any;
+    name: string;
+}
+
 export interface IOrderingDialog {
     isOpen: boolean;
     onClose: () => any;
-    orderings: {
-        value: any;
-        name: string;
-    }[];
+    orderings: OrderingType[];
     value: any;
     onValueChange: (value: any) => any;
 }

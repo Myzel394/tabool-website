@@ -10,7 +10,7 @@ const useFetchHomeworkDetailAPI = () => {
 
     return useCallback(async (id: string): Promise<HomeworkDetail> => {
         const {data} = await instance.get(`/api/data/homework/${id}/`, await getLoginConfig());
-        parseHomework(data);
+        await parseHomework(data);
 
         return data;
     }, [instance]);

@@ -29,19 +29,21 @@ const ViewChanger = () => {
                 <MdViewDay />
             </IconButton>
             <Tooltip title={weekDisabled && t("Die Wochen-Anzeige ist bei der Hausaufgabenplan-Ansicht deaktiviert.").toString()}>
-                {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
-                <span>
-                    <IconButton
-                        color={getColor("work_week")}
-                        disabled={weekDisabled}
-                        onClick={event => {
-                            event.stopPropagation();
-                            onChange("work_week");
-                        }}
-                    >
-                        <MdViewWeek />
-                    </IconButton>
-                </span>
+                <>
+                    {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
+                    <span>
+                        <IconButton
+                            color={getColor("work_week")}
+                            disabled={weekDisabled}
+                            onClick={event => {
+                                event.stopPropagation();
+                                onChange("work_week");
+                            }}
+                        >
+                            <MdViewWeek />
+                        </IconButton>
+                    </span>
+                </>
             </Tooltip>
         </>
     );

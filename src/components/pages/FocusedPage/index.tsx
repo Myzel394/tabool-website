@@ -38,10 +38,12 @@ export default function FocusedPage({children, title, important, disableBackButt
                         {!disableBackButton &&
                             <Box display="flex" justifyContent="flex-end">
                                 <Tooltip title={t("Zurück gehen").toString()}>
-                                    {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
-                                    <span>
-                                        <BackButton confirm={important} />
-                                    </span>
+                                    <>
+                                        {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
+                                        <span>
+                                            <BackButton confirm={important} />
+                                        </span>
+                                    </>
                                 </Tooltip>
                             </Box>
                         }

@@ -28,7 +28,10 @@
         "@shopify/binary-assignment-parens": "off",
         "no-mixed-operators": "off",
         "@typescript-eslint/no-extra-parens": "off",
-        "switch-colon-spacing": ["error", {"after": true, "before": false}]
+        "switch-colon-spacing": ["error", {"after": true, "before": false}],
+        "@typescript-eslint/array-type": ["error", {
+            "default": "array"
+        }]
     },
     "env": {
         "browser": true,

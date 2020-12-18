@@ -11,7 +11,7 @@ const useFetchLessonDetailAPI = () => {
 
     return useCallback(async (id: string): Promise<LessonDetail> => {
         const {data} = await instance.get(`/api/data/lesson/${id}/`, await getLoginConfig());
-        parseLesson(data);
+        await parseLesson(data);
 
         return data;
     }, [instance]);

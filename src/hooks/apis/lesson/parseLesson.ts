@@ -6,16 +6,17 @@ import {parseMaterial} from "../material";
 import {parseHomework} from "../homework";
 import {parseModification} from "../modification";
 
-const parseLesson = (data: LessonDetail) => {
+const parseLesson = async (data: LessonDetail): Promise<void> => {
     convertToDate(data, [
         "date", "lessonData.startTime", "lessonData.endTime",
     ]);
     if (data.lessonData) {
         parseCourse(data.lessonData.course);
     }
-    data.materials.forEach(material => parseMaterial(material));
-    data.homeworks.forEach(homework => parseHomework(homework));
-    data.modifications.forEach(modification => parseModification(modification));
+
+    await Promise.allSettled(data.homeworks.map(parseHomework));
+    data.materials.forEach(parseMaterial);
+    data.modifications.forEach(parseModification);
 };
 
 export default parseLesson;

@@ -1,5 +1,5 @@
 import React, {ReactNode} from "react";
-import {QueryCache, ReactQueryCacheProvider} from "react-query";
+import {QueryClient, QueryClientProvider} from "react-query";
 
 import Checks from "../Checks";
 
@@ -14,11 +14,11 @@ export interface IContexts {
     bottomSheetHeight?: number;
 }
 
-const queryCache = new QueryCache();
+const queryClient = new QueryClient();
 
 const Contexts = ({children, bottomSheetHeight}: IContexts) => {
     return (
-        <ReactQueryCacheProvider queryCache={queryCache}>
+        <QueryClientProvider client={queryClient}>
             <UserContextHandler>
                 <AxiosContextHandler>
                     <ErrorContextHandler>
@@ -30,7 +30,7 @@ const Contexts = ({children, bottomSheetHeight}: IContexts) => {
                     </ErrorContextHandler>
                 </AxiosContextHandler>
             </UserContextHandler>
-        </ReactQueryCacheProvider>
+        </QueryClientProvider>
     );
 };
 

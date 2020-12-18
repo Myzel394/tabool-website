@@ -42,33 +42,37 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
         <Box flexDirection="row" display="flex" justifyContent="center">
             {isMobile && isDayView && (
                 <Tooltip title={disablePreviousWeek ? noDataAvailableText : t("Springe eine Woche zurück").toString()}>
-                    {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
-                    <span>
-                        <IconButton
-                            disabled={disablePreviousWeek}
-                            onClick={event => {
-                                event.stopPropagation();
-                                onDateChange(date.subtract(7, "day"));
-                            }}
-                        >
-                            <FaAngleDoubleLeft />
-                        </IconButton>
-                    </span>
+                    <>
+                        {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
+                        <span>
+                            <IconButton
+                                disabled={disablePreviousWeek}
+                                onClick={event => {
+                                    event.stopPropagation();
+                                    onDateChange(date.subtract(7, "day"));
+                                }}
+                            >
+                                <FaAngleDoubleLeft />
+                            </IconButton>
+                        </span>
+                    </>
                 </Tooltip>
             )}
             <Tooltip title={disablePrevious ? noDataAvailableText : t("Zurück").toString()}>
-                {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
-                <span>
-                    <IconButton
-                        disabled={disablePrevious}
-                        onClick={event => {
-                            event.stopPropagation();
-                            onNavigate(navigationConstants.PREVIOUS);
-                        }}
-                    >
-                        <FaAngleLeft />
-                    </IconButton>
-                </span>
+                <>
+                    {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
+                    <span>
+                        <IconButton
+                            disabled={disablePrevious}
+                            onClick={event => {
+                                event.stopPropagation();
+                                onNavigate(navigationConstants.PREVIOUS);
+                            }}
+                        >
+                            <FaAngleLeft />
+                        </IconButton>
+                    </span>
+                </>
             </Tooltip>
             <Tooltip title={t("Heute").toString()}>
                 <Button
@@ -83,33 +87,37 @@ const Navigation = ({label, onNavigate, ...other}: INavigation) => {
                 </Button>
             </Tooltip>
             <Tooltip title={disableNext ? noDataAvailableText : t("Weiter").toString()}>
-                {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
-                <span>
-                    <IconButton
-                        disabled={disableNext}
-                        onClick={event => {
-                            event.stopPropagation();
-                            onNavigate(navigationConstants.NEXT);
-                        }}
-                    >
-                        <FaAngleRight />
-                    </IconButton>
-                </span>
-            </Tooltip>
-            {isMobile && isDayView && (
-                <Tooltip title={disableNextWeek ? noDataAvailableText : t("Springe eine Woche weiter").toString()}>
+                <>
                     {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
                     <span>
                         <IconButton
-                            disabled={disableNextWeek}
+                            disabled={disableNext}
                             onClick={event => {
                                 event.stopPropagation();
-                                onDateChange(date.add(7, "day"));
+                                onNavigate(navigationConstants.NEXT);
                             }}
                         >
-                            <FaAngleDoubleRight />
+                            <FaAngleRight />
                         </IconButton>
                     </span>
+                </>
+            </Tooltip>
+            {isMobile && isDayView && (
+                <Tooltip title={disableNextWeek ? noDataAvailableText : t("Springe eine Woche weiter").toString()}>
+                    <>
+                        {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
+                        <span>
+                            <IconButton
+                                disabled={disableNextWeek}
+                                onClick={event => {
+                                    event.stopPropagation();
+                                    onDateChange(date.add(7, "day"));
+                                }}
+                            >
+                                <FaAngleDoubleRight />
+                            </IconButton>
+                        </span>
+                    </>
                 </Tooltip>
             )}
         </Box>

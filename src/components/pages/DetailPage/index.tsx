@@ -28,6 +28,16 @@ interface IButton extends ButtonProps {
     title: string;
 }
 
+interface RelationButtonType<RelationKeys extends string = string> {
+    value: RelationKeys;
+    title: string;
+    icon: ReactNode;
+}
+
+type RelationBooleanType<RelationKeys extends string = string> = {
+    [key in RelationKeys]: boolean;
+};
+
 export interface IDetailPage<AvailableKeys extends string = string, QueryType = any, RelationKeys extends string = string> {
     title: ITitle["title"];
     color: ITitle["color"];
@@ -48,17 +58,9 @@ export interface IDetailPage<AvailableKeys extends string = string, QueryType = 
     buttons?: IButton[];
     relation?: {
         isUpdating: boolean;
-        value: {
-            [key in RelationKeys]: boolean
-        };
-        onChange: (newRelation: {
-            [key in RelationKeys]: boolean
-        }) => any;
-        buttons: {
-            value: RelationKeys;
-            title: string;
-            icon: ReactNode;
-        }[];
+        value: RelationBooleanType<RelationKeys>;
+        onChange: (newRelation: RelationBooleanType<RelationKeys>) => any;
+        buttons: RelationButtonType<RelationKeys>[];
     };
 
     searchAllPath?: string;

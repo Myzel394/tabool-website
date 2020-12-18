@@ -101,6 +101,8 @@ const DefaultCalendar = ({
 
                 onDateChange(value);
             }}
+            // View is handled by Toolbar
+            onView={() => null}
             {...other}
         />
     );

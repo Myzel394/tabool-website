@@ -7,9 +7,7 @@ import {isMobile} from "react-device-detect";
 import {useQuery} from "react-query";
 import {useDeviceWidth, usePersistentStorage, useQueryOptions} from "hooks";
 import {AxiosError} from "axios";
-
-import {IFetchTimetableResponse} from "../../hooks/apis";
-import useFetchTimetableAPI from "../../hooks/apis/useFetchTimetableAPI";
+import {IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
 
 import CalendarContext, {CalendarType} from "./CalendarContext";
 import {Skeleton} from "./Calendar/states";

@@ -31,7 +31,9 @@ const useUpdateHomeworkDataAPI = () => {
             type,
             isPrivate,
         }, await getLoginConfig());
-        parseHomework(data);
+
+        await parseHomework(data);
+
         return data;
     }, [instance]);
 };
