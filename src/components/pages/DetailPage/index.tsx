@@ -1,5 +1,6 @@
 import React, {ReactNode, useEffect, useState} from "react";
 import {
+    Box,
     Button,
     ButtonGroup,
     Container,
@@ -112,7 +113,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
             <Title title={title} color={color} subTitle={subTitle} />
             <Container maxWidth="md" onTouchStart={event => event.stopPropagation()}>
                 {headerNode}
-                <Grid container spacing={4} alignItems="center" direction="column">
+                <Grid container spacing={4} alignItems="center" justify="center" direction="column">
                     <Grid item style={fullWidthStyle}>
                         <FormControlLabel
                             control={(
@@ -150,27 +151,32 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                     {relation &&
                         <Grid item style={fullWidthStyle}>
                             <LoadingOverlay isLoading={relation.isUpdating}>
-                                <ToggleButtonGroup
-                                    size="large"
-                                    value={changeRelation.toArray(relation.value)}
-                                    onChange={(event, newRelation: any) =>
-                                        relation.onChange(
-                                            changeRelation.toObject(
-                                                newRelation,
-                                                relation.buttons.map(button => button.value),
-                                            ),
-                                        )
-                                    }
+                                <Box
+                                    display="flex"
+                                    justifyContent="center"
                                 >
-                                    {relation.buttons.map(button =>
-                                        <ToggleButton
-                                            key={button.value}
-                                            value={button.value}
-                                        >
-                                            {button.icon}
-                                            {button.title}
-                                        </ToggleButton>)}
-                                </ToggleButtonGroup>
+                                    <ToggleButtonGroup
+                                        size="large"
+                                        value={changeRelation.toArray(relation.value)}
+                                        onChange={(event, newRelation: any) =>
+                                            relation.onChange(
+                                                changeRelation.toObject(
+                                                    newRelation,
+                                                    relation.buttons.map(button => button.value),
+                                                ),
+                                            )
+                                        }
+                                    >
+                                        {relation.buttons.map(button =>
+                                            <ToggleButton
+                                                key={button.value}
+                                                value={button.value}
+                                            >
+                                                {button.icon}
+                                                {button.title}
+                                            </ToggleButton>)}
+                                    </ToggleButtonGroup>
+                                </Box>
                             </LoadingOverlay>
                         </Grid>
                     }

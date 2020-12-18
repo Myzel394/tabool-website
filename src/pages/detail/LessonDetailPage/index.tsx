@@ -33,6 +33,11 @@ const gridItemStyle = {
     width: "100%",
 };
 
+const illButtonStyle = {
+    display: "block",
+    margin: "0 auto",
+};
+
 type LessonKeys = "presenceContent" | "distanceContent" | "room" | "course" | "teacher";
 
 const LessonDetailPage = ({match: {params: {id}}}) => {
@@ -162,7 +167,10 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             }}
             headerNode={lesson?.modifications.length > 0 && <ModificationsNode lesson={lesson} />}
             bottomNode={[
-                <Collapse key="write_illness_email" in={!lesson.userRelation.attendance}>
+                <Collapse
+                    key={`write_illness_email_${lesson.id}_${lesson.userRelation.attendance}`}
+                    in={!lesson.userRelation.attendance}
+                >
                     <IllEmailButton />
                 </Collapse>,
                 <div key="materials">
@@ -214,7 +222,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                     <Typography variant="h2">
                         {t("Einsendungen")}
                     </Typography>
-                    <Submissions lessonId={lesson.id} />
+                    <Submissions lessonId={lesson.id} submissions={lesson.submissions} />
                 </div>,
             ]}
         />

@@ -6,6 +6,7 @@ export interface SubmissionApprox {
     lesson?: string;
     filename: string;
     uploadAt: Dayjs;
+    size: number;
     id: string;
 }
 

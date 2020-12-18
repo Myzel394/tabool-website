@@ -1,14 +1,13 @@
 import {convertToDate} from "api";
 import {SubmissionDetail} from "types";
 
-import {parseLesson} from "../lesson";
-
-const parseSubmission = (submission: SubmissionDetail): void => {
+const parseSubmission = async (submission: SubmissionDetail): Promise<void> => {
     convertToDate(submission, [
         "uploadAt",
     ]);
     if (submission.lesson) {
-        parseLesson(submission.lesson);
+        const lesson = await import("../lesson");
+        await lesson.parseLesson(submission.lesson);
     }
 };
 

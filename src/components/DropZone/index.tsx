@@ -50,31 +50,35 @@ const DropZone = <FileType extends any = any>({
     const rootStyle = useMemo(() => ({
         border: `${mainColor} .2em dashed`,
         width: "100%",
+        margin: "0 auto",
     }), [mainColor]);
 
     return (
         <Paper elevation={0}>
             <Box
                 {...getRootProps({
-                    style: rootStyle,
                     component: ButtonBase,
-                    padding: 3,
+                    style: {
+                        width: "100%",
+                    },
                 })}
             >
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                    <Information
-                        getIcon={props => <MdAdd {...props} />}
-                        text={t("Datei hinzufügen")}
-                        color="textPrimary"
-                    />
-                ) : (
-                    <Information
-                        getIcon={props => <MdFileUpload {...props} />}
-                        text={t("Dateien auswählen")}
-                        color="textPrimary"
-                    />
-                )}
+                <Box p={3} style={rootStyle}>
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
+                        <Information
+                            getIcon={props => <MdAdd {...props} />}
+                            text={t("Datei hinzufügen")}
+                            color="textPrimary"
+                        />
+                    ) : (
+                        <Information
+                            getIcon={props => <MdFileUpload {...props} />}
+                            text={t("Dateien auswählen")}
+                            color="textPrimary"
+                        />
+                    )}
+                </Box>
             </Box>
             {value.length > 0 &&
                 <Box m={2} component="aside">

@@ -4,7 +4,7 @@ import {AxiosContext} from "contexts";
 import {FetchListData, PaginatedResponse, SubmissionApprox} from "types";
 import {getLoginConfig} from "api";
 
-import parseSubmission from "./parseSubmission";
+import parseSubmissionApprox from "./parseSubmissionApprox";
 
 export interface IFetchSubmissionListData extends FetchListData {
     ordering?: "upload_at" | "-upload_at" | "is_uploaded" | "-is_uploaded";
@@ -41,7 +41,7 @@ const useFetchSubmissionListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(parseSubmission);
+        data.results.forEach(parseSubmissionApprox);
 
         return data;
     }, [instance]);

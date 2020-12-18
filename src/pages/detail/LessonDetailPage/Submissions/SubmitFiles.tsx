@@ -1,29 +1,34 @@
 import React, {memo, useState} from "react";
 import {DropZone, LoadingOverlay, PrimaryButton} from "components";
-import dayjs from "dayjs";
 import {List, Typography} from "@material-ui/core";
 import update from "immutability-helper";
-import {useTranslation} from "react-i18next";
+import dayjs, {Dayjs} from "dayjs";
 import {useMutation} from "react-query";
-import {useQueryOptions, useSnackbar} from "hooks";
-import {PredefinedMessageType} from "hooks/useSnackbar";
-import {AxiosError} from "axios";
-import {getISODatetime} from "utils";
 import {ISendSubmissionData, ISendSubmissionResponse, SingleData, useSendSubmissionAPI} from "hooks/apis";
+import {AxiosError} from "axios";
+import {PredefinedMessageType} from "hooks/useSnackbar";
+import {getISODatetime} from "utils";
+import {useTranslation} from "react-i18next";
+import {useQueryOptions, useSnackbar} from "hooks";
 
-import SubmissionElement, {SubmissionFile} from "./SubmissionElement";
+import SubmissionElement from "./SubmissionElement";
 
-export interface ISubmissions {
+export interface IUploadSubmissions {
     lessonId: string;
 }
 
-const Submissions = ({lessonId}: ISubmissions) => {
+interface SubmissionUploadFile {
+    nativeFile: File;
+    uploadDate: Dayjs;
+}
+
+const SubmitFiles = ({lessonId}: IUploadSubmissions) => {
     const {t} = useTranslation();
     const sendFiles = useSendSubmissionAPI();
     const queryOptions = useQueryOptions();
     const {addError} = useSnackbar();
 
-    const [files, setFiles] = useState<SubmissionFile[]>([]);
+    const [files, setFiles] = useState<SubmissionUploadFile[]>([]);
     const {
         mutate,
         isLoading,
@@ -34,7 +39,7 @@ const Submissions = ({lessonId}: ISubmissions) => {
             onError: error => {
                 // eslint-disable-next-line no-console
                 console.log(error.response);
-                addError(error, undefined, PredefinedMessageType.ErrorMutating);
+                addError(error, undefined, PredefinedMessageType.ErrorUploading);
             },
             onSuccess: () => setFiles([]),
         },
@@ -42,28 +47,38 @@ const Submissions = ({lessonId}: ISubmissions) => {
 
     const uploadFiles = () => {
         mutate(
-            files.map((file): SingleData => ({
-                file: file.nativeFile,
-                lessonId,
-                uploadAt: getISODatetime(file.uploadDate),
-            })),
+            files
+                .filter(file => file.nativeFile !== undefined)
+                .map((file): SingleData => ({
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore: Files with no nativeFile are filtered out above
+                    file: file.nativeFile,
+                    lessonId,
+                    uploadAt: getISODatetime(file.uploadDate),
+                })),
         );
     };
 
     return (
         <LoadingOverlay isLoading={isLoading}>
-            <DropZone<SubmissionFile>
+            <DropZone<SubmissionUploadFile>
                 value={files}
                 renderList={(files) =>
                     <>
-                        <List dense>
+                        <List>
                             {files.map((file, index) =>
                                 <SubmissionElement
-                                    key={`${file.nativeFile.name}_${file.nativeFile.size}_${file.nativeFile.type}_${file.uploadDate.toISOString()}`}
-                                    file={file}
-                                    onChange={newFile => setFiles(prevState => update(prevState, {
+                                    key={`submission_add_${file.nativeFile.name}_${file.nativeFile.size}_${file.nativeFile?.type}_${file.uploadDate.toISOString()}`}
+                                    filename={file.nativeFile.name}
+                                    fileSize={file.nativeFile.size}
+                                    fileSettings={{
+                                        uploadDate: file.uploadDate,
+                                    }}
+                                    onSettingsChange={newSettings => setFiles(prevState => update(prevState, {
                                         [index]: {
-                                            $set: newFile,
+                                            uploadDate: {
+                                                $set: newSettings.uploadDate,
+                                            },
                                         },
                                     }))}
                                     onDelete={() => setFiles(prevState => update(prevState, {
@@ -85,6 +100,8 @@ const Submissions = ({lessonId}: ISubmissions) => {
                     setFiles(prevState => [
                         ...prevState,
                         ...Array.from(newFiles).map(file => ({
+                            name: file.name,
+                            size: file.size,
                             nativeFile: file,
                             uploadDate: dayjs(),
                         })),
@@ -95,5 +112,4 @@ const Submissions = ({lessonId}: ISubmissions) => {
     );
 };
 
-
-export default memo(Submissions);
+export default memo(SubmitFiles);

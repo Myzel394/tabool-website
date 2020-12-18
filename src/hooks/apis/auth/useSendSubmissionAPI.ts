@@ -39,7 +39,7 @@ const getFileData = (file: File): Promise<string> =>
         };
         reader.onerror = reject;
 
-        reader.readAsText(file[0]);
+        reader.readAsText(file);
     });
 
 const getFormData = async (data: SingleData): Promise<SendData> => ({

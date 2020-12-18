@@ -5,7 +5,8 @@ import {useTranslation} from "react-i18next";
 
 export enum PredefinedMessageType {
     ErrorLoading,
-    ErrorMutating
+    ErrorMutating,
+    ErrorUploading,
 }
 
 export interface IUseSnackbar {
@@ -33,6 +34,9 @@ const useSnackbar = (): IUseSnackbar => {
                 break;
             case PredefinedMessageType.ErrorMutating:
                 snackbarMessage = t("Es gab einen Fehler beim Updaten der Daten.");
+                break;
+            case PredefinedMessageType.ErrorUploading:
+                snackbarMessage = t("Es gab einen Fehler beim Hochladen der Daten.");
                 break;
         }
 
