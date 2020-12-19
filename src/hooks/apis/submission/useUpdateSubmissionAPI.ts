@@ -1,6 +1,5 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {Dayjs} from "dayjs";
 import {getLoginConfig} from "api";
 import {SubmissionDetail} from "types";
 
@@ -8,7 +7,7 @@ import parseSubmission from "./parseSubmission";
 
 export interface IUpdateSubmissionData {
     id: string;
-    uploadDate?: Dayjs;
+    uploadDate?: string | null;
     privatize?: boolean;
 }
 
@@ -22,7 +21,7 @@ const useUpdateSubmissionAPI = () => {
         privatize,
         uploadDate,
     }: IUpdateSubmissionData): Promise<IUpdateSubmissionResponse> => {
-        const {data} = await instance.put(`/api/data/submission/${id}/`, {
+        const {data} = await instance.patch(`/api/data/submission/${id}/`, {
             privatize,
             uploadDate,
         }, await getLoginConfig());

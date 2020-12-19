@@ -3,7 +3,7 @@ import {SubmissionDetail} from "types";
 
 const parseSubmission = async (submission: SubmissionDetail): Promise<void> => {
     convertToDate(submission, [
-        "uploadAt",
+        "uploadDate", "createdAt",
     ]);
     if (submission.lesson) {
         const lesson = await import("../lesson");

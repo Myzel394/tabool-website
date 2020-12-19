@@ -1,3 +1,6 @@
+export * from "./setTime";
+export * from "./color";
+
 export {default as getISODate} from "./getISODate";
 export {default as getISODatetime} from "./getIsoDatetime";
 export {default as snakeCaseKeys} from "./snakeCase";
@@ -10,4 +13,4 @@ export {default as randomNumbersWithGap} from "./randomNumbersWithGap";
 export {default as isDateEqual} from "./isDateEqual";
 export {default as getKeysByTrueValues} from "./getKeysByTrueValues";
 export {default as canCastToNumber} from "./canCastToNumber";
-export {setEndTime, setBeginTime} from "./setTime";
+export {default as getAdaptedColor} from "./getAdaptedColor";

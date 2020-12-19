@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";
+import React, {memo, useContext, useState} from "react";
 import {DropZone, LoadingOverlay, PrimaryButton} from "components";
 import {List, Typography} from "@material-ui/core";
 import update from "immutability-helper";
@@ -9,23 +9,21 @@ import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {getISODatetime} from "utils";
 import {useTranslation} from "react-i18next";
-import {useQueryOptions, useSnackbar} from "hooks";
+import {useSnackbar} from "hooks";
+
+import LessonContext from "../LessonContext";
 
 import SubmissionElement from "./SubmissionElement";
 
-export interface IUploadSubmissions {
-    lessonId: string;
-}
-
 interface SubmissionUploadFile {
     nativeFile: File;
-    uploadDate: Dayjs;
+    uploadDate: Dayjs | null;
 }
 
-const SubmitFiles = ({lessonId}: IUploadSubmissions) => {
+const SubmitFiles = () => {
+    const {lesson} = useContext(LessonContext);
     const {t} = useTranslation();
     const sendFiles = useSendSubmissionAPI();
-    const queryOptions = useQueryOptions();
     const {addError} = useSnackbar();
 
     const [files, setFiles] = useState<SubmissionUploadFile[]>([]);
@@ -35,10 +33,7 @@ const SubmitFiles = ({lessonId}: IUploadSubmissions) => {
     } = useMutation<ISendSubmissionResponse, AxiosError, ISendSubmissionData>(
         sendFiles,
         {
-            ...queryOptions,
             onError: error => {
-                // eslint-disable-next-line no-console
-                console.log(error.response);
                 addError(error, undefined, PredefinedMessageType.ErrorUploading);
             },
             onSuccess: () => setFiles([]),
@@ -53,8 +48,8 @@ const SubmitFiles = ({lessonId}: IUploadSubmissions) => {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore: Files with no nativeFile are filtered out above
                     file: file.nativeFile,
-                    lessonId,
-                    uploadAt: getISODatetime(file.uploadDate),
+                    lessonId: lesson.id,
+                    uploadAt: file.uploadDate ? getISODatetime(file.uploadDate) : null,
                 })),
         );
     };
@@ -68,7 +63,7 @@ const SubmitFiles = ({lessonId}: IUploadSubmissions) => {
                         <List>
                             {files.map((file, index) =>
                                 <SubmissionElement
-                                    key={`submission_add_${file.nativeFile.name}_${file.nativeFile.size}_${file.nativeFile?.type}_${file.uploadDate.toISOString()}`}
+                                    key={`submission_add_${file.nativeFile.name}_${file.nativeFile.size}_${file.nativeFile?.type}_${file.uploadDate?.toISOString?.()}`}
                                     filename={file.nativeFile.name}
                                     fileSize={file.nativeFile.size}
                                     fileSettings={{

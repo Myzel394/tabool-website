@@ -25,17 +25,13 @@ import {
     useUpdateLessonUserRelationAPI,
 } from "hooks/apis";
 
+import LessonContext from "./LessonContext";
 import ModificationsNode from "./ModificationsNode";
 import Submissions from "./Submissions";
 
 
 const gridItemStyle = {
     width: "100%",
-};
-
-const illButtonStyle = {
-    display: "block",
-    margin: "0 auto",
 };
 
 type LessonKeys = "presenceContent" | "distanceContent" | "room" | "course" | "teacher";
@@ -94,6 +90,12 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
         return null;
     }
 
+    // Subtitle
+    const lessonDateFormat = lesson.date.format("ll");
+    const startTimeFormat = combineDatetime(lesson.date, lesson.lessonData.startTime).format("LT");
+    const endTimeFormat = combineDatetime(lesson.date, lesson.lessonData.endTime).format("LT");
+    const subTitle = `${lessonDateFormat}, ${startTimeFormat} - ${endTimeFormat}`;
+
     const data: any = _.pickBy({
         presenceContent: {
             icon: <FaChalkboardTeacher />,
@@ -134,8 +136,6 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             disableShowMore: true,
         },
     }, _.negate(_.isUndefined));
-
-    const subTitle = `${lesson.date.format("ll")}, ${combineDatetime(lesson.date, lesson.lessonData.startTime).format("LT")} - ${combineDatetime(lesson.date, lesson.lessonData.endTime).format("LT")}`;
 
     return (
         <DetailPage<LessonKeys, any, "attendance">
@@ -222,7 +222,18 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                     <Typography variant="h2">
                         {t("Einsendungen")}
                     </Typography>
-                    <Submissions lessonId={lesson.id} submissions={lesson.submissions} />
+                    <LessonContext.Provider
+                        value={{
+                            lesson,
+                            onChange: newSubmissions => setLesson(prevState => update(prevState, {
+                                submissions: {
+                                    $set: newSubmissions,
+                                },
+                            })),
+                        }}
+                    >
+                        <Submissions />
+                    </LessonContext.Provider>
                 </div>,
             ]}
         />

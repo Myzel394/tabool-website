@@ -1,24 +1,22 @@
-import React from "react";
-import {SubmissionDetail} from "types";
+import React, {useContext} from "react";
 
-import UploadedSubmissions from "./UploadedSubmissions";
+import LessonContext from "../LessonContext";
+
 import SubmitFiles from "./SubmitFiles";
+import UploadedSubmissions from "./UploadedSubmission";
 
-export interface ISubmissions {
-    lessonId: string;
-    submissions: SubmissionDetail[];
-}
+const Submissions = () => {
+    const {lesson} = useContext(LessonContext);
+    const submissions = lesson.submissions;
 
-const Submissions = ({lessonId, submissions}: ISubmissions) => {
     return (
         <>
             {submissions.length > 0 &&
-                <UploadedSubmissions submissions={submissions} />
+                <UploadedSubmissions />
             }
-            <SubmitFiles lessonId={lessonId} />
+            <SubmitFiles />
         </>
     );
 };
-
 
 export default Submissions;

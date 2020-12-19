@@ -9,7 +9,7 @@ export interface SingleData {
     file: File;
 
     privatize?: boolean;
-    uploadAt?: string;
+    uploadAt?: string | null;
 }
 
 export type ISendSubmissionData = SingleData | SingleData[];
@@ -21,7 +21,7 @@ interface SendData {
     file: string;
 
     privatize?: boolean;
-    uploadAt?: string;
+    uploadAt?: string | null;
 }
 
 const getFileData = (file: File): Promise<string> =>
@@ -57,9 +57,6 @@ const useSendSubmissionAPI = () => {
         const formData = await Promise.allSettled(
             sendDataArray.map(getFormData),
         );
-        // eslint-disable-next-line no-console
-        console.log(formData);
-
         const {data} = await instance.post(
             "/api/data/submission/",
             formData,

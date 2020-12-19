@@ -1,6 +1,5 @@
 import React, {ReactNode, useMemo} from "react";
 import {CircularProgress, useTheme} from "@material-ui/core";
-import tinycolor from "tinycolor2";
 import clsx from "clsx";
 
 import classes from "./index.module.scss";
@@ -14,10 +13,14 @@ const LoadingOverlay = ({isLoading, children}: ILoadingOverlay) => {
     const theme = useTheme();
     const styles = useMemo(() => {
         return isLoading ? {
-            backgroundColor: tinycolor(theme.palette.background.paper).setAlpha(0.8).toString(),
             zIndex: theme.zIndex.modal - 1,
         } : {display: "none"};
-    }, [isLoading, theme.palette.background.paper, theme.zIndex.modal]);
+    }, [isLoading, theme.zIndex.modal]);
+    const childrenStyles = useMemo(() => {
+        return isLoading ? {
+            opacity: theme.palette.action.disabledOpacity,
+        } : {};
+    }, [isLoading, theme.palette.action.disabledOpacity]);
     const containerClasses = useMemo(() => clsx([
         classes.overlay,
         {
@@ -27,7 +30,9 @@ const LoadingOverlay = ({isLoading, children}: ILoadingOverlay) => {
 
     return (
         <div className={classes.wrapper}>
-            {children}
+            <div style={childrenStyles}>
+                {children}
+            </div>
             <div className={containerClasses} style={styles}>
                 <CircularProgress />
             </div>

@@ -41,7 +41,7 @@ const useSnackbar = (): IUseSnackbar => {
         }
 
         if (error) {
-            snackbarMessage = `${snackbarMessage} (Status: ${error.code}; Nachricht: ${error.message})`;
+            snackbarMessage = `${snackbarMessage} (Nachricht: ${error.message})`;
         }
 
         addSnackbar(snackbarMessage, {

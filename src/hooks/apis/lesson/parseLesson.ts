@@ -14,11 +14,18 @@ const parseLesson = async (data: LessonDetail): Promise<void> => {
     if (data.lessonData) {
         parseCourse(data.lessonData.course);
     }
-
-    await Promise.allSettled(data.homeworks.map(parseHomework));
-    await Promise.allSettled(data.submissions.map(parseSubmission));
-    data.materials.forEach(parseMaterial);
-    data.modifications.forEach(parseModification);
+    if (data.homeworks) {
+        await Promise.allSettled(data.homeworks.map(parseHomework));
+    }
+    if (data.submissions) {
+        await Promise.allSettled(data.submissions.map(parseSubmission));
+    }
+    if (data.materials) {
+        data.materials.forEach(parseMaterial);
+    }
+    if (data.modifications) {
+        data.modifications.forEach(parseModification);
+    }
 };
 
 export default parseLesson;

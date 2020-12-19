@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Box,
     Dialog,
@@ -18,11 +18,14 @@ import dayjs, {Dayjs} from "dayjs";
 import {useTranslation} from "react-i18next";
 import {DateTimePicker} from "@material-ui/pickers";
 import {PrimaryButton} from "components";
-import {MdSettings} from "react-icons/all";
+import {MdAdd, MdFileUpload, MdSettings} from "react-icons/all";
 import update from "immutability-helper";
+import {MdClose} from "react-icons/md";
+
+import Day from "./UploadedSubmission/Day";
 
 export interface Settings {
-    uploadDate: Dayjs;
+    uploadDate: Dayjs | null;
 }
 
 export interface ISubmissionElement {
@@ -31,10 +34,18 @@ export interface ISubmissionElement {
     fileSettings: Settings;
     onSettingsChange: (newSettings: Settings) => any;
     onDelete: () => any;
+
+    fileCreationDate?: Dayjs;
+    lessonDateWeeks?: number[];
+    lessonColor?: string;
 }
 
 const wrapOverflowStyle = {
     overflowWrap: "anywhere" as "anywhere",
+};
+const informationProps = {
+    display: "flex",
+    alignItems: "center",
 };
 
 const SubmissionElement = ({
@@ -43,10 +54,30 @@ const SubmissionElement = ({
     fileSettings,
     onSettingsChange,
     onDelete,
+    fileCreationDate,
+    lessonDateWeeks,
+    lessonColor,
 }: ISubmissionElement) => {
     const {t} = useTranslation();
 
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [uploadDate, setUploadDate] = useState<Dayjs | null>(null);
+
+    const saveChanges = () => {
+        setShowModal(false);
+        onSettingsChange(update(fileSettings, {
+            uploadDate: {
+                $set: uploadDate,
+            },
+        }));
+    };
+
+    const now = dayjs();
+
+    // Update uploadDate
+    useEffect(() => {
+        setUploadDate(fileSettings.uploadDate);
+    }, [fileSettings.uploadDate]);
 
     return (
         <>
@@ -57,9 +88,27 @@ const SubmissionElement = ({
                 <ListItemText
                     style={wrapOverflowStyle}
                     primary={filename}
-                    secondary={prettyBytes(fileSize, {
-                        locale: "de",
-                    })}
+                    secondary={
+                        <>
+                            <Box {...informationProps}>
+                                {prettyBytes(fileSize, {
+                                    locale: "de",
+                                })}
+                            </Box>
+                            {fileCreationDate && (
+                                <Box {...informationProps}>
+                                    <MdAdd />
+                                    {fileCreationDate.format("lll")}
+                                </Box>
+                            )}
+                            {fileSettings.uploadDate && (
+                                <Box {...informationProps}>
+                                    <MdFileUpload />
+                                    {fileSettings.uploadDate.format("lll")}
+                                </Box>
+                            )}
+                        </>
+                    }
                 />
                 <ListItemSecondaryAction>
                     <IconButton onClick={() => setShowModal(true)}>
@@ -79,19 +128,40 @@ const SubmissionElement = ({
                         <DateTimePicker
                             disablePast
                             inputVariant="outlined"
-                            value={fileSettings.uploadDate}
-                            format="lll"
-                            onChange={date => date && onSettingsChange(update(fileSettings, {
-                                uploadDate: {
-                                    $set: dayjs(date),
-                                },
-                            }))}
+                            value={uploadDate}
+                            format="MM.DD.YYYY HH:mm"
+                            renderDay={(day, selectedDate, x, dayComponent) => {
+                                if (
+                                    // Date
+                                    day && selectedDate && !day.isSame(selectedDate) && !day.isBefore(now) &&
+                                    // Lesson
+                                    lessonColor && lessonDateWeeks?.includes?.(day.day() - 1)
+                                ) {
+                                    return <Day color={lessonColor} dayComponent={dayComponent} />;
+                                }
+
+                                return dayComponent;
+                            }}
+                            InputProps={{
+                                endAdornment: uploadDate !== null && (
+                                    <IconButton
+                                        edge="end"
+                                        onClick={event => {
+                                            event.stopPropagation();
+                                            setUploadDate(null);
+                                        }}
+                                    >
+                                        <MdClose />
+                                    </IconButton>
+                                ),
+                            }}
+                            onChange={date => date && setUploadDate(date)}
                         />
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <PrimaryButton onClick={() => setShowModal(false)}>
-                        {t("Schließen")}
+                    <PrimaryButton disabled={uploadDate === fileSettings.uploadDate} onClick={saveChanges}>
+                        {t("Änderungen speichern")}
                     </PrimaryButton>
                 </DialogActions>
             </Dialog>
