@@ -14,4 +14,5 @@ export interface SubmissionDetail extends Omit<SubmissionApprox, "lesson"> {
     isUploaded: boolean;
     uploadDate: Dayjs | null;
     createdAt: Dayjs;
+    file: string;
 }

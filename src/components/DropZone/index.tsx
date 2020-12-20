@@ -110,3 +110,4 @@ DropZone.defaultProps = {
 };
 
 export default DropZone;
+export {default as ExtensionAvatar} from "./ExtensionAvatar";

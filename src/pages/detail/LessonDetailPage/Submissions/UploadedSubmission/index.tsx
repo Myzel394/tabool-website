@@ -1,44 +1,53 @@
-import React, {memo, useContext} from "react";
-import {List} from "@material-ui/core";
-import {
-    IUpdateSubmissionData,
-    IUpdateSubmissionResponse,
-    useDeleteSubmissionAPI,
-    useUpdateSubmissionAPI,
-} from "hooks/apis";
+import React, {memo, useContext, useState} from "react";
+import {Button, Typography} from "@material-ui/core";
+import {usePrevious, useSnackbar} from "hooks";
+import {ExtensionAvatar, LoadingOverlay, SelectList} from "components";
+import prettyBytes from "pretty-bytes";
+import {MdDeleteForever} from "react-icons/all";
+import {useTranslation} from "react-i18next";
+import {IDelete, SubmissionDetail} from "types";
+import CountUp from "react-countup";
+import {useDeleteSubmissionAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
-import update from "immutability-helper";
-import {useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
-import {getISODatetime} from "utils";
-import {LoadingOverlay} from "components";
+import update from "immutability-helper";
 
 import LessonContext from "../../LessonContext";
 
-import UploadElement from "./UploadElement";
+import Element from "./Element";
+
 
 const UploadedSubmissions = () => {
+    const {t} = useTranslation();
     const {lesson, onChange} = useContext(LessonContext);
-    const updateSubmission = useUpdateSubmissionAPI();
-    const deleteSubmission = useDeleteSubmissionAPI();
     const {addError} = useSnackbar();
+    const deleteSubmission = useDeleteSubmissionAPI();
     const {submissions} = lesson;
+
+    const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+    const fullSize = submissions.reduce<number>((value, submission) =>
+        value + submission.size * Number(selectedKeys.includes(submission.id))
+    , 0);
+    const previousFullSize = usePrevious<number>(fullSize, 0);
 
     const {
         mutate,
         isLoading,
-    } = useMutation<IUpdateSubmissionResponse, AxiosError, IUpdateSubmissionData>(
-        updateSubmission,
+    } = useMutation<void, AxiosError, IDelete>(
+        deleteSubmission,
         {
-            onSuccess: newSubmission => {
-                const index = submissions.findIndex(submission => submission.id === newSubmission.id);
-
-                onChange(update(submissions, {
-                    [index]: {
-                        $set: newSubmission,
-                    },
-                }));
+            onSuccess: () => {
+                const newSubmissions = update(submissions, {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore: Command does exist
+                    $spliceDynamically: [
+                        selectedKeys,
+                        (key: string, arr: SubmissionDetail[]) => arr.findIndex(element => element.id === key),
+                    ],
+                });
+                onChange(newSubmissions);
+                setSelectedKeys([]);
             },
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
@@ -46,21 +55,47 @@ const UploadedSubmissions = () => {
 
     return (
         <LoadingOverlay isLoading={isLoading}>
-            <List>
-                {submissions.map(submission =>
-                    <UploadElement
-                        key={`uploaded_submission_${submission.id}`}
-                        submission={submission}
-                        creationDate={submission.createdAt}
-                        onSettingsChange={newSettings => {
-                            mutate({
-                                id: submission.id,
-                                uploadDate: newSettings.uploadDate ? getISODatetime(newSettings.uploadDate) : null,
-                            });
-                        }}
-                        onDelete={() => null}
-                    />)}
-            </List>
+            <SelectList<SubmissionDetail>
+                selectedKeys={selectedKeys}
+                data={submissions}
+                getElementKey={(submission: SubmissionDetail) => submission.id}
+                renderIcon={(submission: SubmissionDetail) =>
+                    <ExtensionAvatar name={submission.filename} />
+                }
+                formFooter={
+                    <>
+                        {fullSize &&
+                        <Typography color="textSecondary" variant="body2">
+                            {t("Größe aller Dateien: ")}
+                            <CountUp
+                                start={previousFullSize}
+                                end={fullSize}
+                                formattingFn={value => prettyBytes(value, {
+                                    locale: "de",
+                                })}
+                                duration={0.8}
+                            />
+                        </Typography>
+                        }
+                    </>
+                }
+                formElements={[
+                    <Button
+                        key="delete_selected_submissions"
+                        color="secondary"
+                        startIcon={<MdDeleteForever />}
+                        onClick={() => mutate({
+                            ids: selectedKeys,
+                        })}
+                    >
+                        {t("Löschen")}
+                    </Button>,
+                ]}
+                renderElement={(submission: SubmissionDetail, iconElement) =>
+                    <Element submission={submission} iconElement={iconElement} />
+                }
+                onSelectedKeysChange={setSelectedKeys}
+            />
         </LoadingOverlay>
     );
 };

@@ -1,8 +1,5 @@
 import React, {memo, useContext, useState} from "react";
-import {DropZone, LoadingOverlay, PrimaryButton} from "components";
-import {List, Typography} from "@material-ui/core";
-import update from "immutability-helper";
-import dayjs, {Dayjs} from "dayjs";
+import {Dayjs} from "dayjs";
 import {useMutation} from "react-query";
 import {ISendSubmissionData, ISendSubmissionResponse, SingleData, useSendSubmissionAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -12,8 +9,6 @@ import {useTranslation} from "react-i18next";
 import {useSnackbar} from "hooks";
 
 import LessonContext from "../LessonContext";
-
-import SubmissionElement from "./SubmissionElement";
 
 interface SubmissionUploadFile {
     nativeFile: File;
@@ -54,6 +49,9 @@ const SubmitFiles = () => {
         );
     };
 
+    return null;
+
+    /*
     return (
         <LoadingOverlay isLoading={isLoading}>
             <DropZone<SubmissionUploadFile>
@@ -104,7 +102,7 @@ const SubmitFiles = () => {
                 }}
             />
         </LoadingOverlay>
-    );
+    );*/
 };
 
 export default memo(SubmitFiles);

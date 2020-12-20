@@ -7,6 +7,7 @@ export * from "./mixins";
 export * from "./overlays";
 export * from "./pages";
 export * from "./timetable";
+export * from "./DropZone";
 
 export {default as SimpleCenter} from "./SimpleCenter";
 export {default as Tooltip} from "./Tooltip";
@@ -23,3 +24,4 @@ export {default as FormElement} from "./FormElement";
 export {default as GenderStatus} from "./GenderStatus";
 export {default as StrikeThrough} from "./StrikeThrough";
 export {default as DropZone} from "./DropZone";
+export {default as SelectList} from "./SelectList";

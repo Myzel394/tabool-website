@@ -19,3 +19,7 @@ export interface FetchListData {
 }
 
 export type PageType = number;
+
+export interface IDelete {
+    ids: string[];
+}
