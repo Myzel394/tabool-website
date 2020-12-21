@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 import update from "immutability-helper";
 import {useInheritedState} from "hooks";
 
-import LessonContext from "../LessonContext";
+import LessonContext from "../../LessonContext";
 
 import Day from "./Day";
 

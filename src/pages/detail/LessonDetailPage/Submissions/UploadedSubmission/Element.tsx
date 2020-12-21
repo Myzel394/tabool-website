@@ -1,7 +1,6 @@
 import React, {memo, useContext, useState} from "react";
-import {Box, IconButton, ListItem, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
-import prettyBytes from "pretty-bytes";
-import {MdAdd, MdFileDownload, MdFileUpload, MdSettings} from "react-icons/all";
+import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
+import {MdFileDownload, MdSettings} from "react-icons/all";
 import {SubmissionDetail} from "types";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
@@ -10,23 +9,16 @@ import {useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {LoadingOverlay} from "components";
 import update from "immutability-helper";
+import {getISODatetime} from "utils";
 
-import SettingsModal from "../SettingsModal";
-import {getISODatetime} from "../../../../../utils";
 import LessonContext from "../../LessonContext";
+import SettingsModal from "../SettingsModal";
+import FileInformation from "../FileInformation";
 
 export interface IElement {
     submission: SubmissionDetail;
     iconElement: JSX.Element;
 }
-
-const wrapOverflowStyle = {
-    overflowWrap: "anywhere" as "anywhere",
-};
-const informationProps = {
-    display: "flex",
-    alignItems: "center",
-};
 
 const Element = ({submission, iconElement}: IElement) => {
     const {onChange, lesson} = useContext(LessonContext);
@@ -57,32 +49,13 @@ const Element = ({submission, iconElement}: IElement) => {
     return (
         <>
             <LoadingOverlay isLoading={isLoading}>
-                <ListItem button>
+                <ListItem>
                     {iconElement}
-                    <ListItemText
-                        style={wrapOverflowStyle}
-                        primary={submission.filename}
-                        secondary={
-                            <>
-                                <Box {...informationProps}>
-                                    {prettyBytes(submission.size, {
-                                        locale: "de",
-                                    })}
-                                </Box>
-                                {submission.createdAt && (
-                                    <Box {...informationProps}>
-                                        <MdAdd />
-                                        {submission.createdAt.format("lll")}
-                                    </Box>
-                                )}
-                                {submission.uploadDate && (
-                                    <Box {...informationProps}>
-                                        <MdFileUpload />
-                                        {submission.uploadDate.format("lll")}
-                                    </Box>
-                                )}
-                            </>
-                        }
+                    <FileInformation
+                        filename={submission.filename}
+                        creationDate={submission.createdAt}
+                        uploadDate={submission.uploadDate}
+                        size={submission.size}
                     />
                     <ListItemSecondaryAction>
                         <IconButton edge="end" onClick={() => setIsOpen(true)}>

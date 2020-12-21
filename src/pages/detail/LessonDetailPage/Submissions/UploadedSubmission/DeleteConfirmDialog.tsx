@@ -1,5 +1,5 @@
 import React, {memo} from "react";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import {Trans, useTranslation} from "react-i18next";
 import {MdDeleteForever} from "react-icons/all";
 import {PrimaryButton, SecondaryButton} from "components";
@@ -7,17 +7,17 @@ import {PrimaryButton, SecondaryButton} from "components";
 export interface IDeleteConfirmDialog {
     isOpen: boolean;
     onClose: () => void;
-    onContinue: () => void;
+    onConfirm: () => void;
 
     amount?: number;
-    filename?: string;
+    filename?: string | null;
 }
 
-const dialogContent = {
+const breakStyle = {
     wordBreak: "break-all" as "break-all",
 };
 
-const DeleteConfirmDialog = ({amount, filename, isOpen, onClose}: IDeleteConfirmDialog) => {
+const DeleteConfirmDialog = ({amount, filename, isOpen, onClose, onConfirm}: IDeleteConfirmDialog) => {
     const {t} = useTranslation();
 
     return (
@@ -25,20 +25,20 @@ const DeleteConfirmDialog = ({amount, filename, isOpen, onClose}: IDeleteConfirm
             <DialogTitle>
                 {t("Datei löschen")}
             </DialogTitle>
-            <DialogContent style={dialogContent}>
+            <DialogContent>
                 <DialogContentText>
                     {filename
                         ? <Trans>
-                            Möchtest du wirklich die Datei <i>{{filename}}</i> löschen
+                            Möchtest du wirklich die Datei <Box m={2} style={breakStyle}><i>{{filename}}</i></Box> löschen?
                         </Trans>
                         : <Trans count={amount}>
-                            Möchtest du wirklich {{amount}} Dateien löschen?
+                            Möchtest du wirklich <strong>{{amount}}</strong> Dateien löschen?
                         </Trans>
                     }
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <PrimaryButton>
+                <PrimaryButton onClick={onConfirm}>
                     <MdDeleteForever />
                     {t("Löschen")}
                 </PrimaryButton>

@@ -1,5 +1,5 @@
 import React, {ReactNode, useMemo} from "react";
-import {CircularProgress, useTheme} from "@material-ui/core";
+import {CircularProgress, Typography, useTheme} from "@material-ui/core";
 import clsx from "clsx";
 
 import classes from "./index.module.scss";
@@ -7,9 +7,12 @@ import classes from "./index.module.scss";
 export interface ILoadingOverlay {
     isLoading: boolean;
     children: ReactNode;
+
+    text?: string;
+    value?: number;
 }
 
-const LoadingOverlay = ({isLoading, children}: ILoadingOverlay) => {
+const LoadingOverlay = ({isLoading, children, text, value}: ILoadingOverlay) => {
     const theme = useTheme();
     const styles = useMemo(() => {
         return isLoading ? {
@@ -18,9 +21,9 @@ const LoadingOverlay = ({isLoading, children}: ILoadingOverlay) => {
     }, [isLoading, theme.zIndex.modal]);
     const childrenStyles = useMemo(() => {
         return isLoading ? {
-            opacity: theme.palette.action.disabledOpacity,
+            opacity: 0.1,
         } : {};
-    }, [isLoading, theme.palette.action.disabledOpacity]);
+    }, [isLoading]);
     const containerClasses = useMemo(() => clsx([
         classes.overlay,
         {
@@ -34,7 +37,8 @@ const LoadingOverlay = ({isLoading, children}: ILoadingOverlay) => {
                 {children}
             </div>
             <div className={containerClasses} style={styles}>
-                <CircularProgress />
+                <CircularProgress variant={value ? "determinate" : "indeterminate"} value={value} />
+                {text && <Typography>{text}</Typography>}
             </div>
         </div>
     );
