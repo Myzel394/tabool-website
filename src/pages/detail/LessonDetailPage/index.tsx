@@ -1,3 +1,4 @@
+import queryString from "query-string";
 import React, {memo, useContext, useState} from "react";
 import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
 import {useMutation, useQuery} from "react-query";
@@ -8,9 +9,9 @@ import {ErrorContext} from "contexts";
 import dayjs from "dayjs";
 import {FaChalkboardTeacher, FaRunning, FiMonitor, MdPlace} from "react-icons/all";
 import {useTranslation} from "react-i18next";
-import {CourseIcon, TeacherIcon} from "components/icons";
+import {CourseIcon, HomeworkIcon, TeacherIcon} from "components/icons";
 import _ from "lodash";
-import {Button, Collapse, Grid, Link, Typography} from "@material-ui/core";
+import {Box, Button, ButtonGroup, Collapse, Grid, Link, Typography} from "@material-ui/core";
 import {generatePath} from "react-router";
 import update from "immutability-helper";
 import {PredefinedMessageType} from "hooks/useSnackbar";
@@ -235,6 +236,22 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                         <Submissions />
                     </LessonContext.Provider>
                 </div>,
+                <Box key="actions" display="flex" justifyContent="center" alignItems="center">
+                    <ButtonGroup variant="outlined">
+                        <Link
+                            underline="none"
+                            component={Button}
+                            startIcon={<HomeworkIcon />}
+                            href={generatePath("/homework/add?:query", {
+                                query: queryString.stringify({
+                                    lesson: lesson.id,
+                                }),
+                            })}
+                        >
+                            {t("Hausaufgabe hinzufügen")}
+                        </Link>
+                    </ButtonGroup>
+                </Box>,
             ]}
         />
     );
