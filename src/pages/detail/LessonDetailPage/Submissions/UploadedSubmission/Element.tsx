@@ -1,50 +1,36 @@
-import React, {memo, useContext, useState} from "react";
-import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
-import {MdFileDownload, MdSettings} from "react-icons/all";
-import {SubmissionDetail} from "types";
-import {useMutation} from "react-query";
-import {AxiosError} from "axios";
-import {IUpdateSubmissionData, IUpdateSubmissionResponse, useUpdateSubmissionAPI} from "hooks/apis";
-import {useSnackbar} from "hooks";
-import {PredefinedMessageType} from "hooks/useSnackbar";
+import React, {useState} from "react";
 import {LoadingOverlay} from "components";
-import update from "immutability-helper";
-import {getISODatetime} from "utils";
+import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
+import {MdMoreVert} from "react-icons/all";
+import {SubmissionDetail} from "types";
 
-import LessonContext from "../../LessonContext";
-import SettingsModal from "../SettingsModal";
 import FileInformation from "../FileInformation";
+import SettingsModal, {ISettingsDialog} from "../SettingsModal";
+
+
+import MoreSheet from "./MoreSheet";
+
 
 export interface IElement {
+    isLoading: boolean;
     submission: SubmissionDetail;
     iconElement: JSX.Element;
+
+    onDelete: () => any;
+    onSettingsChange: ISettingsDialog["onChange"];
+    onUploadToScooso: () => any;
 }
 
-const Element = ({submission, iconElement}: IElement) => {
-    const {onChange, lesson} = useContext(LessonContext);
-    const updateSubmission = useUpdateSubmissionAPI();
-    const {addError} = useSnackbar();
-
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-
-    const {
-        mutate,
-        isLoading,
-    } = useMutation<IUpdateSubmissionResponse, AxiosError, IUpdateSubmissionData>(
-        updateSubmission,
-        {
-            onSuccess: newSubmission => {
-                const index = lesson.submissions.findIndex(element => element.id === submission.id);
-
-                onChange(update(lesson.submissions, {
-                    [index]: {
-                        $set: newSubmission,
-                    },
-                }));
-            },
-            onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
-        },
-    );
+const Element = ({
+    submission,
+    onDelete,
+    onSettingsChange,
+    iconElement,
+    isLoading,
+    onUploadToScooso,
+}: IElement) => {
+    const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+    const [showMore, setShowMore] = useState<boolean>(false);
 
     return (
         <>
@@ -58,14 +44,9 @@ const Element = ({submission, iconElement}: IElement) => {
                         size={submission.size}
                     />
                     <ListItemSecondaryAction>
-                        <IconButton edge="end" onClick={() => setIsOpen(true)}>
-                            <MdSettings />
+                        <IconButton edge="end" onClick={() => setShowMore(true)}>
+                            <MdMoreVert />
                         </IconButton>
-                        <a href={submission.file}>
-                            <IconButton edge="end">
-                                <MdFileDownload />
-                            </IconButton>
-                        </a>
                     </ListItemSecondaryAction>
                 </ListItem>
             </LoadingOverlay>
@@ -73,15 +54,20 @@ const Element = ({submission, iconElement}: IElement) => {
                 value={{
                     uploadDate: submission.uploadDate,
                 }}
-                isOpen={isOpen}
-                onChange={newSettings => mutate({
-                    id: submission.id,
-                    uploadDate: newSettings.uploadDate ? getISODatetime(newSettings.uploadDate) : null,
-                })}
-                onClose={() => setIsOpen(false)}
+                isOpen={isSettingsOpen}
+                onChange={onSettingsChange}
+                onClose={() => setIsSettingsOpen(false)}
+            />
+            <MoreSheet
+                submission={submission}
+                isOpen={showMore}
+                onClose={() => setShowMore(false)}
+                onDelete={onDelete}
+                onShowSettings={() => setIsSettingsOpen(true)}
+                onUploadToScooso={onUploadToScooso}
             />
         </>
     );
 };
 
-export default memo(Element);
+export default Element;

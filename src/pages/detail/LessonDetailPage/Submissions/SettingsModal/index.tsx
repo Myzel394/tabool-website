@@ -16,7 +16,7 @@ export interface Settings {
     uploadDate: Dayjs | null;
 }
 
-export interface IDialog {
+export interface ISettingsDialog {
     value: Settings;
     onChange: (newSettings: Settings) => any;
     isOpen: boolean;
@@ -28,7 +28,7 @@ const SettingsModal = ({
     onChange,
     onClose,
     value,
-}: IDialog) => {
+}: ISettingsDialog) => {
     const {t} = useTranslation();
     const {lesson} = useContext(LessonContext);
 

@@ -39,12 +39,12 @@ const UploadedSubmissions = () => {
     } = useMutation<void, AxiosError, IDelete>(
         deleteSubmission,
         {
-            onSuccess: () => {
+            onSuccess: (x, variables) => {
                 const newSubmissions = update(submissions, {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore: Command does exist
                     $spliceDynamically: [
-                        selectedKeys,
+                        variables.ids,
                         (key: string, arr: SubmissionDetail[]) => arr.findIndex(element => element.id === key),
                     ],
                 });
@@ -104,7 +104,13 @@ const UploadedSubmissions = () => {
                         </Button>,
                     ]}
                     renderElement={(submission: SubmissionDetail, iconElement) =>
-                        <Element submission={submission} iconElement={iconElement} />
+                        <Element
+                            submission={submission}
+                            iconElement={iconElement}
+                            onDelete={() => mutate({
+                                ids: [submission.id],
+                            })}
+                        />
                     }
                     onSelectedKeysChange={setSelectedKeys}
                 />
