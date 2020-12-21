@@ -1,6 +1,6 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {UploadStatus} from "api";
+import {getLoginConfig, UploadStatus} from "api";
 
 export interface IGetUploadStatusSubmissionResponse {
     uploadStatus: UploadStatus;
@@ -10,7 +10,7 @@ const useGetUploadStatusSubmissionAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async (submissionId: string): Promise<IGetUploadStatusSubmissionResponse> => {
-        const {data} = await instance.get(`/api/data/submission/${submissionId}/upload/`);
+        const {data} = await instance.get(`/api/data/submission/${submissionId}/upload/`, await getLoginConfig());
         return data;
     }, [instance]);
 };

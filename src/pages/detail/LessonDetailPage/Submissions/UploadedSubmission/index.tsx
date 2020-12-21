@@ -15,8 +15,8 @@ import update from "immutability-helper";
 
 import LessonContext from "../../LessonContext";
 
-import Element from "./Element";
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
+import ElementManager from "./ElementManager";
 
 
 const UploadedSubmissions = () => {
@@ -104,7 +104,7 @@ const UploadedSubmissions = () => {
                         </Button>,
                     ]}
                     renderElement={(submission: SubmissionDetail, iconElement) =>
-                        <Element
+                        <ElementManager
                             submission={submission}
                             iconElement={iconElement}
                             onDelete={() => mutate({

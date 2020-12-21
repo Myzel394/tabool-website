@@ -2,11 +2,13 @@ import React, {useMemo, useState} from "react";
 import {SubmissionDetail} from "types";
 import {
     Box,
+    CircularProgress,
     Drawer,
     Link,
     List,
     ListItem,
     ListItemIcon,
+    ListItemSecondaryAction,
     ListItemText,
     Paper,
     Typography,
@@ -20,6 +22,7 @@ import DeleteConfirmDialog from "./DeleteConfirmDialog";
 export interface IMoreSheet {
     submission: SubmissionDetail;
     isOpen: boolean;
+    isFileUploading: boolean;
     onClose: () => any;
 
     // Actions
@@ -31,6 +34,8 @@ export interface IMoreSheet {
 const wordBreakStyle = {
     wordBreak: "break-all" as "break-all",
 };
+const iconSize = "1.5rem";
+
 
 const MoreSheet = ({
     isOpen,
@@ -39,6 +44,7 @@ const MoreSheet = ({
     submission,
     onShowSettings,
     onUploadToScooso,
+    isFileUploading,
 }: IMoreSheet) => {
     const {t} = useTranslation();
     const theme = useTheme();
@@ -71,7 +77,7 @@ const MoreSheet = ({
                             }}
                         >
                             <ListItemIcon>
-                                <MdSettings />
+                                <MdSettings size={iconSize} />
                             </ListItemIcon>
                             <ListItemText>
                                 {t("Einstellungen")}
@@ -80,7 +86,7 @@ const MoreSheet = ({
                         <Link download underline="none" color="inherit" href={submission.file}>
                             <ListItem button>
                                 <ListItemIcon>
-                                    <MdFileDownload />
+                                    <MdFileDownload size={iconSize} />
                                 </ListItemIcon>
                                 <ListItemText>
                                     {t("Datei runterladen")}
@@ -89,18 +95,23 @@ const MoreSheet = ({
                         </Link>
                         <ListItem
                             button
-                            disabled={submission.isUploaded}
+                            disabled={submission.isUploaded || isFileUploading}
                             onClick={() => {
                                 onClose();
                                 onUploadToScooso();
                             }}
                         >
                             <ListItemIcon>
-                                <MdCloudUpload />
+                                <MdCloudUpload size={iconSize} />
                             </ListItemIcon>
                             <ListItemText>
                                 {t("Datei auf Scooso hochladen")}
                             </ListItemText>
+                            {isFileUploading &&
+                                <ListItemSecondaryAction>
+                                    <CircularProgress color="inherit" size="1rem" />
+                                </ListItemSecondaryAction>
+                            }
                         </ListItem>
                         <ListItem
                             button
@@ -110,7 +121,7 @@ const MoreSheet = ({
                             }}
                         >
                             <ListItemIcon>
-                                <MdDeleteForever />
+                                <MdDeleteForever size={iconSize} />
                             </ListItemIcon>
                             <ListItemText>
                                 {t("Datei löschen")}

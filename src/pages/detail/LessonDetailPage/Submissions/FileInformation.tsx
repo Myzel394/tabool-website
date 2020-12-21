@@ -2,7 +2,8 @@ import React, {memo} from "react";
 import {Dayjs} from "dayjs";
 import {ListItemText} from "@material-ui/core";
 import prettyBytes from "pretty-bytes";
-import {MdAdd, MdFileUpload} from "react-icons/all";
+import {MdAdd, MdCloudUpload, MdFileUpload} from "react-icons/all";
+import {useTranslation} from "react-i18next";
 
 import SecondaryInformation from "./SecondaryInformation";
 
@@ -12,13 +13,17 @@ export interface IFileInformation {
 
     uploadDate?: Dayjs | null;
     creationDate?: Dayjs;
+    isFileUploading?: boolean;
+    isFileUploaded?: boolean;
 }
 
 const style = {
     wordBreak: "break-all" as "break-all",
 };
 
-const FileInformation = ({filename, creationDate, size, uploadDate}: IFileInformation) => {
+const FileInformation = ({filename, creationDate, size, uploadDate, isFileUploading, isFileUploaded}: IFileInformation) => {
+    const {t} = useTranslation();
+
     return (
         <ListItemText
             style={style}
@@ -37,9 +42,15 @@ const FileInformation = ({filename, creationDate, size, uploadDate}: IFileInform
                         />
                     }
                     {uploadDate &&
+                    <SecondaryInformation
+                        icon={<MdFileUpload />}
+                        text={uploadDate.format("lll")}
+                    />
+                    }
+                    {isFileUploading &&
                         <SecondaryInformation
-                            icon={<MdFileUpload />}
-                            text={uploadDate.format("lll")}
+                            icon={<MdCloudUpload />}
+                            text={t("Wird gerade auf Scooso hochgeladen")}
                         />
                     }
                 </>
