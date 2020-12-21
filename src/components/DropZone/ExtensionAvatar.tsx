@@ -13,9 +13,9 @@ const EXTENSION_COLOR_MAPPING = {
     png: "#1F9213",
     webp: "#1F9213",
 
-    pdf: "#ee781d",
+    pdf: "#ee581d",
 
-    txt: "#FFA931",
+    txt: "#cf6200",
 
     doc: "#3D72FF",
     docx: "#3D72FF",
@@ -42,7 +42,7 @@ const ExtensionAvatar = ({name}: IExtensionAvatar) => {
                 backgroundColor: getColor(extension.toLowerCase()),
             }}
         >
-            {extension.toUpperCase()}
+            {extension.toUpperCase().substr(0, 3)}
         </Avatar>
     );
 };
