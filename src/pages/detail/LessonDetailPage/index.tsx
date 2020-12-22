@@ -121,6 +121,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             subInformation: (
                 <Link
                     component={Button}
+                    underline="none"
                     href={generatePath("/teacher/detail/:id/", {
                         id: lesson.lessonData.course.teacher.id,
                     })}

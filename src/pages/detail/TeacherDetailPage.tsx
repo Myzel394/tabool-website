@@ -84,20 +84,20 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
                 } = teacherInformation;
                 const texts = [
                     {
-                        title: t("Du hast {{courseCount}} Kurse mit diesem Lehrer.", {
-                            courseCount,
+                        title: t("Du hast {{count}} Kurse mit diesem Lehrer.", {
+                            count: courseCount,
                         }),
                         key: "courseCount",
                     },
                     {
-                        title: t("Dieser Lehrer unterrichtet insgesamt {{teacherCourseCount}} Kurse.", {
-                            teacherCourseCount,
+                        title: t("Dieser Lehrer unterrichtet insgesamt {{count}} Kurse.", {
+                            count: teacherCourseCount,
                         }),
                         key: "teacherCourseCount",
                     },
                     {
-                        title: t("{{teacherParticipantsCount}} Schüler werden alleine von diesem Lehrer unterrichtet.", {
-                            teacherParticipantsCount,
+                        title: t("{{count}} Schüler werden alleine von diesem Lehrer unterrichtet.", {
+                            count: teacherParticipantsCount,
                         }),
                         key: "teacherParticipantsCount",
                     },
