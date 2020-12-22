@@ -1,4 +1,4 @@
-import React, {memo, useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import {Button, Typography} from "@material-ui/core";
 import {usePrevious, useSnackbar} from "hooks";
 import {ExtensionAvatar, LoadingOverlay, SelectList} from "components";
@@ -13,7 +13,7 @@ import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import update from "immutability-helper";
 
-import LessonContext from "../../LessonContext";
+import SubmissionsContext from "../SubmissionsContext";
 
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
 import ElementManager from "./ElementManager";
@@ -21,10 +21,9 @@ import ElementManager from "./ElementManager";
 
 const UploadedSubmissions = () => {
     const {t} = useTranslation();
-    const {lesson, onChange} = useContext(LessonContext);
+    const {submissions, onSubmissionsChange} = useContext(SubmissionsContext);
     const {addError} = useSnackbar();
     const deleteSubmission = useDeleteSubmissionAPI();
-    const {submissions} = lesson;
 
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
@@ -39,7 +38,33 @@ const UploadedSubmissions = () => {
     } = useMutation<void, AxiosError, IDelete>(
         deleteSubmission,
         {
+            onMutate: (variables) => {
+                // Remove deleted keys from selected keys
+                // No need to remove if no key is selected
+                if (selectedKeys.length > 0) {
+                    const keys = variables.ids;
+                    const removeKeys = keys.reduce<string[]>((array, current) => {
+                        if (selectedKeys.includes(current)) {
+                            array.push(current);
+                        }
+                        return array;
+                    }, []);
+                    const newKeys = update(selectedKeys, {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore: Command does exist
+                        $spliceDynamically: [
+                            removeKeys,
+                            (key: string, array: string[]) => array.indexOf(key),
+                        ],
+                    });
+                    setSelectedKeys(newKeys);
+                }
+
+                // Hide dialog
+                setConfirmDelete(false);
+            },
             onSuccess: (x, variables) => {
+                // Update submissions
                 const newSubmissions = update(submissions, {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore: Command does exist
@@ -48,8 +73,7 @@ const UploadedSubmissions = () => {
                         (key: string, arr: SubmissionDetail[]) => arr.findIndex(element => element.id === key),
                     ],
                 });
-                onChange(newSubmissions);
-                setSelectedKeys([]);
+                onSubmissionsChange(newSubmissions);
             },
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
@@ -66,7 +90,6 @@ const UploadedSubmissions = () => {
     })();
     const amount = selectedKeys.length;
 
-
     return (
         <>
             <LoadingOverlay isLoading={isLoading}>
@@ -80,17 +103,17 @@ const UploadedSubmissions = () => {
                     formFooter={
                         <>
                             {fullSize &&
-                            <Typography color="textSecondary" variant="body2">
-                                {t("Größe aller Dateien: ")}
-                                <CountUp
-                                    start={previousFullSize}
-                                    end={fullSize}
-                                    formattingFn={value => prettyBytes(value, {
-                                        locale: "de",
-                                    })}
-                                    duration={0.8}
-                                />
-                            </Typography>}
+                                <Typography color="textSecondary" variant="body2">
+                                    {t("Größe aller Dateien: ")}
+                                    <CountUp
+                                        start={previousFullSize}
+                                        end={fullSize}
+                                        formattingFn={value => prettyBytes(value, {
+                                            locale: "de",
+                                        })}
+                                        duration={0.8}
+                                    />
+                                </Typography>}
                         </>
                     }
                     formElements={[
@@ -128,4 +151,4 @@ const UploadedSubmissions = () => {
     );
 };
 
-export default memo(UploadedSubmissions);
+export default UploadedSubmissions;

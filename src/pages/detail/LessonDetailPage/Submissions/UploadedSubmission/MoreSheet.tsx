@@ -100,9 +100,9 @@ const MoreSheet = ({
                             {t("Datei auf Scooso hochladen")}
                         </ListItemText>
                         {isFileUploading &&
-                                <ListItemSecondaryAction>
-                                    <CircularProgress color="inherit" size="1rem" />
-                                </ListItemSecondaryAction>
+                            <ListItemSecondaryAction>
+                                <CircularProgress color="inherit" size="1rem" />
+                            </ListItemSecondaryAction>
                         }
                     </ListItem>
                     <ListItem

@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 import update from "immutability-helper";
 import {useInheritedState} from "hooks";
 
-import LessonContext from "../../LessonContext";
+import SubmissionsContext from "../SubmissionsContext";
 
 import Day from "./Day";
 
@@ -30,7 +30,7 @@ const SettingsModal = ({
     value,
 }: ISettingsDialog) => {
     const {t} = useTranslation();
-    const {lesson} = useContext(LessonContext);
+    const {lesson} = useContext(SubmissionsContext);
 
     const [uploadDate, setUploadDate] = useInheritedState<Dayjs | null>(value.uploadDate);
 

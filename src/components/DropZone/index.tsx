@@ -81,7 +81,7 @@ const DropZone = <FileType extends any = any>({
                 </Box>
             </Box>
             {value.length > 0 &&
-                <Box m={2} component="aside">
+                <Box m={2}>
                     {renderList(value)}
                 </Box>
             }

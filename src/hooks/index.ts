@@ -16,3 +16,4 @@ export {default as useModificationDescription} from "./useModificationDescriptio
 export {default as useContextEvent} from "./useContextEvent";
 export {default as usePrevious} from "./usePrevious";
 export {default as useInheritedState} from "./useInheritedState";
+export {default as useIsMounted} from "./useIsMounted";

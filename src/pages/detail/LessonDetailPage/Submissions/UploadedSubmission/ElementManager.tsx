@@ -19,7 +19,7 @@ import {useInterval} from "@shopify/react-hooks";
 import {UploadStatus} from "api";
 import {useTranslation} from "react-i18next";
 
-import LessonContext from "../../LessonContext";
+import SubmissionsContext from "../SubmissionsContext";
 
 import Element from "./Element";
 
@@ -31,7 +31,7 @@ export interface IElement {
 
 const ElementManager = ({submission, iconElement, onDelete}: IElement) => {
     const {t} = useTranslation();
-    const {onChange, lesson} = useContext(LessonContext);
+    const {submissions, onSubmissionsChange} = useContext(SubmissionsContext);
     const updateSubmission = useUpdateSubmissionAPI();
     const getSubmissionStatus = useGetUploadStatusSubmissionAPI();
     const uploadSubmissionToScooso = useUploadFileOnScoosoSubmissionAPI();
@@ -86,9 +86,9 @@ const ElementManager = ({submission, iconElement, onDelete}: IElement) => {
         updateSubmission,
         {
             onSuccess: newSubmission => {
-                const index = lesson.submissions.findIndex(element => element.id === submission.id);
+                const index = submissions.findIndex(element => element.id === submission.id);
 
-                onChange(update(lesson.submissions, {
+                onSubmissionsChange(update(submissions, {
                     [index]: {
                         $set: newSubmission,
                     },

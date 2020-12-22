@@ -1,14 +1,16 @@
-import React, {memo, useEffect, useRef, useState} from "react";
+import React, {memo, useContext, useEffect, useMemo, useRef, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {useTranslation} from "react-i18next";
-import {Box, Checkbox, FormControlLabel, Grid, IconButton, List, Typography} from "@material-ui/core";
-import {DropZone, PrimaryButton} from "components";
+import {List} from "@material-ui/core";
+import {DropZone} from "components";
 import update from "immutability-helper";
 import {supportsWASM} from "supports";
-import {MdFileUpload, MdInfoOutline} from "react-icons/all";
+import {getNextLessonDate} from "utils";
+import {LessonDate} from "utils/getNextLessonDate";
+
+import SubmissionsContext from "../SubmissionsContext";
 
 import Element from "./Element";
-import ExplainDialog from "./ExplainDialog";
+import Footer from "./Footer";
 
 
 export interface SubmissionUploadFile {
@@ -17,12 +19,25 @@ export interface SubmissionUploadFile {
 }
 
 const SubmitFiles = () => {
-    const {t} = useTranslation();
+    const {lesson} = useContext(SubmissionsContext);
 
     const $files = useRef<any[]>([]);
     const [files, setFiles] = useState<SubmissionUploadFile[]>([]);
     const [compressImages, setCompressImages] = useState<boolean>(supportsWASM);
-    const [showExplanation, setShowExplanation] = useState<boolean>(false);
+
+    const nextLessonDate = useMemo(() => {
+        const {startTime, endTime, weekdays} = lesson.lessonData;
+
+        const lessonDates: LessonDate[] = weekdays.map(weekday => ({
+            weekday,
+            startTime,
+            endTime,
+        }));
+
+        return getNextLessonDate(dayjs(), lessonDates);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [lesson.lessonData.startTime, lesson.lessonData.endTime, lesson.lessonData.weekdays, lesson.date]);
 
     const containsImages = files.some(file => file.nativeFile.type.startsWith("image"));
     const uploadFiles = () => {
@@ -42,85 +57,50 @@ const SubmitFiles = () => {
                     <>
                         <List>
                             {files.map((file, index) => (
-                                <Element
-                                    ref={elementRef => $files.current[index] = elementRef}
-                                    key={`submission_add_${file.nativeFile.name}_${file.nativeFile.size}_${file.uploadDate?.toISOString()}`}
-                                    nativeFile={file.nativeFile}
-                                    compressImages={compressImages}
-                                    settings={{
-                                        uploadDate: file.uploadDate,
-                                    }}
-                                    onSettingsChange={newSettings => setFiles(update(files, {
-                                        [index]: {
-                                            uploadDate: {
-                                                $set: newSettings.uploadDate,
+                                <div key={`submission_add_${file.nativeFile.name}_${file.nativeFile.size}_${file.uploadDate?.toISOString()}`}>
+                                    <Element
+                                        ref={elementRef => $files.current[index] = elementRef}
+                                        nativeFile={file.nativeFile}
+                                        compressImages={compressImages}
+                                        settings={{
+                                            uploadDate: file.uploadDate,
+                                        }}
+                                        onSettingsChange={newSettings => setFiles(update(files, {
+                                            [index]: {
+                                                uploadDate: {
+                                                    $set: newSettings.uploadDate,
+                                                },
                                             },
-                                        },
-                                    }))}
-                                    onDone={() => setFiles(update(files, {
-                                        $splice: [
-                                            [index, 1],
-                                        ],
-                                    }))}
-                                    onDelete={() => setFiles(update(files, {
-                                        $splice: [
-                                            [index, 1],
-                                        ],
-                                    }))}
-                                />
+                                        }))}
+                                        onDone={() => setFiles(update(files, {
+                                            $splice: [
+                                                [index, 1],
+                                            ],
+                                        }))}
+                                        onDelete={() => setFiles(update(files, {
+                                            $splice: [
+                                                [index, 1],
+                                            ],
+                                        }))}
+                                    />
+                                </div>
                             ))}
                         </List>
-                        <Box m={2}>
-                            <Grid container spacing={1} direction="row">
-                                <Grid item>
-                                    <PrimaryButton startIcon={<MdFileUpload />} onClick={uploadFiles}>
-                                        {t("Hochladen")}
-                                    </PrimaryButton>
-                                </Grid>
-                                {containsImages &&
-                                <Grid item>
-                                    <FormControlLabel
-                                        label={
-                                            <>
-                                                {t("Bilder komprimieren")}
-                                                <IconButton size="small" onClick={() => setShowExplanation(true)}>
-                                                    <MdInfoOutline />
-                                                </IconButton>
-                                            </>
-                                        }
-                                        control={
-                                            <Checkbox
-                                                color="primary"
-                                                disabled={!supportsWASM}
-                                                checked={compressImages}
-                                                onChange={event => setCompressImages(event.target.checked)}
-                                            />
-                                        }
-                                    />
-                                </Grid>
-                                }
-                            </Grid>
-                            <Typography variant="body2" color="textSecondary">
-                                {t("Tippe auf ein Element, um es zu entfernen.")}
-                            </Typography>
-                        </Box>
+                        <Footer
+                            compressImages={compressImages}
+                            containsImages={containsImages}
+                            onCompressImagesChange={setCompressImages}
+                            onUpload={uploadFiles}
+                        />
                     </>
                 }
                 onChange={newFiles => setFiles(prevState => [
                     ...prevState,
                     ...Array.from(newFiles).map(file => ({
                         nativeFile: file,
-                        uploadDate: dayjs().add(1, "day"),
+                        uploadDate: nextLessonDate,
                     })),
                 ])}
-            />
-            <ExplainDialog
-                isOpen={showExplanation}
-                onClose={() => setShowExplanation(false)}
-                onActivateCompression={() => {
-                    setCompressImages(true);
-                    setShowExplanation(false);
-                }}
             />
         </>
     );

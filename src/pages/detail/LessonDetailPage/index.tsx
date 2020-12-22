@@ -26,7 +26,6 @@ import {
     useUpdateLessonUserRelationAPI,
 } from "hooks/apis";
 
-import LessonContext from "./LessonContext";
 import ModificationsNode from "./ModificationsNode";
 import Submissions from "./Submissions";
 
@@ -223,18 +222,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                     <Typography variant="h2">
                         {t("Einsendungen")}
                     </Typography>
-                    <LessonContext.Provider
-                        value={{
-                            lesson,
-                            onChange: newSubmissions => setLesson(prevState => update(prevState, {
-                                submissions: {
-                                    $set: newSubmissions,
-                                },
-                            })),
-                        }}
-                    >
-                        <Submissions />
-                    </LessonContext.Provider>
+                    <Submissions lesson={lesson} />
                 </div>,
                 <Box key="actions" display="flex" justifyContent="center" alignItems="center">
                     <ButtonGroup variant="outlined">

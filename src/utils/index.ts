@@ -14,3 +14,4 @@ export {default as isDateEqual} from "./isDateEqual";
 export {default as getKeysByTrueValues} from "./getKeysByTrueValues";
 export {default as canCastToNumber} from "./canCastToNumber";
 export {default as getAdaptedColor} from "./getAdaptedColor";
+export {default as getNextLessonDate} from "./getNextLessonDate";

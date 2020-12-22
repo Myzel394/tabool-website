@@ -14,14 +14,13 @@ export interface IFileInformation {
     uploadDate?: Dayjs | null;
     creationDate?: Dayjs;
     isFileUploading?: boolean;
-    isFileUploaded?: boolean;
 }
 
 const style = {
     wordBreak: "break-all" as "break-all",
 };
 
-const FileInformation = ({filename, creationDate, size, uploadDate, isFileUploading, isFileUploaded}: IFileInformation) => {
+const FileInformation = ({filename, creationDate, size, uploadDate, isFileUploading}: IFileInformation) => {
     const {t} = useTranslation();
 
     return (

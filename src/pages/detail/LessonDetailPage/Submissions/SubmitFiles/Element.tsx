@@ -8,11 +8,11 @@ import {AxiosError} from "axios";
 import {useTranslation} from "react-i18next";
 import compressImage from "browser-image-compression";
 import {Alert} from "@material-ui/lab";
+import {getISODatetime} from "utils";
 
 import SettingsModal, {Settings} from "../SettingsModal";
 import FileInformation from "../FileInformation";
-import LessonContext from "../../LessonContext";
-import {getISODatetime} from "../../../../../utils";
+import SubmissionsContext from "../SubmissionsContext";
 
 
 export interface IElement {
@@ -39,7 +39,7 @@ const Element = ({
     onDelete,
 }: IElement, ref) => {
     const {t} = useTranslation();
-    const {onChange, lesson} = useContext(LessonContext);
+    const {submissions, onSubmissionsChange, lesson} = useContext(SubmissionsContext);
     const sendSubmission = useSendSubmissionAPI();
 
     const [progress, setProgress] = useState<number>(0);
@@ -54,8 +54,8 @@ const Element = ({
         sendSubmission,
         {
             onSuccess: (newSubmission) => {
-                onChange([
-                    ...lesson.submissions,
+                onSubmissionsChange([
+                    ...submissions,
                     newSubmission,
                 ]);
                 onDone();
