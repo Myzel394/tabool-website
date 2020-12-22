@@ -71,9 +71,6 @@ export interface IDetailPage<AvailableKeys extends string = string, QueryType = 
 
 const STORAGE_METHOD = localStorage;
 
-const fullWidthStyle = {
-    width: "100%",
-};
 
 const DetailPage = <AvailableKeys extends string = string, QueryType = any, RelationKeys extends string = string>({
     title,
@@ -114,7 +111,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
             <Container maxWidth="md" onTouchStart={event => event.stopPropagation()}>
                 {headerNode}
                 <Grid container spacing={4} alignItems="center" justify="center" direction="column">
-                    <Grid item style={fullWidthStyle}>
+                    <Grid item>
                         <FormControlLabel
                             control={(
                                 <Switch
@@ -126,7 +123,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                         />
                     </Grid>
                     {buttons &&
-                        <Grid item style={fullWidthStyle}>
+                        <Grid item>
                             <ButtonGroup variant="outlined" orientation="vertical">
                                 {buttons.map(({title, ...other}) => (
                                     <Button key={title} {...other}>
@@ -136,7 +133,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                             </ButtonGroup>
                         </Grid>
                     }
-                    <Grid item style={fullWidthStyle}>
+                    <Grid item>
                         <InformationList
                             elevatedKey={elevatedKey}
                             ordering={ordering}
@@ -149,7 +146,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                         />
                     </Grid>
                     {relation &&
-                        <Grid item style={fullWidthStyle}>
+                        <Grid item>
                             <LoadingOverlay isLoading={relation.isUpdating}>
                                 <Box
                                     display="flex"
@@ -187,7 +184,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                                     {bottomNode.map(node =>
                                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                         // @ts-ignore: If array given, nodes do have keys set
-                                        <Grid key={node.key} item style={fullWidthStyle}>
+                                        <Grid key={node.key} item>
                                             {node}
                                         </Grid>)}
                                 </>
@@ -199,15 +196,15 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                             </Grid>
                         );
                     })()}
-                    <Divider style={fullWidthStyle} />
-                    <Grid item style={fullWidthStyle}>
+                    <Divider />
+                    <Grid item>
                         {updatedAt && <UpdatedAt value={updatedAt} />}
                         <Typography variant="body2">
                             {t("Tipp: Ziehe den Titel ganz runter um neuzuladen.")}
                         </Typography>
                     </Grid>
                     {(searchAllPath || addPath) && (
-                        <Grid item style={fullWidthStyle}>
+                        <Grid item>
                             <ButtonGroup orientation="vertical" color="primary">
                                 {searchAllPath && (
                                     <Link component={Button} href={searchAllPath} endIcon={<MdSearch />}>
@@ -223,7 +220,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                         </Grid>
                     )}
                     {footerNode &&
-                        <Grid item style={fullWidthStyle}>
+                        <Grid item>
                             {footerNode}
                         </Grid>
                     }

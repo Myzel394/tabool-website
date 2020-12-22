@@ -168,7 +168,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             headerNode={lesson?.modifications.length > 0 && <ModificationsNode lesson={lesson} />}
             bottomNode={[
                 <Collapse
-                    key={`write_illness_email_${lesson.id}_${lesson.userRelation.attendance}`}
+                    key={`write_illness_email_${lesson.id}`}
                     in={!lesson.userRelation.attendance}
                 >
                     <IllEmailButton />
@@ -244,6 +244,8 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
         />
     );
 };
+
+LessonDetailPage.whyDidYouRender = true;
 
 
 export default memo(LessonDetailPage);
