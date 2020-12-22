@@ -2,13 +2,12 @@ import React, {ComponentType, useContext, useMemo} from "react";
 import {useWindowSize} from "hooks";
 import {Calendar as BigCalendar, CalendarProps, Event as CalendarEvent, EventWrapperProps} from "react-big-calendar";
 import dayjs from "dayjs";
-import {combineDatetime, findNextDate, replaceDatetime} from "utils";
+import {findNextDate, getMinMaxTime, locale} from "utils";
 import update from "immutability-helper";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarContext from "../../../CalendarContext";
 
-import localeInstance from "./locale";
 import Toolbar from "./Toolbar";
 
 export interface IDefaultCalendar<TEvent extends Record<string, any> = Record<string, any>> extends Omit<CalendarProps,
@@ -24,35 +23,6 @@ export interface IDefaultCalendar<TEvent extends Record<string, any> = Record<st
     events: CalendarEvent[];
     eventComponent: ComponentType<EventWrapperProps<TEvent>>;
 }
-
-const TIME_PADDING = 20;
-const DEFAULT_MIN_TIME = dayjs().set("hour", 8).set("minute", 0)
-    .set("second", 0);
-const DEFAULT_MAX_TIME = dayjs().set("hour", 16).set("minute", 0)
-    .set("second", 0);
-
-const getMinMaxTime = (events: CalendarEvent[]): [Date, Date] => {
-    const notAllDayEvents = events.filter(element => !element.allDay);
-
-    const startTimes = notAllDayEvents.map(element =>
-        replaceDatetime(dayjs(element.start), "date").unix());
-    const endTimes = notAllDayEvents.map(element =>
-        replaceDatetime(dayjs(element.end), "date").unix());
-    const minUnix = Math.min(...startTimes);
-    const maxUnix = Math.max(...endTimes);
-
-    const minTime = dayjs.unix(minUnix);
-    const maxTime = dayjs.unix(maxUnix);
-
-    const minDatetime = combineDatetime(dayjs(), minTime).subtract(TIME_PADDING, "minute");
-    const maxDatetime = combineDatetime(dayjs(), maxTime).add(TIME_PADDING, "minute");
-
-    return [
-        (minDatetime.isValid() ? minDatetime : DEFAULT_MIN_TIME).toDate(),
-        (maxDatetime.isValid() ? maxDatetime : DEFAULT_MAX_TIME).toDate(),
-    ];
-};
-
 
 const DefaultCalendar = ({
     style: givenStyles = {},
@@ -81,7 +51,7 @@ const DefaultCalendar = ({
             style={style}
             min={minTime}
             max={maxTime}
-            localizer={localeInstance}
+            localizer={locale}
             step={30}
             dayLayoutAlgorithm="no-overlap"
             date={date.toDate()}

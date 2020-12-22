@@ -1,8 +1,8 @@
 import {Event as CalendarEvent} from "react-big-calendar";
 
-const stringifyPercent = (value: string | number): string => (typeof value === "string" ? value : `${value}%`);
+export const stringifyPercent = (value: string | number): string => (typeof value === "string" ? value : `${value}%`);
 
-const getDivStyles = (style: any, event?: CalendarEvent): any => {
+const getEventWrapperStyles = (style: any, event?: CalendarEvent): any => {
     const {height, top, width, xOffset} = style;
 
     return {
@@ -14,4 +14,4 @@ const getDivStyles = (style: any, event?: CalendarEvent): any => {
     };
 };
 
-export default getDivStyles;
+export default getEventWrapperStyles;

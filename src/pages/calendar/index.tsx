@@ -1,6 +1,6 @@
 import React, {ReactNode, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {combineDatetime, findNextDate, getISODatetime} from "utils";
+import {combineDatetime, findNextDate, getIsoDatetime} from "utils";
 import {setBeginTime, setEndTime} from "utils/setTime";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
@@ -15,21 +15,21 @@ import {LessonCalendar} from "./Calendar/calendars";
 import HomeworkCalendar from "./Calendar/calendars/HomeworkCalendar";
 
 
-const getStartDate = (targetedDate: Dayjs | undefined = undefined): Dayjs => setBeginTime(
-    findNextDate(
-        (targetedDate ?? dayjs()).subtract(4, "day"),
-        1,
-    ),
-);
+const getStartDate = (targetedDate: Dayjs | undefined = undefined): Dayjs =>
+    setBeginTime(
+        findNextDate(
+            (targetedDate ?? dayjs()).subtract(4, "day"),
+            1,
+        ),
+    );
 
-const getEndDate = (startDate: Dayjs): Dayjs => {
-    return setEndTime(
+const getEndDate = (startDate: Dayjs): Dayjs =>
+    setEndTime(
         findNextDate(
             startDate,
             5,
         ),
     );
-};
 
 const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFetchTimetableResponse => {
     const startDatetime = setBeginTime(date).subtract(1, "millisecond");
@@ -67,8 +67,8 @@ const Calendar = () => {
     const startDate = getStartDate(activeDate);
     const endDate = getEndDate(startDate);
     const timetableData = {
-        startDatetime: getISODatetime(startDate),
-        endDatetime: getISODatetime(endDate),
+        startDatetime: getIsoDatetime(startDate),
+        endDatetime: getIsoDatetime(endDate),
     };
     const {
         data,

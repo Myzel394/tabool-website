@@ -1,65 +1,79 @@
-import React, {memo, useState} from "react";
+import React, {memo} from "react";
 import {Box, Container, Grid, Paper, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import dayjs, {Dayjs} from "dayjs";
-import FormElement from "components/FormElement";
-import {FaInfoCircle} from "react-icons/all";
-import {TextInput} from "components";
+import {Field, Form, Formik} from "formik";
+import {CheckboxWithLabel} from "formik-material-ui";
+import * as yup from "yup";
+import {LessonField} from "components";
 
-const HomeworkAddPage = () => {
+interface Form {
+    lesson: string;
+    isPrivate: boolean;
+    dueDate: Dayjs | null;
+    information: string | null;
+    type: string | null;
+}
+
+const schema = yup.object({
+    isPrivate: yup.boolean().required(),
+    lesson: yup.string().required(),
+    information: yup.string().nullable(),
+    type: yup.string().nullable(),
+    dueDate: yup.date().min(dayjs()).nullable(),
+});
+
+const HomeworkAddPage = ({match: {params: {lesson}}}) => {
     const {t} = useTranslation();
-
-    const [information, setInformation] = useState<string>("");
-    const [dueDate, setDueDate] = useState<Dayjs>(dayjs());
-    const [type, setType] = useState<string>("");
-    const [isPrivate, setIsPrivate] = useState<boolean>(false);
 
     return (
         <Container maxWidth="md">
-            <Box my={4}>
-                <Typography variant="h1" align="center" color="textSecondary">
-                    {t("Hausaufgabe hinzufügen")}
-                </Typography>
-                <Box my={2}>
-
-                    <Paper>
-                        <Box p={2} component="form">
-                            <Grid container spacing={4} direction="column">
-                                <Grid item>
-                                    <FormElement
-                                        title={t("Informationen")}
-                                        icon={<FaInfoCircle />}
-                                        form={(
-                                            <TextInput
-                                                multiline
-                                                value={information}
-                                                name="information"
-                                                inputMode="text"
-                                                onChange={event => setInformation(event.target.value)}
+            <Paper>
+                <Box m={2} p={2}>
+                    <Typography variant="h2">
+                        {t("Hausaufgabe hinzufügen")}
+                    </Typography>
+                    <Formik<Form>
+                        validationSchema={schema}
+                        initialValues={{
+                            lesson,
+                            dueDate: null,
+                            information: null,
+                            type: null,
+                            isPrivate: false,
+                        }}
+                        onSubmit={async (data) => {
+                            // eslint-disable-next-line no-console
+                            console.log(data);
+                        }}
+                    >
+                        {({values, setFieldValue}) => (
+                            <>
+                                <Form>
+                                    <Grid container>
+                                        <Grid item xs={12}>
+                                            <LessonField
+                                                value={values.lesson}
+                                                minDate={dayjs().subtract(16, "day")}
+                                                onChange={lesson => setFieldValue("lesson", lesson)}
                                             />
-                                        )}
+                                        </Grid>
+                                    </Grid>
+                                    <Field
+                                        component={CheckboxWithLabel}
+                                        type="checkbox"
+                                        name="isPrivate"
+                                        Label={{label: t("Privat?")}}
                                     />
-                                </Grid>
-                                <Grid item>
-                                    <FormElement
-                                        title={t("Fälligkeitsdatum")}
-                                        icon={<FaInfoCircle />}
-                                        form={(
-                                            <TextInput
-                                                multiline
-                                                value={information}
-                                                name="information"
-                                                inputMode="text"
-                                                onChange={event => setInformation(event.target.value)}
-                                            />
-                                        )}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </Paper>
+                                </Form>
+                                <pre>
+                                    {JSON.stringify(values, null, 4)}
+                                </pre>
+                            </>
+                        )}
+                    </Formik>
                 </Box>
-            </Box>
+            </Paper>
         </Container>
     );
 };

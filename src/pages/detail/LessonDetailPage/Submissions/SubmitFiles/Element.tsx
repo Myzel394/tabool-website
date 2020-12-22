@@ -8,7 +8,7 @@ import {AxiosError} from "axios";
 import {useTranslation} from "react-i18next";
 import compressImage from "browser-image-compression";
 import {Alert} from "@material-ui/lab";
-import {getISODatetime} from "utils";
+import {getIsoDatetime} from "utils";
 
 import SettingsModal, {Settings} from "../SettingsModal";
 import FileInformation from "../FileInformation";
@@ -97,7 +97,7 @@ const Element = ({
             if (file) {
                 mutate({
                     file,
-                    uploadDate: settings.uploadDate ? getISODatetime(settings.uploadDate) : null,
+                    uploadDate: settings.uploadDate ? getIsoDatetime(settings.uploadDate) : null,
                     lessonId: lesson.id,
                 });
             }

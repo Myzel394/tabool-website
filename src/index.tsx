@@ -8,6 +8,7 @@ import "dayjs/locale/de";
 import "animate.css";
 import "./extends/dayjs";
 import "./extends/immutability-helper";
+import "./extends/yup";
 import "./supports";
 
 ReactDOM.render(

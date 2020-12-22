@@ -1,10 +1,8 @@
 import React, {ReactNode} from "react";
 import {EventDetail, LessonDetail, ModificationDetail} from "types";
 import {Event as CalendarEvent} from "react-big-calendar";
-import {Theme, ThemeProvider} from "@material-ui/core";
-import update from "immutability-helper";
-
-import getDivStyles from "../utils";
+import {ThemeProvider} from "@material-ui/core";
+import {createSmallTheme, getEventWrapperStyles} from "utils";
 
 import EventEvent from "./EventEvent";
 import ModificationEvent from "./ModificationEvent";
@@ -18,47 +16,6 @@ interface IEvent {
     showDetails: boolean;
 }
 
-const createTheme = (parentTheme: Theme) => update(parentTheme, {
-    typography: {
-        body1: {
-            fontSize: {
-                $set: ".5rem",
-            },
-            [parentTheme.breakpoints.up("lg")]: {
-                $set: {
-                    fontSize: ".8rem",
-                },
-            },
-        },
-        body2: {
-            fontSize: {
-                $set: ".4rem",
-            },
-            [parentTheme.breakpoints.up("lg")]: {
-                $set: {
-                    fontSize: ".7rem",
-                },
-            },
-        },
-        h5: {
-            $apply: data => {
-                const {fontFamily, fontWeight, letterSpacing, lineHeight} = data;
-
-                return {
-                    fontFamily,
-                    fontWeight,
-                    letterSpacing,
-                    lineHeight,
-                    fontSize: ".7rem",
-                    [parentTheme.breakpoints.up("lg")]: {
-                        fontSize: "1.3rem",
-                    },
-                };
-            },
-        },
-    },
-});
-
 const Event = ({
     event: calendarEvent,
     style,
@@ -66,7 +23,7 @@ const Event = ({
     showDetails,
 }: IEvent) => {
     const divStyle = {
-        ...getDivStyles(style ?? {}, calendarEvent),
+        ...getEventWrapperStyles(style ?? {}, calendarEvent),
         wordBreak: "break-all" as "break-all",
     };
 
@@ -110,7 +67,7 @@ const Event = ({
     }
 
     return (
-        <ThemeProvider theme={createTheme}>
+        <ThemeProvider theme={createSmallTheme}>
             <div style={divStyle}>
                 {children}
             </div>

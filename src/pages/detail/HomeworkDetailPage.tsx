@@ -30,7 +30,7 @@ import {formatLesson} from "format";
 import {HomeworkDetail} from "types";
 import {Button, Link, Switch} from "@material-ui/core";
 import camelcaseKeys from "camelcase-keys";
-import {getISODatetime} from "utils";
+import {getIsoDatetime} from "utils";
 import {generatePath} from "react-router";
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
@@ -137,7 +137,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                 mutate({
                     id: homework.id,
                     information: information ? information : undefined,
-                    dueDate: dueDate ? getISODatetime(dueDate) : undefined,
+                    dueDate: dueDate ? getIsoDatetime(dueDate) : undefined,
                     type: type ? type : undefined,
                     isPrivate: isPrivate ? isPrivate : undefined,
                 });

@@ -6,3 +6,4 @@ export {default as SimpleHelpTextWrapper} from "./SimpleHelpTextWrapper";
 export {default as EmailInput} from "./EmailInput";
 export {default as SearchBar} from "./SearchBar";
 export {default as DatePicker} from "./DatePicker";
+export {default as LessonField} from "./LessonField";

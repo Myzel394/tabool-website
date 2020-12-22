@@ -3,8 +3,8 @@ import React, {useContext} from "react";
 import DefaultCalendar from "../DefaultCalendar";
 import CalendarContext from "../../../CalendarContext";
 
-import {buildCalendarEvents} from "./utils";
 import Event from "./Event";
+import {buildCalendarEvents} from "./utils";
 
 const LessonCalendar = () => {
     const {lessons, events, showFreePeriods, showDetails} = useContext(CalendarContext);

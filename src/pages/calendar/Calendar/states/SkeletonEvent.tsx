@@ -1,11 +1,10 @@
 import React, {memo} from "react";
-
-import getDivStyles from "../calendars/utils";
+import {getEventWrapperStyles} from "utils";
 
 import PureSkeleton from "./PureSkeleton";
 
 const SkeletonEvent = ({style}: any) => {
-    const divStyle = getDivStyles(style ?? {});
+    const divStyle = getEventWrapperStyles(style ?? {});
 
     return (
         <div style={divStyle}>

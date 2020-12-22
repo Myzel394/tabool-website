@@ -13,7 +13,7 @@ import {Dayjs} from "dayjs";
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {generatePath} from "react-router-dom";
-import {getISODatetime, setBeginTime, setEndTime} from "utils";
+import {getIsoDatetime, setBeginTime, setEndTime} from "utils";
 import {IFetchHomeworkListResponse, OrderingTypes, useFetchHomeworkListAPI} from "hooks/apis";
 
 import useHomeworkInformation from "./useHomeworkInformation";
@@ -55,8 +55,8 @@ const HomeworkListPage = () => {
             subjectId: filter?.subject?.id,
             completed: filter?.completed,
             ignore: filter?.ignore,
-            dueDateMin: filter?.dueDateStart ? getISODatetime(setBeginTime(filter.dueDateStart)) : undefined,
-            dueDateMax: filter?.dueDateEnd ? getISODatetime(setEndTime(filter.dueDateEnd)) : undefined,
+            dueDateMin: filter?.dueDateStart ? getIsoDatetime(setBeginTime(filter.dueDateStart)) : undefined,
+            dueDateMax: filter?.dueDateEnd ? getIsoDatetime(setEndTime(filter.dueDateEnd)) : undefined,
             search: debouncedSearch,
         }),
         {
