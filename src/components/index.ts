@@ -25,3 +25,4 @@ export {default as GenderStatus} from "./GenderStatus";
 export {default as StrikeThrough} from "./StrikeThrough";
 export {default as DropZone} from "./DropZone";
 export {default as SelectList} from "./SelectList";
+export {default as BottomSheet} from "./BottomSheet";
