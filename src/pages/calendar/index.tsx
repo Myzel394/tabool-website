@@ -7,7 +7,7 @@ import {isMobile} from "react-device-detect";
 import {useQuery} from "react-query";
 import {useDeviceWidth, usePersistentStorage, useQueryOptions} from "hooks";
 import {AxiosError} from "axios";
-import {IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
+import {IFetchTimetableData, IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
 
 import CalendarContext, {CalendarType} from "./CalendarContext";
 import {Skeleton} from "./Calendar/states";
@@ -15,9 +15,9 @@ import {LessonCalendar} from "./Calendar/calendars";
 import HomeworkCalendar from "./Calendar/calendars/HomeworkCalendar";
 
 
-const getStartDate = (): Dayjs => setBeginTime(
+const getStartDate = (targetedDate: Dayjs | undefined = undefined): Dayjs => setBeginTime(
     findNextDate(
-        dayjs().subtract(4, "day"),
+        (targetedDate ?? dayjs()).subtract(4, "day"),
         1,
     ),
 );
@@ -62,20 +62,21 @@ const Calendar = () => {
     const [activeDate, setActiveDate] = useState<Dayjs>(getStartDate);
     const [showFreePeriods, setShowFreePeriods] = usePersistentStorage<boolean>(true, "timetable_showFreePeriods");
     const [showDetails, setShowDetails] = usePersistentStorage<boolean>(!isMobile, "timetable_showDetails");
-    const [startDate, setStartDate] = useState<Dayjs>(activeDate);
 
     // Data
+    const startDate = getStartDate(activeDate);
     const endDate = getEndDate(startDate);
+    const timetableData = {
+        startDatetime: getISODatetime(startDate),
+        endDatetime: getISODatetime(endDate),
+    };
     const {
         data,
         isLoading,
         refetch,
-    } = useQuery<IFetchTimetableResponse, AxiosError>(
-        "fetch_timetable",
-        () => fetchTimetable({
-            startDatetime: getISODatetime(startDate),
-            endDatetime: getISODatetime(endDate),
-        }),
+    } = useQuery<IFetchTimetableResponse, AxiosError, IFetchTimetableData>(
+        ["fetch_timetable", timetableData],
+        () => fetchTimetable(timetableData),
         queryOptions,
     );
 
@@ -92,13 +93,6 @@ const Calendar = () => {
         }
 
         setActiveDate(value);
-
-        setStartDate(
-            findNextDate(
-                value.subtract(6, "day"),
-                1,
-            ),
-        );
     };
 
     // Effects
