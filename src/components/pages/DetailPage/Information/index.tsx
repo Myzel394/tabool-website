@@ -33,7 +33,7 @@ const Information = ({
 }: IInformation) => {
     const $button = useRef<any>();
     const theme = useTheme();
-    const [buttonWidth, buttonHeight] = useElementSize($button);
+    const [buttonWidth] = useElementSize($button);
     const buttonStyle = useMemo(() => ({
         width: 0,
         transform: `translateX(calc(-${buttonWidth}px - 1px))`,
@@ -53,6 +53,7 @@ const Information = ({
 
         return value;
     })();
+
 
     return (
         <Paper

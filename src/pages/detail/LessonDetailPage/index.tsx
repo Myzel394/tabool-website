@@ -245,7 +245,5 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     );
 };
 
-LessonDetailPage.whyDidYouRender = true;
-
 
 export default memo(LessonDetailPage);
