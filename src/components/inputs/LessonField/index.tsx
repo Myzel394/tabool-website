@@ -6,7 +6,7 @@ import {IFetchTimetableData, IFetchTimetableResponse, useFetchLessonDetailAPI, u
 import {findNextDate, getIsoDatetime, setBeginTime, setEndTime} from "utils";
 import {AxiosError} from "axios";
 import {useTranslation} from "react-i18next";
-import {Button, CircularProgress} from "@material-ui/core";
+import {Box, Button, CircularProgress} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {LessonDetail} from "types";
 
@@ -20,14 +20,15 @@ export interface ILessonField {
     value: string | null;
     onChange: (id: string | null) => any;
 
-    allowNull: boolean;
-
+    allowNull?: boolean;
     initialDate?: Dayjs;
     minDate?: Dayjs;
     maxDate?: Dayjs;
     minTime?: Dayjs;
     maxTime?: Dayjs;
     allowedCourses?: string[];
+    allowedLessons?: string[];
+    allowedWeekdays?: number[];
 }
 
 const getStartDate = (targetedDate: Dayjs): Dayjs =>
@@ -48,6 +49,7 @@ const getEndDate = (targetedDate: Dayjs): Dayjs =>
 
 const LessonField = ({
     allowedCourses,
+    allowedLessons,
     initialDate,
     maxDate,
     maxTime,
@@ -56,6 +58,7 @@ const LessonField = ({
     onChange,
     value,
     allowNull,
+    allowedWeekdays,
 }: ILessonField) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
@@ -154,14 +157,23 @@ const LessonField = ({
                 onClose={() => setIsOpened(false)}
             >
                 {(isLoading || !timetable)
-                    ? <CircularProgress />
+                    ? (
+                        <Box display="flex" alignItems="center" justifyContent="center" height="100%" width="100%">
+                            <CircularProgress />
+                        </Box>
+                    )
                     : (
                         <Timetable
                             timetable={timetable}
                             activeDate={activeDate}
                             minDate={minDate}
                             maxDate={maxDate}
+                            minTime={minTime}
+                            maxTime={maxTime}
+                            allowedWeekdays={allowedWeekdays}
                             selectedLesson={lessonId}
+                            allowedCourses={allowedCourses}
+                            allowedLessons={allowedLessons}
                             onDateChange={setActiveDate}
                             onLessonSelect={newLessonId => {
                                 if (newLessonId === lessonId) {
@@ -175,7 +187,6 @@ const LessonField = ({
                             }}
                         />
                     )
-
                 }
             </SimpleDialog>
         </>

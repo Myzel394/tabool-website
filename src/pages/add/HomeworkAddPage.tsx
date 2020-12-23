@@ -2,10 +2,10 @@ import React, {memo} from "react";
 import {Box, Container, Grid, Paper, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import dayjs, {Dayjs} from "dayjs";
-import {Field, Form, Formik} from "formik";
+import {ErrorMessage, Field, Form, Formik} from "formik";
 import {CheckboxWithLabel} from "formik-material-ui";
 import * as yup from "yup";
-import {LessonField} from "components";
+import {FormikLessonField, PrimaryButton} from "components";
 
 interface Form {
     lesson: string;
@@ -42,9 +42,13 @@ const HomeworkAddPage = ({match: {params: {lesson}}}) => {
                             type: null,
                             isPrivate: false,
                         }}
-                        onSubmit={async (data) => {
+                        onSubmit={async (data, {setErrors}) => {
                             // eslint-disable-next-line no-console
                             console.log(data);
+                            setErrors({
+                                isPrivate: "Bla",
+                                lesson: "Blaaaaaa",
+                            });
                         }}
                     >
                         {({values, setFieldValue}) => (
@@ -52,11 +56,12 @@ const HomeworkAddPage = ({match: {params: {lesson}}}) => {
                                 <Form>
                                     <Grid container>
                                         <Grid item xs={12}>
-                                            <LessonField
-                                                allowNull
-                                                value={values.lesson}
-                                                minDate={dayjs().subtract(16, "day")}
-                                                onChange={lesson => setFieldValue("lesson", lesson)}
+                                            <FormikLessonField
+                                                name="lesson"
+                                                type="text"
+                                                label={t("Stunde")}
+                                                allowedWeekdays={[1, 2, 4]}
+                                                onChange={value => setFieldValue("lesson", value)}
                                             />
                                         </Grid>
                                     </Grid>
@@ -66,6 +71,10 @@ const HomeworkAddPage = ({match: {params: {lesson}}}) => {
                                         name="isPrivate"
                                         Label={{label: t("Privat?")}}
                                     />
+                                    <ErrorMessage name="isPrivate" />
+                                    <PrimaryButton type="submit">
+                                        {t("Hausaufgabe hinzufügen")}
+                                    </PrimaryButton>
                                 </Form>
                                 <pre>
                                     {JSON.stringify(values, null, 4)}

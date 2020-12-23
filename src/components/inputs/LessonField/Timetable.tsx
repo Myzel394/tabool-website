@@ -2,7 +2,7 @@ import React, {useMemo} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {Calendar as BigCalendar, Event as CalendarEvent} from "react-big-calendar";
 import {combineDatetime, createSmallTheme, getMinMaxTime, locale} from "utils";
-import {ThemeProvider} from "@material-ui/core";
+import {ThemeProvider, useTheme} from "@material-ui/core";
 import {useWindowSize} from "hooks";
 import {Timetable as TimetableType} from "types";
 
@@ -18,6 +18,11 @@ export interface ITimetable {
 
     minDate?: Dayjs;
     maxDate?: Dayjs;
+    minTime?: Dayjs;
+    maxTime?: Dayjs;
+    allowedCourses?: string[];
+    allowedLessons?: string[];
+    allowedWeekdays?: number[];
 }
 
 
@@ -29,7 +34,13 @@ const Timetable = ({
     minDate,
     selectedLesson,
     onLessonSelect,
+    allowedLessons,
+    allowedCourses,
+    allowedWeekdays,
+    maxTime: allowedMaxTime,
+    minTime: allowedMinTime,
 }: ITimetable) => {
+    const parentTheme = useTheme();
     const [, height] = useWindowSize();
     const timetableMinDate = (() => {
         if (!minDate) {
@@ -70,9 +81,15 @@ const Timetable = ({
             minDate: timetableMinDate,
             maxDate: timetableMaxDate,
             onDateChange,
+            parentTheme,
         }),
         eventWrapper: LessonEvent({
             selectedLesson,
+            allowedCourses,
+            allowedLessons,
+            allowedWeekdays,
+            minTime: allowedMinTime,
+            maxTime: allowedMaxTime,
             onSelect: onLessonSelect,
         }),
     };

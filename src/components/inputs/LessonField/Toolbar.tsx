@@ -1,5 +1,6 @@
 import React from "react";
-import {Box, Button, IconButton, Paper} from "@material-ui/core";
+import {Box, IconButton, Paper, ThemeProvider} from "@material-ui/core";
+import {DatePicker} from "@material-ui/pickers";
 import {ToolbarProps} from "react-big-calendar";
 import {FaAngleLeft, FaAngleRight} from "react-icons/all";
 import {navigate as navigationConstants} from "react-big-calendar/lib/utils/constants";
@@ -7,23 +8,29 @@ import dayjs, {Dayjs} from "dayjs";
 import {findNextDate, setBeginTime, setEndTime} from "utils";
 
 export interface IToolbar extends ToolbarProps {
-    minDate: Dayjs;
-    maxDate: Dayjs;
     onDateChange: (newDate: Dayjs) => any;
+    parentTheme: any;
+
+    minDate?: Dayjs;
+    maxDate?: Dayjs;
+    disabled?: boolean;
 }
 
 const Toolbar = ({
-    label,
     onNavigate,
-    date: rawDate,
-    minDate,
-    maxDate,
+    minDate: rawMinDate,
+    maxDate: rawMaxDate,
+    disabled,
     onDateChange,
+    parentTheme,
+    date: rawDate,
 }: IToolbar) => {
+    const minDate = rawMinDate && setEndTime(rawMinDate);
+    const maxDate = rawMaxDate && setBeginTime(rawMaxDate);
     const date = dayjs(rawDate);
     const thisMonday = setBeginTime(
         findNextDate(
-            date.subtract(6, "day"),
+            date.subtract(4, "day"),
             1,
         ),
     );
@@ -33,25 +40,42 @@ const Toolbar = ({
             5,
         ),
     );
-    const disablePrevious = minDate.isAfter(thisMonday);
-    const disableNext = maxDate.isBefore(thisFriday);
+    const minDateMonday = minDate && findNextDate(
+        minDate.subtract(6, "day"),
+        1,
+    );
+    const maxDateFriday = maxDate && findNextDate(
+        maxDate,
+        5,
+    );
+    const disablePrevious = disabled || minDate?.isAfter(thisMonday);
+    const disableNext = disabled || maxDate?.isBefore(thisFriday);
 
     return (
-        <Paper>
-            <Box p={2}>
-                <Box flexDirection="row" display="flex" justifyContent="center">
-                    <IconButton disabled={disablePrevious} onClick={() => onNavigate(navigationConstants.PREVIOUS)}>
-                        <FaAngleLeft />
-                    </IconButton>
-                    <Button color="default" onClick={() => onDateChange(dayjs())}>
-                        {label}
-                    </Button>
-                    <IconButton disabled={disableNext} onClick={() => onNavigate(navigationConstants.NEXT)}>
-                        <FaAngleRight />
-                    </IconButton>
+        <ThemeProvider theme={parentTheme}>
+            <Paper>
+                <Box p={2}>
+                    <Box flexDirection="row" display="flex" justifyContent="center">
+                        <IconButton disabled={disablePrevious} onClick={() => onNavigate(navigationConstants.PREVIOUS)}>
+                            <FaAngleLeft />
+                        </IconButton>
+                        <DatePicker
+                            value={date}
+                            format="LL"
+                            minDate={minDateMonday}
+                            maxDate={maxDateFriday}
+                            inputVariant="outlined"
+                            onChange={date => date && onDateChange(date)}
+                        />
+                        <IconButton disabled={disableNext} onClick={() => onNavigate(navigationConstants.NEXT)}>
+                            <FaAngleRight />
+                        </IconButton>
+                    </Box>
                 </Box>
-            </Box>
-        </Paper>
+            </Paper>
+        </ThemeProvider>
+
+
     );
 };
 

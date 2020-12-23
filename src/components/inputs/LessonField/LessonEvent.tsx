@@ -1,15 +1,22 @@
 import React, {useMemo} from "react";
 import {Event as CalendarEvent} from "react-big-calendar";
 import {LessonDetail} from "types";
-import {getEventWrapperStyles} from "utils";
+import {getEventWrapperStyles, replaceDatetime} from "utils";
 import {ButtonBase, Typography, useTheme} from "@material-ui/core";
 import {ColoredContainer} from "components";
+import dayjs, {Dayjs} from "dayjs";
 
 export interface ILessonEvent {
     event: CalendarEvent;
     selectedLesson: string;
     style: any;
     onSelect: (lessonId: string) => any;
+
+    allowedCourses?: string[];
+    allowedLessons?: string[];
+    allowedWeekdays?: number[];
+    minTime?: Dayjs;
+    maxTime?: Dayjs;
 }
 
 const LessonEvent = ({
@@ -17,24 +24,57 @@ const LessonEvent = ({
     selectedLesson,
     onSelect,
     style,
+    allowedCourses,
+    allowedLessons,
+    maxTime,
+    minTime,
+    allowedWeekdays,
 }: ILessonEvent): JSX.Element => {
     const theme = useTheme();
+
     const lesson: LessonDetail = event.resource;
     const isSelected = selectedLesson === lesson.id;
     const backgroundColor = lesson.lessonData.course.subject.userRelation.color;
+    const isDisabled = useMemo(() => {
+        const isLessonDisabled = !(allowedCourses?.includes?.(lesson.lessonData.course.id) ?? true);
+        const isCourseDisabled = !(allowedLessons?.includes?.(lesson.id) ?? true);
+        const isWeekdayDisabled = !(allowedWeekdays?.includes?.(dayjs(event.start).day()) ?? true);
+        const isMinTimeDisabled = minTime
+            ? replaceDatetime(dayjs(event.start), "date").isBefore(replaceDatetime(minTime, "date"))
+            : false;
+        const isMaxTimeDisabled = maxTime
+            ? replaceDatetime(dayjs(event.end), "date").isAfter(replaceDatetime(maxTime, "date"))
+            : false;
+
+        return isLessonDisabled || isCourseDisabled || isMinTimeDisabled || isMaxTimeDisabled || isWeekdayDisabled;
+    }, [
+        allowedCourses, allowedLessons, allowedWeekdays, event.end, event.start, lesson.id, lesson.lessonData.course.id,
+        maxTime, minTime,
+    ]);
+
     const wrapperStyle = useMemo(() => ({
         ...getEventWrapperStyles(style ?? {}, event),
         wordBreak: "break-all" as "break-all",
         backgroundColor,
         borderRadius: theme.shape.borderRadius,
-        opacity: isSelected ? 1 : theme.palette.action.disabledOpacity,
-    }), [theme.shape.borderRadius, style, event, isSelected, backgroundColor, theme.palette.action.disabledOpacity]);
+        opacity: isDisabled ? 0.3 : 1,
+        filter: (() => {
+            if (isDisabled) {
+                return "grayscale(100%)";
+            } else if (isSelected) {
+                return "";
+            } else {
+                return "grayscale(80%)";
+            }
+        })(),
+    }), [theme.shape.borderRadius, style, event, isSelected, backgroundColor, isDisabled]);
     const courseName = lesson.lessonData.course.name;
 
     return (
         <ButtonBase
             style={wrapperStyle}
             defaultChecked={isSelected}
+            disabled={isDisabled}
             onClick={() => onSelect(lesson.id)}
         >
             <ColoredContainer
