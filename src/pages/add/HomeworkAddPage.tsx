@@ -53,6 +53,7 @@ const HomeworkAddPage = ({match: {params: {lesson}}}) => {
                                     <Grid container>
                                         <Grid item xs={12}>
                                             <LessonField
+                                                allowNull
                                                 value={values.lesson}
                                                 minDate={dayjs().subtract(16, "day")}
                                                 onChange={lesson => setFieldValue("lesson", lesson)}

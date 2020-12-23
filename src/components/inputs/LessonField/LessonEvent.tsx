@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import {Event as CalendarEvent} from "react-big-calendar";
 import {LessonDetail} from "types";
 import {getEventWrapperStyles} from "utils";
@@ -17,28 +17,35 @@ const LessonEvent = ({
     selectedLesson,
     onSelect,
     style,
-}: ILessonEvent) => {
+}: ILessonEvent): JSX.Element => {
     const theme = useTheme();
     const lesson: LessonDetail = event.resource;
     const isSelected = selectedLesson === lesson.id;
     const backgroundColor = lesson.lessonData.course.subject.userRelation.color;
-    const wrapperStyle = {
+    const wrapperStyle = useMemo(() => ({
         ...getEventWrapperStyles(style ?? {}, event),
         wordBreak: "break-all" as "break-all",
         backgroundColor,
-        ...(isSelected ? {
-            border: ".1em solid #000",
-        } : {}),
-    };
+        borderRadius: theme.shape.borderRadius,
+        opacity: isSelected ? 1 : theme.palette.action.disabledOpacity,
+    }), [theme.shape.borderRadius, style, event, isSelected, backgroundColor, theme.palette.action.disabledOpacity]);
     const courseName = lesson.lessonData.course.name;
 
     return (
-        <ButtonBase style={wrapperStyle} onClick={() => onSelect(lesson.id)}>
+        <ButtonBase
+            style={wrapperStyle}
+            defaultChecked={isSelected}
+            onClick={() => onSelect(lesson.id)}
+        >
             <ColoredContainer
                 color={backgroundColor}
                 parentTheme={theme}
             >
-                <Typography color="textSecondary">
+                <Typography
+                    variant="h5"
+                    component="h1"
+                    color="textPrimary"
+                >
                     {courseName}
                 </Typography>
             </ColoredContainer>
@@ -48,7 +55,7 @@ const LessonEvent = ({
 
 const proxy = ({
     ...other
-}) => (props) => LessonEvent({
+}: any) => (props: any) => LessonEvent({
     ...props,
     ...other,
 });

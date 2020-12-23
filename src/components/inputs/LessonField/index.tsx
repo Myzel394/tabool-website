@@ -1,21 +1,26 @@
-import React, {forwardRef, useContext, useState} from "react";
+import React, {memo, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {useQuery} from "react-query";
-import {useDetailPageError, useQueryOptions} from "hooks";
-import {IFetchTimetableData, IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
-import {combineDatetime, findNextDate, getIsoDatetime, setBeginTime, setEndTime} from "utils";
+import {useDeviceWidth, useInheritedState, useQueryOptions} from "hooks";
+import {IFetchTimetableData, IFetchTimetableResponse, useFetchLessonDetailAPI, useFetchTimetableAPI} from "hooks/apis";
+import {findNextDate, getIsoDatetime, setBeginTime, setEndTime} from "utils";
 import {AxiosError} from "axios";
 import {useTranslation} from "react-i18next";
-import {ErrorContext} from "contexts";
-import {Event as CalendarEvent} from "react-big-calendar";
+import {Button, CircularProgress} from "@material-ui/core";
+import {Alert} from "@material-ui/lab";
+import {LessonDetail} from "types";
 
-import {LoadingIndicator} from "../../indicators";
+import {LessonIcon} from "../../icons";
+import SimpleDialog from "../../SimpleDialog";
+import {PrimaryButton} from "../../buttons";
 
 import Timetable from "./Timetable";
 
 export interface ILessonField {
-    value: string;
-    onChange: (id: string) => any;
+    value: string | null;
+    onChange: (id: string | null) => any;
+
+    allowNull: boolean;
 
     initialDate?: Dayjs;
     minDate?: Dayjs;
@@ -50,14 +55,17 @@ const LessonField = ({
     minTime,
     onChange,
     value,
-}: ILessonField, ref) => {
+    allowNull,
+}: ILessonField) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
+    const fetchLesson = useFetchLessonDetailAPI();
     const fetchTimetable = useFetchTimetableAPI();
-    const {onFetchError} = useDetailPageError();
-    const {dispatch: dispatchError} = useContext(ErrorContext);
+    const {isMD} = useDeviceWidth();
 
     const [activeDate, setActiveDate] = useState<Dayjs>(initialDate ?? dayjs());
+    const [isOpened, setIsOpened] = useState<boolean>(false);
+    const [lessonId, setLessonId] = useInheritedState<string | null>(value);
 
     const startDate = getStartDate(activeDate);
     const endDate = getEndDate(startDate);
@@ -69,73 +77,113 @@ const LessonField = ({
     const {
         data: timetable,
         isLoading,
+        isError,
+        error,
     } = useQuery<IFetchTimetableResponse, AxiosError, IFetchTimetableData>(
         ["fetch_timetable", timetableData],
         () => fetchTimetable(timetableData),
+        queryOptions,
+    );
+    const {
+        data: lesson,
+        isLoading: isLoadingLesson,
+        isError: isErrorLesson,
+    } = useQuery<LessonDetail | void, AxiosError, string>(
+        [`fetch_lesson_${value}`, value],
+        () => {
+            if (typeof value === "string") {
+                return fetchLesson(value);
+            }
+        },
         {
             ...queryOptions,
-            onError: error => onFetchError(error, Boolean(timetable)),
+            enabled: Boolean(value),
         },
     );
 
-    if (isLoading) {
-        return <LoadingIndicator />;
-    }
-
-    if (!timetable) {
-        dispatchError({
-            type: "setError",
-            payload: {},
-        });
-        return null;
-    }
-
-    const timetableMinDate = (() => {
-        if (!minDate) {
-            return timetable.earliestDateAvailable;
+    if ((!timetable && !isLoading) || (!lesson && Boolean(value) && !isLoadingLesson) || isError || isErrorLesson) {
+        if (error) {
+            return (
+                <Alert severity="error">
+                    {error.message}
+                </Alert>
+            );
+        } else {
+            return (
+                <Alert severity="error">
+                    {t("Der Stundenplan konnte nicht geladen werden")}
+                </Alert>
+            );
         }
-
-        return dayjs.unix(
-            Math.max(
-                minDate.unix(),
-                timetable.earliestDateAvailable.unix(),
-            ),
-        );
-    })();
-    const timetableMaxDate = (() => {
-        if (!maxDate) {
-            return timetable.latestDateAvailable;
-        }
-
-        return dayjs.unix(
-            Math.min(
-                maxDate.unix(),
-                timetable.latestDateAvailable.unix(),
-            ),
-        );
-    })();
-    const lessons: CalendarEvent[] = timetable.lessons.map(lesson => ({
-        allDay: false,
-        title: lesson.lessonData.course.name,
-        start: combineDatetime(lesson.date, lesson.lessonData.startTime).toDate(),
-        end: combineDatetime(lesson.date, lesson.lessonData.endTime).toDate(),
-        resource: {
-            ...lesson,
-            type: "lesson",
-        },
-    }));
+    }
 
     return (
-        <Timetable
-            lessons={lessons}
-            activeDate={activeDate}
-            minDate={timetableMinDate}
-            maxDate={timetableMaxDate}
-            selectedLesson={value}
-            onDateChange={setActiveDate}
-            onLessonSelect={onChange}
-        />
+        <>
+            <Button startIcon={<LessonIcon />} onClick={() => setIsOpened(true)}>
+                {(() => {
+                    if (isLoadingLesson || isLoading) {
+                        return <CircularProgress />;
+                    } else if (lesson) {
+                        return t("{{courseName}}: {{date}}", {
+                            courseName: lesson.lessonData.course.name,
+                            date: lesson.date.format("ll"),
+                        });
+                    } else {
+                        return t("Stunde auswählen");
+                    }
+                })()}
+            </Button>
+            <SimpleDialog
+                fullWidth
+                fullScreen={!isMD}
+                maxWidth="md"
+                isOpen={isOpened}
+                primaryButton={
+                    <PrimaryButton
+                        disabled={lessonId === value}
+                        onClick={() => {
+                            setIsOpened(false);
+                            onChange(lessonId);
+                        }}
+                    >
+                        {t("Bestätigen")}
+                    </PrimaryButton>
+                }
+                title={t("Stunde aussuchen")}
+                transition="slide"
+                onClose={() => setIsOpened(false)}
+            >
+                {(isLoading || !timetable)
+                    ? <CircularProgress />
+                    : (
+                        <Timetable
+                            timetable={timetable}
+                            activeDate={activeDate}
+                            minDate={minDate}
+                            maxDate={maxDate}
+                            selectedLesson={lessonId}
+                            onDateChange={setActiveDate}
+                            onLessonSelect={newLessonId => {
+                                if (newLessonId === lessonId) {
+                                // Set null
+                                    if (allowNull) {
+                                        setLessonId(null);
+                                    }
+                                } else {
+                                    setLessonId(newLessonId);
+                                }
+                            }}
+                        />
+                    )
+
+                }
+            </SimpleDialog>
+        </>
     );
 };
 
-export default forwardRef(LessonField);
+LessonField.defaultProps = {
+    allowNull: false,
+};
+
+export default memo(LessonField);
