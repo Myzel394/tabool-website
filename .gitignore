@@ -45,3 +45,5 @@ thumb
 **/.env
 **/*.env
 *.env
+
+.eslintcache
