@@ -1,9 +1,19 @@
 import React, {memo} from "react";
+import {useQueryString} from "hooks";
+import {useMutation} from "react-query";
 
-import LoginManager from "./LoginManager";
 
-const Login = () => {
-    return <LoginManager />;
+export interface ILogin {}
+
+
+const Login = ({}: ILogin) => {
+	const {next} = useQueryString();
+	
+	const {
+	
+	} = useMutation<>()
+	
+	return null;
 };
 
-export default memo(Login);
+export default Login;

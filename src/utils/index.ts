@@ -19,6 +19,7 @@ export * from "./randomNumbersWithGap";
 export * from "./locale";
 export * from "./getEventWrapperStyles";
 export * from "./createSmallTheme";
+export * from "./parseErrors";
 
 export {default as isAllDay} from "./isAllDay";
 export {default as snakeCaseKeys} from "./snakeCaseKeys";
@@ -39,3 +40,4 @@ export {default as randomNumbersWithGap} from "./randomNumbersWithGap";
 export {default as locale} from "./locale";
 export {default as getEventWrapperStyles} from "./getEventWrapperStyles";
 export {default as createSmallTheme} from "./createSmallTheme";
+export {default as parseErrors} from "./parseErrors";
