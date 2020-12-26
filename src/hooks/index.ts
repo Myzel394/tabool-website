@@ -17,3 +17,4 @@ export {default as useContextEvent} from "./useContextEvent";
 export {default as usePrevious} from "./usePrevious";
 export {default as useInheritedState} from "./useInheritedState";
 export {default as useIsMounted} from "./useIsMounted";
+export {default as useQueryString} from "./useQueryString";

@@ -75,7 +75,7 @@
     "yup-locales": "^1.2.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "BROWSER=None react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "jest --coverage",
     "eject": "react-app-rewired eject"
