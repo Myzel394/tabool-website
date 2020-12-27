@@ -17,19 +17,23 @@ const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
     const location = useLocation();
     const client: IAxios = useMemo(() => {
         const instance = axios.create({baseURL: "http://127.0.0.1:8000/"});
-    
+
         // Camelcase response
         instance.interceptors.response.use(response => {
             response.data = camelcaseKeys(response.data ?? {}, {deep: true});
-        
+
             return response;
+        }, error => {
+            error.response.data = camelcaseKeys(error.response.data ?? {}, {deep: true});
+
+            return Promise.reject(error);
         });
-    
+
         // Snakecase request
         instance.interceptors.request.use(config => {
             config.data = snakeCaseKeys(config.data ?? {});
             config.params = snakeCaseKeys(config.params ?? {});
-        
+
             return config;
         });
 
@@ -40,7 +44,7 @@ const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
                     dispatch({type: "logout",
                         payload: {}});
                 }
-                if (error.response.status >= 300 && error.response.status < 200) {
+                if (error.response.status >= 300 || error.response.status < 200) {
                     error.response.data = parseErrors(error.response.data);
                 }
             }

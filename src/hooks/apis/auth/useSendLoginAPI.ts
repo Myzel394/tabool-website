@@ -4,6 +4,8 @@ import {AxiosContext} from "contexts";
 export interface ILoginData {
     email: string;
     password: string;
+
+    otpKey?: string;
 }
 
 export interface ILoginResponse {
@@ -17,10 +19,12 @@ const useSendLoginAPI = () => {
     return useCallback(async ({
         email,
         password,
+        otpKey,
     }: ILoginData): Promise<ILoginResponse> => {
         const {data} = await instance.post("/api/auth/login/", {
             email,
             password,
+            otpKey,
         });
         return data;
     }, [instance]);

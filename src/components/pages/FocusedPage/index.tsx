@@ -10,7 +10,7 @@ import Title from "./Title";
 
 export interface IFocusedPage {
     children: ReactNode;
-    title: string;
+    title?: string;
     important?: boolean;
     disableBackButton?: boolean;
 }
@@ -47,8 +47,12 @@ export default function FocusedPage({children, title, important, disableBackButt
                                 </Tooltip>
                             </Box>
                         }
-                        <Logo />
-                        <Title title={title} />
+                        {title &&
+                            <>
+                                <Logo />
+                                <Title title={title} />
+                            </>
+                        }
                         {children}
                     </Box>
                 </Container>
