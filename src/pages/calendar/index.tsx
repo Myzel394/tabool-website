@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useState} from "react";
+import React, {ReactNode, useContext, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {combineDatetime, findNextDate, getIsoDatetime} from "utils";
 import {setBeginTime, setEndTime} from "utils/setTime";
@@ -8,6 +8,9 @@ import {useQuery} from "react-query";
 import {useDeviceWidth, usePersistentStorage, useQueryOptions} from "hooks";
 import {AxiosError} from "axios";
 import {IFetchTimetableData, IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
+import {useTranslation} from "react-i18next";
+
+import {ErrorContext} from "../../contexts";
 
 import CalendarContext, {CalendarType} from "./CalendarContext";
 import {Skeleton} from "./Calendar/states";
@@ -52,9 +55,11 @@ const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFe
 
 const Calendar = () => {
     // Options
+    const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchTimetableAPI();
     const {isMD} = useDeviceWidth();
+    const {dispatch: dispatchError} = useContext(ErrorContext);
 
     // States
     const [activeView, setActiveView] = useState<View>(() => (isMobile ? "day" : "work_week"));
@@ -70,6 +75,8 @@ const Calendar = () => {
         startDatetime: getIsoDatetime(startDate),
         endDatetime: getIsoDatetime(endDate),
     };
+
+
     const {
         data,
         isLoading,
@@ -77,7 +84,21 @@ const Calendar = () => {
     } = useQuery<IFetchTimetableResponse, AxiosError, IFetchTimetableData>(
         ["fetch_timetable", timetableData],
         () => fetchTimetable(timetableData),
-        queryOptions,
+        {
+            ...queryOptions,
+            onError: error => {
+                if (error.response?.status === 501) {
+                    dispatchError({
+                        type: "setError",
+                        payload: {
+                            avoidReloading: true,
+                            title: t("Warte!!"),
+                            message: t("Dein Stundenplan wurde noch nicht geladen. Er wird im Laufe des Tages automatisch geladen, dann kannst du ihn hier sehen."),
+                        },
+                    });
+                }
+            },
+        },
     );
 
     // Functions
