@@ -14,3 +14,4 @@ export * from "./submission";
 export * from "./teacher";
 export * from "./validators";
 export * from "./timetable";
+export * from "./autocomplete";

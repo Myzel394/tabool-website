@@ -13,10 +13,11 @@ export interface IFocusedPage {
     title?: string;
     important?: boolean;
     disableBackButton?: boolean;
+    showLogo?: boolean;
 }
 
 
-export default function FocusedPage({children, title, important, disableBackButton}: IFocusedPage) {
+export default function FocusedPage({children, title, important, disableBackButton, showLogo}: IFocusedPage) {
     const {t} = useTranslation();
     const theme = useTheme();
     const containerStyles = {
@@ -49,7 +50,7 @@ export default function FocusedPage({children, title, important, disableBackButt
                         }
                         {title &&
                             <>
-                                <Logo />
+                                {showLogo && <Logo />}
                                 <Title title={title} />
                             </>
                         }

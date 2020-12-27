@@ -6,6 +6,8 @@ export * from "./useFetchHomeworkDetailAPI";
 export * from "./useFetchHomeworkInformationAPI";
 export * from "./useUpdateHomeworkDataAPI";
 export * from "./useUpdateHomeworkUserRelationAPI";
+export * from "./useFetchHomeworkTypeAutocompletionAPI";
+export * from "./useSendHomeworkAPI";
 
 export {default as parseHomework} from "./parseHomework";
 export {default as parseHomeworkApprox} from "./parseHomeworkApprox";
@@ -15,3 +17,5 @@ export {default as useFetchHomeworkDetailAPI} from "./useFetchHomeworkDetailAPI"
 export {default as useFetchHomeworkInformationAPI} from "./useFetchHomeworkInformationAPI";
 export {default as useUpdateHomeworkDataAPI} from "./useUpdateHomeworkDataAPI";
 export {default as useUpdateHomeworkUserRelationAPI} from "./useUpdateHomeworkUserRelationAPI";
+export {default as useFetchHomeworkTypeAutocompletionAPI} from "./useFetchHomeworkTypeAutocompletionAPI";
+export {default as useSendHomeworkAPI} from "./useSendHomeworkAPI";

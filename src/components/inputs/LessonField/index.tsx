@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";
+import React, {forwardRef, memo, useImperativeHandle, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {useQuery} from "react-query";
 import {useDeviceWidth, useInheritedState, useQueryOptions} from "hooks";
@@ -14,7 +14,7 @@ import {LessonIcon} from "../../icons";
 import SimpleDialog from "../../SimpleDialog";
 import {PrimaryButton} from "../../buttons";
 
-import Timetable from "./Timetable";
+import Timetable, {ITimetable} from "./Timetable";
 
 export interface ILessonField {
     value: string | null;
@@ -29,6 +29,12 @@ export interface ILessonField {
     allowedCourses?: string[];
     allowedLessons?: string[];
     allowedWeekdays?: number[];
+    isError?: boolean;
+}
+
+export interface LessonFieldRef {
+    lesson: LessonDetail;
+    timetable: ITimetable;
 }
 
 const getStartDate = (targetedDate: Dayjs): Dayjs =>
@@ -59,7 +65,8 @@ const LessonField = ({
     value,
     allowNull,
     allowedWeekdays,
-}: ILessonField) => {
+    isError: isFieldError,
+}: ILessonField, ref) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchLesson = useFetchLessonDetailAPI();
@@ -104,6 +111,11 @@ const LessonField = ({
         },
     );
 
+    useImperativeHandle(ref, () => ({
+        lesson,
+        timetable,
+    }));
+
     if ((!timetable && !isLoading) || (!lesson && Boolean(value) && !isLoadingLesson) || isError || isErrorLesson) {
         if (error) {
             return (
@@ -125,7 +137,7 @@ const LessonField = ({
             <Button startIcon={<LessonIcon />} onClick={() => setIsOpened(true)}>
                 {(() => {
                     if (isLoadingLesson || isLoading) {
-                        return <CircularProgress />;
+                        return <CircularProgress color="inherit" size="1rem" />;
                     } else if (lesson) {
                         return t("{{courseName}}: {{date}}", {
                             courseName: lesson.lessonData.course.name,
@@ -193,8 +205,4 @@ const LessonField = ({
     );
 };
 
-LessonField.defaultProps = {
-    allowNull: false,
-};
-
-export default memo(LessonField);
+export default forwardRef(LessonField);
