@@ -15,3 +15,4 @@ export * from "./teacher";
 export * from "./validators";
 export * from "./timetable";
 export * from "./autocomplete";
+export * from "./form";

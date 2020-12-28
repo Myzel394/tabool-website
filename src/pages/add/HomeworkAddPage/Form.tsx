@@ -23,12 +23,16 @@ import * as yup from "yup";
 import dayjs from "dayjs";
 import {useQueryString} from "hooks";
 import {LessonFieldRef} from "components/inputs/LessonField";
+import {Alert} from "@material-ui/lab";
+import {ErrorFieldsInjection} from "types";
 
 export interface IForm {
     onTypeChange: (newType: string) => any;
     onSubmit: (data: ISendHomeworkData, formikHelpers: FormikHelpers<ISendHomeworkData>) => Promise<any>;
     typeAutocompletionList: string[];
 }
+
+type FormikForm = ISendHomeworkData & ErrorFieldsInjection;
 
 const schema = yup.object({
     isPrivate: yup.boolean(),
@@ -67,7 +71,7 @@ const Form = ({
 
     return (
         <FocusedPage title={t("Hausaufgabe hinzufüge")}>
-            <Formik<ISendHomeworkData>
+            <Formik<FormikForm>
                 validationSchema={schema}
                 initialValues={{
                     // @ts-ignore: Initial values don't matter
@@ -223,6 +227,13 @@ const Form = ({
                                             </FormHelperText>
                                         </FormGroup>
                                     </Grid>
+                                    {errors.nonFieldErrors &&
+                                        <Grid item xs={12}>
+                                            <Alert severity="error">
+                                                {errors.nonFieldErrors}
+                                            </Alert>
+                                        </Grid>
+                                    }
                                 </Grid>
                             </Box>
                             <PrimaryButton type="submit" disabled={isSubmitting}>
