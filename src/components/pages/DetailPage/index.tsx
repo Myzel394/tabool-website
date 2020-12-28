@@ -45,8 +45,6 @@ export interface IDetailPage<AvailableKeys extends string = string, QueryType = 
 
     defaultOrdering: IInformationList<AvailableKeys>["ordering"];
     data: IInformationList<AvailableKeys>["data"];
-    forceEdit?: IInformationList<AvailableKeys>["forceEdit"];
-    errors?: IInformationList["errors"];
 
     orderingStorageName: string;
     refetch: () => Promise<any>;
@@ -81,8 +79,6 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
     updatedAt,
     refetch,
     isRefreshing,
-    forceEdit,
-    errors,
     bottomNode,
     footerNode,
     headerNode,
@@ -97,7 +93,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
     const [elevatedKey, setElevatedKey] = useState<string | null>(null);
     const [ordering, setOrdering] = usePersistentStorage<string[]>(defaultOrdering, orderingStorageName, StorageType.Local);
 
-    // If `defaultOrdering` changes and the locally saved ordering doesn't contain the new ordering, reset it.
+    // If `defaultOrdering !== savedOrdering` elements, reset it.
     useEffect(() => {
         if (!_.isEqual(new Set(ordering), new Set(defaultOrdering))) {
             STORAGE_METHOD.removeItem(orderingStorageName);
@@ -137,9 +133,7 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                         <InformationList
                             elevatedKey={elevatedKey}
                             ordering={ordering}
-                            forceEdit={forceEdit}
                             data={data}
-                            errors={errors}
                             setElevatedKey={setElevatedKey}
                             setOrdering={setOrdering}
                             reorder={enableReordering}

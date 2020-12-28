@@ -1,22 +1,20 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, {memo} from "react";
+import React from "react";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import {Grid} from "@material-ui/core";
 import update from "immutability-helper";
+import {Formik} from "formik";
 
 import Information from "./Information";
+import {IContent} from "./Information/Content";
 
 export interface Data {
     information: string | JSX.Element;
     title: string;
     icon: JSX.Element;
 
-    reset?: () => any;
-    isUpdating?: boolean;
-    input?: JSX.Element;
-    onEditModeLeft?: () => any;
+    field?: IContent["field"];
     disableShowMore?: boolean;
-    helpText?: string;
     subInformation?: JSX.Element;
 }
 
@@ -27,10 +25,6 @@ export interface IInformationList<AvailableKeys extends string = string> {
         [key in AvailableKeys]: Data;
     };
 
-    forceEdit?: AvailableKeys[];
-    errors?: {
-        [key in AvailableKeys]: string[];
-    };
     elevatedKey?: AvailableKeys | null;
 
     setOrdering?: (ordering: AvailableKeys[]) => any;
@@ -41,8 +35,6 @@ export interface IInformationList<AvailableKeys extends string = string> {
 const InformationList = <AvailableKeys extends string = string>({
     data,
     elevatedKey,
-    errors,
-    forceEdit,
     ordering,
     setElevatedKey,
     setOrdering,
@@ -97,60 +89,50 @@ const InformationList = <AvailableKeys extends string = string>({
                         spacing={2}
                         {...provided.droppableProps}
                     >
-                        {ordering.map((key, index) => {
-                            const informationData = data[key];
-                            const {
-                                isUpdating = false,
-                                onEditModeLeft,
-                                information,
-                                title,
-                                icon,
-                                input,
-                                disableShowMore,
-                                helpText,
-                                reset,
-                                subInformation,
-                            } = informationData;
-                            const givenErrors = errors?.[key];
-                            const forceEditMode = forceEdit?.includes(key) ?? false;
-                            const isElevated = key === elevatedKey;
+                        <Formik>
+                            {({}) =>
+                                ordering.map((key, index) => {
+                                    const {
+                                        title,
+                                        subInformation,
+                                        information,
+                                        icon,
+                                        field,
+                                        disableShowMore,
+                                    } = data[key];
+                                    const isElevated = key === elevatedKey;
 
-                            return (
-                                <Draggable
-                                    key={key}
-                                    index={index}
-                                    draggableId={key}
-                                >
-                                    {provided => (
-                                        <Grid
-                                            ref={provided.innerRef}
-                                            item
-                                            xs={12}
-                                            {...provided.draggableProps}
+                                    return (
+                                        <Draggable
+                                            key={key}
+                                            index={index}
+                                            draggableId={key}
                                         >
-                                            <Information
-                                                key={key}
-                                                subInformation={subInformation}
-                                                errors={givenErrors}
-                                                title={title}
-                                                information={information}
-                                                isElevated={isElevated}
-                                                icon={icon}
-                                                reset={reset}
-                                                reorder={reorder}
-                                                input={input}
-                                                dragHandleProps={provided.dragHandleProps}
-                                                forceEdit={forceEditMode}
-                                                disableShowMore={disableShowMore}
-                                                helpText={helpText}
-                                                isUpdating={isUpdating}
-                                                onEditModeLeft={onEditModeLeft}
-                                            />
-                                        </Grid>
-                                    )}
-                                </Draggable>
-                            );
-                        }) }
+                                            {provided =>
+                                                <Grid
+                                                    ref={provided.innerRef}
+                                                    item
+                                                    xs={12}
+                                                    {...provided.draggableProps}
+                                                >
+                                                    <Information
+                                                        subInformation={subInformation}
+                                                        title={title}
+                                                        information={information}
+                                                        isElevated={isElevated}
+                                                        icon={icon}
+                                                        reorder={reorder}
+                                                        dragHandleProps={provided.dragHandleProps}
+                                                        disableShowMore={disableShowMore}
+                                                        field={field}
+                                                    />
+                                                </Grid>
+                                            }
+                                        </Draggable>
+                                    );
+                                })
+                            }
+                        </Formik>
                         {provided.placeholder}
                     </Grid>
                 ) }

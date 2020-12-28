@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Box,
+import {
+    Box,
     Button,
     CircularProgress,
     Dialog,
@@ -10,7 +11,8 @@ import {Box,
     FormHelperText,
     Grid,
     IconButton,
-    Typography} from "@material-ui/core";
+    Typography,
+} from "@material-ui/core";
 import {ToggleButton} from "@material-ui/lab";
 import {MdClose, MdEdit} from "react-icons/all";
 import {useTranslation} from "react-i18next";
@@ -22,17 +24,16 @@ export interface IContent {
     title: string;
     information: string | JSX.Element;
 
-    forceEdit: boolean;
     showEdit: boolean;
 
     disableShowMore?: boolean;
-    reset?: () => any;
     onEditModeLeft?: () => any;
-    isUpdating?: boolean;
-    input?: JSX.Element;
     helpText?: string;
-    errors?: string[];
     subInformation?: JSX.Element;
+    field?: {
+        onEditModeLeft: () => any;
+        renderField: JSX.Element;
+    };
 }
 
 const Content = ({
@@ -40,15 +41,11 @@ const Content = ({
     icon,
     information,
     title,
-    forceEdit,
-    input,
     onEditModeLeft,
-    isUpdating,
     helpText,
-    errors,
-    reset,
     subInformation,
     showEdit,
+    field,
 }: IContent) => {
     const {t} = useTranslation();
 
@@ -92,7 +89,7 @@ const Content = ({
 
     // Force edit mode
     useEffect(() => {
-        if (forceEdit && !isEditActive) {
+        if (!isEditActive) {
             setIsEditActive(true);
         }
     }, [forceEdit, isEditActive]);

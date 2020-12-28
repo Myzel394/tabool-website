@@ -83,7 +83,6 @@ const Information = ({
                             title={title}
                             icon={icon}
                             helpText={helpText}
-                            errors={errors}
                             reset={reset}
                             subInformation={subInformation}
                             onEditModeLeft={onEditModeLeft}
