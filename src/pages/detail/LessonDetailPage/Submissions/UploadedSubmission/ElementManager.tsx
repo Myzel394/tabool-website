@@ -14,7 +14,7 @@ import {
 import {useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import update from "immutability-helper";
-import {getIsoDatetime} from "utils";
+import {getISODatetime} from "utils";
 import {useInterval} from "@shopify/react-hooks";
 import {UploadStatus} from "api";
 import {useTranslation} from "react-i18next";
@@ -114,7 +114,7 @@ const ElementManager = ({submission, iconElement, onDelete}: IElement) => {
             errorMessage={errorMessage}
             onSettingsChange={newSettings => updateSubmissionMutation({
                 id: submission.id,
-                uploadDate: newSettings.uploadDate ? getIsoDatetime(newSettings.uploadDate) : null,
+                uploadDate: newSettings.uploadDate ? getISODatetime(newSettings.uploadDate) : null,
             })}
             onDelete={onDelete}
             onUploadToScooso={() => uploadFileMutate(submission.id)}

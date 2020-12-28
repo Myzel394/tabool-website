@@ -1,12 +1,22 @@
 import React from "react";
-import {Button} from "@material-ui/core";
+import {Button, CircularProgress} from "@material-ui/core";
 import {ButtonProps} from "@material-ui/core/Button/Button";
 
-export type IPrimaryButton = ButtonProps;
+export interface IPrimaryButton extends ButtonProps {
+    loading?: boolean;
+}
 
-const PrimaryButton = ({children, ...other}: IPrimaryButton) => {
+const PrimaryButton = ({children, loading, ...other}: IPrimaryButton) => {
     return (
-        <Button {...other} variant="contained" color="primary">{children}</Button>
+        <Button
+            disabled={loading}
+            endIcon={loading ? <CircularProgress size="1rem" color="inherit" /> : undefined}
+            {...other}
+            variant="contained"
+            color="primary"
+        >
+            {children}
+        </Button>
     );
 };
 

@@ -1,6 +1,6 @@
 import React, {ReactNode, useContext, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {combineDatetime, findNextDate, getIsoDatetime} from "utils";
+import {combineDatetime, findNextDate, getISODatetime} from "utils";
 import {setBeginTime, setEndTime} from "utils/setTime";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
@@ -72,8 +72,8 @@ const Calendar = () => {
     const startDate = getStartDate(activeDate);
     const endDate = getEndDate(startDate);
     const timetableData = {
-        startDatetime: getIsoDatetime(startDate),
-        endDatetime: getIsoDatetime(endDate),
+        startDatetime: getISODatetime(startDate),
+        endDatetime: getISODatetime(endDate),
     };
 
 

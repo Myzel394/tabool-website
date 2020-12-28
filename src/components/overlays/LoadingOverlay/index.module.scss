@@ -4,7 +4,7 @@
 
 @keyframes animateIn {
     0%{opacity: 0;}
-    100% {opacity: 1;}
+    100%{opacity: 1;}
 }
 
 $duration: .2s;
@@ -27,4 +27,9 @@ $duration: .2s;
     pointer-events: all;
     z-index: -1;
     animation: animateIn $duration ease-in reverse;
+}
+
+.children {
+    will-change: opacity, filter;
+    transition: $duration;
 }

@@ -21,9 +21,10 @@ const LoadingOverlay = ({isLoading, children, text, value}: ILoadingOverlay) => 
     }, [isLoading, theme.zIndex.modal]);
     const childrenStyles = useMemo(() => {
         return isLoading ? {
-            opacity: 0.1,
+            opacity: theme.palette.action.disabledOpacity,
+            filter: "blur(.15rem)",
         } : {};
-    }, [isLoading]);
+    }, [isLoading, theme.palette.action.disabledOpacity]);
     const containerClasses = useMemo(() => clsx([
         classes.overlay,
         {
@@ -33,7 +34,7 @@ const LoadingOverlay = ({isLoading, children, text, value}: ILoadingOverlay) => 
 
     return (
         <div className={classes.wrapper}>
-            <div style={childrenStyles}>
+            <div style={childrenStyles} className={classes.children}>
                 {children}
             </div>
             <div className={containerClasses} style={styles}>

@@ -3,7 +3,7 @@ import dayjs, {Dayjs} from "dayjs";
 import {useQuery} from "react-query";
 import {useDeviceWidth, useInheritedState, useQueryOptions} from "hooks";
 import {IFetchTimetableData, IFetchTimetableResponse, useFetchLessonDetailAPI, useFetchTimetableAPI} from "hooks/apis";
-import {findNextDate, getIsoDatetime, setBeginTime, setEndTime} from "utils";
+import {findNextDate, getISODatetime, setBeginTime, setEndTime} from "utils";
 import {AxiosError} from "axios";
 import {useTranslation} from "react-i18next";
 import {Box, Button, CircularProgress} from "@material-ui/core";
@@ -80,8 +80,8 @@ const LessonField = ({
     const startDate = getStartDate(activeDate);
     const endDate = getEndDate(startDate);
     const timetableData = {
-        startDatetime: getIsoDatetime(startDate),
-        endDatetime: getIsoDatetime(endDate),
+        startDatetime: getISODatetime(startDate),
+        endDatetime: getISODatetime(endDate),
     };
 
     const {
