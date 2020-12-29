@@ -8,6 +8,7 @@ export * from "./overlays";
 export * from "./pages";
 export * from "./timetable";
 export * from "./DropZone";
+export * from "./icons";
 
 export {default as SimpleCenter} from "./SimpleCenter";
 export {default as Tooltip} from "./Tooltip";

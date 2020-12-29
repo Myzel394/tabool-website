@@ -9,7 +9,7 @@ import {
     useUpdateHomeworkDataAPI,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks/apis";
-import {BooleanStatus, DatePicker, DetailPage, LoadingIndicator, TextInput} from "components";
+import {BooleanStatus, DetailPage, LessonIcon, LoadingIndicator} from "components";
 import {useTranslation} from "react-i18next";
 import {
     BiBarChartSquare,
@@ -17,19 +17,15 @@ import {
     FaHourglassEnd,
     FaHourglassHalf,
     FaHourglassStart,
-    FaInfoCircle,
     FaRegHourglass,
-    FaTable,
     MdBlock,
     MdCheck,
+    MdInfo,
     MdLock,
     MdLockOpen,
 } from "react-icons/all";
 import dayjs, {Dayjs} from "dayjs";
-import {formatLesson} from "format";
 import {HomeworkDetail} from "types";
-import {Button, Link, Switch} from "@material-ui/core";
-import camelcaseKeys from "camelcase-keys";
 import {getISODatetime} from "utils";
 import {generatePath} from "react-router";
 import {AxiosError} from "axios";
@@ -37,6 +33,10 @@ import {PredefinedMessageType} from "hooks/useSnackbar";
 import {ErrorContext} from "contexts";
 import update from "immutability-helper";
 import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
+import {Switch, TextField} from "formik-material-ui";
+import {DateTimePicker} from "formik-material-ui-pickers";
+import {Button, Link} from "@material-ui/core";
+import {formatLesson} from "format";
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
 
@@ -118,6 +118,8 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
         },
     );
 
+    const canEditHomework = homework?.isPrivate;
+
     const updateHomework = useCallback(() => {
         // Update if
         if (
@@ -197,12 +199,8 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             updatedAt={dayjs(dataUpdatedAt)}
             isRefreshing={isFetching}
             orderingStorageName="detail:ordering:homework"
-            forceEdit={forceEdit}
             searchAllPath={generatePath("/homework/")}
             addPath={generatePath("/homework/add/")}
-            errors={camelcaseKeys(
-                mutationError?.response?.data ?? {},
-            )}
             relation={{
                 buttons: [
                     {
@@ -227,19 +225,40 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             }}
             data={{
                 information: {
-                    icon: <FaInfoCircle />,
-                    title: t("Information"),
                     information: homework.information,
-                    input: (
-                        <TextInput
-                            multiline
-                            value={information}
-                            onChange={event => setInformation(event.target.value)}
-                        />
-                    ),
-                    isUpdating: isUpdatingHomework && homework.information !== information,
-                    onEditModeLeft: updateHomework,
-                    reset: () => setInformation(homework.information),
+                    title: t("Information"),
+                    icon: <MdInfo />,
+                    fieldProps: canEditHomework && {
+                        fullWidth: true,
+                        multiline: true,
+                        type: "text",
+                        component: TextField,
+                        variant: "outlined",
+                    },
+                },
+                type: {
+                    icon: <BiBarChartSquare />,
+                    title: t("Typ"),
+                    information: homework.type ?? "",
+                    disableShowMore: true,
+                    fieldProps: canEditHomework && {
+                        fullWidth: true,
+                        type: "text",
+                        component: TextField,
+                        variant: "outlined",
+                    },
+                },
+                isPrivate: {
+                    icon: homework.isPrivate ? <MdLock /> : <MdLockOpen />,
+                    title: t("Privat"),
+                    nativeValue: homework.isPrivate,
+                    information: <BooleanStatus value={homework.isPrivate} />,
+                    helperText: t("Hausaufgaben können nicht mehr privat gestellt werden, sobald sie einmal für den Kurs veröffentlicht wurden."),
+                    disableShowMore: true,
+                    fieldProps: canEditHomework && {
+                        type: "checkbox",
+                        component: Switch,
+                    },
                 },
                 dueDate: {
                     icon: getDueDateIcon(
@@ -248,48 +267,15 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                         !(homework.userRelation.ignore || homework.userRelation.completed),
                     ),
                     title: t("Fälligkeitsdatum"),
-                    information: homework.dueDate.format("L"),
-                    input: (
-                        <DatePicker
-                            value={dueDate?.toDate()}
-                            onChange={date => date && setDueDate(dayjs(date))}
-                        />
-                    ),
-                    isUpdating: isUpdatingHomework && !homework.dueDate.isSame(dueDate),
-                    onEditModeLeft: updateHomework,
+                    nativeValue: homework.dueDate,
+                    information: homework.dueDate.format("LL"),
                     disableShowMore: true,
-                    reset: () => setDueDate(homework.dueDate),
-                },
-                type: {
-                    icon: <BiBarChartSquare />,
-                    title: t("Typ"),
-                    information: homework?.type ?? "",
-                    input: (
-                        <TextInput
-                            value={type}
-                            onChange={event => setType(event.target.value)}
-                        />
-                    ),
-                    isUpdating: isUpdatingHomework && homework.type !== type,
-                    onEditModeLeft: updateHomework,
-                    disableShowMore: true,
-                    reset: () => setType(homework.type),
-                },
-                isPrivate: {
-                    icon: homework.isPrivate ? <MdLock /> : <MdLockOpen />,
-                    title: t("Privat"),
-                    information: <BooleanStatus value={homework.isPrivate} />,
-                    input: (
-                        <Switch
-                            value={isPrivate}
-                            disabled={!homework.isPrivate}
-                            onChange={event => setIsPrivate(event.target.checked)}
-                        />
-                    ),
-                    onEditModeLeft: updateHomework,
-                    isUpdating: isUpdatingHomework && homework.isPrivate !== isPrivate,
-                    helpText: t("Hausaufgaben können nicht mehr privat gestellt werden, sobald sie einmal für den Kurs veröffentlicht wurden."),
-                    reset: () => setIsPrivate(homework.isPrivate),
+                    fieldProps: canEditHomework && {
+                        type: "text",
+                        component: DateTimePicker,
+                        format: "ll",
+                        inputVariant: "outlined",
+                    },
                 },
                 createdAt: {
                     icon: <FaClock />,
@@ -298,11 +284,11 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     disableShowMore: true,
                 },
                 lesson: {
-                    icon: <FaTable />,
+                    icon: <LessonIcon />,
                     title: t("Stunde"),
                     information: formatLesson(homework.lesson),
                     disableShowMore: true,
-                    subInformation: (
+                    helperText: (
                         <Link
                             component={Button}
                             href={generatePath("/lesson/detail/:id/", {

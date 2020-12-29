@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, {ReactNode, useEffect, useState} from "react";
 import {
     Box,
@@ -23,7 +24,7 @@ import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 
 import * as changeRelation from "./changeRelation";
 import Title, {ITitle} from "./Title";
-import InformationList, {IInformationList} from "./InformationList";
+import Form, {IForm} from "./Form";
 
 interface IButton extends ButtonProps {
     title: string;
@@ -39,12 +40,17 @@ type RelationBooleanType<RelationKeys extends string = string> = {
     [key in RelationKeys]: boolean;
 };
 
-export interface IDetailPage<AvailableKeys extends string = string, QueryType = any, RelationKeys extends string = string> {
+export interface IDetailPage<
+    AvailableKeys extends string,
+    FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
+    QueryType = any,
+    RelationKeys extends string = string
+> {
     title: ITitle["title"];
     color: ITitle["color"];
 
-    defaultOrdering: IInformationList<AvailableKeys>["ordering"];
-    data: IInformationList<AvailableKeys>["data"];
+    defaultOrdering: IForm<AvailableKeys, FormikForm>["ordering"];
+    data: IForm<AvailableKeys, FormikForm>["data"];
 
     orderingStorageName: string;
     refetch: () => Promise<any>;
@@ -70,30 +76,43 @@ export interface IDetailPage<AvailableKeys extends string = string, QueryType = 
 const STORAGE_METHOD = localStorage;
 
 
-const DetailPage = <AvailableKeys extends string = string, QueryType = any, RelationKeys extends string = string>({
-    title,
-    color,
-    data,
-    defaultOrdering,
-    orderingStorageName,
-    updatedAt,
-    refetch,
-    isRefreshing,
-    bottomNode,
-    footerNode,
-    headerNode,
-    buttons,
-    addPath,
-    searchAllPath,
-    relation,
-    subTitle,
-}: IDetailPage<AvailableKeys, QueryType, RelationKeys>) => {
+const DetailPage = <
+    AvailableKeys extends string,
+    FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
+    QueryType = any,
+    RelationKeys extends string = string
+>({
+        title,
+        color,
+        data,
+        defaultOrdering,
+        orderingStorageName,
+        updatedAt,
+        refetch,
+        isRefreshing,
+        bottomNode,
+        footerNode,
+        headerNode,
+        buttons,
+        addPath,
+        searchAllPath,
+        relation,
+        subTitle,
+    }: IDetailPage<AvailableKeys, FormikForm, QueryType, RelationKeys>) => {
     const {t} = useTranslation();
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
-    const [elevatedKey, setElevatedKey] = useState<string | null>(null);
-    const [ordering, setOrdering] = usePersistentStorage<string[]>(defaultOrdering, orderingStorageName, StorageType.Local);
+    const [elevatedKey, setElevatedKey] = useState<AvailableKeys | null>(null);
+    const [ordering, setOrdering] = usePersistentStorage<AvailableKeys[]>(defaultOrdering, orderingStorageName, StorageType.Local);
 
-    // If `defaultOrdering !== savedOrdering` elements, reset it.
+    const initialValues = Object
+        .entries(data)
+        .reduce((object, [key, value]) => ({
+            ...object,
+            // @ts-ignore
+            [key]: value.nativeValue,
+        }), {});
+
+    // If `defaultOrdering's elements !== savedOrdering's elements`, reset it.
     useEffect(() => {
         if (!_.isEqual(new Set(ordering), new Set(defaultOrdering))) {
             STORAGE_METHOD.removeItem(orderingStorageName);
@@ -130,13 +149,19 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                         </Grid>
                     }
                     <Grid item>
-                        <InformationList
-                            elevatedKey={elevatedKey}
-                            ordering={ordering}
+                        <Form
+                            // @ts-ignore
+                            initialValues={initialValues}
                             data={data}
-                            setElevatedKey={setElevatedKey}
-                            setOrdering={setOrdering}
+                            ordering={ordering}
+                            elevatedKey={elevatedKey}
                             reorder={enableReordering}
+                            onSubmit={() => {
+                                // eslint-disable-next-line no-console
+                                console.log("cälld");
+                            }}
+                            onOrderingChange={setOrdering}
+                            onElevatedKeyChange={setElevatedKey}
                         />
                     </Grid>
                     {relation &&
@@ -176,7 +201,6 @@ const DetailPage = <AvailableKeys extends string = string, QueryType = any, Rela
                             return (
                                 <>
                                     {bottomNode.map(node =>
-                                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                         // @ts-ignore: If array given, nodes do have keys set
                                         <Grid key={node.key} item>
                                             {node}

@@ -1,64 +1,49 @@
 import React, {memo, useMemo, useRef} from "react";
 import {Box, IconButton, Paper, useTheme} from "@material-ui/core";
 import {GoThreeBars} from "react-icons/all";
-import {DraggableProvidedDragHandleProps} from "react-beautiful-dnd";
 import {useElementSize} from "hooks";
+import {DraggableProvidedDragHandleProps} from "react-beautiful-dnd";
 
-import Content, {IContent} from "./Content";
 import TransitionWrapper from "./TransitionWrapper";
+import Content, {IContent} from "./Content";
 
-export interface IInformation extends Omit<IContent, "showEdit"> {
-    reorder: boolean;
+
+export interface IField extends Omit<IContent, "forceEditMode"> {
     isElevated: boolean;
+    reorder: boolean;
+    containsErrors: boolean;
 
     dragHandleProps?: DraggableProvidedDragHandleProps;
 }
 
-const Information = ({
-    icon,
-    title,
-    information,
+
+const Field = ({
     isElevated,
-    dragHandleProps,
-    input,
-    forceEdit,
-    onEditModeLeft,
-    isUpdating,
-    disableShowMore,
-    helpText,
-    errors,
-    reset,
     reorder,
-    subInformation,
-}: IInformation) => {
-    const $button = useRef<any>();
+    dragHandleProps,
+    containsErrors,
+    ...contentProps
+}: IField) => {
     const theme = useTheme();
+    const $button = useRef<any>();
     const [buttonWidth] = useElementSize($button);
+
     const buttonStyle = useMemo(() => ({
         width: 0,
         transform: `translateX(calc(-${buttonWidth}px - 1px))`,
     }), [buttonWidth]);
-    const style = useMemo(() => ({
+    const paperStyle = useMemo(() => ({
         borderRadius: theme.shape.borderRadius,
         height: "100%",
         width: "100%",
         overflow: "hidden",
     }), [theme.shape.borderRadius]);
-    const elevation = (() => {
-        let value = 1;
-
-        if (isElevated) {
-            value += 4;
-        }
-
-        return value;
-    })();
-
+    const elevation = isElevated ? 5 : 1;
 
     return (
         <Paper
             elevation={elevation}
-            style={style}
+            style={paperStyle}
         >
             <TransitionWrapper active={reorder} offsetAmount={buttonWidth}>
                 {style => (
@@ -74,18 +59,8 @@ const Information = ({
                             </IconButton>
                         </div>
                         <Content
-                            disableShowMore={disableShowMore}
-                            isUpdating={isUpdating}
-                            information={information}
-                            input={input}
-                            forceEdit={forceEdit}
-                            showEdit={(errors ?? []).length > 0}
-                            title={title}
-                            icon={icon}
-                            helpText={helpText}
-                            reset={reset}
-                            subInformation={subInformation}
-                            onEditModeLeft={onEditModeLeft}
+                            {...contentProps}
+                            forceEditMode={containsErrors}
                         />
                     </Box>
                 )}
@@ -94,8 +69,4 @@ const Information = ({
     );
 };
 
-Information.defaultProps = {
-    forceEdit: false,
-};
-
-export default memo(Information);
+export default memo(Field);
