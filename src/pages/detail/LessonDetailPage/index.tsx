@@ -1,33 +1,4 @@
-import queryString from "query-string";
-import React, {memo, useContext, useState} from "react";
-import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
-import {useMutation, useQuery} from "react-query";
-import {LessonDetail} from "types";
-import {AxiosError} from "axios";
-import {DetailPage, Homework, LoadingIndicator} from "components";
-import {ErrorContext} from "contexts";
-import dayjs from "dayjs";
-import {FaChalkboardTeacher, FaRunning, FiMonitor, MdPlace} from "react-icons/all";
-import {useTranslation} from "react-i18next";
-import {CourseIcon, HomeworkIcon, TeacherIcon} from "components/icons";
-import _ from "lodash";
-import {Box, Button, ButtonGroup, Collapse, Grid, Link, Typography} from "@material-ui/core";
-import {generatePath} from "react-router";
-import update from "immutability-helper";
-import {PredefinedMessageType} from "hooks/useSnackbar";
-import IllEmailButton from "components/buttons/IllEmailButton";
-import Material from "components/Material";
-import {Alert} from "@material-ui/lab";
-import {combineDatetime} from "utils";
-import {
-    IUpdateLessonUserRelationData,
-    IUpdateLessonUserRelationResponse,
-    useFetchLessonDetailAPI,
-    useUpdateLessonUserRelationAPI,
-} from "hooks/apis";
-
-import ModificationsNode from "./ModificationsNode";
-import Submissions from "./Submissions";
+import React, {memo} from "react";
 
 
 const gridItemStyle = {
@@ -37,6 +8,9 @@ const gridItemStyle = {
 type LessonKeys = "presenceContent" | "distanceContent" | "room" | "course" | "teacher";
 
 const LessonDetailPage = ({match: {params: {id}}}) => {
+    return null;
+
+    /*
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchLesson = useFetchLessonDetailAPI();
@@ -243,7 +217,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 </Box>,
             ]}
         />
-    );
+    );*/
 };
 
 

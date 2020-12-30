@@ -15,7 +15,7 @@ export interface IForm <
     onSubmit: FormikConfig<FormikForm>["onSubmit"];
     data: Record<AvailableKeys, Omit<IField, "isUpdating" | "onReset" | "forceEditMode" | "isElevated" | "reorder" | "dragHandleProps" | "containsErrors" | "name" | "fieldPropsExtra"> & {
         nativeValue?: FormikForm[AvailableKeys];
-        isEqual?: (oldValue: FormikForm[AvailableKeys], newValue: FormikForm[AvailableKeys]) => boolean;
+        isEqual?: (oldValue: any, newValue: any) => boolean;
     }>;
 
     ordering: AvailableKeys[];
@@ -25,6 +25,8 @@ export interface IForm <
 
     onOrderingChange: (ordering: AvailableKeys[]) => any;
     onElevatedKeyChange: (key: AvailableKeys | null) => any;
+
+    validationSchema?: FormikConfig<FormikForm>["validationSchema"];
 }
 
 
@@ -40,6 +42,7 @@ const Form = <
         onOrderingChange,
         ordering,
         reorder,
+        validationSchema,
     }: IForm<AvailableKeys, FormikForm>) => {
     const onDragStart = (initial) => {
         const {draggableId} = initial;
@@ -84,6 +87,8 @@ const Form = <
                 {provided =>
                     <>
                         <Formik<FormikForm>
+                            enableReinitialize
+                            validationSchema={validationSchema}
                             initialValues={initialValues}
                             onSubmit={onSubmit}
                         >

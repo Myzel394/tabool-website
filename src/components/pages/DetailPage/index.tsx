@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, {ReactNode, useEffect, useState} from "react";
 import {
-    Box,
     Button,
     ButtonGroup,
     Container,
@@ -15,39 +14,31 @@ import {
 import {useTranslation} from "react-i18next";
 import {usePersistentStorage} from "hooks";
 import {Dayjs} from "dayjs";
-import {LoadingOverlay, PullToRefresh, UpdatedAt} from "components";
+import {PullToRefresh, UpdatedAt} from "components";
 import _ from "lodash";
 import {StorageType} from "hooks/usePersistentStorage";
 import {ButtonProps} from "@material-ui/core/Button";
 import {MdAdd, MdSearch} from "react-icons/all";
-import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+import {FormikConfig} from "formik";
 
-import * as changeRelation from "./changeRelation";
 import Title, {ITitle} from "./Title";
 import Form, {IForm} from "./Form";
+import ToggleButtonsForm, {IToggleButtonsForm} from "./ToggleButtonsForm";
 
 interface IButton extends ButtonProps {
     title: string;
 }
 
-interface RelationButtonType<RelationKeys extends string = string> {
-    value: RelationKeys;
-    title: string;
-    icon: ReactNode;
-}
-
-type RelationBooleanType<RelationKeys extends string = string> = {
-    [key in RelationKeys]: boolean;
-};
-
 export interface IDetailPage<
     AvailableKeys extends string,
-    FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
+    FormikForm extends Record<string, any> = Record<AvailableKeys, any>,
     QueryType = any,
-    RelationKeys extends string = string
+    RelationKeys extends string = string,
+    RelationForm extends Record<string, any> = Record<RelationKeys, any>,
 > {
     title: ITitle["title"];
     color: ITitle["color"];
+    onSubmit: FormikConfig<FormikForm>["onSubmit"];
 
     defaultOrdering: IForm<AvailableKeys, FormikForm>["ordering"];
     data: IForm<AvailableKeys, FormikForm>["data"];
@@ -61,16 +52,16 @@ export interface IDetailPage<
     bottomNode?: ReactNode | ReactNode[];
     footerNode?: ReactNode;
     buttons?: IButton[];
-    relation?: {
-        isUpdating: boolean;
-        value: RelationBooleanType<RelationKeys>;
-        onChange: (newRelation: RelationBooleanType<RelationKeys>) => any;
-        buttons: RelationButtonType<RelationKeys>[];
+    relationButtons?: {
+        values: IToggleButtonsForm<RelationKeys>["values"];
+        onSubmit: IToggleButtonsForm<RelationKeys>["onSubmit"];
     };
 
     searchAllPath?: string;
     addPath?: string;
     subTitle?: ITitle["subTitle"];
+
+    validationSchema?: IForm<AvailableKeys, FormikForm>["validationSchema"];
 }
 
 const STORAGE_METHOD = localStorage;
@@ -78,7 +69,7 @@ const STORAGE_METHOD = localStorage;
 
 const DetailPage = <
     AvailableKeys extends string,
-    FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
+    FormikForm extends Record<string, any> = Record<AvailableKeys, any>,
     QueryType = any,
     RelationKeys extends string = string
 >({
@@ -96,7 +87,7 @@ const DetailPage = <
         buttons,
         addPath,
         searchAllPath,
-        relation,
+        relationButtons,
         subTitle,
     }: IDetailPage<AvailableKeys, FormikForm, QueryType, RelationKeys>) => {
     const {t} = useTranslation();
@@ -109,7 +100,7 @@ const DetailPage = <
         .reduce((object, [key, value]) => ({
             ...object,
             // @ts-ignore
-            [key]: value.nativeValue,
+            [key]: value.nativeValue ?? value.information,
         }), {});
 
     // If `defaultOrdering's elements !== savedOrdering's elements`, reset it.
@@ -164,36 +155,12 @@ const DetailPage = <
                             onElevatedKeyChange={setElevatedKey}
                         />
                     </Grid>
-                    {relation &&
+                    {relationButtons &&
                         <Grid item>
-                            <LoadingOverlay isLoading={relation.isUpdating}>
-                                <Box
-                                    display="flex"
-                                    justifyContent="center"
-                                >
-                                    <ToggleButtonGroup
-                                        size="large"
-                                        value={changeRelation.toArray(relation.value)}
-                                        onChange={(event, newRelation: any) =>
-                                            relation.onChange(
-                                                changeRelation.toObject(
-                                                    newRelation,
-                                                    relation.buttons.map(button => button.value),
-                                                ),
-                                            )
-                                        }
-                                    >
-                                        {relation.buttons.map(button =>
-                                            <ToggleButton
-                                                key={button.value}
-                                                value={button.value}
-                                            >
-                                                {button.icon}
-                                                {button.title}
-                                            </ToggleButton>)}
-                                    </ToggleButtonGroup>
-                                </Box>
-                            </LoadingOverlay>
+                            <ToggleButtonsForm<RelationKeys>
+                                values={relationButtons.values}
+                                onSubmit={relationButtons.onSubmit}
+                            />
                         </Grid>
                     }
                     {(() => {

@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {useMutation, useQuery} from "react-query";
 import {
     IUpdateHomeworkDataData,
@@ -26,7 +26,6 @@ import {
 } from "react-icons/all";
 import dayjs, {Dayjs} from "dayjs";
 import {HomeworkDetail} from "types";
-import {getISODatetime} from "utils";
 import {generatePath} from "react-router";
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
@@ -37,6 +36,8 @@ import {Switch, TextField} from "formik-material-ui";
 import {DateTimePicker} from "formik-material-ui-pickers";
 import {Button, Link} from "@material-ui/core";
 import {formatLesson} from "format";
+import * as yup from "yup";
+
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
 
@@ -58,6 +59,13 @@ const getDueDateIcon = (dueDate: Dayjs, ignore: boolean): JSX.Element => {
     }
 };
 
+const schema = yup.object({
+    information: yup.string().nullable(),
+    type: yup.string().nullable(),
+    isPrivate: yup.boolean(),
+    dueDate: yup.date().nullable(),
+});
+
 const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
@@ -69,19 +77,10 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const {dispatch: dispatchError} = useContext(ErrorContext);
 
     const [homework, setHomework] = useState<HomeworkDetail>();
-    // Form
-    const [information, setInformation] = useState<HomeworkDetail["information"]>("");
-    const [dueDate, setDueDate] = useState<Dayjs>(dayjs());
-    const [type, setType] = useState<HomeworkDetail["type"]>(null);
-    const [isPrivate, setIsPrivate] = useState<HomeworkDetail["isPrivate"]>(false);
-
-    const [forceEdit, setForceEdit] = useState<HomeworkKeys[]>([]);
 
     // Server
     const {
-        mutate,
-        isLoading: isUpdatingHomework,
-        error: mutationError,
+        mutateAsync,
     } = useMutation<IUpdateHomeworkDataResponse, AxiosError, IUpdateHomeworkDataData>(
         updateHomeworkDataMutation,
         {
@@ -90,8 +89,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
         },
     );
     const {
-        mutate: mutateRelation,
-        isLoading: isUpdatingRelation,
+        mutateAsync: mutateRelation,
     } = useMutation<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>(
         updateHomeworkRelationMutation,
         {
@@ -120,61 +118,6 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
 
     const canEditHomework = homework?.isPrivate;
 
-    const updateHomework = useCallback(() => {
-        // Update if
-        if (
-            // homework is defined
-            homework &&
-            (
-                // and form changed
-                (
-                    information !== homework.information ||
-                    dueDate !== homework.dueDate ||
-                    type !== homework.type ||
-                    isPrivate !== homework.isPrivate
-                )
-            )
-        ) {
-            if (forceEdit.length === 0) {
-                mutate({
-                    id: homework.id,
-                    information: information ? information : undefined,
-                    dueDate: dueDate ? getISODatetime(dueDate) : undefined,
-                    type: type ? type : undefined,
-                    isPrivate: isPrivate ? isPrivate : undefined,
-                });
-            }
-        }
-    }, [dueDate, forceEdit.length, homework, information, isPrivate, mutate, type]);
-
-    // Update form from server
-    const homeworkInformation = homework?.information;
-    const homeworkDueDate = homework?.dueDate;
-    const homeworkType = homework?.type;
-    const homeworkIsPrivate = homework?.isPrivate;
-    useEffect(() => {
-        if (homeworkInformation) {
-            setInformation(homeworkInformation);
-        }
-        if (homeworkDueDate) {
-            setDueDate(homeworkDueDate);
-        }
-        if (homeworkType) {
-            setType(homeworkType);
-        }
-        if (homeworkIsPrivate) {
-            setIsPrivate(homeworkIsPrivate);
-        }
-    }, [homeworkDueDate, homeworkInformation, homeworkIsPrivate, homeworkType]);
-
-    // Form validation
-    useEffect(() => {
-        setForceEdit([]);
-        if (!dueDate.isValid()) {
-            setForceEdit(prevState => [...prevState, "dueDate"]);
-        }
-    }, [dueDate]);
-
     // Rendering
     if (isLoading) {
         return <LoadingIndicator />;
@@ -189,40 +132,42 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <DetailPage<HomeworkKeys, any, "completed" | "ignore">
+        <DetailPage<HomeworkKeys, IUpdateHomeworkDataData, IUpdateHomeworkDataResponse, "completed" | "ignore">
+            isRefreshing={isFetching}
             title={homework.lesson.lessonData.course.subject.name}
-            color={homework.lesson.lessonData.course.subject.userRelation.color}
+            validationSchema={schema}
             defaultOrdering={[
                 "information", "dueDate", "type", "isPrivate", "createdAt", "lesson",
             ]}
-            refetch={refetch}
-            updatedAt={dayjs(dataUpdatedAt)}
-            isRefreshing={isFetching}
-            orderingStorageName="detail:ordering:homework"
-            searchAllPath={generatePath("/homework/")}
-            addPath={generatePath("/homework/add/")}
-            relation={{
-                buttons: [
-                    {
-                        value: "completed" as "completed",
+            relationButtons={{
+                values: {
+                    completed: {
+                        isActive: homework.userRelation.completed,
                         icon: <MdCheck />,
                         title: t("Erledigt"),
                     },
-                    {
-                        value: "ignore" as "ignore",
+                    ignore: {
+                        isActive: homework.userRelation.ignore,
                         icon: <MdBlock />,
                         title: t("Ignorieren"),
                     },
-                ],
-                isUpdating: isUpdatingRelation,
-                value: homework.userRelation,
-                onChange: (newRelation) =>
+                },
+                onSubmit: (data, {resetForm}) =>
                     mutateRelation({
                         id: homework.id,
-                        completed: newRelation.completed,
-                        ignore: newRelation.ignore,
-                    }),
+                        ...data,
+                    })
+                        .catch(error => {
+                            addError(error, undefined, PredefinedMessageType.ErrorMutating);
+                            resetForm();
+                        }),
             }}
+            refetch={refetch}
+            updatedAt={dayjs(dataUpdatedAt)}
+            color={homework.lesson.lessonData.course.subject.userRelation.color}
+            orderingStorageName="detail:ordering:homework"
+            searchAllPath={generatePath("/homework/")}
+            addPath={generatePath("/homework/add/")}
             data={{
                 information: {
                     information: homework.information,
@@ -262,13 +207,13 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                 },
                 dueDate: {
                     icon: getDueDateIcon(
-                        dueDate,
-                        dueDate.isSame(homework.dueDate) ||
+                        homework.dueDate,
                         !(homework.userRelation.ignore || homework.userRelation.completed),
                     ),
                     title: t("Fälligkeitsdatum"),
                     nativeValue: homework.dueDate,
                     information: homework.dueDate.format("LL"),
+                    isEqual: (oldValue: Dayjs, newValue: Dayjs) => oldValue.isSame(newValue),
                     disableShowMore: true,
                     fieldProps: canEditHomework && {
                         type: "text",
@@ -300,6 +245,11 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     ),
                 },
             }}
+            onSubmit={(values, {setErrors, setSubmitting}) =>
+                mutateAsync(values)
+                    .catch((error) => setErrors(error.response?.data))
+                    .finally(() => setSubmitting(false))
+            }
         />
     );
 };

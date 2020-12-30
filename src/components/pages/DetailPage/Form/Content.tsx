@@ -118,7 +118,7 @@ const Content = ({
                                                 )}
                                             </Typography>
                                             {(() => {
-                                                if (helperText) {
+                                                if (!helperText) {
                                                     return null;
                                                 } else if (typeof helperText === "string") {
                                                     return (

@@ -1,24 +1,12 @@
-import genderColor from "constants/genderColor";
-
-import React, {memo, useContext} from "react";
-import {useTranslation} from "react-i18next";
-import {useDetailPageError, useQueryOptions} from "hooks";
-import {useQuery} from "react-query";
-import {AxiosError} from "axios";
-import {TeacherDetail} from "types";
-import {DetailPage, GenderStatus, LoadingIndicator} from "components";
-import {ErrorContext} from "contexts";
-import {CgCompress, FaTransgenderAlt, MdEmail, MdTextFields} from "react-icons/all";
-import {Grid, Link, Typography} from "@material-ui/core";
-import createMailToLink from "mailto-link";
-import dayjs from "dayjs";
-import {generatePath} from "react-router-dom";
-import {IFetchTeacherInformationResponse, useFetchTeacherDetailAPI, useFetchTeacherInformationAPI} from "hooks/apis";
+import React, {memo} from "react";
 
 
 type TeacherKeys = "name" | "shortName" | "email" | "gender";
 
 const TeacherDetailPage = ({match: {params: {id}}}) => {
+    return null;
+
+    /*
     const {t} = useTranslation();
     const fetchTeacher = useFetchTeacherDetailAPI();
     const fetchTeacherInformation = useFetchTeacherInformationAPI();
@@ -165,7 +153,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
                 },
             }}
         />
-    );
+    );*/
 };
 
 export default memo(TeacherDetailPage);
