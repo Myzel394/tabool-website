@@ -1,4 +1,4 @@
-import {ProviderContext, useSnackbar as notistackUseSnackbar} from "notistack";
+import {OptionsObject, ProviderContext, SnackbarMessage, useSnackbar as notistackUseSnackbar} from "notistack";
 import {AxiosError} from "axios";
 import {useCallback} from "react";
 import {useTranslation} from "react-i18next";
@@ -19,7 +19,13 @@ export interface IUseSnackbar {
 
 const useSnackbar = (): IUseSnackbar => {
     const {t} = useTranslation();
-    const {enqueueSnackbar: addSnackbar, closeSnackbar} = notistackUseSnackbar();
+    const {enqueueSnackbar, closeSnackbar} = notistackUseSnackbar();
+    const addSnackbar = useCallback((message: SnackbarMessage, options?: OptionsObject) =>
+        enqueueSnackbar(message, {
+            ...options,
+            preventDuplicate: true,
+        })
+    , [enqueueSnackbar]);
 
     const addError = useCallback<IUseSnackbar["addError"]>((
         error,
