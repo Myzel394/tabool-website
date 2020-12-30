@@ -59,7 +59,7 @@ const Homework = ({
         mutate: updateRelation,
         isLoading,
     } = useMutation<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>(
-        updateHomeworkRelation,
+        (values) => updateHomeworkRelation(id, values),
         {
             onSuccess: data => onServerUpdate?.(data),
         },
@@ -160,7 +160,6 @@ const Homework = ({
                                                             event.preventDefault();
                                                             if (onCompletedChange()) {
                                                                 updateRelation({
-                                                                    id,
                                                                     completed: !completed,
                                                                 });
                                                             }
@@ -175,7 +174,6 @@ const Homework = ({
                                                             event.preventDefault();
                                                             if (onIgnoreChange()) {
                                                                 updateRelation({
-                                                                    id,
                                                                     ignore: !ignore,
                                                                 });
                                                             }

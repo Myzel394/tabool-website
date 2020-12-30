@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";
+import React, {useState} from "react";
 import {
     Box,
     Button,
@@ -29,6 +29,7 @@ export interface IContent {
     onReset: () => any;
     forceEditMode: boolean;
     fieldPropsExtra: FieldInputProps<any>;
+    onSubmit: () => Promise<void>;
 
     helperText?: string | JSX.Element;
     disableShowMore?: boolean;
@@ -49,6 +50,7 @@ const Content = ({
     forceEditMode,
     fieldProps,
     fieldPropsExtra,
+    onSubmit,
 }: IContent) => {
     const {t} = useTranslation();
 
@@ -131,11 +133,6 @@ const Content = ({
                                                 }
                                             })()}
                                         </Grid>
-                                        {isUpdating && (
-                                            <Grid item>
-                                                <CircularProgress size="1.5rem" />
-                                            </Grid>
-                                        )}
                                     </Grid>
                                 )}
                             </Grid>
@@ -147,13 +144,18 @@ const Content = ({
                                                 <ToggleButton
                                                     selected={isEditActive}
                                                     disabled={forceEditMode}
-                                                    onChange={() => setIsEditActive(prevState => {
-                                                        const value = !prevState;
-                                                        if (!value) {
-                                                            onEditModeLeft?.();
+                                                    onChange={() => {
+                                                        if (isEditActive) {
+                                                            // eslint-disable-next-line promise/catch-or-return
+                                                            onSubmit()
+                                                                .then(() => {
+                                                                    setIsEditActive(false);
+                                                                    onEditModeLeft?.();
+                                                                });
+                                                        } else {
+                                                            setIsEditActive(true);
                                                         }
-                                                        return value;
-                                                    })}
+                                                    }}
                                                 >
                                                     <MdEdit />
                                                 </ToggleButton>
@@ -163,6 +165,7 @@ const Content = ({
                                             <Grid item>
                                                 <Tooltip title={t("Änderungen verwerfen").toString()}>
                                                     <IconButton
+                                                        disabled={forceEditMode}
                                                         onClick={() => {
                                                             setIsEditActive(false);
                                                             onReset();
@@ -173,6 +176,11 @@ const Content = ({
                                                 </Tooltip>
                                             </Grid>
                                         )}
+                                        {isUpdating && (
+                                            <Grid item>
+                                                <CircularProgress size="1.5rem" />
+                                            </Grid>
+                                        )}
                                     </Grid>
                                 </Grid>
                             )}
@@ -180,18 +188,19 @@ const Content = ({
                     </Grid>
                 </Grid>
             </Box>
-            <SimpleDialog
-                isOpen={showFullText}
-                primaryButton={t("Schließen")}
-                title={title}
-                onClose={() => setShowFullText(false)}
-            >
-                <DialogContentText>
-                    {information}
-                </DialogContentText>
-            </SimpleDialog>
+            {!disableShowMore &&
+                <SimpleDialog
+                    isOpen={showFullText}
+                    primaryButton={t("Schließen")}
+                    title={title}
+                    onClose={() => setShowFullText(false)}
+                >
+                    <DialogContentText>
+                        {information}
+                    </DialogContentText>
+                </SimpleDialog>}
         </>
     );
 };
 
-export default memo(Content);
+export default Content;

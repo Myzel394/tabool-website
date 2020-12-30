@@ -4,8 +4,6 @@ import {HomeworkDetail} from "types";
 import {getLoginConfig} from "api";
 
 export interface IUpdateHomeworkUserRelationData {
-    id: string;
-
     completed?: boolean;
     ignore?: boolean;
 }
@@ -15,10 +13,9 @@ export type IUpdateHomeworkUserRelationResponse = HomeworkDetail["userRelation"]
 const useUpdateHomeworkUserRelationAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async ({
+    return useCallback(async (id: string, {
         completed,
         ignore,
-        id,
     }: IUpdateHomeworkUserRelationData): Promise<IUpdateHomeworkUserRelationResponse> => {
         const {data} = await instance.put(`/api/user-relation/homework/${id}/`, {
             completed,

@@ -13,7 +13,7 @@ export interface IForm <
 >{
     initialValues: FormikConfig<FormikForm>["initialValues"];
     onSubmit: FormikConfig<FormikForm>["onSubmit"];
-    data: Record<AvailableKeys, Omit<IField, "isUpdating" | "onReset" | "forceEditMode" | "isElevated" | "reorder" | "dragHandleProps" | "containsErrors" | "name" | "fieldPropsExtra"> & {
+    data: Record<AvailableKeys, Omit<IField, "isUpdating" | "onReset" | "forceEditMode" | "isElevated" | "reorder" | "dragHandleProps" | "containsErrors" | "name" | "fieldPropsExtra" | "onSubmit"> & {
         nativeValue?: FormikForm[AvailableKeys];
         isEqual?: (oldValue: any, newValue: any) => boolean;
     }>;
@@ -98,6 +98,7 @@ const Form = <
                                 errors,
                                 setFieldValue,
                                 getFieldProps,
+                                submitForm,
                             }) =>
                                 <IkForm>
                                     <Grid
@@ -142,6 +143,7 @@ const Form = <
                                                                 reorder={reorder}
                                                                 dragHandleProps={provided.dragHandleProps}
                                                                 containsErrors={Boolean(errors[key])}
+                                                                onSubmit={submitForm}
                                                                 onReset={() => setFieldValue(key, nativeValue)}
                                                             />
                                                         </Grid>

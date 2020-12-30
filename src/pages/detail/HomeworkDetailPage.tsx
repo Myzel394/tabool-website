@@ -82,7 +82,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const {
         mutateAsync,
     } = useMutation<IUpdateHomeworkDataResponse, AxiosError, IUpdateHomeworkDataData>(
-        updateHomeworkDataMutation,
+        (values) => updateHomeworkDataMutation(id, values),
         {
             onSuccess: setHomework,
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
@@ -91,7 +91,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const {
         mutateAsync: mutateRelation,
     } = useMutation<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>(
-        updateHomeworkRelationMutation,
+        (values) => updateHomeworkRelationMutation(id, values),
         {
             onSuccess: newRelation => setHomework(prevState => update(prevState, {
                 userRelation: {
@@ -152,15 +152,18 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                         title: t("Ignorieren"),
                     },
                 },
-                onSubmit: (data, {resetForm}) =>
-                    mutateRelation({
-                        id: homework.id,
-                        ...data,
-                    })
+                onSubmit: (data, {resetForm, setSubmitting}) =>
+                    mutateRelation(data)
+                        .then(relation => setHomework(prevState => update(prevState, {
+                            userRelation: {
+                                $set: relation,
+                            },
+                        })))
                         .catch(error => {
                             addError(error, undefined, PredefinedMessageType.ErrorMutating);
                             resetForm();
-                        }),
+                        })
+                        .finally(() => setSubmitting(false)),
             }}
             refetch={refetch}
             updatedAt={dayjs(dataUpdatedAt)}
@@ -247,6 +250,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             }}
             onSubmit={(values, {setErrors, setSubmitting}) =>
                 mutateAsync(values)
+                    .then(setHomework)
                     .catch((error) => setErrors(error.response?.data))
                     .finally(() => setSubmitting(false))
             }

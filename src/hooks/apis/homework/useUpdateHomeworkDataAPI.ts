@@ -6,7 +6,6 @@ import {getLoginConfig} from "api";
 import parseHomework from "./parseHomework";
 
 export interface IUpdateHomeworkDataData {
-    id: string;
     information?: string;
     dueDate?: string;
     type?: string;
@@ -18,8 +17,7 @@ export type IUpdateHomeworkDataResponse = HomeworkDetail;
 const useUpdateHomeworkDataAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async ({
-        id,
+    return useCallback(async (id: string, {
         dueDate,
         information,
         type,

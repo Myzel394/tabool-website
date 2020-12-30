@@ -89,6 +89,8 @@ const DetailPage = <
         searchAllPath,
         relationButtons,
         subTitle,
+        onSubmit,
+        validationSchema,
     }: IDetailPage<AvailableKeys, FormikForm, QueryType, RelationKeys>) => {
     const {t} = useTranslation();
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
@@ -147,10 +149,8 @@ const DetailPage = <
                             ordering={ordering}
                             elevatedKey={elevatedKey}
                             reorder={enableReordering}
-                            onSubmit={() => {
-                                // eslint-disable-next-line no-console
-                                console.log("cälld");
-                            }}
+                            validationSchema={validationSchema}
+                            onSubmit={onSubmit}
                             onOrderingChange={setOrdering}
                             onElevatedKeyChange={setElevatedKey}
                         />

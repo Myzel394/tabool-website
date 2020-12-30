@@ -22,6 +22,7 @@ const Field = ({
     reorder,
     dragHandleProps,
     containsErrors,
+    isUpdating,
     ...contentProps
 }: IField) => {
     const theme = useTheme();
@@ -60,7 +61,8 @@ const Field = ({
                         </div>
                         <Content
                             {...contentProps}
-                            forceEditMode={containsErrors}
+                            isUpdating={isUpdating}
+                            forceEditMode={containsErrors || isUpdating}
                         />
                     </Box>
                 )}
