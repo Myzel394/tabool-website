@@ -4,7 +4,6 @@ import {LessonDetail} from "types";
 import {getLoginConfig} from "api";
 
 export interface IUpdateLessonUserRelationData {
-    id: string;
     attendance: boolean;
 }
 
@@ -13,8 +12,7 @@ export type IUpdateLessonUserRelationResponse = LessonDetail["userRelation"];
 const useUpdateLessonUserRelationAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async ({
-        id,
+    return useCallback(async (id: string, {
         attendance,
     }: IUpdateLessonUserRelationData): Promise<IUpdateLessonUserRelationResponse> => {
         const {data} = await instance.put(`/api/user-relation/lesson/${id}/`, {

@@ -79,7 +79,9 @@ const Content = ({
                             color="textSecondary"
                         >
                             <Box display="flex" flexDirection="row" alignItems="center">
-                                {typeof icon === "function" ? icon(value) : icon}
+                                {typeof icon === "function"
+                                    ? icon(value)
+                                    : icon}
                                 <Box ml={1} component="span">
                                     {title}
                                 </Box>
@@ -103,31 +105,33 @@ const Content = ({
                                                 component="dd"
                                                 variant="body1"
                                             >
-                                                {disableShowMore ? information : (
-                                                    <Truncate
-                                                        lines={softTruncateActive ? 8 : 40}
-                                                        ellipsis={(
-                                                            <>
-                                                                <span>...</span>
-                                                                <Button color="default" onClick={() => setSoftTruncateActive(prevState => !prevState)}>
-                                                                    {softTruncateActive ? t("Mehr anzeigen") : t("Weniger anzeigen")}
-                                                                </Button>
-                                                                {!softTruncateActive && (
-                                                                    <Button
-                                                                        color="default" onClick={() => {
-                                                                            setShowFullText(true);
-                                                                            setSoftTruncateActive(true);
-                                                                        }}
-                                                                    >
-                                                                        {t("Ganzen Text anzeigen")}
+                                                {(disableShowMore ||
+                                                    !(typeof information === "string") ||
+                                                    (information.length < 20) ? information : (
+                                                        <Truncate
+                                                            lines={softTruncateActive ? 8 : 40}
+                                                            ellipsis={(
+                                                                <>
+                                                                    <span>...</span>
+                                                                    <Button color="default" onClick={() => setSoftTruncateActive(prevState => !prevState)}>
+                                                                        {softTruncateActive ? t("Mehr anzeigen") : t("Weniger anzeigen")}
                                                                     </Button>
-                                                                )}
-                                                            </>
-                                                        )}
-                                                    >
-                                                        {information}
-                                                    </Truncate>
-                                                )}
+                                                                    {!softTruncateActive && (
+                                                                        <Button
+                                                                            color="default" onClick={() => {
+                                                                                setShowFullText(true);
+                                                                                setSoftTruncateActive(true);
+                                                                            }}
+                                                                        >
+                                                                            {t("Ganzen Text anzeigen")}
+                                                                        </Button>
+                                                                    )}
+                                                                </>
+                                                            )}
+                                                        >
+                                                            {information}
+                                                        </Truncate>
+                                                    ))}
                                             </Typography>
                                             {(() => {
                                                 if (!helperText) {
@@ -201,7 +205,7 @@ const Content = ({
             {!disableShowMore &&
                 <SimpleDialog
                     isOpen={showFullText}
-                    primaryButton={t("Schließen")}
+                    primaryButton={null}
                     title={title}
                     onClose={() => setShowFullText(false)}
                 >

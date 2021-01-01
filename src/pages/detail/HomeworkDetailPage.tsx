@@ -162,10 +162,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                                 $set: relation,
                             },
                         })))
-                        .catch(error => {
-                            addError(error, undefined, PredefinedMessageType.ErrorMutating);
-                            resetForm();
-                        })
+                        .catch(resetForm)
                         .finally(() => setSubmitting(false)),
             }}
             refetch={refetch}

@@ -1,4 +1,34 @@
-import React, {memo} from "react";
+import * as queryString from "querystring";
+
+import React, {memo, useContext, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
+import {
+    IFetchLessonsResponse,
+    IUpdateLessonUserRelationData,
+    IUpdateLessonUserRelationResponse,
+    useFetchLessonDetailAPI,
+    useUpdateLessonUserRelationAPI,
+} from "hooks/apis";
+import {Box, Button, ButtonGroup, Collapse, Grid, Link, Paper, Typography} from "@material-ui/core";
+import update from "immutability-helper";
+import dayjs from "dayjs";
+import {DetailPage, Homework, IllEmailButton, LoadingIndicator} from "components";
+import {FaChalkboardTeacher, FaRunning, FiMonitor, MdPlace} from "react-icons/all";
+import {generatePath} from "react-router-dom";
+import {useMutation, useQuery} from "react-query";
+import {LessonDetail} from "types";
+import {ErrorContext} from "contexts";
+import Material from "components/Material";
+import {combineDatetime} from "utils";
+import {AxiosError} from "axios";
+import {Alert} from "@material-ui/lab";
+import {CourseIcon, HomeworkIcon, TeacherIcon} from "components/icons";
+import _ from "lodash";
+import {PredefinedMessageType} from "hooks/useSnackbar";
+
+import ModificationsNode from "./ModificationsNode";
+import Submissions from "./Submissions";
 
 
 const gridItemStyle = {
@@ -8,9 +38,6 @@ const gridItemStyle = {
 type LessonKeys = "presenceContent" | "distanceContent" | "room" | "course" | "teacher";
 
 const LessonDetailPage = ({match: {params: {id}}}) => {
-    return null;
-
-    /*
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchLesson = useFetchLessonDetailAPI();
@@ -38,10 +65,10 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     );
     // Relation
     const {
-        mutate: mutateRelation,
-        isLoading: isUpdatingRelation,
+        mutateAsync: mutateRelation,
     } = useMutation<IUpdateLessonUserRelationResponse, AxiosError, IUpdateLessonUserRelationData>(
-        updateLessonUserRelation, {
+        newRelation => updateLessonUserRelation(id, newRelation),
+        {
             onSuccess: newRelation => setLesson(prevState => update(prevState, {
                 userRelation: {
                     $set: newRelation,
@@ -92,7 +119,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             title: t("Lehrer"),
             information: `${lesson.lessonData.course.teacher.firstName} ${lesson.lessonData.course.teacher.lastName}`,
             disableShowMore: true,
-            subInformation: (
+            helperText: (
                 <Link
                     component={Button}
                     underline="none"
@@ -113,7 +140,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     }, _.negate(_.isUndefined));
 
     return (
-        <DetailPage<LessonKeys, any, "attendance">
+        <DetailPage<LessonKeys, "attendance", IFetchLessonsResponse>
             title={lesson.lessonData.course.name}
             subTitle={subTitle}
             color={lesson.lessonData.course.subject.userRelation.color}
@@ -125,20 +152,24 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             isRefreshing={isFetching}
             updatedAt={dayjs(dataUpdatedAt)}
             data={data}
-            relation={{
-                buttons: [
-                    {
+            relationButtons={{
+                values: {
+                    attendance: {
                         title: t("Anwesend"),
-                        value: "attendance",
+                        isActive: lesson.userRelation.attendance,
                         icon: <FaRunning />,
                     },
-                ],
-                isUpdating: isUpdatingRelation,
-                value: lesson.userRelation,
-                onChange: (newRelation) => mutateRelation({
-                    id: lesson.id,
-                    attendance: newRelation.attendance,
-                }),
+                },
+                onSubmit: (newRelation, {resetForm, setSubmitting}) =>
+                    mutateRelation(newRelation)
+                        .then(relation => setLesson(prevState => update(prevState, {
+                            userRelation: {
+                                $set: relation,
+                            },
+                        })))
+                        .catch(resetForm)
+                        .finally(() => setSubmitting(true))
+                ,
             }}
             headerNode={lesson?.modifications.length > 0 && <ModificationsNode lesson={lesson} />}
             bottomNode={[
@@ -148,76 +179,84 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 >
                     <IllEmailButton />
                 </Collapse>,
-                <div key="materials">
-                    <Typography variant="h2">
-                        {t("Materialien")}
-                    </Typography>
-                    {lesson.materials.length > 0 ? (
-                        <Grid container spacing={1}>
-                            {lesson.materials.map(material =>
-                                <Grid key={material.id} item style={gridItemStyle}>
-                                    <Material
-                                        key={material.id}
-                                        id={material.id}
-                                        name={material.name}
-                                        addedAt={material.addedAt}
-                                        size={material.size}
-                                    />
-                                </Grid>)}
-                        </Grid>
-                    ) : (
-                        <Alert severity="info">
-                            {t("Keine Materialien verfügbar.")}
-                        </Alert>
-                    )}
+                <Paper key="materials" elevation={0}>
+                    <Box p={3}>
+                        <Typography variant="h2">
+                            {t("Materialien")}
+                        </Typography>
+                        {lesson.materials.length > 0 ? (
+                            <Grid container spacing={1}>
+                                {lesson.materials.map(material =>
+                                    <Grid key={material.id} item style={gridItemStyle}>
+                                        <Material
+                                            key={material.id}
+                                            id={material.id}
+                                            name={material.name}
+                                            addedAt={material.addedAt}
+                                            size={material.size}
+                                        />
+                                    </Grid>)}
+                            </Grid>
+                        ) : (
+                            <Alert severity="info">
+                                {t("Keine Materialien verfügbar.")}
+                            </Alert>
+                        )}
+                    </Box>
+                </Paper>,
+                <Paper key="homeworks" elevation={0}>
+                    <Box p={3}>
+                        <Typography variant="h2">
+                            {t("Hausaufgaben")}
+                        </Typography>
+                        {lesson.homeworks.length > 0 ? (
+                            <Grid container spacing={1}>
+                                {lesson.homeworks.map(homework =>
+                                    <Grid key={homework.id} item style={gridItemStyle}>
+                                        <Homework
+                                            subject={lesson.lessonData.course.subject}
+                                            information={homework.information}
+                                            id={homework.id}
+                                            creationDate={homework.createdAt}
+                                        />
+                                    </Grid>)}
+                            </Grid>
+                        ) : (
+                            <Alert severity="info">
+                                {t("Keine Hausaufgaben, yay!")}
+                            </Alert>
+                        )}
+                    </Box>
+                </Paper>,
+                <Paper key="submissions" elevation={0}>
+                    <Box p={3}>
+                        <Typography variant="h2">
+                            {t("Einsendungen")}
+                        </Typography>
+                        <Submissions lesson={lesson} />
+                    </Box>
+                </Paper>,
+                <div key="actions">
+                    <Box display="flex" justifyContent="center" alignItems="center">
+                        <ButtonGroup variant="outlined">
+                            <Link
+                                underline="none"
+                                component={Button}
+                                startIcon={<HomeworkIcon />}
+                                href={generatePath("/homework/add?:query", {
+                                    query: queryString.stringify({
+                                        lesson: lesson.id,
+                                    }),
+                                })}
+                            >
+                                {t("Hausaufgabe hinzufügen")}
+                            </Link>
+                        </ButtonGroup>
+                    </Box>
                 </div>,
-                <div key="homeworks">,
-                    <Typography variant="h2">
-                        {t("Hausaufgaben")}
-                    </Typography>
-                    {lesson.homeworks.length > 0 ? (
-                        <Grid container spacing={1}>
-                            {lesson.homeworks.map(homework =>
-                                <Grid key={homework.id} item style={gridItemStyle}>
-                                    <Homework
-                                        subject={lesson.lessonData.course.subject}
-                                        information={homework.information}
-                                        id={homework.id}
-                                        creationDate={homework.createdAt}
-                                    />
-                                </Grid>)}
-                        </Grid>
-                    ) : (
-                        <Alert severity="info">
-                            {t("Keine Hausaufgaben, yay!")}
-                        </Alert>
-                    )}
-                </div>,
-                <div key="submissions">
-                    <Typography variant="h2">
-                        {t("Einsendungen")}
-                    </Typography>
-                    <Submissions lesson={lesson} />
-                </div>,
-                <Box key="actions" display="flex" justifyContent="center" alignItems="center">
-                    <ButtonGroup variant="outlined">
-                        <Link
-                            underline="none"
-                            component={Button}
-                            startIcon={<HomeworkIcon />}
-                            href={generatePath("/homework/add?:query", {
-                                query: queryString.stringify({
-                                    lesson: lesson.id,
-                                }),
-                            })}
-                        >
-                            {t("Hausaufgabe hinzufügen")}
-                        </Link>
-                    </ButtonGroup>
-                </Box>,
             ]}
         />
-    );*/
+    );
 };
 
 

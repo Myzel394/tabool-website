@@ -28,14 +28,13 @@ const IllEmailButton = ({children, ...other}: IIllEmailButton) => {
                     contacts.mainTeacher.email,
                 ],
                 subject: "Entschuldigungs-Bescheid",
-                body: `
-                    Sehr geehrte Damen und Herren,
-                    
-                    leider kann ich heute nicht zur Schule kommen, da ich krank bin.
-                    Ich entschuldige mich für das Fehlen.
-                    
-                    Mit freundlichen Grüßen
-                    ${user.data.firstName} ${user.data.lastName}
+                body: `Sehr geehrte Damen und Herren,
+
+leider kann ich heute nicht zur Schule kommen, da ich krank bin.
+Ich entschuldige mich für das Fehlen.
+
+Mit freundlichen Grüßen
+${user.data.firstName} ${user.data.lastName}
                 `,
             })}
             onClick={() => {

@@ -12,7 +12,7 @@ type AvailableAnimations = "slide" | "fade";
 export interface ISimpleDialog extends Omit<DialogProps, "open"> {
     isOpen: DialogProps["open"];
     onClose: () => any;
-    primaryButton: JSX.Element;
+    primaryButton: JSX.Element | null;
     title: string;
 
     transition?: AvailableAnimations;

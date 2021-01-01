@@ -65,6 +65,10 @@ export interface IDetailPage<
 
 const STORAGE_METHOD = localStorage;
 
+const fullWidth = {
+    width: "100%",
+};
+
 
 const DetailPage = <
     AvailableKeys extends string,
@@ -168,7 +172,7 @@ const DetailPage = <
                                 <>
                                     {bottomNode.map(node =>
                                         // @ts-ignore: If array given, nodes do have keys set
-                                        <Grid key={node.key} item>
+                                        <Grid key={node.key} item style={fullWidth}>
                                             {node}
                                         </Grid>)}
                                 </>
