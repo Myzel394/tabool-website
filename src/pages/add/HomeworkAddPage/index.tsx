@@ -22,7 +22,6 @@ const HomeworkAddPage = () => {
         },
     );
 
-
     return (
         <Form
             onSubmit={(data, {setErrors, setSubmitting}) =>

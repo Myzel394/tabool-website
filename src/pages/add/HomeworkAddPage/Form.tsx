@@ -32,7 +32,7 @@ const schema = yup.object({
     isPrivate: yup.boolean(),
     lesson: yup.string().required(),
     information: yup.string().nullable(),
-    type: yup.string(),
+    type: yup.string().nullable(),
     dueDate: yup.date().min(dayjs()).nullable(),
 });
 
@@ -76,7 +76,7 @@ const Form = ({
                                         <FormikLessonField
                                             innerRef={reference => {
                                                 if (reference && !_.isEqual(reference, $lesson)) {
-                                                    set$Lesson(reference);
+                                                    set$Lesson(reference.lesson);
                                                 }
                                             }}
                                             name="lesson"
