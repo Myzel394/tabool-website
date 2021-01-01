@@ -33,13 +33,14 @@ import {ErrorContext} from "contexts";
 import update from "immutability-helper";
 import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
 import {CheckboxWithLabel, TextField} from "formik-material-ui";
-import {Button, FormGroup, FormHelperText, Link} from "@material-ui/core";
+import {Button, FormGroup, FormHelperText, Grid, Link} from "@material-ui/core";
 import * as yup from "yup";
 import {Field} from "formik";
 import {formatLesson} from "format";
 import {LessonIcon} from "components/icons";
+import {buildPath, lazyDatetime} from "utils";
 
-import {buildPath, lazyDatetime} from "../../utils";
+import ExtraActions from "./ExtraActions";
 
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
@@ -176,6 +177,16 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                 dueDate: lazyDatetime(homework.dueDate),
                 isPrivate: homework.isPrivate,
             })}
+            renderTopField={reorderElement => (
+                <>
+                    <Grid item>
+                        {reorderElement}
+                    </Grid>
+                    <Grid item>
+                        <ExtraActions id={id} />
+                    </Grid>
+                </>
+            )}
             data={{
                 information: {
                     information: homework.information,

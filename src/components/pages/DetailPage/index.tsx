@@ -45,11 +45,12 @@ export interface IDetailPage<
     refetch: () => Promise<any>;
     isRefreshing: boolean;
 
+    renderTopField: (reorderLabel: JSX.Element) => JSX.Element;
+
     updatedAt?: Dayjs;
     headerNode?: ReactNode;
     bottomNode?: ReactNode | ReactNode[];
     footerNode?: ReactNode;
-    buttons?: IButton[];
     relationButtons?: {
         values: IToggleButtonsForm<RelationKeys>["values"];
         onSubmit: IToggleButtonsForm<RelationKeys>["onSubmit"];
@@ -87,7 +88,7 @@ const DetailPage = <
         bottomNode,
         footerNode,
         headerNode,
-        buttons,
+        renderTopField,
         addPath,
         searchAllPath,
         relationButtons,
@@ -123,27 +124,20 @@ const DetailPage = <
                 {headerNode}
                 <Grid container spacing={4} alignItems="center" justify="center" direction="column">
                     <Grid item>
-                        <FormControlLabel
-                            control={(
-                                <Switch
-                                    value={enableReordering}
-                                    onChange={event => setEnableReordering(event.target.checked)}
-                                />
+                        <Grid container spacing={1} alignItems="center" justify="center" direction="row">
+                            {renderTopField(
+                                <FormControlLabel
+                                    control={(
+                                        <Switch
+                                            value={enableReordering}
+                                            onChange={event => setEnableReordering(event.target.checked)}
+                                        />
+                                    )}
+                                    label={t("Elemente neu anordnen")}
+                                />,
                             )}
-                            label={t("Elemente neu anordnen")}
-                        />
-                    </Grid>
-                    {buttons &&
-                        <Grid item>
-                            <ButtonGroup variant="outlined" orientation="vertical">
-                                {buttons.map(({title, ...other}) => (
-                                    <Button key={title} {...other}>
-                                        {title}
-                                    </Button>
-                                ))}
-                            </ButtonGroup>
                         </Grid>
-                    }
+                    </Grid>
                     <Grid item>
                         <Form
                             // @ts-ignore
@@ -216,6 +210,16 @@ const DetailPage = <
             </Container>
         </PullToRefresh>
     );
+};
+
+DetailPage.defaultProps = {
+    renderTopField(reorderElement) {
+        return (
+            <Grid item>
+                {reorderElement}
+            </Grid>
+        );
+    },
 };
 
 export default DetailPage;
