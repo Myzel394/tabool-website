@@ -50,7 +50,7 @@ const HomeworkListPage = () => {
         hasNextPage,
     } = useInfiniteQuery<IFetchHomeworkListResponse, AxiosError>(
         `fetch_homework_list_${debouncedSearch}`,
-        () => fetchHomework({
+        (context) => fetchHomework({
             ordering,
             subjectId: filter?.subject?.id,
             completed: filter?.completed,
@@ -58,7 +58,7 @@ const HomeworkListPage = () => {
             dueDateMin: filter?.dueDateStart ? getISODatetime(setBeginTime(filter.dueDateStart)) : undefined,
             dueDateMax: filter?.dueDateEnd ? getISODatetime(setEndTime(filter.dueDateEnd)) : undefined,
             search: debouncedSearch,
-        }),
+        }, context.pageParam),
         {
             ...queryOptions,
             onSuccess: data => setHomeworks(data.pages.reduce((previousValue: any, currentValue) => [
@@ -98,7 +98,7 @@ const HomeworkListPage = () => {
             ]}
             title={t("Hausaufgaben")}
             ordering={ordering}
-            fullAmount={rawDataGroups?.[0].count ?? 0}
+            fullAmount={rawDataGroups?.[0]?.count ?? 0}
             isFetching={isLoading}
             isError={isError}
             containsMore={hasNextPage ?? false}
