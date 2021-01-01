@@ -42,7 +42,6 @@ export interface IForm <
     FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
 >{
     initialValues: FormikConfig<FormikForm>["initialValues"];
-    onSubmit: (values: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => Promise<any>;
     data: Record<AvailableKeys, RecordField & {
         nativeValue?: FormikForm[AvailableKeys];
         isEqual?: (oldValue: any, newValue: any) => boolean;
@@ -58,6 +57,7 @@ export interface IForm <
     onElevatedKeyChange: (key: AvailableKeys | null) => any;
 
     validationSchema?: FormikConfig<FormikForm>["validationSchema"];
+    onSubmit?: (values: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => Promise<any>;
 }
 
 
@@ -135,10 +135,12 @@ const Form = <
                             enableReinitialize
                             validationSchema={validationSchema}
                             initialValues={initialValues}
-                            onSubmit={(values, helpers) =>
-                                onSubmit(values, helpers)
-                                    .then(() => setEditModeActive([]))
-                            }
+                            onSubmit={(values, helpers) => {
+                                if (onSubmit) {
+                                    return onSubmit(values, helpers)
+                                        .then(() => setEditModeActive([]));
+                                }
+                            }}
                         >
                             {formik => {
                                 const {

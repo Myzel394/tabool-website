@@ -135,7 +135,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <DetailPage<HomeworkKeys, IUpdateHomeworkDataData, IUpdateHomeworkDataResponse, "completed" | "ignore">
+        <DetailPage<HomeworkKeys, "completed" | "ignore", IUpdateHomeworkDataData, IUpdateHomeworkDataResponse>
             isRefreshing={isFetching}
             title={homework.lesson.lessonData.course.subject.name}
             validationSchema={schema}

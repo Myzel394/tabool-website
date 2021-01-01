@@ -37,7 +37,6 @@ export interface IDetailPage<
 > {
     title: ITitle["title"];
     color: ITitle["color"];
-    onSubmit: IForm<AvailableKeys, FormikForm>["onSubmit"];
 
     defaultOrdering: IForm<AvailableKeys, FormikForm>["ordering"];
     data: IForm<AvailableKeys, FormikForm>["data"];
@@ -61,6 +60,7 @@ export interface IDetailPage<
     subTitle?: ITitle["subTitle"];
 
     validationSchema?: IForm<AvailableKeys, FormikForm>["validationSchema"];
+    onSubmit?: IForm<AvailableKeys, FormikForm>["onSubmit"];
 }
 
 const STORAGE_METHOD = localStorage;
@@ -68,9 +68,9 @@ const STORAGE_METHOD = localStorage;
 
 const DetailPage = <
     AvailableKeys extends string,
-    FormikForm extends Record<string, any> = Record<AvailableKeys, any>,
+    RelationKeys extends string = string,
     QueryType = any,
-    RelationKeys extends string = string
+    FormikForm extends Record<string, any> = Record<AvailableKeys, any>,
 >({
         title,
         color,

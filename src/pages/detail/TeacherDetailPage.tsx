@@ -1,12 +1,29 @@
-import React, {memo} from "react";
+import genderColor from "constants/genderColor";
+
+import React, {memo, useContext} from "react";
+import dayjs from "dayjs";
+import {Grid, Link, Typography} from "@material-ui/core";
+import {CgCompress, FaTransgenderAlt, MdEmail, MdTextFields} from "react-icons/all";
+import {DetailPage, GenderStatus, LoadingIndicator} from "components";
+import {
+    IFetchTeacherInformationResponse,
+    IFetchTeacherResponse,
+    useFetchTeacherDetailAPI,
+    useFetchTeacherInformationAPI,
+} from "hooks/apis";
+import {buildPath} from "utils";
+import {useTranslation} from "react-i18next";
+import {ErrorContext} from "contexts";
+import {useDetailPageError, useQueryOptions} from "hooks";
+import {TeacherDetail} from "types";
+import {useQuery} from "react-query";
+import {AxiosError} from "axios";
+import createMailToLink from "mailto-link";
 
 
 type TeacherKeys = "name" | "shortName" | "email" | "gender";
 
 const TeacherDetailPage = ({match: {params: {id}}}) => {
-    return null;
-
-    /*
     const {t} = useTranslation();
     const fetchTeacher = useFetchTeacherDetailAPI();
     const fetchTeacherInformation = useFetchTeacherInformationAPI();
@@ -51,14 +68,14 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <DetailPage<TeacherKeys>
+        <DetailPage<TeacherKeys, "", void, IFetchTeacherResponse>
             title={`${teacher.firstName} ${teacher.lastName}`}
             color={genderColor[teacher.gender]}
             orderingStorageName="detail:ordering:teacher"
             refetch={refetch}
             isRefreshing={isFetching}
             updatedAt={dayjs(dataUpdatedAt)}
-            searchAllPath={generatePath("/teacher/")}
+            searchAllPath={buildPath("/teacher/")}
             defaultOrdering={[
                 "name", "shortName", "email", "gender",
             ]}
@@ -141,6 +158,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
                             href={createMailToLink({
                                 to: teacher.email,
                             })}
+                            underline="none"
                         >
                             {teacher.email}
                         </Link>,
@@ -153,7 +171,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
                 },
             }}
         />
-    );*/
+    );
 };
 
 export default memo(TeacherDetailPage);
