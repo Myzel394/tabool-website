@@ -1,4 +1,4 @@
-import React, {forwardRef, memo, useImperativeHandle, useState} from "react";
+import React, {forwardRef, useImperativeHandle, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {useQuery} from "react-query";
 import {useDeviceWidth, useInheritedState, useQueryOptions} from "hooks";
@@ -134,10 +134,16 @@ const LessonField = ({
 
     return (
         <>
-            <Button startIcon={<LessonIcon />} onClick={() => setIsOpened(true)}>
+            <Button
+                fullWidth
+                startIcon={<LessonIcon />}
+                endIcon={(isLoadingLesson || isLoading) && <CircularProgress color="inherit" size="1rem" />}
+                variant="outlined"
+                onClick={() => setIsOpened(true)}
+            >
                 {(() => {
                     if (isLoadingLesson || isLoading) {
-                        return <CircularProgress color="inherit" size="1rem" />;
+                        return null;
                     } else if (lesson) {
                         return t("{{courseName}}: {{date}}", {
                             courseName: lesson.lessonData.course.name,
@@ -189,7 +195,7 @@ const LessonField = ({
                             onDateChange={setActiveDate}
                             onLessonSelect={newLessonId => {
                                 if (newLessonId === lessonId) {
-                                // Set null
+                                    // Set null
                                     if (allowNull) {
                                         setLessonId(null);
                                     }

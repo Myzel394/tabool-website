@@ -55,8 +55,6 @@ describe("getAdaptedColor works in light mode with", () => {
             textColor: "#1e67ff",
             backgroundColor: "#f0f0f0",
         });
-
-        console.log(textColor, backgroundColor);
     });
 });
 

@@ -12,29 +12,33 @@ import {
 import {ToggleButton} from "@material-ui/lab";
 import {MdClose, MdEdit} from "react-icons/all";
 import {useTranslation} from "react-i18next";
-import {useInheritedState} from "hooks";
+import {FormikProps} from "formik/dist/types";
 import Truncate from "react-truncate";
-import {FieldInputProps} from "formik/dist/types";
-import {Field} from "formik";
 
 import Tooltip from "../../../Tooltip";
 import SimpleDialog from "../../../SimpleDialog";
 
+interface RenderFieldProps extends FormikProps<any> {
+    helperText?: string | JSX.Element;
+}
+
 
 export interface IContent {
     title: string;
-    icon: JSX.Element;
+    icon: JSX.Element | null | ((value: any) => JSX.Element | null);
     information: string | JSX.Element;
+    value: any;
     isUpdating: boolean;
     onReset: () => any;
-    forceEditMode: boolean;
-    fieldPropsExtra: FieldInputProps<any>;
-    onSubmit: () => Promise<void>;
+    hasChanged: boolean;
+    formik: FormikProps<any>;
+    name: string;
+    isEditModeActive: boolean;
+    onChangeEditModeActive: (isActive: boolean) => any;
 
     helperText?: string | JSX.Element;
     disableShowMore?: boolean;
-    fieldProps?: Record<string, any> | false;
-    onEditModeLeft?: () => any;
+    renderField?: ((formik: RenderFieldProps) => JSX.Element) | false;
 }
 
 
@@ -45,16 +49,18 @@ const Content = ({
     information,
     helperText,
     isUpdating,
-    onEditModeLeft,
     onReset,
-    forceEditMode,
-    fieldProps,
-    fieldPropsExtra,
-    onSubmit,
+    renderField,
+    value,
+    hasChanged,
+    formik,
+    name,
+    isEditModeActive,
+    onChangeEditModeActive,
 }: IContent) => {
+    const forceEditMode = Boolean(formik.errors[name]);
     const {t} = useTranslation();
 
-    const [isEditActive, setIsEditActive] = useInheritedState<boolean>(forceEditMode);
     const [softTruncateActive, setSoftTruncateActive] = useState<boolean>(true);
     const [showFullText, setShowFullText] = useState<boolean>(false);
 
@@ -62,7 +68,9 @@ const Content = ({
         <>
             <Box px={2} width="100%">
                 <Grid
-                    container spacing={2} direction="column"
+                    container
+                    spacing={2}
+                    direction="column"
                 >
                     <Grid item>
                         <Typography
@@ -71,7 +79,7 @@ const Content = ({
                             color="textSecondary"
                         >
                             <Box display="flex" flexDirection="row" alignItems="center">
-                                {icon}
+                                {typeof icon === "function" ? icon(value) : icon}
                                 <Box ml={1} component="span">
                                     {title}
                                 </Box>
@@ -81,12 +89,14 @@ const Content = ({
                     <Grid item>
                         <Grid container direction="column" spacing={1} justify="space-between">
                             <Grid item>
-                                {isEditActive ? ((typeof fieldProps === "object") && (
-                                    <Field
-                                        {...fieldPropsExtra}
-                                        {...fieldProps}
-                                    />
-                                )) : (
+                                {isEditModeActive ? (
+                                    <>
+                                        {typeof renderField === "function" && renderField({
+                                            ...formik,
+                                            helperText,
+                                        })}
+                                    </>
+                                ) : (
                                     <Grid container direction="row" spacing={1} alignItems="center">
                                         <Grid item>
                                             <Typography
@@ -136,24 +146,24 @@ const Content = ({
                                     </Grid>
                                 )}
                             </Grid>
-                            {fieldProps && (
+                            {renderField && (
                                 <Grid item>
                                     <Grid container spacing={1} alignItems="center">
                                         <Grid item>
-                                            <Tooltip title={isEditActive ? t("Änderungen speichern").toString() : t("Dieses Feld editieren").toString()}>
+                                            <Tooltip title={isEditModeActive ? t("Änderungen speichern").toString() : t("Dieses Feld editieren").toString()}>
                                                 <ToggleButton
-                                                    selected={isEditActive}
+                                                    selected={isEditModeActive}
                                                     disabled={forceEditMode}
                                                     onChange={() => {
-                                                        if (isEditActive) {
-                                                            // eslint-disable-next-line promise/catch-or-return
-                                                            onSubmit()
-                                                                .then(() => {
-                                                                    setIsEditActive(false);
-                                                                    onEditModeLeft?.();
-                                                                });
+                                                        if (isEditModeActive) {
+                                                            if (hasChanged) {
+                                                                formik.submitForm();
+
+                                                            } else {
+                                                                onChangeEditModeActive(false);
+                                                            }
                                                         } else {
-                                                            setIsEditActive(true);
+                                                            onChangeEditModeActive(true);
                                                         }
                                                     }}
                                                 >
@@ -161,13 +171,13 @@ const Content = ({
                                                 </ToggleButton>
                                             </Tooltip>
                                         </Grid>
-                                        {isEditActive && (
+                                        {isEditModeActive && (
                                             <Grid item>
                                                 <Tooltip title={t("Änderungen verwerfen").toString()}>
                                                     <IconButton
                                                         disabled={forceEditMode}
                                                         onClick={() => {
-                                                            setIsEditActive(false);
+                                                            onChangeEditModeActive(false);
                                                             onReset();
                                                         }}
                                                     >
@@ -202,5 +212,7 @@ const Content = ({
         </>
     );
 };
+
+Content.whyDidYouRender = true;
 
 export default Content;

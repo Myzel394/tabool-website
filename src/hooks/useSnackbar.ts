@@ -47,7 +47,9 @@ const useSnackbar = (): IUseSnackbar => {
         }
 
         if (error) {
-            snackbarMessage = `${snackbarMessage} (Nachricht: ${error.message})`;
+            const errorMessage = error.response?.data?.nonFieldErrors?.join("; ") ?? error.message;
+
+            snackbarMessage = `${snackbarMessage} (${errorMessage})`;
         }
 
         addSnackbar(snackbarMessage, {

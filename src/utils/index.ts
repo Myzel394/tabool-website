@@ -22,6 +22,7 @@ export * from "./createSmallTheme";
 export * from "./parseErrors";
 export * from "./getISOTime";
 export * from "./lazyDatetime";
+export * from "./buildPath";
 
 export {default as isAllDay} from "./isAllDay";
 export {default as snakeCaseKeys} from "./snakeCaseKeys";
@@ -45,3 +46,4 @@ export {default as createSmallTheme} from "./createSmallTheme";
 export {default as parseErrors} from "./parseErrors";
 export {default as getISOTime} from "./getISOTime";
 export {default as lazyDatetime} from "./lazyDatetime";
+export {default as buildPath} from "./buildPath";

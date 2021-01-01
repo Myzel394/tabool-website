@@ -5,18 +5,23 @@ import {useTheme} from "@material-ui/core";
 export interface IDay {
     color: string;
     dayComponent: JSX.Element;
+    isSelected: boolean;
 }
 
-const Day = ({color, dayComponent}: IDay) => {
+const Day = ({color, dayComponent, isSelected}: IDay) => {
     const theme = useTheme();
 
     const [textColor, backgroundColor] = useAdaptedColor(color, theme.palette.background.paper);
 
     return cloneElement(dayComponent, {
-        style: {
-            color: textColor,
-            backgroundColor,
-        },
+        style: isSelected
+            ? {
+                color: backgroundColor,
+                backgroundColor: textColor,
+            } : {
+                color: textColor,
+                backgroundColor,
+            },
     });
 };
 

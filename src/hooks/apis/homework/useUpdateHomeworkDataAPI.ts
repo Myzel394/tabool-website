@@ -2,13 +2,16 @@ import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {HomeworkDetail} from "types";
 import {getLoginConfig} from "api";
+import {Dayjs} from "dayjs";
+
+import {lazyDatetime} from "../../../utils";
 
 import parseHomework from "./parseHomework";
 
 export interface IUpdateHomeworkDataData {
-    information?: string;
-    dueDate?: string;
-    type?: string;
+    information?: string | null;
+    dueDate?: Dayjs | null;
+    type?: string | null;
     isPrivate?: boolean;
 }
 
@@ -24,7 +27,7 @@ const useUpdateHomeworkDataAPI = () => {
         isPrivate,
     }: IUpdateHomeworkDataData): Promise<IUpdateHomeworkDataResponse> => {
         const {data} = await instance.patch(`/api/data/homework/${id}/`, {
-            dueDate,
+            dueDate: lazyDatetime(dueDate),
             information,
             type,
             isPrivate,

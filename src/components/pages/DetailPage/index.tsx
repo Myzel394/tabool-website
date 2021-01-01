@@ -19,7 +19,6 @@ import _ from "lodash";
 import {StorageType} from "hooks/usePersistentStorage";
 import {ButtonProps} from "@material-ui/core/Button";
 import {MdAdd, MdSearch} from "react-icons/all";
-import {FormikConfig} from "formik";
 
 import Title, {ITitle} from "./Title";
 import Form, {IForm} from "./Form";
@@ -38,7 +37,7 @@ export interface IDetailPage<
 > {
     title: ITitle["title"];
     color: ITitle["color"];
-    onSubmit: FormikConfig<FormikForm>["onSubmit"];
+    onSubmit: IForm<AvailableKeys, FormikForm>["onSubmit"];
 
     defaultOrdering: IForm<AvailableKeys, FormikForm>["ordering"];
     data: IForm<AvailableKeys, FormikForm>["data"];

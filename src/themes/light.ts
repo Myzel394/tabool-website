@@ -1,5 +1,6 @@
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import responsiveFontSizes from "@material-ui/core/styles/responsiveFontSizes";
+import {deDE} from "@material-ui/core/locale";
 
 const light = responsiveFontSizes(
     createMuiTheme({
@@ -42,7 +43,7 @@ const light = responsiveFontSizes(
                 fontWeight: 200,
             },
         },
-    }),
+    }, deDE),
 );
 
 export default light;

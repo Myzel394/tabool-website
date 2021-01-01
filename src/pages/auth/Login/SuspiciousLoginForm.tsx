@@ -2,8 +2,8 @@ import React, {memo} from "react";
 import {ILoginData, ILoginResponse} from "hooks/apis";
 import {useTranslation} from "react-i18next";
 import Title from "components/pages/FocusedPage/Title";
-import {Box, Grid, Typography} from "@material-ui/core";
-import {Formik, Field, Form} from "formik";
+import {Box, Typography} from "@material-ui/core";
+import {Field, Form, Formik} from "formik";
 import * as yup from "yup";
 import {LoadingOverlay, PrimaryButton} from "components";
 import {TextField} from "formik-material-ui";
@@ -43,8 +43,6 @@ const SuspiciousLoginForm = ({onSubmit, loginData}: ISuspiciousLoginForm) => {
                         ...values,
                     })
                         .catch((error) => {
-                            // eslint-disable-next-line no-console
-                            console.log(error.response);
                             if (error.response.status === 401) {
                                 setErrors(error.response.data);
                             }

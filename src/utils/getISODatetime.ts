@@ -1,7 +1,6 @@
 import {Dayjs} from "dayjs";
 
-const getISODatetime = (date: Dayjs): string => {
-    return date.format("YYYY-MM-DD HH:mm");
-};
+const getISODatetime = (date: Dayjs): string =>
+    date.format("YYYY-MM-DD[T]HH:mm:ss");
 
 export default getISODatetime;

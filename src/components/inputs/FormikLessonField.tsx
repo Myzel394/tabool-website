@@ -1,6 +1,6 @@
 import React, {memo} from "react";
 import {useField} from "formik";
-import {FormGroup, FormHelperText, FormLabel} from "@material-ui/core";
+import {FormControl, FormHelperText, FormLabel} from "@material-ui/core";
 import {FieldConfig} from "formik/dist/Field";
 
 import LessonField, {ILessonField} from "./LessonField";
@@ -23,7 +23,7 @@ const FormikLessonField = ({
     const isError = Boolean(meta.touched && meta.error);
 
     return (
-        <FormGroup>
+        <FormControl>
             <FormLabel>
                 {label}
             </FormLabel>
@@ -31,7 +31,7 @@ const FormikLessonField = ({
             <FormHelperText error={isError}>
                 {isError ? meta.error : helpText}
             </FormHelperText>
-        </FormGroup>
+        </FormControl>
     );
 };
 

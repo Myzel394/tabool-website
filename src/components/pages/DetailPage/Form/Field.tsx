@@ -62,7 +62,6 @@ const Field = ({
                         <Content
                             {...contentProps}
                             isUpdating={isUpdating}
-                            forceEditMode={containsErrors || isUpdating}
                         />
                     </Box>
                 )}

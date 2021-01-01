@@ -1,6 +1,8 @@
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
 import React from "react";
 
+import {replaceDatetime} from "../../utils";
+
 import Day from "./Day";
 
 type RenderFunction = (day: MaterialUiPickersDate, selectedDate: MaterialUiPickersDate, dayInCurrentMonth: boolean, dayComponent: JSX.Element) => JSX.Element;
@@ -16,7 +18,9 @@ const renderDayWithLessonWeekdays = (
             day && weekdays.includes(day.day() - 1) &&
             customCheck(day, selectedDate, x, dayComponent)
         ) {
-            return <Day color={lessonColor} dayComponent={dayComponent} />;
+            const isSelected = Boolean(selectedDate && replaceDatetime(day, "time").isSame(replaceDatetime(selectedDate, "time")));
+
+            return <Day color={lessonColor} dayComponent={dayComponent} isSelected={isSelected} />;
         }
 
         return dayComponent;

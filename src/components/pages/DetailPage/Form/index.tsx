@@ -1,10 +1,40 @@
-import React from "react";
+import React, {useState} from "react";
 import {Form as IkForm, Formik, FormikConfig} from "formik";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import update from "immutability-helper";
 import {Grid} from "@material-ui/core";
+import {FormikHelpers} from "formik/dist/types";
+
+import BooleanStatus from "../../../BooleanStatus";
 
 import Field, {IField} from "./Field";
+
+
+type RecordField = Omit<IField,
+    "isUpdating" |
+    "onReset" |
+    "name" |
+    "isElevated" |
+    "reorder" |
+    "dragHandleProps" |
+    "containsErrors" |
+    "onSubmit" |
+    "value" |
+    "hasChanged" |
+    "formik" |
+    "isEditModeActive" |
+    "onChangeEditModeActive"
+>;
+
+const renderValue = (value: any, information: any): JSX.Element | string => {
+    if (typeof value === "boolean") {
+        return <BooleanStatus value={value} />;
+    } else if (value === null || value === undefined) {
+        return "-";
+    } else {
+        return information;
+    }
+};
 
 
 export interface IForm <
@@ -12,10 +42,11 @@ export interface IForm <
     FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
 >{
     initialValues: FormikConfig<FormikForm>["initialValues"];
-    onSubmit: FormikConfig<FormikForm>["onSubmit"];
-    data: Record<AvailableKeys, Omit<IField, "isUpdating" | "onReset" | "forceEditMode" | "isElevated" | "reorder" | "dragHandleProps" | "containsErrors" | "name" | "fieldPropsExtra" | "onSubmit"> & {
+    onSubmit: (values: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => Promise<any>;
+    data: Record<AvailableKeys, RecordField & {
         nativeValue?: FormikForm[AvailableKeys];
         isEqual?: (oldValue: any, newValue: any) => boolean;
+        onSubmit?: (value: unknown) => void | Promise<void>;
     }>;
 
     ordering: AvailableKeys[];
@@ -44,6 +75,8 @@ const Form = <
         reorder,
         validationSchema,
     }: IForm<AvailableKeys, FormikForm>) => {
+    const [editModeActive, setEditModeActive] = useState<AvailableKeys[]>([]);
+
     const onDragStart = (initial) => {
         const {draggableId} = initial;
         onElevatedKeyChange(draggableId);
@@ -78,6 +111,18 @@ const Form = <
         onOrderingChange(newState);
     };
 
+    const toggleEditMode = (key, value) => {
+        const newEditModeActive = new Set([...editModeActive]);
+
+        if (value) {
+            newEditModeActive.add(key);
+        } else {
+            newEditModeActive.delete(key);
+        }
+
+        setEditModeActive(Array.from(newEditModeActive));
+    };
+
     return (
         <DragDropContext
             onDragStart={onDragStart}
@@ -90,70 +135,100 @@ const Form = <
                             enableReinitialize
                             validationSchema={validationSchema}
                             initialValues={initialValues}
-                            onSubmit={onSubmit}
-                        >
-                            {({
-                                isSubmitting,
-                                values,
-                                errors,
-                                setFieldValue,
-                                getFieldProps,
-                                submitForm,
-                            }) =>
-                                <IkForm>
-                                    <Grid
-                                        ref={provided.innerRef}
-                                        container
-                                        spacing={2}
-                                        {...provided.droppableProps}
-                                    >
-                                        {ordering.map((key, index) => {
-                                            const singleData = data[key];
-                                            const {
-                                                isEqual: rawIsEqual,
-                                                nativeValue: rawNativeValue,
-                                                ...fieldData
-                                            } = singleData;
-                                            const nativeValue = rawNativeValue ?? singleData.information;
-                                            const isEqual = rawIsEqual ?? ((oldValue, newValue) => oldValue === newValue);
-
-                                            const isElevated = elevatedKey === key;
-                                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                            // @ts-ignore
-                                            const isUpdating = isSubmitting && !isEqual(nativeValue, values[key]);
-
-                                            return (
-                                                <Draggable
-                                                    key={key}
-                                                    index={index}
-                                                    draggableId={key}
-                                                >
-                                                    {provided =>
-                                                        <Grid
-                                                            ref={provided.innerRef}
-                                                            item
-                                                            xs={12}
-                                                            {...provided.draggableProps}
-                                                        >
-                                                            <Field
-                                                                {...fieldData}
-                                                                fieldPropsExtra={getFieldProps(key)}
-                                                                isElevated={isElevated}
-                                                                isUpdating={isUpdating}
-                                                                reorder={reorder}
-                                                                dragHandleProps={provided.dragHandleProps}
-                                                                containsErrors={Boolean(errors[key])}
-                                                                onSubmit={submitForm}
-                                                                onReset={() => setFieldValue(key, nativeValue)}
-                                                            />
-                                                        </Grid>
-                                                    }
-                                                </Draggable>
-                                            );
-                                        })}
-                                    </Grid>
-                                </IkForm>
+                            onSubmit={(values, helpers) =>
+                                onSubmit(values, helpers)
+                                    .then(() => setEditModeActive([]))
                             }
+                        >
+                            {formik => {
+                                const {
+                                    isSubmitting,
+                                    values,
+                                    errors,
+                                    setFieldValue,
+                                    getFieldProps,
+                                } = formik;
+
+                                return (
+                                    <IkForm>
+                                        <Grid
+                                            ref={provided.innerRef}
+                                            container
+                                            spacing={2}
+                                            {...provided.droppableProps}
+                                        >
+                                            {ordering.map((key, index) => {
+                                                // Get values
+                                                const singleData = data[key];
+                                                const {
+                                                    isEqual: rawIsEqual,
+                                                    nativeValue: rawNativeValue,
+                                                    onSubmit: onSubmitField,
+                                                    ...fieldData
+                                                } = singleData;
+                                                const nativeValue = rawNativeValue ?? singleData.information;
+                                                const isEqual = rawIsEqual ?? ((oldValue, newValue) => oldValue === newValue);
+
+                                                const isElevated = elevatedKey === key;
+                                                const hasChanged = !isEqual(nativeValue, values[key]);
+                                                const isUpdating = isSubmitting && hasChanged;
+                                                const isEditModeActive = editModeActive.includes(key);
+
+                                                return (
+                                                    <Draggable
+                                                        key={key}
+                                                        index={index}
+                                                        draggableId={key}
+                                                    >
+                                                        {provided =>
+                                                            <Grid
+                                                                ref={provided.innerRef}
+                                                                item
+                                                                xs={12}
+                                                                {...provided.draggableProps}
+                                                            >
+                                                                <Field
+                                                                    {...fieldData}
+                                                                    information={renderValue(nativeValue, singleData.information)}
+                                                                    containsErrors={errors[key] !== undefined}
+                                                                    fieldPropsExtra={getFieldProps(key)}
+                                                                    isUpdating={isUpdating}
+                                                                    reorder={reorder}
+                                                                    dragHandleProps={provided.dragHandleProps}
+                                                                    isElevated={isElevated}
+                                                                    value={nativeValue}
+                                                                    formik={formik}
+                                                                    hasChanged={hasChanged}
+                                                                    name={key}
+                                                                    isEditModeActive={isEditModeActive}
+                                                                    onChangeEditModeActive={async value => {
+                                                                        if (value) {
+                                                                            toggleEditMode(key, value);
+                                                                        } else {
+                                                                            const promise = onSubmitField?.(value);
+
+                                                                            if (Promise.resolve(promise) === promise) {
+                                                                                try {
+                                                                                    await promise;
+                                                                                } catch (x) {
+                                                                                    return;
+                                                                                }
+                                                                            }
+
+                                                                            toggleEditMode(key, value);
+                                                                        }
+                                                                    }}
+                                                                    onReset={() => setFieldValue(key, nativeValue)}
+                                                                />
+                                                            </Grid>
+                                                        }
+                                                    </Draggable>
+                                                );
+                                            })}
+                                        </Grid>
+                                    </IkForm>
+                                );
+                            }}
                         </Formik>
                         {provided.placeholder}
                     </>

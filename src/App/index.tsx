@@ -11,6 +11,7 @@ import {MdClose} from "react-icons/md";
 
 import "./global.scss";
 
+
 import {useElementSize} from "../hooks";
 
 import Routes from "./Routes";
@@ -29,36 +30,34 @@ const App = () => {
     const closeSnackbar = (key) => $snackbar.current.closeSnackbar(key);
 
     return (
-        <>
-            <Router>
-                <ThemeProvider theme={theme}>
-                    <Contexts bottomSheetHeight={bottomHeight}>
-                        <MuiPickersUtilsProvider utils={DayjsUtils}>
-                            <SnackbarProvider
-                                ref={$snackbar}
-                                maxSnack={isMobile ? 2 : 5}
-                                dense={isMobile}
-                                style={snackbarStyles}
-                                action={(key) =>
-                                    <IconButton onClick={closeSnackbar.bind(null, key)}>
-                                        <MdClose />
-                                    </IconButton>
-                                }
-                            >
-                                <CssBaseline />
-                                <Routes />
-                                <div
-                                    style={{
-                                        height: bottomHeight,
-                                    }}
-                                />
-                                <BottomNavigation innerRef={$bottom} />
-                            </SnackbarProvider>
-                        </MuiPickersUtilsProvider>
-                    </Contexts>
-                </ThemeProvider>
-            </Router>
-        </>
+        <Router>
+            <ThemeProvider theme={theme}>
+                <Contexts bottomSheetHeight={bottomHeight}>
+                    <MuiPickersUtilsProvider utils={DayjsUtils}>
+                        <SnackbarProvider
+                            ref={$snackbar}
+                            maxSnack={isMobile ? 2 : 5}
+                            dense={isMobile}
+                            style={snackbarStyles}
+                            action={(key) =>
+                                <IconButton onClick={closeSnackbar.bind(null, key)}>
+                                    <MdClose />
+                                </IconButton>
+                            }
+                        >
+                            <CssBaseline />
+                            <Routes />
+                            <div
+                                style={{
+                                    height: bottomHeight,
+                                }}
+                            />
+                            <BottomNavigation innerRef={$bottom} />
+                        </SnackbarProvider>
+                    </MuiPickersUtilsProvider>
+                </Contexts>
+            </ThemeProvider>
+        </Router>
     );
 };
 

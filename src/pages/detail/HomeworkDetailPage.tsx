@@ -9,7 +9,7 @@ import {
     useUpdateHomeworkDataAPI,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks/apis";
-import {BooleanStatus, DetailPage, LessonIcon, LoadingIndicator} from "components";
+import {BooleanStatus, DetailPage, HomeworkDueDateField, HomeworkTypeField, LoadingIndicator} from "components";
 import {useTranslation} from "react-i18next";
 import {
     BiBarChartSquare,
@@ -32,11 +32,14 @@ import {PredefinedMessageType} from "hooks/useSnackbar";
 import {ErrorContext} from "contexts";
 import update from "immutability-helper";
 import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
-import {Switch, TextField} from "formik-material-ui";
-import {DateTimePicker} from "formik-material-ui-pickers";
-import {Button, Link} from "@material-ui/core";
-import {formatLesson} from "format";
+import {CheckboxWithLabel, TextField} from "formik-material-ui";
+import {Button, FormGroup, FormHelperText, Link} from "@material-ui/core";
 import * as yup from "yup";
+import {Field} from "formik";
+import {formatLesson} from "format";
+import {LessonIcon} from "components/icons";
+
+import {buildPath, lazyDatetime} from "../../utils";
 
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
@@ -59,15 +62,15 @@ const getDueDateIcon = (dueDate: Dayjs, ignore: boolean): JSX.Element => {
     }
 };
 
-const schema = yup.object({
-    information: yup.string().nullable(),
-    type: yup.string().nullable(),
-    isPrivate: yup.boolean(),
-    dueDate: yup.date().nullable(),
-});
-
 const HomeworkDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
+    const schema = yup.object({
+        information: yup.string().nullable(),
+        type: yup.string().nullable(),
+        isPrivate: yup.boolean(),
+        dueDate: yup.date().min(dayjs(), t("Das Fälligkeitsdatum kann nicht in der Vergangenheit liegen.")).nullable(),
+    });
+
     const queryOptions = useQueryOptions();
     const updateHomeworkDataMutation = useUpdateHomeworkDataAPI();
     const updateHomeworkRelationMutation = useUpdateHomeworkUserRelationAPI();
@@ -170,31 +173,38 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             color={homework.lesson.lessonData.course.subject.userRelation.color}
             orderingStorageName="detail:ordering:homework"
             searchAllPath={generatePath("/homework/")}
-            addPath={generatePath("/homework/add/")}
+            addPath={buildPath("/homework/add", undefined, {
+                lesson: homework.lesson.id,
+                type: homework.type,
+                dueDate: lazyDatetime(homework.dueDate),
+                isPrivate: homework.isPrivate,
+            })}
             data={{
                 information: {
                     information: homework.information,
                     title: t("Information"),
                     icon: <MdInfo />,
-                    fieldProps: canEditHomework && {
-                        fullWidth: true,
-                        multiline: true,
-                        type: "text",
-                        component: TextField,
-                        variant: "outlined",
-                    },
+                    renderField: canEditHomework && (({getFieldProps}) =>
+                        <Field
+                            {...getFieldProps("information")}
+                            fullWidth
+                            multiline
+                            variant="outlined"
+                            component={TextField}
+                        />),
                 },
                 type: {
                     icon: <BiBarChartSquare />,
                     title: t("Typ"),
                     information: homework.type ?? "",
                     disableShowMore: true,
-                    fieldProps: canEditHomework && {
-                        fullWidth: true,
-                        type: "text",
-                        component: TextField,
-                        variant: "outlined",
-                    },
+                    renderField: canEditHomework && (({getFieldProps}) =>
+                        <Field
+                            {...getFieldProps("type")}
+                            type="text"
+                            component={HomeworkTypeField}
+                        />
+                    ),
                 },
                 isPrivate: {
                     icon: homework.isPrivate ? <MdLock /> : <MdLockOpen />,
@@ -203,32 +213,47 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     information: <BooleanStatus value={homework.isPrivate} />,
                     helperText: t("Hausaufgaben können nicht mehr privat gestellt werden, sobald sie einmal für den Kurs veröffentlicht wurden."),
                     disableShowMore: true,
-                    fieldProps: canEditHomework && {
-                        type: "checkbox",
-                        component: Switch,
-                    },
+                    renderField: canEditHomework && (({values, errors, setFieldValue, helperText, getFieldProps}) =>
+                        <FormGroup>
+                            <Field
+                                {...getFieldProps("isPrivate")}
+                                type="checkbox"
+                                component={CheckboxWithLabel}
+                                checked={values.isPrivate}
+                                Label={{
+                                    label: t("Privat für mich"),
+                                }}
+                                onChange={event => setFieldValue("isPrivate", event.target.checked)}
+                            />
+                            <FormHelperText error={Boolean(errors.isPrivate)}>
+                                {errors.isPrivate ?? helperText}
+                            </FormHelperText>
+                        </FormGroup>),
                 },
                 dueDate: {
-                    icon: getDueDateIcon(
-                        homework.dueDate,
-                        !(homework.userRelation.ignore || homework.userRelation.completed),
-                    ),
+                    icon: (dueDate: Dayjs) =>
+                        (dueDate ? getDueDateIcon(
+                            dueDate,
+                            Boolean(homework.dueDate && dueDate.isSame(homework.dueDate)) ||
+                            !(homework.userRelation.ignore || homework.userRelation.completed),
+                        ) : null),
                     title: t("Fälligkeitsdatum"),
                     nativeValue: homework.dueDate,
-                    information: homework.dueDate.format("LL"),
-                    isEqual: (oldValue: Dayjs, newValue: Dayjs) => oldValue.isSame(newValue),
+                    information: homework.dueDate?.format("LLL"),
+                    isEqual: (oldValue: Dayjs, newValue: Dayjs) => oldValue?.isSame?.(newValue),
                     disableShowMore: true,
-                    fieldProps: canEditHomework && {
-                        type: "text",
-                        component: DateTimePicker,
-                        format: "ll",
-                        inputVariant: "outlined",
-                    },
+                    renderField: canEditHomework && (({getFieldProps}) =>
+                        <Field
+                            {...getFieldProps("dueDate")}
+                            component={HomeworkDueDateField}
+                            lesson={homework.lesson}
+                        />
+                    ),
                 },
                 createdAt: {
                     icon: <FaClock />,
                     title: t("Einstellungsdatum"),
-                    information: homework.createdAt.format("LT"),
+                    information: homework.createdAt.format("LLL"),
                     disableShowMore: true,
                 },
                 lesson: {
@@ -238,6 +263,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     disableShowMore: true,
                     helperText: (
                         <Link
+                            underline="none"
                             component={Button}
                             href={generatePath("/lesson/detail/:id/", {
                                 id: homework.lesson.id,
