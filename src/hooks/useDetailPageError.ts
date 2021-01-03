@@ -1,27 +1,26 @@
 import {AxiosError} from "axios";
 import {useCallback, useContext} from "react";
 import {ErrorContext} from "contexts";
-import {canCastToNumber} from "utils";
 
 import useSnackbar, {PredefinedMessageType} from "./useSnackbar";
 
 export interface IUseDetailPageError {
-    onFetchError: (error: AxiosError, containsData: boolean) => void;
+    onFetchError: (error: AxiosError, containsData: boolean, message?: string) => void;
 }
 
 const useDetailPageError = (): IUseDetailPageError => {
     const {addError} = useSnackbar();
     const {dispatch: dispatchError} = useContext(ErrorContext);
 
-    const onFetchError = useCallback((error: AxiosError, containsData: boolean) => {
+    const onFetchError = useCallback((error: AxiosError, containsData: boolean, message?: string) => {
         if (containsData) {
             addError(error, undefined, PredefinedMessageType.ErrorLoading);
         } else {
             dispatchError({
                 type: "setError",
                 payload: {
-                    status: (error.code && canCastToNumber(error.code)) ? Number(error.code) : undefined,
-                    message: error.message,
+                    status: error.response?.status,
+                    message: message ?? error.response?.data.nonFieldErrors,
                 },
             });
         }

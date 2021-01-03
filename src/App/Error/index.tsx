@@ -4,6 +4,8 @@ import {Box, Container, Typography} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import {SecondaryButton} from "components";
 
+import {Error400, Error404, Error500} from "./pages";
+
 export interface IError {
     status?: number;
     message?: string;
@@ -24,7 +26,16 @@ const Error = ({
     const history = useHistory();
     const {t} = useTranslation();
 
-    const title = givenTitle ?? t("Fehler");
+    const title: string = givenTitle ?? t("Fehler");
+
+    switch (status) {
+        case 400:
+            return <Error400 title={givenTitle} />;
+        case 404:
+            return <Error404 title={givenTitle} />;
+        case 500:
+            return <Error500 title={givenTitle} />;
+    }
 
     return (
         <>
@@ -35,7 +46,7 @@ const Error = ({
                     </Typography>
                     {status && (
                         <Typography variant="h3" color="error">
-                            {status ? status : ""}
+                            {status ?? ""}
                         </Typography>
                     )}
                     {message && (

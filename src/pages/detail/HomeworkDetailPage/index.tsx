@@ -116,7 +116,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
         {
             ...queryOptions,
             onSuccess: setHomework,
-            onError: (error) => onFetchError(error, Boolean(homework)),
+            onError: (error) => onFetchError(error, Boolean(homework), t("Diese Hausaufgabe wurde nicht gefunden")),
         },
     );
 

@@ -30,3 +30,4 @@ export {default as SelectList} from "./SelectList";
 export {default as BottomSheet} from "./BottomSheet";
 export {default as SimpleDialog} from "./SimpleDialog";
 export {default as renderDayWithLessonWeekdays} from "./renderDayWithLessonWeekdays";
+export {default as BottomSheetAction} from "./BottomSheetAction";
