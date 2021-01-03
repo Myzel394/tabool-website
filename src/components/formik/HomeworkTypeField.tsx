@@ -30,6 +30,9 @@ export type IHomeworkTypeField = Omit<AutocompleteProps<any, false, any, true>,
     helperText?: string;
 };
 
+const DEFAULT_TYPES = [
+    "Wiederholung", "Vorbereitung", "Hausaufgabe", "Übung",
+];
 
 const HomeworkTypeField = ({
     field,
@@ -53,7 +56,9 @@ const HomeworkTypeField = ({
         }),
         queryOptions,
     );
-    const autocompletion = data?.results ?? [];
+    const autocompletion = Array.from(
+        new Set([...(data?.results?.map?.(element => element.text) ?? []), ...DEFAULT_TYPES]),
+    );
 
     const hasError = Boolean(form.errors[field.name]);
     const setValue = (value: string | null) => field.onChange({
@@ -107,13 +112,13 @@ const HomeworkTypeField = ({
 
                 // Suggest the creation of a new value
                 if (value.length > 0) {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     options.push({
                         id: "",
                         text: t("\"{{value}}\" hinzufügen", {
                             value,
                         }),
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         inputValue: value,
                     });
                     setSearch(value);

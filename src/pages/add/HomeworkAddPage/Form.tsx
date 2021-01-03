@@ -67,7 +67,7 @@ const Form = ({
                 initialValues={initialValues}
                 onSubmit={onSubmit}
             >
-                {({isSubmitting, setFieldValue, touched, errors, values}) => (
+                {({isSubmitting, setFieldValue, touched, errors}) => (
                     <LoadingOverlay isLoading={isSubmitting}>
                         <IkForm>
                             <Box mb={2}>
@@ -99,6 +99,7 @@ const Form = ({
                                             type="text"
                                             name="type"
                                             component={HomeworkTypeField}
+                                            helperText={t("Typ der Hausaufgabe - Beispiel: Wiederholung, Vorbereitung")}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -117,7 +118,9 @@ const Form = ({
                                                 Label={{label: t("Privat für mich")}}
                                             />
                                             <FormHelperText error={Boolean(touched.isPrivate && errors.isPrivate)}>
-                                                <ErrorMessage name="isPrivate" />
+                                                {errors.isPrivate ? <ErrorMessage name="isPrivate" /> : t(
+                                                    "Private Hausaufgaben sind nur für dich sichtbar. Sobald einmal für den Kurs veröffentlicht, kannst du sie nicht mehr editieren.",
+                                                )}
                                             </FormHelperText>
                                         </FormGroup>
                                     </Grid>
