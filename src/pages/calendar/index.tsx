@@ -9,8 +9,7 @@ import {useDeviceWidth, usePersistentStorage, useQueryOptions} from "hooks";
 import {AxiosError} from "axios";
 import {IFetchTimetableData, IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
 import {useTranslation} from "react-i18next";
-
-import {ErrorContext} from "../../contexts";
+import {ErrorContext} from "contexts";
 
 import CalendarContext, {CalendarType} from "./CalendarContext";
 import {Skeleton} from "./Calendar/states";
@@ -91,8 +90,7 @@ const Calendar = () => {
                     dispatchError({
                         type: "setError",
                         payload: {
-                            avoidReloading: true,
-                            title: t("Warte!!"),
+                            title: t("Stundenplan fehlt"),
                             message: t("Dein Stundenplan wurde noch nicht geladen. Er wird im Laufe des Tages automatisch geladen, dann kannst du ihn hier sehen."),
                         },
                     });

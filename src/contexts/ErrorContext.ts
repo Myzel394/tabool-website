@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import {createContext, ReactNode} from "react";
+import {createContext} from "react";
 import {ActionType} from "types";
 
 export interface ErrorType {
     status?: number;
     title?: string;
     message?: string;
-    avoidReloading: boolean;
-    onRetry?: () => any;
-    dialog?: ReactNode;
 }
 
 export interface IError {
@@ -23,9 +20,6 @@ interface IAddError {
     title?: string;
     message?: string;
     status?: number;
-    avoidReloading?: boolean;
-    onRetry?: () => any;
-    dialog?: ReactNode;
 }
 
 export type DispatchType = ActionType<

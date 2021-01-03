@@ -8,15 +8,15 @@ import DayjsUtils from "@date-io/dayjs";
 import {SnackbarProvider} from "notistack";
 import {isMobile} from "react-device-detect";
 import {MdClose} from "react-icons/md";
+import {useElementSize} from "hooks";
 
 import "./global.scss";
 
 
-import {useElementSize} from "../hooks";
-
 import Routes from "./Routes";
 import Contexts from "./Contexts";
 import BottomNavigation from "./BottomNavigation";
+import ErrorContextHandler from "./ErrorContextHandler";
 
 
 const App = () => {
@@ -33,28 +33,31 @@ const App = () => {
         <Router>
             <ThemeProvider theme={theme}>
                 <Contexts bottomSheetHeight={bottomHeight}>
-                    <MuiPickersUtilsProvider utils={DayjsUtils}>
-                        <SnackbarProvider
-                            ref={$snackbar}
-                            maxSnack={isMobile ? 2 : 5}
-                            dense={isMobile}
-                            style={snackbarStyles}
-                            action={(key) =>
-                                <IconButton onClick={closeSnackbar.bind(null, key)}>
-                                    <MdClose />
-                                </IconButton>
-                            }
-                        >
-                            <CssBaseline />
-                            <Routes />
-                            <div
-                                style={{
-                                    height: bottomHeight,
-                                }}
-                            />
-                            <BottomNavigation innerRef={$bottom} />
-                        </SnackbarProvider>
-                    </MuiPickersUtilsProvider>
+                    <ErrorContextHandler>
+                        <MuiPickersUtilsProvider utils={DayjsUtils}>
+                            <SnackbarProvider
+                                ref={$snackbar}
+                                maxSnack={isMobile ? 2 : 5}
+                                dense={isMobile}
+                                style={snackbarStyles}
+                                action={(key) =>
+                                    <IconButton onClick={() => closeSnackbar(key)}>
+                                        <MdClose />
+                                    </IconButton>
+                                }
+                            >
+                                <CssBaseline />
+                                <Routes />
+                            </SnackbarProvider>
+                        </MuiPickersUtilsProvider>
+                    </ErrorContextHandler>
+                    {/* Bottom padding */}
+                    <div
+                        style={{
+                            height: bottomHeight,
+                        }}
+                    />
+                    <BottomNavigation innerRef={$bottom} />
                 </Contexts>
             </ThemeProvider>
         </Router>

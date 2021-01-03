@@ -5,7 +5,6 @@ import Checks from "../Checks";
 
 import UserContextHandler from "./UserContextHandler";
 import AxiosContextHandler from "./AxiosContextHandler";
-import ErrorContextHandler from "./ErrorContextHandler";
 import UtilsContextHandler from "./UtilsContextHandler";
 
 
@@ -21,13 +20,11 @@ const Contexts = ({children, bottomSheetHeight}: IContexts) => {
         <QueryClientProvider client={queryClient}>
             <UserContextHandler>
                 <AxiosContextHandler>
-                    <ErrorContextHandler>
-                        <UtilsContextHandler bottomSheetHeight={bottomSheetHeight}>
-                            <Checks>
-                                {children}
-                            </Checks>
-                        </UtilsContextHandler>
-                    </ErrorContextHandler>
+                    <UtilsContextHandler bottomSheetHeight={bottomSheetHeight}>
+                        <Checks>
+                            {children}
+                        </Checks>
+                    </UtilsContextHandler>
                 </AxiosContextHandler>
             </UserContextHandler>
         </QueryClientProvider>
