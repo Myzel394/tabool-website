@@ -12,8 +12,7 @@ import {FaChalkboardTeacher, MdAdd, MdCheck} from "react-icons/all";
 import {Dayjs} from "dayjs";
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
-import {generatePath} from "react-router-dom";
-import {getISODatetime, setBeginTime, setEndTime} from "utils";
+import {buildPath, getISODatetime, setBeginTime, setEndTime} from "utils";
 import {IFetchHomeworkListResponse, OrderingTypes, useFetchHomeworkListAPI} from "hooks/apis";
 
 import useHomeworkInformation from "./useHomeworkInformation";
@@ -221,7 +220,11 @@ const HomeworkListPage = () => {
             )}
             footerNode={
                 <Box py={3} textAlign="center">
-                    <Link component={SecondaryButton} endIcon={<MdAdd />} href={generatePath(("/information/homework/add/"))}>
+                    <Link
+                        component={SecondaryButton}
+                        endIcon={<MdAdd />}
+                        href={buildPath("/add/homework/")}
+                    >
                         {t("Hausaufgabe hinzufügen")}
                     </Link>
                 </Box>

@@ -40,7 +40,7 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
 
     return (!showWhenFreePeriod && isFreePeriod) ? null : (
         <Link
-            href={generatePath("/information/lesson/detail/:id/", {
+            href={generatePath("/agenda/lesson/detail/:id/", {
                 id: lesson.id,
             })}
         >

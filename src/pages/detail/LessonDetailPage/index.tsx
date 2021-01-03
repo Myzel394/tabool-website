@@ -1,5 +1,3 @@
-import * as queryString from "querystring";
-
 import React, {memo, useContext, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
@@ -20,10 +18,10 @@ import {useMutation, useQuery} from "react-query";
 import {LessonDetail} from "types";
 import {ErrorContext} from "contexts";
 import Material from "components/Material";
-import {combineDatetime} from "utils";
+import {buildPath, combineDatetime} from "utils";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
-import {CourseIcon, HomeworkIcon, TeacherIcon} from "components/icons";
+import {CourseIcon, ExamIcon, HomeworkIcon, TeacherIcon} from "components/icons";
 import _ from "lodash";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 
@@ -123,7 +121,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 <Link
                     component={Button}
                     underline="none"
-                    href={generatePath("/information/teacher/detail/:id/", {
+                    href={generatePath("/agenda/teacher/detail/:id/", {
                         id: lesson.lessonData.course.teacher.id,
                     })}
                 >
@@ -239,18 +237,27 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 </Paper>,
                 <div key="actions">
                     <Box display="flex" justifyContent="center" alignItems="center">
-                        <ButtonGroup variant="outlined">
+                        <ButtonGroup variant="outlined" orientation="vertical">
                             <Link
                                 underline="none"
                                 component={Button}
                                 startIcon={<HomeworkIcon />}
-                                href={generatePath("/information/homework/add?:query", {
-                                    query: queryString.stringify({
-                                        lesson: lesson.id,
-                                    }),
+                                href={buildPath("/add/homework/", undefined, {
+                                    lesson: lesson.id,
                                 })}
                             >
                                 {t("Hausaufgabe hinzufügen")}
+                            </Link>
+                            <Link
+                                underline="none"
+                                component={Button}
+                                startIcon={<ExamIcon />}
+                                href={buildPath("/add/exam/", undefined, {
+                                    course: lesson.lessonData.course.id,
+                                    room: lesson.lessonData.room.id,
+                                })}
+                            >
+                                {t("Klassenarbeit hinzufügen")}
                             </Link>
                         </ButtonGroup>
                     </Box>

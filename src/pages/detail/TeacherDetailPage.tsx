@@ -75,7 +75,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
             refetch={refetch}
             isRefreshing={isFetching}
             updatedAt={dayjs(dataUpdatedAt)}
-            searchAllPath={buildPath("/information/teacher/")}
+            searchAllPath={buildPath("/agenda/teacher/")}
             defaultOrdering={[
                 "name", "shortName", "email", "gender",
             ]}

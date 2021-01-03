@@ -76,7 +76,7 @@ const Homework = ({
             style={style} className={styles.wrapper} color={subject.userRelation.color}
         >
             <Link
-                href={generatePath("/information/homework/detail/:id/", {
+                href={generatePath("/agenda/homework/detail/:id/", {
                     id,
                 })}
             >

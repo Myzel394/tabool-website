@@ -2,7 +2,7 @@ import React, {memo, useContext} from "react";
 import {UserContext} from "contexts";
 import {BottomNavigation as MuiBottomNavigation, BottomNavigationAction} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {FaTable, MdEventNote, MdHome} from "react-icons/all";
+import {FaTable, MdAdd, MdEventNote, MdHome} from "react-icons/all";
 import {useHistory, useLocation} from "react-router";
 
 import styles from "./BottomNavigation.module.scss";
@@ -33,7 +33,12 @@ const BottomNavigation = ({innerRef}) => {
                 <BottomNavigationAction
                     label={t("Agenda").toString()}
                     icon={<MdEventNote />}
-                    value="information"
+                    value="agenda"
+                />
+                <BottomNavigationAction
+                    label={t("Hinzufügen").toString()}
+                    icon={<MdAdd />}
+                    value="add"
                 />
             </MuiBottomNavigation>
         );
