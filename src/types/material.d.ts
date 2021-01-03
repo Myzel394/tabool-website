@@ -7,4 +7,6 @@ export interface MaterialApprox {
     size: number;
 }
 
-export interface MaterialDetail extends Omit<MaterialApprox, "lesson"> {}
+export interface MaterialDetail extends Omit<MaterialApprox, "lesson"> {
+    isDeleted: boolean;
+}

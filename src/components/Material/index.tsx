@@ -1,6 +1,16 @@
-import React, {memo, useState} from "react";
+import React, {memo, useMemo, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {Box, Dialog, DialogContent, DialogTitle, Grid, IconButton, Paper, Typography} from "@material-ui/core";
+import {
+    Box,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Paper,
+    Typography,
+    useTheme,
+} from "@material-ui/core";
 import {
     FaCalculator,
     FaFile,
@@ -25,6 +35,7 @@ export interface IMaterial {
     addedAt: Dayjs;
     size: number;
     id: string;
+    isDeleted?: boolean;
 }
 
 const EXTENSION_ICON_MAPPING = {
@@ -39,11 +50,8 @@ const EXTENSION_ICON_MAPPING = {
     ggb: FaCalculator,
 };
 
-const informationStyle = {
-    overflowWrap: "anywhere" as "anywhere",
-};
-
-const Material = ({name, addedAt, id, size}: IMaterial) => {
+const Material = ({name, addedAt, id, size, isDeleted}: IMaterial) => {
+    const theme = useTheme();
     const {t} = useTranslation();
 
     const [downloadFile, setDownloadFile] = useState<boolean>(false);
@@ -57,6 +65,11 @@ const Material = ({name, addedAt, id, size}: IMaterial) => {
             return date.isValid() ? date : null;
         },
     );
+
+    const informationStyle = useMemo(() => ({
+        overflowWrap: "anywhere" as "anywhere",
+        opacity: isDeleted ? theme.palette.action.disabledOpacity : 1,
+    }), [isDeleted, theme.palette.action.disabledOpacity]);
 
     const extension = name.split(".").pop();
     const FormatIcon = (extension && EXTENSION_ICON_MAPPING[extension]) ?? FaFile;
@@ -96,7 +109,7 @@ const Material = ({name, addedAt, id, size}: IMaterial) => {
                                             }),
                                         })}
                                     </Typography>
-                                    {downloadDate && (
+                                    {downloadDate &&
                                         <TimeRelative>
                                             {now =>
                                                 <Typography variant="body2" color="textSecondary">
@@ -106,7 +119,12 @@ const Material = ({name, addedAt, id, size}: IMaterial) => {
                                                 </Typography>
                                             }
                                         </TimeRelative>
-                                    )}
+                                    }
+                                    {isDeleted &&
+                                        <Typography variant="body2" color="textSecondary">
+                                            {t("Auf Scooso gelöscht")}
+                                        </Typography>
+                                    }
                                 </Grid>
                             </Grid>
                         </Grid>

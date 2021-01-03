@@ -194,6 +194,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                                             name={material.name}
                                             addedAt={material.addedAt}
                                             size={material.size}
+                                            isDeleted={material.isDeleted}
                                         />
                                     </Grid>)}
                             </Grid>
