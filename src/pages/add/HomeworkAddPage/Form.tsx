@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, {memo, useMemo, useState} from "react";
+import React, {memo, useState} from "react";
 import {ErrorMessage, Field, Form as IkForm, Formik, FormikHelpers} from "formik";
 import {Box, FormGroup, FormHelperText, Grid} from "@material-ui/core";
 import {
@@ -28,17 +28,10 @@ export interface IForm {
 
 type FormikForm = ISendHomeworkData & ErrorFieldsInjection;
 
-const schema = yup.object({
-    isPrivate: yup.boolean(),
-    lesson: yup.string().required(),
-    information: yup.string().nullable(),
-    type: yup.string().nullable(),
-    dueDate: yup.date().min(dayjs()).nullable(),
-});
-
 const Form = ({
     onSubmit,
 }: IForm) => {
+    const {t} = useTranslation();
     const {
         lesson: lessonId,
         type: givenType,
@@ -48,16 +41,23 @@ const Form = ({
         parseBooleans: true,
         parseNumbers: false,
     });
-    const {t} = useTranslation();
 
     const [$lesson, set$Lesson] = useState<LessonFieldRef>();
 
-    const initialValues = useMemo(() => ({
+    const initialValues = {
         lesson: typeof lessonId === "string" ? lessonId : null,
         type: typeof givenType === "string" ? givenType : null,
         dueDate: (typeof dueDateString === "string" && dayjs(dueDateString).isValid()) ? dayjs(dueDateString) : null,
         isPrivate: typeof givenIsPrivate === "boolean" ? givenIsPrivate : false,
-    }), [lessonId, givenType, dueDateString, givenIsPrivate]);
+    };
+
+    const schema = yup.object({
+        isPrivate: yup.boolean(),
+        lesson: yup.string().required(),
+        information: yup.string().nullable(),
+        type: yup.string().nullable(),
+        dueDate: yup.date().min(dayjs(), "Das Fälligkeitsdatum kann nicht in der Vergangenheit liegen.").nullable(),
+    });
 
     return (
         <FocusedPage title={t("Hausaufgabe hinzufügen")}>
@@ -91,7 +91,7 @@ const Form = ({
                                             name="dueDate"
                                             label={t("Fälligkeitsdatum")}
                                             component={HomeworkDueDateField}
-                                            lesson={$lesson}
+                                            course={$lesson?.lesson?.lessonData?.course}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={6}>

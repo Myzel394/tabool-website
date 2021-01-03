@@ -20,7 +20,6 @@ export interface LessonDataApprox {
 export interface LessonDataDetail extends Omit<LessonDataApprox, "course" | "room"> {
     course: CourseDetail;
     room: Room;
-    weekdays: number[];
 }
 
 

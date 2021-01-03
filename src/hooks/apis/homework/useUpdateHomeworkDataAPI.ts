@@ -3,8 +3,7 @@ import {AxiosContext} from "contexts";
 import {HomeworkDetail} from "types";
 import {getLoginConfig} from "api";
 import {Dayjs} from "dayjs";
-
-import {lazyDatetime} from "../../../utils";
+import {lazyDatetime} from "utils";
 
 import parseHomework from "./parseHomework";
 

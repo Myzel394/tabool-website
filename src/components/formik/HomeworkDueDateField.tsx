@@ -1,6 +1,6 @@
 import React, {memo, useMemo} from "react";
 import {FieldProps} from "formik";
-import {LessonDetail} from "types";
+import {CourseDetail} from "types";
 import {DateTimePicker, DateTimePickerProps} from "@material-ui/pickers";
 import {FormGroup, FormHelperText, IconButton, InputAdornment} from "@material-ui/core";
 import {BiTimer, MdClear} from "react-icons/all";
@@ -9,7 +9,7 @@ import dayjs, {Dayjs} from "dayjs";
 import renderDayWithLessonWeekdays from "../renderDayWithLessonWeekdays";
 
 export type IHomeworkDueDateField = Omit<DateTimePickerProps, "disablePast" | "inputVariant" | "format" | "renderDay"> & FieldProps & {
-    lesson?: LessonDetail | null;
+    course?: CourseDetail | null;
 
     helperText?: string;
 };
@@ -19,20 +19,20 @@ const ALLOWED_DAYS = [1, 2, 3, 4, 5];
 const HomeworkDueDateField = ({
     field,
     form,
-    lesson,
+    course,
     helperText,
     ...other
 }: IHomeworkDueDateField) => {
     const renderDay = useMemo(() => {
-        const lessonWeeks = lesson?.lessonData?.weekdays;
-        const lessonColor = lesson?.lessonData?.course?.subject?.userRelation?.color;
+        const lessonWeeks = course?.weekdays;
+        const lessonColor = course?.subject?.userRelation?.color;
 
         return (lessonWeeks && lessonColor) ? renderDayWithLessonWeekdays(
             lessonWeeks,
             lessonColor,
             (date) => Boolean(date && dayjs(date).isAfter(dayjs())),
         ) : undefined;
-    }, [lesson?.lessonData?.weekdays, lesson?.lessonData?.course?.subject?.userRelation?.color]);
+    }, [course?.weekdays, course?.subject?.userRelation?.color]);
     const setValue = (value: Dayjs | null) => field.onChange({
         target: {
             name: field.name,

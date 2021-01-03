@@ -3,13 +3,13 @@ import {AxiosContext} from "contexts";
 import {PaginatedResponse, Room} from "types";
 import {getLoginConfig} from "api";
 
-export type IFetchRoomResponse = PaginatedResponse<Room>;
+export type IFetchRoomResponse = PaginatedResponse<Room[]>;
 
 const useFetchRoomListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
 
-    return useCallback(async (search: string): Promise<IFetchRoomResponse> => {
+    return useCallback(async (search?: string): Promise<IFetchRoomResponse> => {
         const {data} = await instance.get("/api/data/room/", {
             params: {
                 search,

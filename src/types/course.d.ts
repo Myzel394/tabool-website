@@ -16,6 +16,7 @@ export interface CourseDetail {
     courseNumber: number;
     participantsCount: number;
     name: string;
+    weekdays: number[];
     id: string;
 }
 

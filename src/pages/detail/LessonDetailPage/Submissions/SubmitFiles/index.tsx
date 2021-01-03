@@ -26,7 +26,7 @@ const SubmitFiles = () => {
     const [compressImages, setCompressImages] = useState<boolean>(supportsWASM);
 
     const nextLessonDate = useMemo(() => {
-        const {startTime, endTime, weekdays} = lesson.lessonData;
+        const {startTime, endTime, course: {weekdays}} = lesson.lessonData;
 
         const lessonDates: LessonDate[] = weekdays.map(weekday => ({
             weekday,
@@ -37,7 +37,7 @@ const SubmitFiles = () => {
         return getNextLessonDate(dayjs(), lessonDates);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [lesson.lessonData.startTime, lesson.lessonData.endTime, lesson.lessonData.weekdays, lesson.date]);
+    [lesson.lessonData.startTime, lesson.lessonData.endTime, lesson.lessonData.course.weekdays, lesson.date]);
 
     const containsImages = files.some(file => file.nativeFile.type.startsWith("image"));
     const uploadFiles = () => {

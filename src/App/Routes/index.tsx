@@ -6,7 +6,14 @@ import FillOutData from "pages/auth/FillOutData";
 import {UserContext} from "contexts";
 import Login from "pages/auth/Login";
 import Calendar from "pages/calendar/index";
-import {HomeworkAddPage, HomeworkDetailPage, HomeworkListPage, LessonDetailPage, TeacherDetailPage} from "pages";
+import {
+    ExamAddPage,
+    HomeworkAddPage,
+    HomeworkDetailPage,
+    HomeworkListPage,
+    LessonDetailPage,
+    TeacherDetailPage,
+} from "pages";
 
 
 export default function Routes() {
@@ -65,6 +72,11 @@ export default function Routes() {
                 exact
                 path="/add/homework/"
                 component={HomeworkAddPage}
+            />
+            <Route
+                exact
+                path="/add/exam/"
+                component={ExamAddPage}
             />
             <Route
                 exact

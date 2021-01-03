@@ -44,7 +44,7 @@ const SettingsModal = ({
         }));
     };
     const lessonColor = lesson.lessonData.course.subject.userRelation.color;
-    const lessonDateWeeks = lesson.lessonData.weekdays;
+    const lessonDateWeeks = lesson.lessonData.course.weekdays;
 
     return (
         <Dialog open={isOpen} onBackdropClick={onClose}>

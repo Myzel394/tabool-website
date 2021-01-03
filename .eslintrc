@@ -31,7 +31,8 @@
         "switch-colon-spacing": ["error", {"after": true, "before": false}],
         "@typescript-eslint/array-type": ["error", {
             "default": "array"
-        }]
+        }],
+        "jsx-a11y/no-autofocus": "off"
     },
     "env": {
         "browser": true,

@@ -47,7 +47,8 @@ const useSnackbar = (): IUseSnackbar => {
         }
 
         if (error) {
-            const errorMessage = error.response?.data?.nonFieldErrors?.join("; ") ?? error.message;
+            const nonFieldErrors = error.response?.data?.nonFieldErrors;
+            const errorMessage = nonFieldErrors?.join("; ") ?? error.message;
 
             snackbarMessage = `${snackbarMessage} (${errorMessage})`;
         }
