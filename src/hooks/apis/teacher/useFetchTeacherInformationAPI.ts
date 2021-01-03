@@ -19,7 +19,7 @@ const useFetchTeacherInformationAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async (id: string): Promise<IFetchTeacherInformationResponse> => {
-        const {data} = await instance.get(`/api/data/teacher/${id}/information/`, await getLoginConfig());
+        const {data} = await instance.get(`/api/data/information/${id}/information/`, await getLoginConfig());
         return data;
     }, [instance]);
 };

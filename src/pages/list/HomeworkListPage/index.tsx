@@ -221,7 +221,7 @@ const HomeworkListPage = () => {
             )}
             footerNode={
                 <Box py={3} textAlign="center">
-                    <Link component={SecondaryButton} endIcon={<MdAdd />} href={generatePath(("/homework/add/"))}>
+                    <Link component={SecondaryButton} endIcon={<MdAdd />} href={generatePath(("/information/homework/add/"))}>
                         {t("Hausaufgabe hinzufügen")}
                     </Link>
                 </Box>

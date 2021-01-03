@@ -16,7 +16,7 @@ const HomeworkAddPage = () => {
     } = useMutation<ISendHomeworkResponse, AxiosError, ISendHomeworkData>(
         sendHomework,
         {
-            onSuccess: (homework) => history.push(generatePath("/homework/detail/:id", {
+            onSuccess: (homework) => history.push(generatePath("/information/homework/detail/:id", {
                 id: homework.id,
             })),
         },

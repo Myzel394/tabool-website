@@ -31,9 +31,9 @@ const BottomNavigation = ({innerRef}) => {
                     onClick={() => history.push("/timetable/")}
                 />
                 <BottomNavigationAction
-                    label={t("Kalendar").toString()}
+                    label={t("Agenda").toString()}
                     icon={<MdEventNote />}
-                    value="calendar"
+                    value="information"
                 />
             </MuiBottomNavigation>
         );

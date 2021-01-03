@@ -123,7 +123,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 <Link
                     component={Button}
                     underline="none"
-                    href={generatePath("/teacher/detail/:id/", {
+                    href={generatePath("/information/teacher/detail/:id/", {
                         id: lesson.lessonData.course.teacher.id,
                     })}
                 >
@@ -244,7 +244,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                                 underline="none"
                                 component={Button}
                                 startIcon={<HomeworkIcon />}
-                                href={generatePath("/homework/add?:query", {
+                                href={generatePath("/information/homework/add?:query", {
                                     query: queryString.stringify({
                                         lesson: lesson.id,
                                     }),

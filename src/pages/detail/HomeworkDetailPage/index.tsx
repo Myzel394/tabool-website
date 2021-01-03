@@ -170,8 +170,8 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             updatedAt={dayjs(dataUpdatedAt)}
             color={homework.lesson.lessonData.course.subject.userRelation.color}
             orderingStorageName="detail:ordering:homework"
-            searchAllPath={generatePath("/homework/")}
-            addPath={buildPath("/homework/add", undefined, {
+            searchAllPath={generatePath("/information/homework/")}
+            addPath={buildPath("/information/homework/add", undefined, {
                 lesson: homework.lesson.id,
                 type: homework.type,
                 dueDate: lazyDatetime(homework.dueDate),
@@ -273,7 +273,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                         <Link
                             underline="none"
                             component={Button}
-                            href={generatePath("/lesson/detail/:id/", {
+                            href={generatePath("/information/lesson/detail/:id/", {
                                 id: homework.lesson.id,
                             })}
                         >

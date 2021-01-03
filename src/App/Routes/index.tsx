@@ -48,27 +48,27 @@ export default function Routes() {
             />
             <Route
                 exact
-                path="/homework/detail/:id/"
+                path="/information/homework/detail/:id/"
                 component={HomeworkDetailPage}
             />
             <Route
                 exact
-                path="/lesson/detail/:id/"
+                path="/information/lesson/detail/:id/"
                 component={LessonDetailPage}
             />
             <Route
                 exact
-                path="/teacher/detail/:id/"
+                path="/information/teacher/detail/:id/"
                 component={TeacherDetailPage}
             />
             <Route
                 exact
-                path="/homework/add/"
+                path="/information/homework/add/"
                 component={HomeworkAddPage}
             />
             <Route
                 exact
-                path="/homework/"
+                path="/information/homework/"
                 component={HomeworkListPage}
             />
         </Switch>
