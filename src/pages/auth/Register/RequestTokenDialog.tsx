@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";
+import React, {useState} from "react";
 import {SecondaryButton, SimpleDialog} from "components";
 import {Trans, useTranslation} from "react-i18next";
 import {APP_NAME, CONTACT_EMAIL, CONTACT_NUMBER} from "react_constants";
@@ -93,4 +93,4 @@ const RequestTokenDialog = () => {
     );
 };
 
-export default memo(RequestTokenDialog);
+export default RequestTokenDialog;

@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {SuccessMixin} from "components";
 import {useTranslation} from "react-i18next";
 
@@ -14,4 +14,4 @@ const Completed = () => {
     );
 };
 
-export default memo(Completed);
+export default Completed;

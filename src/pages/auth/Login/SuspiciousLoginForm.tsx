@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {ILoginData, ILoginResponse} from "hooks/apis";
 import {useTranslation} from "react-i18next";
 import Title from "components/pages/FocusedPage/Title";
@@ -72,4 +72,4 @@ const SuspiciousLoginForm = ({onSubmit, loginData}: ISuspiciousLoginForm) => {
     );
 };
 
-export default memo(SuspiciousLoginForm);
+export default SuspiciousLoginForm;

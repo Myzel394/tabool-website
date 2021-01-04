@@ -1,4 +1,4 @@
-import React, {memo, useContext, useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import {IConfirmEmailData, IConfirmEmailResponse, useSendConfirmEmailAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
@@ -58,4 +58,4 @@ const ConfirmEmail = () => {
     );
 };
 
-export default memo(ConfirmEmail);
+export default ConfirmEmail;

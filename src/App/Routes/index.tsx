@@ -1,21 +1,22 @@
 import React, {useContext} from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
-import Register from "pages/auth/Register";
-import EmailVerification from "pages/auth/EmailVerification";
-import FillOutData from "pages/auth/FillOutData";
 import {UserContext} from "contexts";
-import Login from "pages/auth/Login";
 import Calendar from "pages/calendar/index";
 import {
+    ConfirmEmail,
     ExamAddPage,
+    FillOutData,
     HomeworkAddPage,
     HomeworkDetailPage,
     HomeworkListPage,
     LessonDetailPage,
+    Login,
+    Register,
     TeacherDetailPage,
 } from "pages";
 
 
+// TODO: Add formik search page!
 export default function Routes() {
     const {state: user} = useContext(UserContext);
 
@@ -36,7 +37,7 @@ export default function Routes() {
             <Route
                 exact
                 path="/auth/registration/email/:code?"
-                component={EmailVerification}
+                component={ConfirmEmail}
                 redirectUrl="/auth/login/"
             />
             <Route

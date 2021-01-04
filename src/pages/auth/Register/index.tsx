@@ -1,4 +1,4 @@
-import React, {memo, useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {IRegistrationData, IRegistrationResponse, useSendRegistrationAPI} from "hooks/apis";
 import {useMutation} from "react-query";
@@ -47,4 +47,4 @@ const Register = () => {
         );
 };
 
-export default memo(Register);
+export default Register;

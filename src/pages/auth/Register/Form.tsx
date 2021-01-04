@@ -1,12 +1,14 @@
 import React from "react";
 import {IRegistrationData} from "hooks/apis";
 import {Field, Form as IkForm, Formik, FormikConfig} from "formik";
-import {Box, FormGroup, FormHelperText, Grid, InputAdornment, Link} from "@material-ui/core";
+import {Box, FormControl, FormHelperText, Grid, InputAdornment, Link} from "@material-ui/core";
 import {TextField} from "formik-material-ui";
 import {MdEmail, MdVpnKey} from "react-icons/all";
 import {Trans, useTranslation} from "react-i18next";
 import * as yup from "yup";
 import {LoadingOverlay, PrimaryButton} from "components";
+import {Alert} from "@material-ui/lab";
+import {ErrorFieldsInjection} from "types";
 
 import RequestTokenDialog from "./RequestTokenDialog";
 
@@ -42,7 +44,7 @@ const Form = ({onSubmit}: IForm) => {
     });
 
     return (
-        <Formik<FormikForm>
+        <Formik<FormikForm & ErrorFieldsInjection>
             initialValues={{
                 email: "",
                 password: "",
@@ -76,7 +78,7 @@ const Form = ({onSubmit}: IForm) => {
                                     />
                                 </Grid>
                                 <Grid item>
-                                    <FormGroup>
+                                    <FormControl>
                                         <Field
                                             required
                                             name="token"
@@ -92,10 +94,10 @@ const Form = ({onSubmit}: IForm) => {
                                             }}
                                         />
                                         <RequestTokenDialog />
-                                    </FormGroup>
+                                    </FormControl>
                                 </Grid>
                                 <Grid item md={6}>
-                                    <FormGroup>
+                                    <FormControl>
                                         <Field
                                             required
                                             name="password"
@@ -104,31 +106,31 @@ const Form = ({onSubmit}: IForm) => {
                                             component={TextField}
                                         />
                                         {!errors.password &&
-                                    <FormHelperText>
-                                        <Trans>
-                                            Wenn du Schwierigkeiten hast, dir starke Passwörter zu merken,
-                                            sie dir aufschreibst oder gar welche doppelt benutzt,
-                                            solltest du lieber einen Passwort-Manager wie{" "}
-                                            <Link
-                                                href="https://bitwarden.com/"
-                                                rel="noopener noreferrer"
-                                                target="_blank"
-                                            >
-                                                Bitwarden
-                                            </Link>
-                                            {" "}oder{" "}
-                                            <Link
-                                                href="https://passwords.google.com/"
-                                                rel="noopener noreferrer"
-                                                target="_blank"
-                                            >
-                                                Googles Passwort-Manager
-                                            </Link>
-                                            {" "}benutzen. Diese sind sicher, einfach zu benutzen und
-                                            viel viel besser als schlechte oder doppelte Passwörter.
-                                        </Trans>
-                                    </FormHelperText>}
-                                    </FormGroup>
+                                            <FormHelperText>
+                                                <Trans>
+                                                    Wenn du Schwierigkeiten hast, dir starke Passwörter zu merken,
+                                                    sie dir aufschreibst oder gar welche doppelt benutzt,
+                                                    solltest du lieber einen Passwort-Manager wie{" "}
+                                                    <Link
+                                                        href="https://bitwarden.com/"
+                                                        rel="noopener noreferrer"
+                                                        target="_blank"
+                                                    >
+                                                        Bitwarden
+                                                    </Link>
+                                                    {" "}oder{" "}
+                                                    <Link
+                                                        href="https://passwords.google.com/"
+                                                        rel="noopener noreferrer"
+                                                        target="_blank"
+                                                    >
+                                                        Googles Passwort-Manager
+                                                    </Link>
+                                                    {" "}benutzen. Diese sind sicher, einfach zu benutzen und
+                                                    viel viel besser als schlechte oder doppelte Passwörter.
+                                                </Trans>
+                                            </FormHelperText>}
+                                    </FormControl>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Field
@@ -138,6 +140,12 @@ const Form = ({onSubmit}: IForm) => {
                                         label={t("Passwort bestätigen")}
                                         component={TextField}
                                     />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {errors.nonFieldErrors &&
+                                        <Alert severity="error">
+                                            {errors.nonFieldErrors}
+                                        </Alert>}
                                 </Grid>
                             </Grid>
                         </Box>

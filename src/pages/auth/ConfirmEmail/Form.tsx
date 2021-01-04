@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {IConfirmEmailData} from "hooks/apis";
 import {LoadingOverlay, PrimaryButton} from "components";
 import {Field, Form as IkForm, Formik, FormikConfig} from "formik";
@@ -7,6 +7,8 @@ import {TextField} from "formik-material-ui";
 import {Box, InputAdornment} from "@material-ui/core";
 import * as yup from "yup";
 import {MdLock} from "react-icons/all";
+import {Alert} from "@material-ui/lab";
+import {ErrorFieldsInjection} from "types";
 
 
 export interface IForm {
@@ -25,14 +27,14 @@ const Form = ({onSubmit}: IForm) => {
     });
 
     return (
-        <Formik<IConfirmEmailData>
+        <Formik<IConfirmEmailData & ErrorFieldsInjection>
             initialValues={{
                 token: "",
             }}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
         >
-            {({isSubmitting}) =>
+            {({isSubmitting, errors}) =>
                 <LoadingOverlay isLoading={isSubmitting}>
                     <IkForm>
                         <Box mb={4}>
@@ -50,6 +52,10 @@ const Form = ({onSubmit}: IForm) => {
                                     ),
                                 }}
                             />
+                            {errors.nonFieldErrors &&
+                                <Alert severity="error">
+                                    {errors.nonFieldErrors}
+                                </Alert>}
                         </Box>
                         <PrimaryButton>
                             {t("E-Mail bestätigen")}
@@ -61,4 +67,4 @@ const Form = ({onSubmit}: IForm) => {
     );
 };
 
-export default memo(Form);
+export default Form;
