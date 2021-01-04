@@ -82,15 +82,27 @@ const reducer = (state: IUser, action: ActionType): IUser => {
             );
         }
 
-        case "register": {
-            return update(
-                state,
-                {
-                    isAuthenticated: {
-                        $set: true,
+        case "registration": {
+            const {
+                email,
+                firstName,
+                lastName,
+                id,
+            } = action.payload;
+
+            return update(state, {
+                isAuthenticated: {
+                    $set: true,
+                },
+                data: {
+                    $set: {
+                        firstName,
+                        email,
+                        id,
+                        lastName,
                     },
                 },
-            );
+            });
         }
 
         default: {

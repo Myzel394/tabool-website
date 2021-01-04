@@ -45,9 +45,9 @@ export default function Routes() {
                 component={FillOutData}
                 redirectUrl="/auth/login/"
             />
-            {!user.isAuthenticated && <Redirect to="/auth/login" />}
-            {!user.isEmailVerified && <Redirect to="/auth/email-verification/" />}
-            {!user.isFullyRegistered && <Redirect to="/auth/full-registration/" />}
+            {!user.isAuthenticated && <Redirect to="/auth/login/" />}
+            {!user.isEmailVerified && <Redirect to="/auth/registration/email/" />}
+            {!user.isFullyRegistered && <Redirect to="/auth/registration/fill/" />}
             <Route
                 exact
                 path="/timetable/"

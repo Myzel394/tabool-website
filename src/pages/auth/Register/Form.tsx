@@ -1,6 +1,6 @@
 import React from "react";
 import {IRegistrationData} from "hooks/apis";
-import {Field, Form as IkForm, Formik} from "formik";
+import {Field, Form as IkForm, Formik, FormikConfig} from "formik";
 import {Box, FormGroup, FormHelperText, Grid, InputAdornment, Link} from "@material-ui/core";
 import {TextField} from "formik-material-ui";
 import {MdEmail, MdVpnKey} from "react-icons/all";
@@ -16,7 +16,7 @@ export interface FormikForm extends IRegistrationData {
 
 
 export interface IForm {
-    onSubmit: (data: IRegistrationData) => Promise<any>;
+    onSubmit: FormikConfig<IRegistrationData>["onSubmit"];
 }
 
 
@@ -50,6 +50,8 @@ const Form = ({onSubmit}: IForm) => {
                 token: "",
             }}
             validationSchema={validationSchema}
+            /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+            // @ts-ignore: Password confirmation isn't required
             onSubmit={onSubmit}
         >
             {({errors, isSubmitting}) =>
