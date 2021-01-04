@@ -1,8 +1,9 @@
-import React from "react";
+import React, {memo} from "react";
+import {SuccessMixin} from "components";
 import {useTranslation} from "react-i18next";
-import {SuccessMixin} from "components/mixins";
 
-const Success = () => {
+
+const Completed = () => {
     const {t} = useTranslation();
 
     return (
@@ -13,4 +14,4 @@ const Success = () => {
     );
 };
 
-export default Success;
+export default memo(Completed);

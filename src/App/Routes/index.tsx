@@ -35,13 +35,13 @@ export default function Routes() {
             />
             <Route
                 exact
-                path="/auth/email-verification/:code?"
+                path="/auth/registration/email/:code?"
                 component={EmailVerification}
                 redirectUrl="/auth/login/"
             />
             <Route
                 exact
-                path="/auth/full-registration"
+                path="/auth/registration/fill"
                 component={FillOutData}
                 redirectUrl="/auth/login/"
             />

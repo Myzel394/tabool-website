@@ -1,15 +1,39 @@
-import React from "react";
-import {FocusedPage} from "components/pages";
+import React, {memo} from "react";
 import {useTranslation} from "react-i18next";
+import {IRegistrationData, IRegistrationResponse, useSendRegistrationAPI} from "hooks/apis";
+import {useMutation} from "react-query";
+import {AxiosError} from "axios";
+import {FocusedPage} from "components";
 
-import RegisterManager from "./RegisterManager";
+import Form from "./Form";
+import Completed from "./Completed";
 
-export default function Register() {
+
+const Register = () => {
     const {t} = useTranslation();
+    const sendRegistration = useSendRegistrationAPI();
 
-    return (
-        <FocusedPage title={t("Registrieren")}>
-            <RegisterManager />
-        </FocusedPage>
+    const {
+        mutateAsync,
+        isSuccess,
+    } = useMutation<IRegistrationResponse, AxiosError, IRegistrationData>(
+        sendRegistration,
     );
-}
+
+    return isSuccess
+        ? <Completed />
+        : (
+            <FocusedPage showLogo title={t("Registrieren")}>
+                <Form
+                    /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+                    // @ts-ignore: Password confirmation field can be ignored
+                    onSubmit={(values, {setErrors}) =>
+                        mutateAsync(values)
+                            .catch(error => setErrors(error.response?.data))
+                    }
+                />
+            </FocusedPage>
+        );
+};
+
+export default memo(Register);
