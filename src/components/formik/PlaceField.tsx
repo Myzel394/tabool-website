@@ -1,7 +1,7 @@
 import React, {memo, useState} from "react";
 import {FieldProps} from "formik";
 import {useQuery} from "react-query";
-import {IFetchRoomResponse, useFetchRoomListAPI} from "hooks/apis";
+import {IFetchRoomResponse, useFetchRoomDetailAPI, useFetchRoomListAPI} from "hooks/apis";
 import {AxiosError} from "axios";
 import {Autocomplete, createFilterOptions} from "@material-ui/lab";
 import {CircularProgress, InputAdornment, TextField} from "@material-ui/core";
@@ -9,6 +9,7 @@ import {Room} from "types";
 import {useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {RoomIcon} from "components/icons";
+import {useTranslation} from "react-i18next";
 
 import {IAutocompleteField} from "./AutocompleteField";
 import AddPlaceDialog from "./AddPlaceDialog";
@@ -22,7 +23,10 @@ export type IPlaceField = Omit<IAutocompleteField,
     "onChange"
     > & FieldProps & {
     onChange: (event) => any;
+    value: string | Room | null;
+
     helperText?: string;
+    label?: string;
 };
 
 const filter = createFilterOptions<Room>();
@@ -31,11 +35,15 @@ const PlaceField = ({
     field,
     form,
     helperText,
+    label,
     onChange: onChangeRaw,
     ...other
 }: IPlaceField) => {
-    const fetchRoom = useFetchRoomListAPI();
+    const {t} = useTranslation();
+    const fetchRoomList = useFetchRoomListAPI();
+    const fetchRoom = useFetchRoomDetailAPI();
     const {addError} = useSnackbar();
+    const {value} = field;
 
     const [search, setSearch] = useState<string | null>(null);
     const [dialog, setDialog] = useState<boolean>(false);
@@ -45,9 +53,20 @@ const PlaceField = ({
         isLoading,
     } = useQuery<IFetchRoomResponse, AxiosError, string>(
         ["fetch_room", search],
-        () => (search ? fetchRoom(search) : fetchRoom()),
+        () => (search ? fetchRoomList(search) : fetchRoomList()),
         {
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorLoading),
+        },
+    );
+    const {
+        data: place,
+        isLoading: isLoadingPlace,
+    } = useQuery<Room, AxiosError, string>(
+        ["fetch_room_detail", value?.id ?? value],
+        () => fetchRoom(value?.id ?? value),
+        {
+            enabled: value !== null,
+            onError: error => addError(error, t("Dieser Raum wurde nicht gefunden."), PredefinedMessageType.ErrorLoading),
         },
     );
 
@@ -71,6 +90,7 @@ const PlaceField = ({
                 clearOnBlur
                 handleHomeEndKeys
                 freeSolo
+                value={place ?? null}
                 loading={isLoading}
                 filterOptions={(options, params) => {
                     const filtered = filter(options, params);
@@ -104,6 +124,7 @@ const PlaceField = ({
                     <TextField
                         {...params}
                         fullWidth
+                        label={label}
                         InputProps={{
                             ...params.InputProps,
                             startAdornment: (
@@ -113,7 +134,7 @@ const PlaceField = ({
                             ),
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    {isLoading && <CircularProgress color="inherit" size="1rem" />}
+                                    {(isLoading || isLoadingPlace) && <CircularProgress color="inherit" size="1rem" />}
                                 </InputAdornment>
                             ),
                         }}

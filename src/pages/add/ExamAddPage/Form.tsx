@@ -32,7 +32,7 @@ const Form = ({onSubmit}: IForm) => {
     const {t} = useTranslation();
     const {
         course: courseId,
-        room: roomId,
+        place: placeId,
         targetedDate: targetedDateString,
         information: givenInformation,
     } = useQueryString({
@@ -42,7 +42,7 @@ const Form = ({onSubmit}: IForm) => {
 
     const initialValues = {
         course: typeof courseId === "string" ? courseId : undefined,
-        room: typeof roomId === "string" ? roomId : undefined,
+        place: typeof placeId === "string" ? placeId : undefined,
         targetedDate: (typeof targetedDateString === "string" && dayjs(targetedDateString).isValid()) ? dayjs(targetedDateString) : null,
         information: typeof givenInformation === "string" ? givenInformation : undefined,
     };
@@ -55,7 +55,7 @@ const Form = ({onSubmit}: IForm) => {
                 initialValues={initialValues}
                 onSubmit={onSubmit}
             >
-                {({isSubmitting, setFieldValue}) => (
+                {({isSubmitting, setFieldValue, values}) => (
                     <LoadingOverlay isLoading={isSubmitting}>
                         <IkForm>
                             <Box mb={2}>
@@ -86,14 +86,11 @@ const Form = ({onSubmit}: IForm) => {
                                         <Field
                                             fullWidth
                                             type="text"
-                                            name="room"
+                                            name="place"
                                             component={PlaceField}
                                             label={t("Raum")}
                                             helperText={t("Wo die Klassenarbeit geschrieben wird.")}
-                                            onChange={event => {
-                                                // eslint-disable-next-line no-console
-                                                console.log("#vant");
-                                            }}
+                                            onChange={event => setFieldValue("place", event.target.value.id)}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>

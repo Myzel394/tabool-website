@@ -29,28 +29,32 @@ const useSnackbar = (): IUseSnackbar => {
 
     const addError = useCallback<IUseSnackbar["addError"]>((
         error,
-        message = "",
-        predefinedMessage,
+        message ?,
+        predefinedMessage?,
     ) => {
-        let snackbarMessage = message;
+        let snackbarMessage;
 
-        switch (predefinedMessage) {
-            case PredefinedMessageType.ErrorLoading:
-                snackbarMessage = t("Es gab einen Fehler beim Laden der Daten.");
-                break;
-            case PredefinedMessageType.ErrorMutating:
-                snackbarMessage = t("Es gab einen Fehler beim Updaten der Daten.");
-                break;
-            case PredefinedMessageType.ErrorUploading:
-                snackbarMessage = t("Es gab einen Fehler beim Hochladen der Daten.");
-                break;
-        }
+        if (message) {
+            snackbarMessage = message;
+        } else {
+            switch (predefinedMessage) {
+                case PredefinedMessageType.ErrorLoading:
+                    snackbarMessage = t("Es gab einen Fehler beim Laden der Daten.");
+                    break;
+                case PredefinedMessageType.ErrorMutating:
+                    snackbarMessage = t("Es gab einen Fehler beim Updaten der Daten.");
+                    break;
+                case PredefinedMessageType.ErrorUploading:
+                    snackbarMessage = t("Es gab einen Fehler beim Hochladen der Daten.");
+                    break;
+            }
 
-        if (error) {
-            const nonFieldErrors = error.response?.data?.nonFieldErrors;
-            const errorMessage = nonFieldErrors?.join("; ") ?? error.message;
+            if (error) {
+                const nonFieldErrors = error.response?.data?.nonFieldErrors;
+                const errorMessage = nonFieldErrors?.join("; ") ?? error.message;
 
-            snackbarMessage = `${snackbarMessage} (${errorMessage})`;
+                snackbarMessage = `${snackbarMessage} (${errorMessage})`;
+            }
         }
 
         addSnackbar(snackbarMessage, {

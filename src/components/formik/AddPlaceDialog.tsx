@@ -53,7 +53,7 @@ const AddPlaceDialog = ({
             .string()
             .required()
             .matches(
-                /^(([A-Z]{1,2}[0-9]?)|([0-9]){3})|([A-Z][a-z ]{62})$/,
+                /^(([A-Z]{1,2}[0-9]?)|([0-9]){3})|([A-Z][A-Z ]{62})$/,
                 t("Ungültiger Ortname. Benutze die Kurzform deines Orts."),
             ),
     });
@@ -75,7 +75,7 @@ const AddPlaceDialog = ({
                         .finally(() => setSubmitting(true))
                 }
             >
-                {({isSubmitting}) => (
+                {({isSubmitting, setFieldValue}) => (
                     <Form>
                         <DialogContent>
                             <DialogContentText>
@@ -93,6 +93,7 @@ const AddPlaceDialog = ({
                                         label={t("Ortname")}
                                         type="text"
                                         variant="outlined"
+                                        onChange={event => setFieldValue("place", event.target.value.toUpperCase())}
                                     />
                                 </Form>
                             </LoadingOverlay>
