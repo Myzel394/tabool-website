@@ -19,22 +19,14 @@ const reducer = (state: IUser, action: ActionType): IUser => {
         }
 
         case "login": {
-            const {isFullyRegistered, isEmailVerified, firstName, lastName, email, id} = action.payload;
-            const func = value => update(value || {
-            }, {
-                firstName: {
-                    $set: firstName,
-                },
-                lastName: {
-                    $set: lastName,
-                },
-                email: {
-                    $set: email,
-                },
-                id: {
-                    $set: id,
-                },
-            });
+            const {
+                isFullyRegistered,
+                isEmailVerified,
+                firstName,
+                lastName,
+                email,
+                id,
+            } = action.payload;
 
             return update(
                 state,
@@ -49,7 +41,20 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                         $set: isEmailVerified,
                     },
                     data: {
-                        $apply: func,
+                        $apply: value => update<IUser["data"]>(value ?? {} as IUser["data"], {
+                            firstName: {
+                                $set: firstName,
+                            },
+                            lastName: {
+                                $set: lastName,
+                            },
+                            email: {
+                                $set: email,
+                            },
+                            id: {
+                                $set: id,
+                            },
+                        }),
                     },
                 },
             );

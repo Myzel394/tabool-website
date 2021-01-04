@@ -11,6 +11,10 @@ export interface ILoginData {
 export interface ILoginResponse {
     hasFilledOutData: boolean;
     isConfirmed: boolean;
+    firstName: string;
+    lastName: string;
+    email: string;
+    id: string;
 }
 
 const useSendLoginAPI = () => {
