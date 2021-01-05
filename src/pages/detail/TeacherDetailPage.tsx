@@ -7,7 +7,7 @@ import {CgCompress, FaTransgenderAlt, MdEmail, MdTextFields} from "react-icons/a
 import {DetailPage, GenderStatus, LoadingIndicator} from "components";
 import {
     IFetchTeacherInformationResponse,
-    IFetchTeacherResponse,
+    IFetchTeacherListResponse,
     useFetchTeacherDetailAPI,
     useFetchTeacherInformationAPI,
 } from "hooks/apis";
@@ -68,7 +68,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <DetailPage<TeacherKeys, "", void, IFetchTeacherResponse>
+        <DetailPage<TeacherKeys, "", void, IFetchTeacherListResponse>
             title={`${teacher.firstName} ${teacher.lastName}`}
             color={genderColor[teacher.gender]}
             orderingStorageName="detail:ordering:teacher"

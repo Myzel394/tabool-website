@@ -16,7 +16,7 @@ export type IHomeworkDueDateField = Omit<DateTimePickerProps, "disablePast" | "i
 
 const ALLOWED_DAYS = [1, 2, 3, 4, 5];
 
-const HomeworkDueDateField = ({
+const LessonDateField = ({
     field,
     form,
     course,
@@ -24,12 +24,12 @@ const HomeworkDueDateField = ({
     ...other
 }: IHomeworkDueDateField) => {
     const renderDay = useMemo(() => {
-        const lessonWeeks = course?.weekdays;
-        const lessonColor = course?.subject?.userRelation?.color;
+        const weeks = course?.weekdays;
+        const colors = course?.subject?.userRelation?.color;
 
-        return (lessonWeeks && lessonColor) ? renderDayWithLessonWeekdays(
-            lessonWeeks,
-            lessonColor,
+        return (weeks && colors) ? renderDayWithLessonWeekdays(
+            weeks,
+            colors,
             (date) => Boolean(date && dayjs(date).isAfter(dayjs())),
         ) : undefined;
     }, [course?.weekdays, course?.subject?.userRelation?.color]);
@@ -48,7 +48,6 @@ const HomeworkDueDateField = ({
             <DateTimePicker
                 {...field}
                 {...other}
-                disablePast
                 type="text"
                 inputVariant="outlined"
                 format="lll"
@@ -87,4 +86,4 @@ const HomeworkDueDateField = ({
     );
 };
 
-export default memo(HomeworkDueDateField);
+export default memo(LessonDateField);

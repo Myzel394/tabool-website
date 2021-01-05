@@ -7,15 +7,15 @@ export interface IFetchTeacherListData extends FetchListData {
     ordering?: "last_name" | "-last_name" | "short_name" | "-short_name";
 }
 
-export type IFetchTeacherResponse = PaginatedResponse<TeacherApprox[]>;
+export type IFetchTeacherListResponse = PaginatedResponse<TeacherApprox[]>;
 
 const useFetchTeacherListAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async (key: string, {
+    return useCallback(async ({
         ordering = "last_name",
         search,
-    }: IFetchTeacherListData = {}, page = 1): Promise<IFetchTeacherResponse> => {
+    }: IFetchTeacherListData = {}, page = 1): Promise<IFetchTeacherListResponse> => {
         const {data} = await instance.get("/api/data/teacher/", {
             params: {
                 search,

@@ -141,6 +141,8 @@ const BasicSearchField = <
                 }}
                 onChange={event => {
                     setIsOpen(false);
+                    // eslint-disable-next-line no-console
+                    console.log(field);
                     field.onChange({
                         ...event,
                         target: {

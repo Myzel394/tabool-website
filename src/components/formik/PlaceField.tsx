@@ -58,17 +58,6 @@ const PlaceField = ({
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorLoading),
         },
     );
-    const {
-        data: place,
-        isLoading: isLoadingPlace,
-    } = useQuery<Room, AxiosError, string>(
-        ["fetch_room_detail", value?.id ?? value],
-        () => fetchRoom(value?.id ?? value),
-        {
-            enabled: value !== null,
-            onError: error => addError(error, t("Dieser Raum wurde nicht gefunden."), PredefinedMessageType.ErrorLoading),
-        },
-    );
 
     const onChange = value =>
         onChangeRaw({
@@ -90,7 +79,6 @@ const PlaceField = ({
                 clearOnBlur
                 handleHomeEndKeys
                 freeSolo
-                value={place ?? null}
                 loading={isLoading}
                 filterOptions={(options, params) => {
                     const filtered = filter(options, params);
@@ -134,7 +122,7 @@ const PlaceField = ({
                             ),
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    {(isLoading || isLoadingPlace) && <CircularProgress color="inherit" size="1rem" />}
+                                    {isLoading && <CircularProgress color="inherit" size="1rem" />}
                                 </InputAdornment>
                             ),
                         }}

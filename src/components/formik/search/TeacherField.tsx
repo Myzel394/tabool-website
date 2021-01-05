@@ -1,81 +1,74 @@
-import React, {memo, useCallback, useState} from "react";
+import React, {memo, useState} from "react";
+import {IFetchTeacherListData, IFetchTeacherListResponse, useFetchTeacherListAPI} from "hooks/apis";
+import {useInfiniteQuery} from "react-query";
+import {AxiosError} from "axios";
+import {useQueryOptions} from "hooks";
 import {useTranslation} from "react-i18next";
 import {TeacherApprox} from "types";
-import {useFetchTeacherListAPI} from "hooks/apis";
+import {Avatar, ListItem, ListItemAvatar} from "@material-ui/core";
 import {FaFemale, FaGenderless, FaMale} from "react-icons/all";
-import {Avatar, ListItemAvatar} from "@material-ui/core";
 
-import SimpleListField, {itemSize} from "../../inputs/SimpleListField";
-import {Gender} from "../../../api";
 import genderColor from "../../../constants/genderColor";
+import {Gender} from "../../../api";
 
-import BasicSearchField, {SearchFieldExtend} from "./BasicSearchField";
-
-export type ITeacherField = SearchFieldExtend<TeacherApprox>;
+import BaseSearchField from "./BaseSearchField";
 
 
-const TeacherField = ({
-    onChange,
-    onBlur,
-    ...other
-}: ITeacherField) => {
+const TeacherField = (props) => {
     const {t} = useTranslation();
+    const queryOptions = useQueryOptions();
+    const fetchTeachers = useFetchTeacherListAPI();
 
-    const [selectedValue, setSelectedValue] = useState<TeacherApprox | null>();
+    const [search, setSearch] = useState<string>("");
 
-    const queryFunction = useFetchTeacherListAPI();
-    // Functions
-    const filterFunc = useCallback((givenData: TeacherApprox[], value: string) =>
-        givenData.filter(element => {
-            return element.lastName.toLocaleLowerCase().includes(value) ||
-                element.shortName.toLocaleLowerCase().includes(value);
-        }), []);
-
-    const defaultTitle = t("Lehrer auswählen");
-    const title = selectedValue ? `${selectedValue.lastName} (${selectedValue.shortName})` : defaultTitle;
+    const {
+        data: rawDataGroups,
+        isLoading,
+    } = useInfiniteQuery<IFetchTeacherListResponse, AxiosError, IFetchTeacherListData>(
+        [fetchTeachers, search],
+        () => fetchTeachers({
+            search,
+        }),
+        {
+            ...queryOptions,
+            // eslint-disable-next-line no-console
+            getNextPageParam: (lastPage) => console.log(lastPage),
+        },
+    );
+    const teachers = rawDataGroups?.pages?.reduce?.((array, page) => [
+        ...array,
+        ...page.results,
+    ], [] as TeacherApprox[]);
 
     return (
-        <BasicSearchField<TeacherApprox>
-            {...other}
-            searchPlaceholder={t("Suche nach Nachnamen")}
-            title={title}
-            renderListElement={((teacher, props, isSelected) => (
-                <SimpleListField
-                    listItemProps={{
-                        button: true,
-                        disableRipple: true,
-                        disableTouchRipple: true,
-                    }}
-                    isActive={isSelected}
-                    primaryText={teacher.lastName}
-                    secondaryText={teacher.shortName}
-                    left={
-                        <ListItemAvatar>
-                            <Avatar
-                                style={{
-                                    backgroundColor: genderColor[teacher.gender],
-                                }}
-                            >
-                                {{
-                                    [Gender.Male]: <FaMale />,
-                                    [Gender.Female]: <FaFemale />,
-                                    [Gender.Diverse]: <FaGenderless />,
-                                    [Gender.Unknown]: null,
-                                }[teacher.gender]}
-                            </Avatar>
-                        </ListItemAvatar>
-                    }
-                    {...props}
-                />
-            ))}
-            queryFunction={queryFunction}
-            queryKey="fetch_teachers"
-            modalTitle={defaultTitle}
-            filterData={filterFunc}
-            listItemSize={itemSize}
-            getKeyFromData={(element) => element.id}
-            onSelect={setSelectedValue}
-        />
+        <BaseSearchField<TeacherApprox>
+            {...props}
+            elements={teachers}
+            modalTitle={t("Lehrer auswählen")}
+            getCaption={teacher => `${teacher.shortName} ${teacher.lastName} (${teacher.shortName})`}
+            isLoading={isLoading}
+            search={search}
+            onSearchChange={setSearch}
+        >
+            {(teacher, {iSelected, onSelect}) =>
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar
+                            style={{
+                                backgroundColor: genderColor[teacher.gender],
+                            }}
+                        >
+                            {{
+                                [Gender.Male]: <FaMale />,
+                                [Gender.Female]: <FaFemale />,
+                                [Gender.Diverse]: <FaGenderless />,
+                                [Gender.Unknown]: null,
+                            }[teacher.gender]}
+                        </Avatar>
+                    </ListItemAvatar>
+                </ListItem>
+            }
+        </BaseSearchField>
     );
 };
 

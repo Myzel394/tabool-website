@@ -5,9 +5,9 @@ import {Box, FormGroup, FormHelperText, Grid} from "@material-ui/core";
 import {
     FocusedPage,
     FormikLessonField,
-    HomeworkDueDateField,
     HomeworkInformationField,
     HomeworkTypeField,
+    LessonDateField,
     LoadingOverlay,
     PrimaryButton,
 } from "components";
@@ -73,7 +73,8 @@ const Form = ({
                             <Box mb={2}>
                                 <Grid container spacing={4}>
                                     <Grid item xs={12}>
-                                        <FormikLessonField
+                                        <Field
+                                            disablePast
                                             innerRef={reference => {
                                                 if (reference && !_.isEqual(reference, $lesson)) {
                                                     set$Lesson(reference.lesson);
@@ -83,6 +84,7 @@ const Form = ({
                                             type="text"
                                             label={t("Stunde")}
                                             helpText={t("Von welcher Stunde aus die Hausaufgabe aufgegeben wurde.").toString()}
+                                            component={FormikLessonField}
                                             onChange={value => setFieldValue("lesson", value)}
                                         />
                                     </Grid>
@@ -90,7 +92,7 @@ const Form = ({
                                         <Field
                                             name="dueDate"
                                             label={t("Fälligkeitsdatum")}
-                                            component={HomeworkDueDateField}
+                                            component={LessonDateField}
                                             course={$lesson?.lesson?.lessonData?.course}
                                         />
                                     </Grid>

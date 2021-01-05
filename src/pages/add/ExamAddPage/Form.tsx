@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, {memo} from "react";
-import {ISendExamData} from "hooks/apis";
+import React, {memo, useState} from "react";
+import {ISendExamData, useFetchCourseDetailAPI} from "hooks/apis";
 import {Field, Form as IkForm, Formik, FormikHelpers} from "formik";
 import {useColors, useQueryString} from "hooks";
 import dayjs from "dayjs";
-import {CourseField, FocusedPage, FormikLessonField, LoadingOverlay, PlaceField} from "components";
+import {CourseField, FocusedPage, LoadingOverlay, PlaceField, renderDayWithLessonWeekdays} from "components";
 import {useTranslation} from "react-i18next";
-import {ErrorFieldsInjection} from "types";
+import {CourseDetail, ErrorFieldsInjection} from "types";
 import * as yup from "yup";
 import {Box, Grid, InputAdornment} from "@material-ui/core";
 import {TextField} from "formik-material-ui";
+import {DatePicker} from "formik-material-ui-pickers";
 import {FaCalendarDay} from "react-icons/all";
+import {useQuery} from "react-query";
+import {AxiosError} from "axios";
 
 
 export interface IForm {
@@ -32,9 +35,10 @@ const Form = ({onSubmit}: IForm) => {
     const {
         inputIconColor,
     } = useColors();
+    const fetchCourse = useFetchCourseDetailAPI();
     const {t} = useTranslation();
     const {
-        course: courseId,
+        course: parameterCourseId,
         place: placeId,
         targetedDate: targetedDateString,
         information: givenInformation,
@@ -42,13 +46,36 @@ const Form = ({onSubmit}: IForm) => {
         parseBooleans: false,
         parseNumbers: false,
     });
-
     const initialValues = {
-        course: typeof courseId === "string" ? courseId : null,
+        course: typeof parameterCourseId === "string" ? parameterCourseId : null,
         place: typeof placeId === "string" ? placeId : null,
         targetedDate: (typeof targetedDateString === "string" && dayjs(targetedDateString).isValid()) ? dayjs(targetedDateString) : null,
         information: typeof givenInformation === "string" ? givenInformation : null,
     };
+
+    const [courseId, setCourseId] = useState<string>();
+
+    const {
+        data: course,
+    } = useQuery<CourseDetail | void, AxiosError>(
+        ["fetch_course_id", courseId],
+        // @ts-ignore: Course is only fetched when enabled
+        () => fetchCourse($courseId),
+        {
+            enabled: Boolean(courseId),
+        },
+    );
+
+    const renderDay = (() => {
+        if (course) {
+            const color = course.subject.userRelation.color;
+            const weekdays = course.weekdays;
+
+            return renderDayWithLessonWeekdays(weekdays, color);
+        }
+    })();
+    // eslint-disable-next-line no-console
+    console.log(renderDay);
 
     return (
         <FocusedPage title={t("Klassenarbeit hinzufügen")}>
@@ -58,7 +85,7 @@ const Form = ({onSubmit}: IForm) => {
                 initialValues={initialValues}
                 onSubmit={onSubmit}
             >
-                {({isSubmitting, setFieldValue, values}) => (
+                {({isSubmitting, setFieldValue}) => (
                     <LoadingOverlay isLoading={isSubmitting}>
                         <IkForm>
                             <Box mb={2}>
@@ -71,6 +98,12 @@ const Form = ({onSubmit}: IForm) => {
                                             name="course"
                                             variant="outlined"
                                             label={t("Kurs / Fach")}
+                                            handleChange={event => {
+                                                // eslint-disable-next-line no-console
+                                                console.log("ävant");
+                                                setFieldValue("course", event.target.value);
+                                                setCourseId(event.target.value);
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item md={6}>
@@ -80,7 +113,7 @@ const Form = ({onSubmit}: IForm) => {
                                             helperText={t("Der Tag, an dem die Klassenarbeit geschrieben wird.")}
                                             type="text"
                                             name="targetedDate"
-                                            component={FormikLessonField}
+                                            component={DatePicker}
                                             shouldDisableDate={date => Boolean(date && !ALLOWED_DAYS.includes(date.day()))}
                                             inputVariant="outlined"
                                             format="LL"
@@ -91,6 +124,7 @@ const Form = ({onSubmit}: IForm) => {
                                                     </InputAdornment>
                                                 ),
                                             }}
+                                            renderDay={renderDay}
                                         />
                                     </Grid>
                                     <Grid item md={6}>
