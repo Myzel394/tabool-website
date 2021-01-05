@@ -2,15 +2,15 @@
 import React, {memo} from "react";
 import {ISendExamData} from "hooks/apis";
 import {Field, Form as IkForm, Formik, FormikHelpers} from "formik";
-import {useQueryString} from "hooks";
+import {useColors, useQueryString} from "hooks";
 import dayjs from "dayjs";
-import {FocusedPage, LoadingOverlay, PlaceField} from "components";
+import {CourseField, FocusedPage, FormikLessonField, LoadingOverlay, PlaceField} from "components";
 import {useTranslation} from "react-i18next";
 import {ErrorFieldsInjection} from "types";
 import * as yup from "yup";
-import {Box, Grid} from "@material-ui/core";
-import {DatePicker} from "formik-material-ui-pickers";
+import {Box, Grid, InputAdornment} from "@material-ui/core";
 import {TextField} from "formik-material-ui";
+import {FaCalendarDay} from "react-icons/all";
 
 
 export interface IForm {
@@ -29,6 +29,9 @@ const schema = yup.object({
 const ALLOWED_DAYS = [1, 2, 3, 4, 5];
 
 const Form = ({onSubmit}: IForm) => {
+    const {
+        inputIconColor,
+    } = useColors();
     const {t} = useTranslation();
     const {
         course: courseId,
@@ -41,10 +44,10 @@ const Form = ({onSubmit}: IForm) => {
     });
 
     const initialValues = {
-        course: typeof courseId === "string" ? courseId : undefined,
-        place: typeof placeId === "string" ? placeId : undefined,
+        course: typeof courseId === "string" ? courseId : null,
+        place: typeof placeId === "string" ? placeId : null,
         targetedDate: (typeof targetedDateString === "string" && dayjs(targetedDateString).isValid()) ? dayjs(targetedDateString) : null,
-        information: typeof givenInformation === "string" ? givenInformation : undefined,
+        information: typeof givenInformation === "string" ? givenInformation : null,
     };
 
     return (
@@ -63,6 +66,7 @@ const Form = ({onSubmit}: IForm) => {
                                     <Grid item xs={12}>
                                         <Field
                                             required
+                                            component={CourseField}
                                             type="text"
                                             name="course"
                                             variant="outlined"
@@ -76,10 +80,17 @@ const Form = ({onSubmit}: IForm) => {
                                             helperText={t("Der Tag, an dem die Klassenarbeit geschrieben wird.")}
                                             type="text"
                                             name="targetedDate"
-                                            component={DatePicker}
+                                            component={FormikLessonField}
                                             shouldDisableDate={date => Boolean(date && !ALLOWED_DAYS.includes(date.day()))}
                                             inputVariant="outlined"
                                             format="LL"
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <FaCalendarDay color={inputIconColor} />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item md={6}>
