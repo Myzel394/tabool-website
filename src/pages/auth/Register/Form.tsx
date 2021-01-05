@@ -6,9 +6,12 @@ import {TextField} from "formik-material-ui";
 import {MdEmail, MdVpnKey} from "react-icons/all";
 import {Trans, useTranslation} from "react-i18next";
 import * as yup from "yup";
-import {LoadingOverlay, PrimaryButton} from "components";
+import {HiddenTextField, LoadingOverlay, PrimaryButton, SecondaryButton} from "components";
 import {Alert} from "@material-ui/lab";
 import {ErrorFieldsInjection} from "types";
+import {generatePath} from "react-router-dom";
+
+import {useColors} from "../../../hooks";
 
 import RequestTokenDialog from "./RequestTokenDialog";
 
@@ -24,6 +27,9 @@ export interface IForm {
 
 const Form = ({onSubmit}: IForm) => {
     const {t} = useTranslation();
+    const {
+        inputIconColor,
+    } = useColors();
 
     const validationSchema = yup.object({
         email: yup
@@ -32,12 +38,13 @@ const Form = ({onSubmit}: IForm) => {
             .required(t("Die E-Mail wird benötigt.")),
         token: yup
             .string()
-            .min(128, t("Der Token ist zu kurz."))
-            .max(128, t("Der Token ist zu kurz.")),
+            .min(127, t("Der Token ist zu kurz."))
+            .max(127, t("Der Token ist zu lang.")),
         password: yup
             .string()
             .min(8, t("Das Passwort muss mindestens 8 Zeichen lang sein."))
-            .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, t("Das Passwort muss einen Buchstaben und eine Zahl enthalten.")),
+            .matches(/^[^\w\d]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))$/, t("Das Passwort muss einen Buchstaben und eine Zahl enthalten."))
+            .required("Das Passwort wird benötigt."),
         passwordConfirmation: yup
             .string()
             .oneOf([yup.ref("password"), null], t("DIe Passwörter stimmen nicht überein.")),
@@ -56,13 +63,15 @@ const Form = ({onSubmit}: IForm) => {
             // @ts-ignore: Password confirmation isn't required
             onSubmit={onSubmit}
         >
-            {({errors, isSubmitting}) =>
+            {({errors, isSubmitting, touched}) =>
                 <LoadingOverlay isLoading={isSubmitting}>
                     <IkForm>
                         <Box mb={4}>
-                            <Grid container spacing={2}>
-                                <Grid item>
+                            <Grid container spacing={2} justify="center" alignItems="flex-start">
+                                <Grid item xs={12}>
                                     <Field
+                                        autoFocus
+                                        fullWidth
                                         required
                                         name="email"
                                         type="email"
@@ -71,15 +80,17 @@ const Form = ({onSubmit}: IForm) => {
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <MdEmail />
+                                                    <MdEmail color={inputIconColor} />
                                                 </InputAdornment>
                                             ),
                                         }}
+                                        variant="outlined"
                                     />
                                 </Grid>
-                                <Grid item>
-                                    <FormControl>
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth>
                                         <Field
+                                            fullWidth
                                             required
                                             name="token"
                                             type="text"
@@ -88,24 +99,29 @@ const Form = ({onSubmit}: IForm) => {
                                             InputProps={{
                                                 startAdornment: (
                                                     <InputAdornment position="start">
-                                                        <MdVpnKey />
+                                                        <MdVpnKey color={inputIconColor} />
                                                     </InputAdornment>
                                                 ),
                                             }}
+                                            variant="outlined"
                                         />
-                                        <RequestTokenDialog />
+                                        <FormHelperText>
+                                            <RequestTokenDialog />
+                                        </FormHelperText>
                                     </FormControl>
                                 </Grid>
-                                <Grid item md={6}>
+                                <Grid item md={6} xs={12}>
                                     <FormControl>
                                         <Field
+                                            fullWidth
                                             required
                                             name="password"
-                                            type="password"
+                                            type="text"
                                             label={t("Passwort")}
-                                            component={TextField}
+                                            component={HiddenTextField}
+                                            variant="outlined"
                                         />
-                                        {!errors.password &&
+                                        {!(touched.password && errors.password) &&
                                             <FormHelperText>
                                                 <Trans>
                                                     Wenn du Schwierigkeiten hast, dir starke Passwörter zu merken,
@@ -132,13 +148,15 @@ const Form = ({onSubmit}: IForm) => {
                                             </FormHelperText>}
                                     </FormControl>
                                 </Grid>
-                                <Grid item md={6}>
+                                <Grid item md={6} xs={12}>
                                     <Field
                                         required
+                                        fullWidth
                                         name="passwordConfirmation"
-                                        type="password"
+                                        type="text"
                                         label={t("Passwort bestätigen")}
-                                        component={TextField}
+                                        component={HiddenTextField}
+                                        variant="outlined"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -149,9 +167,18 @@ const Form = ({onSubmit}: IForm) => {
                                 </Grid>
                             </Grid>
                         </Box>
-                        <PrimaryButton type="submit">
-                            {t("Registrieren")}
-                        </PrimaryButton>
+                        <Grid container spacing={1}>
+                            <Grid item>
+                                <PrimaryButton type="submit">
+                                    {t("Registrieren")}
+                                </PrimaryButton>
+                            </Grid>
+                            <Grid item>
+                                <Link component={SecondaryButton} underline="none" href={generatePath("/auth/login/")}>
+                                    {t("Anmelden")}
+                                </Link>
+                            </Grid>
+                        </Grid>
                     </IkForm>
                 </LoadingOverlay>
             }

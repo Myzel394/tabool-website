@@ -18,13 +18,16 @@ interface FormikForm {
     otpKey: string;
 }
 
-const schema = yup.object({
-    otpKey: yup.string().length(6).required(),
-});
-
 
 const SuspiciousLoginForm = ({onSubmit, loginData}: ISuspiciousLoginForm) => {
     const {t} = useTranslation();
+
+    const validationSchema = yup.object({
+        otpKey: yup
+            .string()
+            .length(6, t("Der Code ist zu kurz."))
+            .required(t("Dein OTP wird benötigt.")),
+    });
 
     return (
         <>
@@ -36,7 +39,7 @@ const SuspiciousLoginForm = ({onSubmit, loginData}: ISuspiciousLoginForm) => {
                 initialValues={{
                     otpKey: "",
                 }}
-                validationSchema={schema}
+                validationSchema={validationSchema}
                 onSubmit={(values, {setErrors, setSubmitting}) =>
                     onSubmit({
                         ...loginData,
@@ -55,6 +58,9 @@ const SuspiciousLoginForm = ({onSubmit, loginData}: ISuspiciousLoginForm) => {
                         <Form>
                             <Box mb={4} mt={2}>
                                 <Field
+                                    fullWidth
+                                    required
+                                    autoFocus
                                     component={TextField}
                                     name="otpKey"
                                     label={t("OTP")}

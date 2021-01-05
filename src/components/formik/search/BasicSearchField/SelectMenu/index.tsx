@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Box, Dialog, DialogTitle} from "@material-ui/core";
 import {useUniqueId} from "hooks";
 
-import Search, {ISearch} from "../../../Search";
+import Search, {ISearch} from "../../../../inputs/Search";
 
 import ErrorStatus from "./statuses/ErrorStatus";
 import List, {IList} from "./List";
@@ -18,9 +18,9 @@ export interface ISelectMenu<DataType = any, KeyType = any> {
     data: DataType[];
 
     onClose: () => void;
-    onSelect: (element: DataType) => void;
+    onChange: (data: any) => any;
 
-    selectedValue: DataType | undefined;
+    selectedKey: KeyType;
 
     onSearch: ISearch["onSearch"];
     searchPlaceholder: ISearch["searchPlaceholder"];
@@ -38,31 +38,34 @@ const SelectMenu = <DataType extends any = any, KeyType = any>({
     isError,
     isFetching,
     onSearch,
-    onSelect,
+    onChange,
     searchPlaceholder,
     listItemSize,
     onClose,
     data,
     renderListElement,
     getKeyFromData,
-    selectedValue,
+    selectedKey,
     onSearchChange,
     searchValue,
 }: ISelectMenu<DataType, KeyType>) => {
     const titleId = useUniqueId();
-    const [selectedElement, setSelectedElement] = useState<any>();
-    const canConfirm = selectedValue !== undefined && selectedElement === undefined || selectedElement !== undefined;
+
+    const [key, setKey] = useState<KeyType | null>();
+    const [element, setElement] = useState<DataType | null>();
+
+    const canConfirm = selectedKey !== undefined && key === undefined || key !== undefined;
 
     // Update selected element to given value if opens
     useEffect(() => {
         // Element only needs to be updated when dialog is opened
         if (isOpen) {
             // Only update when a value is selected
-            if (selectedValue) {
-                setSelectedElement(selectedValue);
+            if (selectedKey) {
+                setKey(selectedKey);
             }
         }
-    }, [selectedValue, isOpen]);
+    }, [selectedKey, isOpen]);
 
     return (
         <Dialog
@@ -85,13 +88,23 @@ const SelectMenu = <DataType extends any = any, KeyType = any>({
                     renderListElement={renderListElement}
                     data={data}
                     getKeyFromData={getKeyFromData}
-                    selectedKey={selectedElement && getKeyFromData(selectedElement)}
+                    /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+                    // @ts-ignore
+                    selectedKey={key}
                     itemSize={listItemSize}
-                    onSelect={element => setSelectedElement(element)}
+                    onSelect={newElement => {
+                        setElement(newElement);
+                        setKey(newElement === null ? null : getKeyFromData(newElement));
+                    }}
                 />
                 <Actions
                     canConfirm={canConfirm}
-                    onConfirm={() => onSelect(selectedElement)}
+                    onConfirm={() => onChange({
+                        target: {
+                            value: key,
+                            element,
+                        },
+                    })}
                     onClose={onClose}
                 />
             </Box>

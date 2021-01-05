@@ -6,9 +6,10 @@ import {useTranslation} from "react-i18next";
 import {TextField} from "formik-material-ui";
 import {Box, InputAdornment} from "@material-ui/core";
 import * as yup from "yup";
-import {MdLock} from "react-icons/all";
+import {MdVpnKey} from "react-icons/all";
 import {Alert} from "@material-ui/lab";
 import {ErrorFieldsInjection} from "types";
+import {useColors} from "hooks";
 
 
 export interface IForm {
@@ -17,10 +18,13 @@ export interface IForm {
 
 
 const Form = ({onSubmit}: IForm) => {
+    const {
+        inputIconColor,
+    } = useColors();
     const {t} = useTranslation();
 
     const validationSchema = yup.object({
-        token: yup
+        confirmationKey: yup
             .string()
             .min(40, t("Der Code ist 40 Zeichen lang."))
             .max(40, t("Der Code ist 40 Zeichen lang.")),
@@ -29,7 +33,7 @@ const Form = ({onSubmit}: IForm) => {
     return (
         <Formik<IConfirmEmailData & ErrorFieldsInjection>
             initialValues={{
-                token: "",
+                confirmationKey: "",
             }}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
@@ -39,25 +43,28 @@ const Form = ({onSubmit}: IForm) => {
                     <IkForm>
                         <Box mb={4}>
                             <Field
+                                fullWidth
+                                autoFocus
                                 required
-                                name="token"
+                                name="confirmationKey"
                                 type="text"
                                 component={TextField}
                                 label={t("Code")}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <MdLock />
+                                            <MdVpnKey color={inputIconColor} />
                                         </InputAdornment>
                                     ),
                                 }}
+                                variant="outlined"
                             />
                             {errors.nonFieldErrors &&
                                 <Alert severity="error">
                                     {errors.nonFieldErrors}
                                 </Alert>}
                         </Box>
-                        <PrimaryButton>
+                        <PrimaryButton type="submit">
                             {t("E-Mail bestätigen")}
                         </PrimaryButton>
                     </IkForm>

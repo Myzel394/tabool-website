@@ -10,7 +10,7 @@ export interface IList<DataType = any, KeyType = string> {
     itemSize: number;
 
     selectedKey: KeyType;
-    onSelect: (element: DataType | undefined) => void;
+    onSelect: (element: DataType | null) => void;
 }
 
 const List = <DataType extends any = any, KeyType = any>({
@@ -44,7 +44,7 @@ const List = <DataType extends any = any, KeyType = any>({
                             style,
                             onClick: () => {
                                 if (isSelected) {
-                                    onSelect(undefined);
+                                    onSelect(null);
                                 } else {
                                     onSelect(element);
                                 }

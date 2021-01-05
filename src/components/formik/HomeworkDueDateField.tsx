@@ -2,7 +2,7 @@ import React, {memo, useMemo} from "react";
 import {FieldProps} from "formik";
 import {CourseDetail} from "types";
 import {DateTimePicker, DateTimePickerProps} from "@material-ui/pickers";
-import {FormGroup, FormHelperText, IconButton, InputAdornment} from "@material-ui/core";
+import {FormControl, FormHelperText, IconButton, InputAdornment} from "@material-ui/core";
 import {BiTimer, MdClear} from "react-icons/all";
 import dayjs, {Dayjs} from "dayjs";
 
@@ -44,7 +44,7 @@ const HomeworkDueDateField = ({
     const hasErrors = Boolean(error);
 
     return (
-        <FormGroup>
+        <FormControl>
             <DateTimePicker
                 {...field}
                 {...other}
@@ -83,7 +83,7 @@ const HomeworkDueDateField = ({
             <FormHelperText error={hasErrors}>
                 {hasErrors ? error : helperText}
             </FormHelperText>
-        </FormGroup>
+        </FormControl>
     );
 };
 

@@ -1,21 +1,6 @@
-import React, {useState} from "react";
-import {useInfiniteQuery} from "react-query";
-import {useQueryOptions, useSnackbar} from "hooks";
-import {Box, FormControlLabel, FormLabel, Grid, Link, Typography} from "@material-ui/core";
-import {HomeworkApprox, Subject} from "types";
-import {DatePicker, FormElement, Homework, SearchPage, SecondaryButton, SubjectField} from "components";
-import {useDebouncedValue} from "@shopify/react-hooks";
-import {useTranslation} from "react-i18next";
-import update from "immutability-helper";
-import {ToggleButton} from "@material-ui/lab";
-import {FaChalkboardTeacher, MdAdd, MdCheck} from "react-icons/all";
+import React from "react";
+import {Subject} from "types";
 import {Dayjs} from "dayjs";
-import {AxiosError} from "axios";
-import {PredefinedMessageType} from "hooks/useSnackbar";
-import {buildPath, getISODatetime, setBeginTime, setEndTime} from "utils";
-import {IFetchHomeworkListResponse, OrderingTypes, useFetchHomeworkListAPI} from "hooks/apis";
-
-import useHomeworkInformation from "./useHomeworkInformation";
 
 interface FilterData {
     subject?: Subject;
@@ -26,6 +11,9 @@ interface FilterData {
 }
 
 const HomeworkListPage = () => {
+    return null;
+
+    /*
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchHomework = useFetchHomeworkListAPI();
@@ -112,6 +100,7 @@ const HomeworkListPage = () => {
                             <FormElement
                                 form={
                                     <SubjectField
+                                        label={t("Fach")}
                                         selectedValue={filter.subject}
                                         listItemSize={50}
                                         onChange={value => setFilter(prevState => update(prevState, {
@@ -232,7 +221,7 @@ const HomeworkListPage = () => {
             onOrderingChange={setOrdering}
             onSearchChange={setSearch}
         />
-    );
+    );*/
 };
 
 export default HomeworkListPage;

@@ -34,6 +34,7 @@ export default function Routes() {
                 component={Login}
                 redirectUrl="/"
             />
+            {!user.isAuthenticated && <Redirect to="/auth/login/" />}
             <Route
                 exact
                 path="/auth/registration/email/:code?"
@@ -46,7 +47,6 @@ export default function Routes() {
                 component={FillOutData}
                 redirectUrl="/auth/login/"
             />
-            {!user.isAuthenticated && <Redirect to="/auth/login/" />}
             {!user.isEmailVerified && <Redirect to="/auth/registration/email/" />}
             {!user.isFullyRegistered && <Redirect to="/auth/registration/fill/" />}
             <Route

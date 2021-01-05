@@ -40,13 +40,14 @@ const ConfirmEmail = () => {
     useEffect(() => {
         if (typeof code === "string") {
             mutate({
-                token: code,
+                confirmationKey: code,
             });
         }
     }, [code, mutate]);
 
+
     return (
-        <FocusedPage title={t("E-Mail bestätigen")}>
+        <FocusedPage disableBackButton title={t("E-Mail bestätigen")}>
             <Form
                 onSubmit={(values, {setErrors, setSubmitting}) =>
                     mutateAsync(values)

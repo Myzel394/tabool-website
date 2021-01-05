@@ -1,30 +1,38 @@
 import React from "react";
 import {Field, Form, Formik} from "formik";
 import * as yup from "yup";
-import {Box, Grid, InputAdornment, Link, useTheme} from "@material-ui/core";
+import {Box, Grid, InputAdornment, Link} from "@material-ui/core";
 import {TextField} from "formik-material-ui";
 import {useTranslation} from "react-i18next";
 import {MdEmail, MdLock} from "react-icons/all";
-import {LoadingOverlay, PrimaryButton, SecondaryButton} from "components";
+import {HiddenTextField, LoadingOverlay, PrimaryButton, SecondaryButton} from "components";
 import {generatePath} from "react-router-dom";
 import {ILoginData, ILoginResponse} from "hooks/apis";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
 import {ErrorFieldsInjection} from "types";
+import {useColors} from "hooks";
 
 
 export interface ILoginPage {
     onSubmit: (form: ILoginData) => Promise<ILoginResponse>;
 }
 
-const schema = yup.object({
-    email: yup.string().email().required(),
-    password: yup.string().required(),
-});
-
 const LoginForm = ({onSubmit}: ILoginPage) => {
-    const theme = useTheme();
     const {t} = useTranslation();
+    const {
+        inputIconColor,
+    } = useColors();
+
+    const schema = yup.object({
+        email: yup
+            .string()
+            .email(t("Das ist keine gültige E-Mail."))
+            .required(t("Die E-Mail wird benötigt.")),
+        password: yup
+            .string()
+            .required(t("Das Passwort wird benötigt.")),
+    });
 
     return (
         <Formik<ILoginData & ErrorFieldsInjection>
@@ -47,9 +55,10 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                 <LoadingOverlay isLoading={isSubmitting}>
                     <Form>
                         <Box mb={4}>
-                            <Grid container spacing={2} justify="center" alignItems="center">
-                                <Grid item md={6}>
+                            <Grid container spacing={2} justify="center" alignItems="flex-start">
+                                <Grid item md={6} xs={12}>
                                     <Field
+                                        autoFocus
                                         fullWidth
                                         required
                                         component={TextField}
@@ -59,7 +68,7 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <MdEmail color={theme.palette.text.secondary} />
+                                                    <MdEmail color={inputIconColor} />
                                                 </InputAdornment>
                                             ),
                                         }}
@@ -67,23 +76,23 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                                         helperText={touched.email && errors.email}
                                     />
                                 </Grid>
-                                <Grid item md={6}>
+                                <Grid item md={6} xs={12}>
                                     <Field
                                         fullWidth
                                         required
-                                        component={TextField}
+                                        component={HiddenTextField}
                                         name="password"
-                                        type="password"
+                                        type="text"
                                         label={t("Passwort")}
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start">
-                                                    <MdLock color={theme.palette.text.secondary} />
+                                                    <MdLock color={inputIconColor} />
                                                 </InputAdornment>
                                             ),
                                         }}
                                         variant="outlined"
-                                        helperText={touched.email && errors.password}
+                                        helperText={touched.password && errors.password}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>

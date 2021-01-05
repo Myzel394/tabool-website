@@ -3,7 +3,7 @@ import {AxiosContext} from "contexts";
 import getLoginConfig from "api/getLoginConfig";
 
 export interface IConfirmEmailData {
-    token: string;
+    confirmationKey: string;
 }
 
 export interface IConfirmEmailResponse {}
@@ -11,9 +11,11 @@ export interface IConfirmEmailResponse {}
 const useSendConfirmEmailAPI = () => {
     const {instance} = useContext(AxiosContext);
 
-    return useCallback(async ({token}: IConfirmEmailData): Promise<IConfirmEmailResponse> => {
+    return useCallback(async ({
+        confirmationKey,
+    }: IConfirmEmailData): Promise<IConfirmEmailResponse> => {
         const {data} = await instance.post("/api/auth/confirmation/", {
-            confirmationKey: token,
+            confirmationKey,
         }, await getLoginConfig());
         return data;
     }, [instance]);

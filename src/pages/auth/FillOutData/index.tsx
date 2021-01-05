@@ -32,7 +32,7 @@ const FillOutData = () => {
     );
 
     return (
-        <FocusedPage title={t("Registrierung abschließen")}>
+        <FocusedPage disableBackButton title={t("Registrierung abschließen")}>
             <Form
                 onSubmit={(values, {setErrors, setSubmitting}) =>
                     mutateAsync(values)

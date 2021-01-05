@@ -1,9 +1,10 @@
 import React, {useMemo, useState} from "react";
-import {Button, FormGroup, FormHelperText} from "@material-ui/core";
+import {Button, FormControl, FormHelperText, FormLabel} from "@material-ui/core";
 import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {useDebouncedValue} from "@shopify/react-hooks";
 import {AxiosError} from "axios";
+import {FieldProps} from "formik";
 
 import SelectMenu, {ISelectMenu} from "./SelectMenu";
 
@@ -20,12 +21,14 @@ export interface SearchFieldExtend<DataType = any> extends Omit<
     | "filterData"
     | "modalTitle"
     | "getKeyFromData"
+    | "selectedValue"
     > {
     onChange: (value: DataType) => void;
+    onBlur: () => any;
 }
 
 
-export interface IBasicSearchField<DataType = any, KeyType = string> extends Omit<
+export type IBasicSearchField<DataType = any, KeyType = string> = Omit<
     ISelectMenu<DataType, KeyType>,
     "title" |
     "isOpen" |
@@ -35,8 +38,9 @@ export interface IBasicSearchField<DataType = any, KeyType = string> extends Omi
     "onClose" |
     "onSearch" |
     "searchValue" |
-    "onSearchChange"
-    > {
+    "onSearchChange" |
+    "onChange"
+    > & FieldProps & {
     title: string;
     queryKey: string;
 
@@ -47,22 +51,27 @@ export interface IBasicSearchField<DataType = any, KeyType = string> extends Omi
 
     modalTitle: ISelectMenu<DataType, KeyType>["title"];
 
-    errorMessages?: string[];
-}
+    onSelect: (data: DataType) => void;
+
+    helperText?: string;
+    label?: string;
+};
 
 const BasicSearchField = <
-    DataType extends any = any,
+    DataType,
     KeyType = string,
     >({
         title,
+        label,
+        helperText,
         modalTitle,
         queryFunction,
         onSelect,
         filterData,
-        errorMessages,
-        selectedValue,
         queryKey,
         extractData,
+        field,
+        form,
         ...other
     }: IBasicSearchField<DataType, KeyType>) => {
     const queryOptions = useQueryOptions();
@@ -77,7 +86,7 @@ const BasicSearchField = <
         isFetching,
         isError,
         data: rawData,
-    } = useQuery<any, AxiosError>(
+    } = useQuery<DataType[], AxiosError>(
         [queryKey, searchParam],
         queryFunction,
         {
@@ -95,23 +104,24 @@ const BasicSearchField = <
             )
             : [];
     }, [rawData, filterData, extractData, searchValue]);
+    const error = form.touched[field.name] && form.errors[field.name];
 
     return (
         <>
-            <FormGroup>
+            <FormControl>
+                <FormLabel>
+                    {label}
+                </FormLabel>
                 <Button
                     variant="outlined"
-                    color="default"
                     onClick={() => setIsOpen(true)}
                 >
                     {title}
                 </Button>
-                {errorMessages &&
-                    <FormHelperText error>
-                        {errorMessages.map(error => <span key={error}>{error}</span>)}
-                    </FormHelperText>
-                }
-            </FormGroup>
+                <FormHelperText error={Boolean(error)}>
+                    {error ?? helperText}
+                </FormHelperText>
+            </FormControl>
             <SelectMenu
                 {...other}
                 isError={isError}
@@ -120,11 +130,25 @@ const BasicSearchField = <
                 searchValue={searchValue}
                 isOpen={isOpen}
                 data={data}
-                selectedValue={selectedValue}
-                onClose={() => setIsOpen(false)}
-                onSelect={element => {
+                selectedKey={field.value}
+                onClose={() => {
                     setIsOpen(false);
-                    onSelect(element);
+                    field.onBlur({
+                        target: {
+                            name: field.name,
+                        },
+                    });
+                }}
+                onChange={event => {
+                    setIsOpen(false);
+                    field.onChange({
+                        ...event,
+                        target: {
+                            ...event.target,
+                            name: field.name,
+                        },
+                    });
+                    onSelect(event.target.element);
                 }}
                 onSearch={value => setSearch(value)}
                 onSearchChange={value => setSearchValue(value)}

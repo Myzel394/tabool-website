@@ -1,17 +1,27 @@
-import React, {memo, useCallback} from "react";
+import React, {memo, useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {TeacherApprox} from "types";
 import {useFetchTeacherListAPI} from "hooks/apis";
+import {FaFemale, FaGenderless, FaMale} from "react-icons/all";
+import {Avatar, ListItemAvatar} from "@material-ui/core";
 
-import SimpleListField, {itemSize} from "../SimpleListField";
+import SimpleListField, {itemSize} from "../../inputs/SimpleListField";
+import {Gender} from "../../../api";
+import genderColor from "../../../constants/genderColor";
 
 import BasicSearchField, {SearchFieldExtend} from "./BasicSearchField";
 
 export type ITeacherField = SearchFieldExtend<TeacherApprox>;
 
 
-const TeacherField = ({onChange, selectedValue, ...other}: ITeacherField) => {
+const TeacherField = ({
+    onChange,
+    onBlur,
+    ...other
+}: ITeacherField) => {
     const {t} = useTranslation();
+
+    const [selectedValue, setSelectedValue] = useState<TeacherApprox | null>();
 
     const queryFunction = useFetchTeacherListAPI();
     // Functions
@@ -29,7 +39,7 @@ const TeacherField = ({onChange, selectedValue, ...other}: ITeacherField) => {
             {...other}
             searchPlaceholder={t("Suche nach Nachnamen")}
             title={title}
-            renderListElement={((element, props, isSelected) => (
+            renderListElement={((teacher, props, isSelected) => (
                 <SimpleListField
                     listItemProps={{
                         button: true,
@@ -37,8 +47,24 @@ const TeacherField = ({onChange, selectedValue, ...other}: ITeacherField) => {
                         disableTouchRipple: true,
                     }}
                     isActive={isSelected}
-                    primaryText={element.lastName}
-                    secondaryText={element.shortName}
+                    primaryText={teacher.lastName}
+                    secondaryText={teacher.shortName}
+                    left={
+                        <ListItemAvatar>
+                            <Avatar
+                                style={{
+                                    backgroundColor: genderColor[teacher.gender],
+                                }}
+                            >
+                                {{
+                                    [Gender.Male]: <FaMale />,
+                                    [Gender.Female]: <FaFemale />,
+                                    [Gender.Diverse]: <FaGenderless />,
+                                    [Gender.Unknown]: null,
+                                }[teacher.gender]}
+                            </Avatar>
+                        </ListItemAvatar>
+                    }
                     {...props}
                 />
             ))}
@@ -48,8 +74,7 @@ const TeacherField = ({onChange, selectedValue, ...other}: ITeacherField) => {
             filterData={filterFunc}
             listItemSize={itemSize}
             getKeyFromData={(element) => element.id}
-            selectedValue={selectedValue}
-            onSelect={onChange}
+            onSelect={setSelectedValue}
         />
     );
 };
