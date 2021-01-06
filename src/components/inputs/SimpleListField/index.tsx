@@ -67,7 +67,6 @@ const SimpleListField = ({
                 />
                 {right}
                 {isActive &&
-
                         <ListItemIcon>
                             <FaCheck className={styles.icon} />
                         </ListItemIcon>

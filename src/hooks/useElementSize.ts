@@ -1,13 +1,15 @@
-import {useEffect, useState} from "react";
+import {useLayoutEffect, useState} from "react";
 
 const useElementSize = ($ref): [number | undefined, number | undefined] => {
     const [width, setWidth] = useState<number | undefined>();
     const [height, setHeight] = useState<number | undefined>();
 
-    useEffect(() => {
-        const element = $ref === undefined ? $ref : $ref.current;
+    useLayoutEffect(() => {
+        const element = $ref.current;
         const setSize = () => {
             const {clientWidth, clientHeight} = element;
+            // eslint-disable-next-line no-console
+            console.log(element);
 
             setWidth(clientWidth);
             setHeight(clientHeight);

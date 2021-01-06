@@ -1,18 +1,18 @@
 import React, {ReactNode, useEffect, useState} from "react";
-import {Dialog, DialogActions, DialogContent, DialogTitle, List} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogTitle} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
 import {PrimaryButton, SecondaryButton} from "../../../buttons";
 
 import Search, {ISearch} from "./Search";
 
-interface RenderElement {
-    onSelect: () => any;
-    iSelected: boolean;
+export interface RenderElement<DataType, KeyType extends string = string> {
+    onElementSelect: (element: DataType) => any;
+    selectedKey: KeyType | null;
+    selectedElement: DataType | null;
 }
 
-
-export interface ISelectModal<DataType extends any, KeyType extends string = string> {
+export interface ISelectModal<DataType, KeyType extends string = string> {
     isOpen: boolean;
     onClose: () => any;
 
@@ -21,7 +21,7 @@ export interface ISelectModal<DataType extends any, KeyType extends string = str
 
     elements: DataType[];
     getKeyFromElement: (element: DataType) => KeyType;
-    renderElement: (element: DataType, data: RenderElement) => ReactNode;
+    renderElement: (data: RenderElement<DataType, KeyType>) => ReactNode;
 
     onSelect: (element: DataType | null) => any;
 
@@ -33,8 +33,11 @@ export interface ISelectModal<DataType extends any, KeyType extends string = str
     onSearchChange: ISearch["onChange"];
 }
 
+const searchWrapper = {
+    flex: "0 1 auto",
+};
 
-const SelectModal = <DataType extends any = any, KeyType extends string = string>({
+const SelectModal = <DataType, KeyType extends string = string>({
     elements,
     getKeyFromElement,
     title,
@@ -64,29 +67,31 @@ const SelectModal = <DataType extends any = any, KeyType extends string = string
         for (const element of elements) {
             if (getKeyFromElement(element) === parentSelectedKey) {
                 setSelectedElement(element);
-                return;
+                break;
             }
         }
     }, [elements, parentSelectedKey, getKeyFromElement]);
 
     return (
-        <Dialog open={isOpen} onBackdropClick={onClose}>
+        <Dialog fullScreen open={isOpen} onBackdropClick={onClose}>
             <DialogTitle>
                 {title}
             </DialogTitle>
-            <DialogContent>
+            <DialogContent
+                style={searchWrapper}
+            >
                 <Search
                     value={search}
                     isLoading={isLoading}
                     onChange={onSearchChange}
                 />
-                <List>
-                    {elements.map(element =>
-                        renderElement(element, {
-                            onSelect: () => setSelectedElement(element),
-                            iSelected: Boolean(selectedElement && getKeyFromElement(element) === getKeyFromElement(selectedElement)),
-                        }))}
-                </List>
+            </DialogContent>
+            <DialogContent>
+                {renderElement({
+                    selectedElement,
+                    onElementSelect: setSelectedElement,
+                    selectedKey: selectedElement ? getKeyFromElement(selectedElement) : null,
+                })}
             </DialogContent>
             <DialogActions>
                 <SecondaryButton onClick={onClose}>

@@ -74,8 +74,6 @@ const Form = ({onSubmit}: IForm) => {
             return renderDayWithLessonWeekdays(weekdays, color);
         }
     })();
-    // eslint-disable-next-line no-console
-    console.log(renderDay);
 
     return (
         <FocusedPage title={t("Klassenarbeit hinzufügen")}>
@@ -99,8 +97,6 @@ const Form = ({onSubmit}: IForm) => {
                                             variant="outlined"
                                             label={t("Kurs / Fach")}
                                             handleChange={event => {
-                                                // eslint-disable-next-line no-console
-                                                console.log("ävant");
                                                 setFieldValue("course", event.target.value);
                                                 setCourseId(event.target.value);
                                             }}

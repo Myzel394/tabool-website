@@ -15,8 +15,6 @@ const useSendRoomAPI = () => {
     return useCallback(async ({
         place,
     }: ISendRoomData): Promise<ISendRoomResponse> => {
-        // eslint-disable-next-line no-console
-        console.log(place);
         const {data} = await instance.post("/api/data/room/", {
             place,
         }, await getLoginConfig());

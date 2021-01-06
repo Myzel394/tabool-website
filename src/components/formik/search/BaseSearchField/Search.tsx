@@ -22,6 +22,7 @@ const Search = ({
 
     return (
         <TextField
+            fullWidth
             value={value}
             InputProps={{
                 startAdornment: (
@@ -35,6 +36,7 @@ const Search = ({
                     </InputAdornment>
                 ),
             }}
+            variant="outlined"
             onChange={event => onChange(event.target.value)}
         />
     );

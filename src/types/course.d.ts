@@ -5,6 +5,7 @@ export interface CourseApprox {
     subject: Subject;
     teacher: TeacherDetail;
     courseNumber: number;
+    shortName: string;
     name: string;
     id: string;
 }
