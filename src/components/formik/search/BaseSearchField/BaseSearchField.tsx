@@ -24,6 +24,8 @@ export type IBaseSearchField<DataType, DetailedDataType = DataType, KeyType exte
 
     /* This will be called, if an id was passed and the element is unknown */
     getElementFromKey: (value: KeyType) => Promise<DetailedDataType>;
+
+    onChange?: (element: DataType | null) => any;
 };
 
 
@@ -43,11 +45,12 @@ const BaseSearchField = <
         getElementFromKey,
         fetchData,
         elements,
+        onChange,
         children: renderElement,
         ...other
     }: IBaseSearchField<DataType, DetailedDataType, KeyType>) => {
     const {t} = useTranslation();
-    const error = form.touched[field.name] && form.touched[field.name];
+    const error = form.touched[field.name] && form.errors[field.name];
     const {value} = field;
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -95,9 +98,9 @@ const BaseSearchField = <
                         target: {
                             name: field.name,
                             value: element ? getKeyFromElement(element) : null,
-                            element,
                         },
                     });
+                    onChange?.(element);
                 }}
             />
         </>

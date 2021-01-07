@@ -6,10 +6,9 @@ import {AxiosError} from "axios";
 import {Autocomplete, createFilterOptions} from "@material-ui/lab";
 import {CircularProgress, InputAdornment, TextField} from "@material-ui/core";
 import {Room} from "types";
-import {useSnackbar} from "hooks";
+import {useColors, useQueryOptions, useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {RoomIcon} from "components/icons";
-import {useTranslation} from "react-i18next";
 
 import {IAutocompleteField} from "./AutocompleteField";
 import AddPlaceDialog from "./AddPlaceDialog";
@@ -22,11 +21,9 @@ export type IPlaceField = Omit<IAutocompleteField,
     "onSearchChange" |
     "onChange"
     > & FieldProps & {
-    onChange: (event) => any;
-    value: string | Room | null;
-
     helperText?: string;
     label?: string;
+    onChange?: (event) => any;
 };
 
 const filter = createFilterOptions<Room>();
@@ -36,10 +33,13 @@ const PlaceField = ({
     form,
     helperText,
     label,
-    onChange: onChangeRaw,
+    onChange,
     ...other
 }: IPlaceField) => {
-    const {t} = useTranslation();
+    const {
+        inputIconColor,
+    } = useColors();
+    const queryOptions = useQueryOptions();
     const fetchRoomList = useFetchRoomListAPI();
     const fetchRoom = useFetchRoomDetailAPI();
     const {addError} = useSnackbar();
@@ -47,27 +47,73 @@ const PlaceField = ({
 
     const [search, setSearch] = useState<string | null>(null);
     const [dialog, setDialog] = useState<boolean>(false);
+    const [placeName, setPlaceName] = useState<string | null>(null);
 
     const {
         data,
         isLoading,
     } = useQuery<IFetchRoomResponse, AxiosError, string>(
-        ["fetch_room", search],
+        ["fetch_rooms", search],
         () => (search ? fetchRoomList(search) : fetchRoomList()),
         {
+            ...queryOptions,
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorLoading),
         },
     );
+    useQuery<Room, AxiosError, string>(
+        ["fetch_room", value],
+        () => fetchRoom(value),
+        {
+            ...queryOptions,
+            onSuccess: place => setPlaceName(place.place),
+            enabled: Boolean(value),
+        },
+    );
 
-    const onChange = value =>
-        onChangeRaw({
-            target: {
-                name: field.name,
-                value,
-            },
-        });
+    const setNewName = (rawPlaceName: string) => {
+        const placeName = rawPlaceName.toLowerCase();
+
+        let searchValue: string;
+        let newValue: Room | null = null;
+
+        // Check if already exists
+        const place = (() => {
+            for (const place of (data?.results ?? [])) {
+                if (place.place.toLowerCase() === placeName) {
+                    return place;
+                }
+            }
+        })();
+
+        if (place) {
+            newValue = place;
+            searchValue = place.place;
+        } else {
+            searchValue = placeName;
+
+            // Dialog
+            setDialog(true);
+            setPlaceName(placeName);
+        }
+
+        // Update fields
+        setSearch(searchValue);
+
+        if (newValue) {
+            const event = {
+                target: {
+                    name: field.name,
+                    value: newValue,
+                },
+            };
+
+            field.onChange(event);
+            onChange?.(event);
+        }
+    };
 
     const error = form.errors[field.name];
+    const placeNames = (data?.results ?? []).map(place => place.place.toLowerCase());
 
     return (
         <>
@@ -79,11 +125,12 @@ const PlaceField = ({
                 clearOnBlur
                 handleHomeEndKeys
                 freeSolo
+                value={placeName ?? null}
                 loading={isLoading}
                 filterOptions={(options, params) => {
                     const filtered = filter(options, params);
 
-                    if (params.inputValue !== "") {
+                    if (params.inputValue !== "" && !placeNames.includes(params.inputValue.toLowerCase())) {
                         filtered.push({
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
@@ -91,6 +138,8 @@ const PlaceField = ({
                             title: `"${params.inputValue}" hinzufügen`,
                         });
                     }
+
+                    setSearch(params.inputValue);
 
                     return filtered;
                 }}
@@ -117,7 +166,7 @@ const PlaceField = ({
                             ...params.InputProps,
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <RoomIcon />
+                                    <RoomIcon color={inputIconColor} />
                                 </InputAdornment>
                             ),
                             endAdornment: (
@@ -131,34 +180,31 @@ const PlaceField = ({
                         helperText={error ?? helperText}
                     />
                 }
-                onChange={(event, newValue) => {
-                    if (typeof newValue === "string") {
-                        setSearch(newValue);
-                        setDialog(true);
-                    } else if (newValue === null) {
-                        setSearch(null);
-                    } else if (typeof newValue === "object") {
+                onChange={(event, value) =>
+                    setNewName(
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
-                        const typedValue = newValue?.inputValue ?? newValue?.text;
-
-                        if (typedValue) {
-                            setSearch(typedValue);
-                            setDialog(true);
-                        } else {
-                            onChange(newValue);
-                        }
-                    }
-                }}
+                        value?.inputValue ?? value?.text ?? value?.place ?? value,
+                    )
+                }
             />
             <AddPlaceDialog
                 isOpen={dialog}
                 initialValue={search ?? ""}
                 onClose={() => setDialog(false)}
                 onCreated={place => {
-                    setDialog(false);
                     setSearch(place.place);
-                    onChange(place);
+                    setDialog(false);
+
+                    const event = {
+                        target: {
+                            name: field.name,
+                            value: place,
+                        },
+                    };
+
+                    field.onChange(event);
+                    onChange?.(event);
                 }}
             />
         </>

@@ -12,7 +12,7 @@ export interface ISendExamData {
     targetedDate: Dayjs;
 
     information?: string | null;
-    roomId?: string | null;
+    placeId?: string | null;
 }
 
 export type ISendExamResponse = ExamDetail;
@@ -23,12 +23,12 @@ const useSendExamAPI = () => {
     return useCallback(async ({
         courseId,
         information,
-        roomId,
+        placeId,
         targetedDate,
     }: ISendExamData): Promise<ISendExamResponse> => {
         const {data} = await instance.post("/api/data/exam/", {
             course: courseId,
-            room: roomId,
+            room: placeId,
             targetedDate: lazyDatetime(targetedDate, "date"),
             information,
         }, await getLoginConfig());

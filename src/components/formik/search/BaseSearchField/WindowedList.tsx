@@ -1,8 +1,7 @@
-import React, {ReactNode, useRef} from "react";
-import InfiniteLoader from "react-window-infinite-loader";
+import React, {ReactNode, useLayoutEffect, useRef, useState} from "react";
 import {FixedSizeList} from "react-window";
-import {useElementSize} from "hooks";
 import AutoSizer from "react-virtualized-auto-sizer";
+import InfiniteLoader from "react-window-infinite-loader";
 
 import {RenderElement} from "./SelectModal";
 
@@ -43,33 +42,46 @@ const WindowedList = <DataType extends any = any, KeyType extends string = strin
     selectedKey,
     children: renderElement,
 }: IWindowedList<DataType, KeyType>) => {
-    const $element = useRef<any>();
+    const $element = useRef<HTMLDivElement | null>(null);
+    const [elementHeight, setElementHeight] = useState<number>();
 
-    const [, elementSize] = useElementSize($element);
+    useLayoutEffect(() => {
+        if (!elementHeight && $element.current?.clientHeight) {
+            setElementHeight($element.current.clientHeight);
+        }
+    }, [$element, elementHeight]);
 
-    // eslint-disable-next-line no-console
-    console.log($element, elementSize);
+    if (elementHeight === undefined) {
+        return (
+            <div ref={$element}>
+                {renderElement(elements[0], {
+                    isSelected: getKeyFromElement(elements[0]) === selectedKey,
+                    onClick: () => onElementSelect(elements[0]),
+                })}
+            </div>
+        );
+    }
 
     return (
-        <AutoSizer>
-            {({width, height}) =>
-                <InfiniteLoader
-                    isItemLoaded={index => !hasNextPage || index < elements.length}
-                    loadMoreItems={isFetchingNextPage ? () => null : () => fetchNextPage()}
-                    itemCount={elements.length}
-                >
-                    {({onItemsRendered, ref}) =>
+        <InfiniteLoader
+            isItemLoaded={index => !hasNextPage || index < elements.length}
+            loadMoreItems={isFetchingNextPage ? () => null : () => fetchNextPage()}
+            itemCount={elements.length}
+        >
+            {({onItemsRendered, ref}) =>
+                <AutoSizer>
+                    {({width, height}) =>
                         <FixedSizeList
                             ref={ref}
                             itemCount={elements.length}
-                            itemSize={elementSize ?? innerHeight}
+                            itemSize={elementHeight}
                             width={width}
                             height={height}
                             onItemsRendered={onItemsRendered}
                         >
                             {({index, style}) =>
                                 <div style={style}>
-                                    <div ref={index === 0 ? $element : undefined} style={elementStyle}>
+                                    <div style={elementStyle}>
                                         {renderElement(elements[index], {
                                             isSelected: getKeyFromElement(elements[index]) === selectedKey,
                                             onClick: () => onElementSelect(elements[index]),
@@ -79,9 +91,9 @@ const WindowedList = <DataType extends any = any, KeyType extends string = strin
                             }
                         </FixedSizeList>
                     }
-                </InfiniteLoader>
+                </AutoSizer>
             }
-        </AutoSizer>
+        </InfiniteLoader>
     );
 };
 

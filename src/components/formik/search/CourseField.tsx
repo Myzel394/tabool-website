@@ -33,13 +33,14 @@ const CourseField = (props) => {
         isFetchingNextPage,
     } = useInfiniteQuery<IFetchCourseListResponse, AxiosError, IFetchCourseListData>(
         ["fetch_courses", search],
-        () => fetchCourses({
+        context => fetchCourses({
             search,
-        }),
+        }, context.pageParam),
         {
             ...queryOptions,
-            // eslint-disable-next-line no-console
-            getNextPageParam: (lastPage) => console.log(lastPage),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore: useQuery ts is wrong
+            getNextPageParam: lastPage => lastPage.next,
         },
     );
     const courses = rawDataGroups?.pages?.reduce?.((array, page) => [

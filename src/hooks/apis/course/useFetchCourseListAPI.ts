@@ -14,11 +14,12 @@ const useFetchCourseListAPI = () => {
 
     return useCallback(async ({
         search,
-    }: IFetchCourseListData): Promise<IFetchCourseListResponse> => {
+    }: IFetchCourseListData, page = 1): Promise<IFetchCourseListResponse> => {
         const {data} = await instance.get("/api/data/course/", {
             ...await getLoginConfig(),
             params: {
                 search,
+                page,
             },
         });
 

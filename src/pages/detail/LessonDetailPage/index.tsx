@@ -12,7 +12,7 @@ import {Box, Button, ButtonGroup, Collapse, Grid, Link, Paper, Typography} from 
 import update from "immutability-helper";
 import dayjs from "dayjs";
 import {DetailPage, Homework, IllEmailButton, LoadingIndicator} from "components";
-import {FaChalkboardTeacher, FaRunning, FiMonitor, MdPlace} from "react-icons/all";
+import {FaChalkboardTeacher, FaRunning, FaVideo, FiMonitor, MdPlace} from "react-icons/all";
 import {generatePath} from "react-router-dom";
 import {useMutation, useQuery} from "react-query";
 import {LessonDetail} from "types";
@@ -25,7 +25,6 @@ import {CourseIcon, ExamIcon, HomeworkIcon, TeacherIcon} from "components/icons"
 import _ from "lodash";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 
-import ModificationsNode from "./ModificationsNode";
 import Submissions from "./Submissions";
 
 
@@ -94,6 +93,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     const startTimeFormat = combineDatetime(lesson.date, lesson.lessonData.startTime).format("LT");
     const endTimeFormat = combineDatetime(lesson.date, lesson.lessonData.endTime).format("LT");
     const subTitle = `${lessonDateFormat}, ${startTimeFormat} - ${endTimeFormat}`;
+    const {videoConferenceLink} = lesson;
 
     const data: any = _.pickBy({
         presenceContent: {
@@ -169,7 +169,26 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                         .finally(() => setSubmitting(true))
                 ,
             }}
-            headerNode={lesson?.modifications.length > 0 && <ModificationsNode lesson={lesson} />}
+            renderTopField={reorderElement => (
+                <>
+                    <Grid item>
+                        {reorderElement}
+                    </Grid>
+                    <Grid item>
+                        {videoConferenceLink &&
+                            <Link
+                                href={videoConferenceLink}
+                                rel="noopener noreferrer"
+                                component={Button}
+                                underline="none"
+                                target="_blank"
+                                startIcon={<FaVideo />}
+                            >
+                                {t("Video-Konferenz öffnen")}
+                            </Link>}
+                    </Grid>
+                </>
+            )}
             bottomNode={[
                 <Collapse
                     key={`write_illness_email_${lesson.id}`}

@@ -20,6 +20,7 @@ export interface LessonDataApprox {
 export interface LessonDataDetail extends Omit<LessonDataApprox, "course" | "room"> {
     course: CourseDetail;
     room: Room;
+    hasConference: boolean;
 }
 
 
@@ -29,7 +30,7 @@ export interface LessonApprox {
     id: string;
 }
 
-export interface LessonDetail extends Omit<LessonApprox, "lessonData"> {
+export interface LessonDetail extends Omit<LessonApprox, "lessonData" | "hasConference"> {
     lessonData: LessonDataDetail;
     classBook: ClassBook | null;
     materials: MaterialDetail[];
@@ -39,5 +40,6 @@ export interface LessonDetail extends Omit<LessonApprox, "lessonData"> {
     userRelation: {
         attendance: boolean;
     };
+    videoConferenceLink?: string;
 }
 

@@ -1,27 +1,27 @@
 import {useLayoutEffect, useState} from "react";
 
-const useElementSize = ($ref): [number | undefined, number | undefined] => {
+const useElementSize = (reference): [number | undefined, number | undefined] => {
     const [width, setWidth] = useState<number | undefined>();
     const [height, setHeight] = useState<number | undefined>();
 
     useLayoutEffect(() => {
-        const element = $ref.current;
         const setSize = () => {
-            const {clientWidth, clientHeight} = element;
-            // eslint-disable-next-line no-console
-            console.log(element);
+            const elementReal = reference.current;
 
-            setWidth(clientWidth);
-            setHeight(clientHeight);
+            if (elementReal) {
+                const {clientWidth, clientHeight} = elementReal;
+
+                setWidth(clientWidth);
+                setHeight(clientHeight);
+            }
         };
 
-        if (element) {
-            element.addEventListener("resize", setSize);
-            setSize();
-        }
+        window.addEventListener("resize", setSize);
 
-        return () => element && element.removeEventListener("resize", setSize);
-    }, [$ref]);
+        setSize();
+
+        return () => window.removeEventListener("resize", setSize);
+    }, [reference]);
 
     return [width, height];
 };

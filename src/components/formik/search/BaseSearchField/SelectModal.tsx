@@ -57,10 +57,11 @@ const SelectModal = <DataType, KeyType extends string = string>({
 
     const canConfirm = (() => {
         if (nullable) {
-            return Boolean(selectedElement && getKeyFromElement(selectedElement) !== parentSelectedKey);
+            return Boolean(selectedElement);
         }
-        return selectedElement !== null && getKeyFromElement(selectedElement) !== parentSelectedKey;
+        return true;
     })();
+    const selectedKey = selectedElement ? getKeyFromElement(selectedElement) : null;
 
     // Update selected key
     useEffect(() => {
@@ -89,7 +90,15 @@ const SelectModal = <DataType, KeyType extends string = string>({
             <DialogContent>
                 {renderElement({
                     selectedElement,
-                    onElementSelect: setSelectedElement,
+                    onElementSelect: value => {
+                        if (getKeyFromElement(value) === selectedKey) {
+                            if (nullable) {
+                                setSelectedElement(null);
+                            }
+                        } else {
+                            setSelectedElement(value);
+                        }
+                    },
                     selectedKey: selectedElement ? getKeyFromElement(selectedElement) : null,
                 })}
             </DialogContent>

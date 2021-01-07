@@ -37,3 +37,4 @@ export default Badges;
 export {default as HomeworkBadge} from "./HomeworkBadge";
 export {default as MaterialBadge} from "./MaterialBadge";
 export {default as RoomChangeBadge} from "./RoomChangeBadge";
+export {default as VideoConferenceBadge} from "./VideoConferenceBadge";

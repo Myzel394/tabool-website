@@ -1,13 +1,5 @@
 import React, {memo} from "react";
-import {
-    Box,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    LinearProgress,
-} from "@material-ui/core";
+import {Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import {Room} from "types";
 import {useTranslation} from "react-i18next";
 import {useMutation} from "react-query";
@@ -84,31 +76,28 @@ const AddPlaceDialog = ({
                                         " aber Mist brauchen wir nicht und dies wird auch mit einer Sperrung des Accounts bestraft!")}
                                 </Box>
                             </DialogContentText>
-                            <LoadingOverlay isLoading={isSubmitting}>
-                                <Form>
-                                    <Field
-                                        autoFocus
-                                        component={TextField}
-                                        name="place"
-                                        label={t("Ortname")}
-                                        type="text"
-                                        variant="outlined"
-                                        onChange={event => setFieldValue("place", event.target.value.toUpperCase())}
-                                    />
-                                </Form>
-                            </LoadingOverlay>
+                            <Form>
+                                <Field
+                                    autoFocus
+                                    component={TextField}
+                                    name="place"
+                                    label={t("Ortname")}
+                                    type="text"
+                                    variant="outlined"
+                                    onChange={event => setFieldValue("place", event.target.value.toUpperCase())}
+                                />
+                            </Form>
                         </DialogContent>
                         <LoadingOverlay isLoading={isSubmitting}>
                             <DialogActions>
-                                <PrimaryButton type="submit">
+                                <PrimaryButton type="submit" disabled={isSubmitting}>
                                     {t("Ort hinzufügen")}
                                 </PrimaryButton>
-                                <SecondaryButton onClick={onClose}>
+                                <SecondaryButton disabled={isSubmitting} onClick={onClose}>
                                     {t("Abbruch")}
                                 </SecondaryButton>
                             </DialogActions>
                         </LoadingOverlay>
-                        {isSubmitting && <LinearProgress />}
                     </Form>
                 )}
             </Formik>

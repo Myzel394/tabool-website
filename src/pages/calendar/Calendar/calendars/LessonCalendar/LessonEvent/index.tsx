@@ -1,9 +1,18 @@
 import React from "react";
 import {LessonDetail, ModificationDetail} from "types";
 import {Link} from "@material-ui/core";
-import {generatePath} from "react-router-dom";
-import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge, RoomChangeBadge} from "components";
+import {
+    Badges,
+    HomeworkBadge,
+    Lesson,
+    LessonContent,
+    MaterialBadge,
+    RoomChangeBadge,
+    VideoConferenceBadge,
+} from "components";
 import {ModificationType} from "api";
+import {generatePath} from "react-router-dom";
+import dayjs from "dayjs";
 
 import styles from "./LessonEvent.module.scss";
 
@@ -19,6 +28,7 @@ export interface ILessonEvent {
 }
 
 const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWhenFreePeriod, showDetails}: ILessonEvent) => {
+    const now = dayjs();
     const isFreePeriod = modification?.modificationType === ModificationType.FreePeriod ||
         modification?.modificationType === ModificationType.SelfLearn;
 
@@ -29,6 +39,8 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
     const hasHomeworkBadge = homeworkCount > 0;
     const hasMaterialBadge = materialCount > 0;
     const hasModificationBadge = modification?.modificationType === ModificationType.RoomChange;
+    const {videoConferenceLink} = lesson;
+    const hasVideoConference = videoConferenceLink !== null;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: Filter is ignored
@@ -36,6 +48,7 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
         hasHomeworkBadge && <HomeworkBadge key={`homework_${lesson.id}`} count={homeworkCount} />,
         hasMaterialBadge && <MaterialBadge key={`material_${lesson.id}`} count={materialCount} />,
         hasModificationBadge && <RoomChangeBadge key={`room_${lesson.id}`} />,
+        hasVideoConference && <VideoConferenceBadge key={`video_conference_${lesson.id}`} isActive />,
     ].filter(Boolean));
 
     return (!showWhenFreePeriod && isFreePeriod) ? null : (

@@ -43,8 +43,9 @@ const TeacherField = (props) => {
         }),
         {
             ...queryOptions,
-            // eslint-disable-next-line no-console
-            getNextPageParam: (lastPage) => console.log(lastPage),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore: useQuery ts is wrong
+            getNextPageParam: lastPage => lastPage.next,
         },
     );
     const teachers = rawDataGroups?.pages?.reduce?.((array, page) => [
