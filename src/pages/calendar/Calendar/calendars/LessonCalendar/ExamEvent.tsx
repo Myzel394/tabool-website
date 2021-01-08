@@ -1,8 +1,8 @@
 import React, {memo} from "react";
 import {ExamDetail} from "types";
 import {Link, Typography} from "@material-ui/core";
-import {FaStickyNote} from "react-icons/all";
 import {buildPath} from "utils";
+import {ExamIcon} from "components/icons";
 
 
 export interface IExamEvent {
@@ -18,7 +18,7 @@ const ExamEvent = ({event}: IExamEvent) => {
             })} underline="none"
         >
             <Typography variant="body1" color="textSecondary">
-                <FaStickyNote />
+                <ExamIcon />
                 {event.course.subject.name}
             </Typography>
         </Link>

@@ -3,6 +3,7 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import {UserContext} from "contexts";
 import Calendar from "pages/calendar/index";
 import {
+    AddPage,
     ConfirmEmail,
     ExamAddPage,
     ExamDetailPage,
@@ -79,6 +80,11 @@ export default function Routes() {
                 exact
                 path="/add/homework/"
                 component={HomeworkAddPage}
+            />
+            <Route
+                exact
+                path="/add/"
+                component={AddPage}
             />
             <Route
                 exact

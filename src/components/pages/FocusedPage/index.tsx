@@ -1,10 +1,11 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useContext} from "react";
 import {Box, Container, useTheme} from "@material-ui/core";
 import {BackButton, Tooltip} from "components";
 import {useTranslation} from "react-i18next";
 
 import Logo from "../../Logo";
 import BasePage from "../BasePage";
+import {UtilsContext} from "../../../contexts";
 
 import Title from "./Title";
 
@@ -19,10 +20,11 @@ export interface IFocusedPage {
 
 export default function FocusedPage({children, title, important, disableBackButton, showLogo}: IFocusedPage) {
     const {t} = useTranslation();
+    const {bottomSheetHeight} = useContext(UtilsContext);
     const theme = useTheme();
     const containerStyles = {
         backgroundColor: theme.palette.background.paper,
-        minHeight: "100vh",
+        minHeight: `calc(100vh - ${bottomSheetHeight}px)`,
     };
 
     return (

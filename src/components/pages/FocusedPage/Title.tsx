@@ -1,6 +1,5 @@
 import React, {memo} from "react";
 import {Box, Typography, useTheme} from "@material-ui/core";
-import {useTranslation} from "react-i18next";
 
 export interface ITitle {
     title: string;
@@ -8,7 +7,6 @@ export interface ITitle {
 
 const Title = ({title}: ITitle) => {
     const theme = useTheme();
-    const {t} = useTranslation();
 
     const headerColor = {
         color: theme.palette.primary.main,
