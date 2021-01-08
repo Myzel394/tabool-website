@@ -1,8 +1,8 @@
 import React, {memo} from "react";
 import {ExamDetail} from "types";
-import {Link, Typography} from "@material-ui/core";
-import {buildPath} from "utils";
+import {Button, Link} from "@material-ui/core";
 import {ExamIcon} from "components/icons";
+import {generatePath} from "react-router-dom";
 
 
 export interface IExamEvent {
@@ -13,14 +13,19 @@ export interface IExamEvent {
 const ExamEvent = ({event}: IExamEvent) => {
     return (
         <Link
-            href={buildPath("/agenda/exam/:id/", {
+            fullWidth
+            href={generatePath("/agenda/exam/detail/:id/", {
                 id: event.id,
-            })} underline="none"
+            })}
+            underline="none"
+            component={Button}
+            startIcon={<ExamIcon />}
+            style={{
+                color: event.course.subject.userRelation.color,
+            }}
+            size="large"
         >
-            <Typography variant="body1" color="textSecondary">
-                <ExamIcon />
-                {event.course.subject.name}
-            </Typography>
+            {event.course.subject.name}
         </Link>
     );
 };
