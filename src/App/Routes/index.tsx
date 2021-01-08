@@ -15,11 +15,13 @@ import {
     Login,
     Register,
     RoomAddPage,
+    StartPage,
     TeacherDetailPage,
 } from "pages";
 
 
 // TODO: Add formik search page!
+// TODO: Refactor routes!
 export default function Routes() {
     const {state: user} = useContext(UserContext);
 
@@ -52,6 +54,11 @@ export default function Routes() {
             />
             {!user.isEmailVerified && <Redirect to="/auth/registration/email/" />}
             {!user.isFullyRegistered && <Redirect to="/auth/registration/fill/" />}
+            <Route
+                exact
+                path="/"
+                component={StartPage}
+            />
             <Route
                 exact
                 path="/timetable/"

@@ -19,9 +19,9 @@ const timeRangeFormat = ({start, end}, culture, local) =>
 
 const firstOfWeek = () => 0;
 
-const locale = (instance: Dayjs, culture?: Culture) => (culture ? instance.locale(culture) : instance);
+const localeInstance = (instance: Dayjs, culture?: Culture) => (culture ? instance.locale(culture) : instance);
 
-const format = (value, format, culture: Culture) => locale(dayjs(value), culture).format(format);
+const format = (value, format, culture: Culture) => localeInstance(dayjs(value), culture).format(format);
 
 // Instances & objects
 
@@ -45,10 +45,10 @@ const formats: Formats = {
     eventTimeRangeFormat: timeRangeFormat,
 };
 
-const localizerInstance = new DateLocalizer({
+const locale = new DateLocalizer({
     formats,
     firstOfWeek,
     format,
 });
 
-export default localizerInstance;
+export default locale;
