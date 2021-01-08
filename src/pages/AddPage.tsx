@@ -1,6 +1,6 @@
 import React from "react";
 import {List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
-import {ExamIcon, HomeworkIcon} from "components/icons";
+import {ExamIcon, HomeworkIcon, RoomIcon} from "components/icons";
 import {useTranslation} from "react-i18next";
 import {FocusedPage} from "components";
 import {generatePath} from "react-router-dom";
@@ -35,6 +35,18 @@ const AddPage = () => {
                     </ListItemIcon>
                     <ListItemText
                         primary={t("Klassenarbeit hinzufügen")}
+                    />
+                </ListItem>
+                <ListItem
+                    button
+                    href={generatePath("/add/room")}
+                    component="a"
+                >
+                    <ListItemIcon>
+                        <RoomIcon size={ITEM_SIZE} />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary={t("Raum hinzufügen")}
                     />
                 </ListItem>
             </List>

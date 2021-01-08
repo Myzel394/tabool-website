@@ -3,7 +3,6 @@ import React, {memo, useState} from "react";
 import {ErrorMessage, Field, Form as IkForm, Formik, FormikHelpers} from "formik";
 import {Box, FormGroup, FormHelperText, Grid} from "@material-ui/core";
 import {
-    FocusedPage,
     FormikLessonField,
     HomeworkInformationField,
     HomeworkTypeField,
@@ -60,89 +59,87 @@ const Form = ({
     });
 
     return (
-        <FocusedPage title={t("Hausaufgabe hinzufügen")}>
-            <Formik<FormikForm>
-                validationSchema={schema}
-                // @ts-ignore: Values will be validated before sending, so initial values can be invalid
-                initialValues={initialValues}
-                onSubmit={onSubmit}
-            >
-                {({isSubmitting, setFieldValue, touched, errors}) => (
-                    <LoadingOverlay isLoading={isSubmitting}>
-                        <IkForm>
-                            <Box mb={2}>
-                                <Grid container spacing={4}>
-                                    <Grid item xs={12}>
+        <Formik<FormikForm>
+            validationSchema={schema}
+            // @ts-ignore: Values will be validated before sending, so initial values can be invalid
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+        >
+            {({isSubmitting, setFieldValue, touched, errors}) => (
+                <LoadingOverlay isLoading={isSubmitting}>
+                    <IkForm>
+                        <Box mb={2}>
+                            <Grid container spacing={4}>
+                                <Grid item xs={12}>
+                                    <Field
+                                        disablePast
+                                        innerRef={reference => {
+                                            if (reference && !_.isEqual(reference, $lesson)) {
+                                                set$Lesson(reference.lesson);
+                                            }
+                                        }}
+                                        name="lesson"
+                                        type="text"
+                                        label={t("Stunde")}
+                                        helpText={t("Von welcher Stunde aus die Hausaufgabe aufgegeben wurde.").toString()}
+                                        component={FormikLessonField}
+                                        onChange={value => setFieldValue("lesson", value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <Field
+                                        name="dueDate"
+                                        label={t("Fälligkeitsdatum")}
+                                        component={LessonDateField}
+                                        course={$lesson?.lesson?.lessonData?.course}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <Field
+                                        type="text"
+                                        name="type"
+                                        component={HomeworkTypeField}
+                                        helperText={t("Typ der Hausaufgabe - Beispiel: Wiederholung, Vorbereitung")}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Field
+                                        component={HomeworkInformationField}
+                                        name="information"
+                                        type="text"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormGroup>
                                         <Field
-                                            disablePast
-                                            innerRef={reference => {
-                                                if (reference && !_.isEqual(reference, $lesson)) {
-                                                    set$Lesson(reference.lesson);
-                                                }
-                                            }}
-                                            name="lesson"
-                                            type="text"
-                                            label={t("Stunde")}
-                                            helpText={t("Von welcher Stunde aus die Hausaufgabe aufgegeben wurde.").toString()}
-                                            component={FormikLessonField}
-                                            onChange={value => setFieldValue("lesson", value)}
+                                            component={CheckboxWithLabel}
+                                            type="checkbox"
+                                            name="isPrivate"
+                                            Label={{label: t("Privat für mich")}}
                                         />
-                                    </Grid>
-                                    <Grid item xs={12} md={6}>
-                                        <Field
-                                            name="dueDate"
-                                            label={t("Fälligkeitsdatum")}
-                                            component={LessonDateField}
-                                            course={$lesson?.lesson?.lessonData?.course}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6}>
-                                        <Field
-                                            type="text"
-                                            name="type"
-                                            component={HomeworkTypeField}
-                                            helperText={t("Typ der Hausaufgabe - Beispiel: Wiederholung, Vorbereitung")}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Field
-                                            component={HomeworkInformationField}
-                                            name="information"
-                                            type="text"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <FormGroup>
-                                            <Field
-                                                component={CheckboxWithLabel}
-                                                type="checkbox"
-                                                name="isPrivate"
-                                                Label={{label: t("Privat für mich")}}
-                                            />
-                                            <FormHelperText error={Boolean(touched.isPrivate && errors.isPrivate)}>
-                                                {errors.isPrivate ? <ErrorMessage name="isPrivate" /> : t(
-                                                    "Private Hausaufgaben sind nur für dich sichtbar. Sobald einmal für den Kurs veröffentlicht, kannst du sie nicht mehr editieren.",
-                                                )}
-                                            </FormHelperText>
-                                        </FormGroup>
-                                    </Grid>
-                                    {errors.nonFieldErrors &&
+                                        <FormHelperText error={Boolean(touched.isPrivate && errors.isPrivate)}>
+                                            {errors.isPrivate ? <ErrorMessage name="isPrivate" /> : t(
+                                                "Private Hausaufgaben sind nur für dich sichtbar. Sobald einmal für den Kurs veröffentlicht, kannst du sie nicht mehr editieren.",
+                                            )}
+                                        </FormHelperText>
+                                    </FormGroup>
+                                </Grid>
+                                {errors.nonFieldErrors &&
                                         <Grid item xs={12}>
                                             <Alert severity="error">
                                                 {errors.nonFieldErrors}
                                             </Alert>
                                         </Grid>
-                                    }
-                                </Grid>
-                            </Box>
-                            <PrimaryButton type="submit" disabled={isSubmitting}>
-                                {t("Hausaufgabe hinzufügen")}
-                            </PrimaryButton>
-                        </IkForm>
-                    </LoadingOverlay>
-                )}
-            </Formik>
-        </FocusedPage>
+                                }
+                            </Grid>
+                        </Box>
+                        <PrimaryButton type="submit" disabled={isSubmitting}>
+                            {t("Hausaufgabe hinzufügen")}
+                        </PrimaryButton>
+                    </IkForm>
+                </LoadingOverlay>
+            )}
+        </Formik>
     );
 };
 

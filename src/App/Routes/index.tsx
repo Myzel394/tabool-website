@@ -14,6 +14,7 @@ import {
     LessonDetailPage,
     Login,
     Register,
+    RoomAddPage,
     TeacherDetailPage,
 } from "pages";
 
@@ -90,6 +91,11 @@ export default function Routes() {
                 exact
                 path="/add/exam/"
                 component={ExamAddPage}
+            />
+            <Route
+                exact
+                path="/add/room/"
+                component={RoomAddPage}
             />
             <Route
                 exact

@@ -46,7 +46,7 @@ const AddPlaceDialog = ({
             .required()
             .matches(
                 /^(([A-Z]{1,2}[0-9]?)|([0-9]){3})|([A-Z][A-Z ]{62})$/,
-                t("Ungültiger Ortname. Benutze die Kurzform deines Orts."),
+                t("Ungültiger Ortname. Benutze die Kurzform deines Orts. Bei Ziffern benutze insgesamt 3 Zahlen (0 am Anfang wenn die Zahl kleiner als 100 ist)."),
             ),
     });
 
