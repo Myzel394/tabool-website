@@ -1,9 +1,10 @@
-import React, {memo, useContext} from "react";
+import React, {memo, useContext, useEffect, useState} from "react";
 import {UserContext} from "contexts";
 import {BottomNavigation as MuiBottomNavigation, BottomNavigationAction} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {FaTable, MdAdd, MdEventNote, MdHome} from "react-icons/all";
-import {useHistory, useLocation} from "react-router";
+import {useLocation} from "react-router";
+import {useHistory} from "react-router-dom";
 
 import styles from "./BottomNavigation.module.scss";
 
@@ -13,32 +14,42 @@ const BottomNavigation = ({innerRef}) => {
     const {state} = useContext(UserContext);
     const location = useLocation();
     const history = useHistory();
-    const baseLocation = location.pathname.split("/")[1];
+    const baseLocation = `/${location.pathname.split("/")[1]}`;
+
+    const [selectedValue, setSelectedValue] = useState<string>(baseLocation);
+
+    useEffect(() => {
+        if (selectedValue !== baseLocation) {
+            history.push(selectedValue);
+        }
+    }, [selectedValue, baseLocation, history]);
 
     if (state.isFullyRegistered) {
         return (
-            <MuiBottomNavigation ref={innerRef} value={baseLocation} className={styles.container}>
+            <MuiBottomNavigation ref={innerRef} value={selectedValue} className={styles.container}>
                 <BottomNavigationAction
                     label={t("Start").toString()}
                     icon={<MdHome />}
-                    value=""
-                    onClick={() => history.push("/")}
+                    value="/"
+                    onClick={() => setSelectedValue("/")}
                 />
                 <BottomNavigationAction
                     label={t("Stundenplan").toString()}
                     icon={<FaTable />}
-                    value="timetable"
-                    onClick={() => history.push("/timetable/")}
+                    value="/timetable"
+                    onClick={() => setSelectedValue("/timetable")}
                 />
                 <BottomNavigationAction
                     label={t("Agenda").toString()}
                     icon={<MdEventNote />}
-                    value="agenda"
+                    value="/agenda"
+                    onClick={() => setSelectedValue("/agenda")}
                 />
                 <BottomNavigationAction
                     label={t("Hinzufügen").toString()}
                     icon={<MdAdd />}
-                    value="add"
+                    value="/add"
+                    onClick={() => setSelectedValue("/add")}
                 />
             </MuiBottomNavigation>
         );
