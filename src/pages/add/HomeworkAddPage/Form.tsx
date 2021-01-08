@@ -6,20 +6,20 @@ import {
     FormikLessonField,
     HomeworkInformationField,
     HomeworkTypeField,
-    LessonDateField,
     LoadingOverlay,
     PrimaryButton,
+    renderDayWithLessonWeekdays,
 } from "components";
-import _ from "lodash";
 import {useTranslation} from "react-i18next";
 import {ISendHomeworkData} from "hooks/apis";
 import * as yup from "yup";
 import dayjs from "dayjs";
 import {useQueryString} from "hooks";
 import {LessonFieldRef} from "components/inputs/LessonField";
-import {ErrorFieldsInjection} from "types";
+import {CourseDetail, ErrorFieldsInjection} from "types";
 import {CheckboxWithLabel} from "formik-material-ui";
 import {Alert} from "@material-ui/lab";
+import {DateTimePicker} from "formik-material-ui-pickers";
 
 export interface IForm {
     onSubmit: (data: ISendHomeworkData, formikHelpers: FormikHelpers<ISendHomeworkData>) => Promise<any>;
@@ -41,8 +41,9 @@ const Form = ({
         parseNumbers: false,
     });
 
-    const [$lesson, set$Lesson] = useState<LessonFieldRef>();
+    const [course, setCourse] = useState<CourseDetail>();
 
+    // noinspection SuspiciousTypeOfGuard: Type can in fact have bool type
     const initialValues = {
         lesson: typeof lessonId === "string" ? lessonId : null,
         type: typeof givenType === "string" ? givenType : null,
@@ -57,6 +58,8 @@ const Form = ({
         type: yup.string().nullable(),
         dueDate: yup.date().min(dayjs(), "Das Fälligkeitsdatum kann nicht in der Vergangenheit liegen.").nullable(),
     });
+
+    const renderDueDateDay = course && renderDayWithLessonWeekdays(course.weekdays, course.subject.userRelation.color);
 
     return (
         <Formik<FormikForm>
@@ -73,9 +76,11 @@ const Form = ({
                                 <Grid item xs={12}>
                                     <Field
                                         disablePast
-                                        innerRef={reference => {
-                                            if (reference && !_.isEqual(reference, $lesson)) {
-                                                set$Lesson(reference.lesson);
+                                        innerRef={(reference: LessonFieldRef) => {
+                                            const referenceCourse = reference.lesson.lessonData.course;
+
+                                            if (reference && referenceCourse.id === course?.id) {
+                                                setCourse(referenceCourse);
                                             }
                                         }}
                                         name="lesson"
@@ -88,10 +93,11 @@ const Form = ({
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Field
+                                        fullWidth
                                         name="dueDate"
                                         label={t("Fälligkeitsdatum")}
-                                        component={LessonDateField}
-                                        course={$lesson?.lesson?.lessonData?.course}
+                                        component={DateTimePicker}
+                                        renderDay={renderDueDateDay}
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6}>

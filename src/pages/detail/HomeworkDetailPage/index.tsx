@@ -9,7 +9,7 @@ import {
     useUpdateHomeworkDataAPI,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks/apis";
-import {BooleanStatus, DetailPage, HomeworkTypeField, LessonDateField, LoadingIndicator} from "components";
+import {BooleanStatus, DetailPage, HomeworkTypeField, LoadingIndicator, renderDayWithLessonWeekdays} from "components";
 import {useTranslation} from "react-i18next";
 import {
     BiBarChartSquare,
@@ -39,6 +39,7 @@ import {Field} from "formik";
 import {formatLesson} from "format";
 import {LessonIcon} from "components/icons";
 import {buildPath, lazyDatetime} from "utils";
+import {DateTimePicker} from "formik-material-ui-pickers";
 
 import ExtraActions from "./ExtraActions";
 
@@ -134,6 +135,11 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
         });
         return null;
     }
+
+    const renderDueDateDay = renderDayWithLessonWeekdays(
+        homework.lesson.lessonData.course.weekdays,
+        homework.lesson.lessonData.course.subject.userRelation.color,
+    );
 
     return (
         <DetailPage<HomeworkKeys, "completed" | "ignore", IUpdateHomeworkDataData, IUpdateHomeworkDataResponse>
@@ -254,8 +260,8 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                         <Field
                             {...getFieldProps("dueDate")}
                             type="text"
-                            component={LessonDateField}
-                            course={homework.lesson.lessonData.course}
+                            component={DateTimePicker}
+                            renderDay={renderDueDateDay}
                         />
                     ),
                 },

@@ -2,24 +2,29 @@ import React, {useContext, useState} from "react";
 import {useMutation, useQuery} from "react-query";
 import {IUpdateExamData, IUpdateExamResponse, useFetchExamDetailAPI, useUpdateExamAPI} from "hooks/apis";
 import {AxiosError} from "axios";
-import {useQueryOptions, useSnackbar} from "hooks";
+import {useColors, useQueryOptions, useSnackbar} from "hooks";
 import {ExamDetail} from "types";
 import {PredefinedMessageType} from "hooks/useSnackbar";
-import {CourseIcon, DetailPage, LessonDateField, LoadingIndicator, PlaceField, RoomIcon} from "components";
+import {CourseIcon, DetailPage, LoadingIndicator, PlaceField, renderDayWithLessonWeekdays, RoomIcon} from "components";
 import {ErrorContext} from "contexts";
 import {formatRoom} from "format";
 import {useTranslation} from "react-i18next";
-import {FaCalendarDay, MdInfo} from "react-icons/all";
+import {FaCalendarDay, MdInfo, MdToday} from "react-icons/all";
 import {Field} from "formik";
 import dayjs, {Dayjs} from "dayjs";
 import {TextField} from "formik-material-ui";
 import {buildPath, replaceDatetime} from "utils";
 import * as yup from "yup";
+import {DatePicker} from "formik-material-ui-pickers";
+import {InputAdornment} from "@material-ui/core";
 
 type ExamKeys = "course" | "place" | "information" | "targetedDate";
 
 const ExamDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
+    const {
+        inputIconColor,
+    } = useColors();
     const updateExam = useUpdateExamAPI();
     const fetchExam = useFetchExamDetailAPI();
     const queryOptions = useQueryOptions();
@@ -71,6 +76,7 @@ const ExamDetailPage = ({match: {params: {id}}}) => {
         return null;
     }
 
+    const renderTargetedDateDay = renderDayWithLessonWeekdays(exam.course.weekdays, exam.course.subject.userRelation.color);
 
     return (
         <DetailPage<ExamKeys, "", ExamDetail>
@@ -135,14 +141,23 @@ const ExamDetailPage = ({match: {params: {id}}}) => {
                     icon: <FaCalendarDay />,
                     title: t("Datum"),
                     helperText: t("Datum, wann die Arbeit geschrieben wird"),
-                    renderField({getFieldProps}) {
+                    renderField({getFieldProps, setFieldValue}) {
                         return (
                             <Field
                                 {...getFieldProps("targetedDate")}
+                                fullWidth
                                 type="text"
-                                component={LessonDateField}
-                                course={exam.course}
+                                component={DatePicker}
+                                renderDay={renderTargetedDateDay}
                                 format="ll"
+                                inputVariant="outlined"
+                                InputProps={{
+                                    startAdornment:
+                                        <InputAdornment position="start">
+                                            <MdToday color={inputIconColor} />
+                                        </InputAdornment>,
+                                }}
+                                onChange={date => setFieldValue("targetedDate", date)}
                             />
                         );
                     },
