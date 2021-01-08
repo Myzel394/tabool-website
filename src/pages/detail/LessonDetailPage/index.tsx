@@ -273,7 +273,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                                 startIcon={<ExamIcon />}
                                 href={buildPath("/add/exam/", undefined, {
                                     course: lesson.lessonData.course.id,
-                                    room: lesson.lessonData.room.id,
+                                    place: lesson.lessonData.room.id,
                                 })}
                             >
                                 {t("Klassenarbeit hinzufügen")}

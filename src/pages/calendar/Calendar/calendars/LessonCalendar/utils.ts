@@ -1,15 +1,17 @@
-import {EventDetail, LessonDetail} from "types";
+import {EventDetail, ExamDetail, LessonDetail} from "types";
 import {combineDatetime} from "utils";
 import {Event as CalendarEvent} from "react-big-calendar";
 
 interface IBuildCalendarEvents {
     lessons?: LessonDetail[];
     events?: EventDetail[];
+    exams?: ExamDetail[];
 }
 
 export const buildCalendarEvents = ({
     lessons,
     events,
+    exams,
 }: IBuildCalendarEvents): CalendarEvent[] => {
     const calendarLessons = (lessons ?? []).map(
         (lesson): CalendarEvent => ({
@@ -55,10 +57,21 @@ export const buildCalendarEvents = ({
         ],
         [],
     );
+    const calendarExams = (exams ?? []).map((exam): CalendarEvent => ({
+        start: exam.targetedDate.toDate(),
+        end: exam.targetedDate.toDate(),
+        title: exam.course.subject.name,
+        allDay: true,
+        resource: {
+            ...exam,
+            type: "exam",
+        },
+    }));
 
     return [
         ...calendarLessons,
         ...calendarEvents,
         ...calendarModifications,
+        ...calendarExams,
     ];
 };

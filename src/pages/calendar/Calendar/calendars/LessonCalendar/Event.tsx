@@ -1,5 +1,5 @@
 import React, {ReactNode} from "react";
-import {EventDetail, LessonDetail, ModificationDetail} from "types";
+import {EventDetail, ExamDetail, LessonDetail, ModificationDetail} from "types";
 import {Event as CalendarEvent} from "react-big-calendar";
 import {ThemeProvider} from "@material-ui/core";
 import {createSmallTheme, getEventWrapperStyles} from "utils";
@@ -7,6 +7,7 @@ import {createSmallTheme, getEventWrapperStyles} from "utils";
 import EventEvent from "./EventEvent";
 import ModificationEvent from "./ModificationEvent";
 import LessonEvent from "./LessonEvent";
+import ExamEvent from "./ExamEvent";
 
 
 interface IEvent {
@@ -63,6 +64,13 @@ const Event = ({
                 <ModificationEvent modification={modification} />
             );
             break;
+        }
+        case "exam": {
+            const exam: ExamDetail = calendarEvent.resource;
+
+            return (
+                <ExamEvent event={exam} />
+            );
         }
     }
 

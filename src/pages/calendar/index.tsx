@@ -157,6 +157,7 @@ const Calendar = () => {
                 refetch,
                 lessons: contextData?.lessons ?? [],
                 events: contextData?.events ?? [],
+                exams: contextData?.exams ?? [],
                 calendarType: activeType,
                 date: activeDate,
                 earliestDateAvailable: contextData?.earliestDateAvailable,

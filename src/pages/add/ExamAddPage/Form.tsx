@@ -53,7 +53,7 @@ const Form = ({onSubmit}: IForm) => {
         information: yup.string().nullable(),
     });
 
-    const [courseId, setCourseId] = useState<string>();
+    const [courseId, setCourseId] = useState<string | null>(initialValues.courseId);
 
     const {
         data: course,
