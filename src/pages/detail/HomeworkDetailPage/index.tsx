@@ -9,7 +9,7 @@ import {
     useUpdateHomeworkDataAPI,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks/apis";
-import {BooleanStatus, DetailPage, LessonDateField, HomeworkTypeField, LoadingIndicator} from "components";
+import {BooleanStatus, DetailPage, HomeworkTypeField, LessonDateField, LoadingIndicator} from "components";
 import {useTranslation} from "react-i18next";
 import {
     BiBarChartSquare,
@@ -253,8 +253,9 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                     renderField: canEditHomework && (({getFieldProps}) =>
                         <Field
                             {...getFieldProps("dueDate")}
+                            type="text"
                             component={LessonDateField}
-                            lesson={homework.lesson}
+                            course={homework.lesson.lessonData.course}
                         />
                     ),
                 },

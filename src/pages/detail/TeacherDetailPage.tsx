@@ -1,6 +1,6 @@
 import genderColor from "constants/genderColor";
 
-import React, {memo, useContext} from "react";
+import React, {useContext} from "react";
 import dayjs from "dayjs";
 import {Grid, Link, Typography} from "@material-ui/core";
 import {CgCompress, FaTransgenderAlt, MdEmail, MdTextFields} from "react-icons/all";
@@ -68,7 +68,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <DetailPage<TeacherKeys, "", void, IFetchTeacherListResponse>
+        <DetailPage<TeacherKeys, "", IFetchTeacherListResponse>
             title={`${teacher.firstName} ${teacher.lastName}`}
             color={genderColor[teacher.gender]}
             orderingStorageName="detail:ordering:teacher"
@@ -174,4 +174,4 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
     );
 };
 
-export default memo(TeacherDetailPage);
+export default TeacherDetailPage;

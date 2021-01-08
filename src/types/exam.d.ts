@@ -14,6 +14,6 @@ export interface ExamApprox {
 export interface ExamDetail extends Omit<ExamApprox, "truncatedInformation" | "course"> {
     course: CourseDetail;
     room?: Room;
-    information: string;
+    information: string | null;
     createdAt: Dayjs;
 }

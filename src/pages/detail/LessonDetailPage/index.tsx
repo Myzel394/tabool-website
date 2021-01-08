@@ -1,4 +1,4 @@
-import React, {memo, useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
 import {
@@ -287,4 +287,4 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
 };
 
 
-export default memo(LessonDetailPage);
+export default LessonDetailPage;

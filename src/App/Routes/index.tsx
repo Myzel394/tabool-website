@@ -5,6 +5,7 @@ import Calendar from "pages/calendar/index";
 import {
     ConfirmEmail,
     ExamAddPage,
+    ExamDetailPage,
     FillOutData,
     HomeworkAddPage,
     HomeworkDetailPage,
@@ -68,6 +69,11 @@ export default function Routes() {
                 exact
                 path="/agenda/teacher/detail/:id/"
                 component={TeacherDetailPage}
+            />
+            <Route
+                exact
+                path="/agenda/exam/detail/:id/"
+                component={ExamDetailPage}
             />
             <Route
                 exact

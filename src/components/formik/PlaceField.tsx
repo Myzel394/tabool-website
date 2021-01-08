@@ -23,7 +23,7 @@ export type IPlaceField = Omit<IAutocompleteField,
     > & FieldProps & {
     helperText?: string;
     label?: string;
-    onChange?: (event) => any;
+    onChange?: (place: Room) => any;
 };
 
 const filter = createFilterOptions<Room>();
@@ -100,15 +100,7 @@ const PlaceField = ({
         setSearch(searchValue);
 
         if (newValue) {
-            const event = {
-                target: {
-                    name: field.name,
-                    value: newValue,
-                },
-            };
-
-            field.onChange(event);
-            onChange?.(event);
+            form.setFieldValue(field.name, newValue.id);
         }
     };
 
@@ -196,15 +188,7 @@ const PlaceField = ({
                     setSearch(place.place);
                     setDialog(false);
 
-                    const event = {
-                        target: {
-                            name: field.name,
-                            value: place,
-                        },
-                    };
-
-                    field.onChange(event);
-                    onChange?.(event);
+                    form.setFieldValue(field.name, place.id);
                 }}
             />
         </>

@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {ISendHomeworkData, ISendHomeworkResponse, useSendHomeworkAPI} from "hooks/apis";
@@ -34,4 +34,4 @@ const HomeworkAddPage = () => {
 };
 
 
-export default memo(HomeworkAddPage);
+export default HomeworkAddPage;

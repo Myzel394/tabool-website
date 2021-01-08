@@ -4,7 +4,7 @@ import {LessonDetail} from "./lesson";
 import {Subject} from "./subject";
 
 export interface HomeworkApprox {
-    lesson?: string;
+    lesson: string;
     dueDate: Dayjs;
     createdAt: Dayjs;
     subject: Subject;
@@ -14,7 +14,7 @@ export interface HomeworkApprox {
 }
 
 export interface HomeworkDetail extends Omit<HomeworkApprox, "truncatedInformation" | "lesson" | "subject"> {
-    lesson?: LessonDetail;
+    lesson: LessonDetail;
     isPrivate: boolean;
     information: string;
     type: string | null;

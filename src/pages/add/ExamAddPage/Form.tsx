@@ -88,9 +88,6 @@ const Form = ({onSubmit}: IForm) => {
             {({isSubmitting, setFieldValue, values, touched, errors}) => (
                 <LoadingOverlay isLoading={isSubmitting}>
                     <IkForm>
-                        <code>
-                            <pre>{JSON.stringify(values, null, 4)}</pre>
-                        </code>
                         <Box mb={4}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
@@ -131,9 +128,8 @@ const Form = ({onSubmit}: IForm) => {
                                         type="text"
                                         name="placeId"
                                         component={PlaceField}
-                                        label={t("Raum")}
+                                        label={t("Ort")}
                                         helperText={t("Wo die Klassenarbeit geschrieben wird.")}
-                                        onChange={event => setFieldValue("place", event.target.value.id)}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
