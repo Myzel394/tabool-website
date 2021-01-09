@@ -12,7 +12,6 @@ import {
 } from "components";
 import {ModificationType} from "api";
 import {generatePath} from "react-router-dom";
-import dayjs from "dayjs";
 
 import styles from "./LessonEvent.module.scss";
 
@@ -28,7 +27,6 @@ export interface ILessonEvent {
 }
 
 const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWhenFreePeriod, showDetails}: ILessonEvent) => {
-    const now = dayjs();
     const isFreePeriod = modification?.modificationType === ModificationType.FreePeriod ||
         modification?.modificationType === ModificationType.SelfLearn;
 
