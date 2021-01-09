@@ -1,5 +1,6 @@
 export * from "./useFetchContactsAPI";
 export * from "./useFetchTimetableAPI";
+export * from "./useFetchDailyDataAPI";
 export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
 
 export * from "./auth";
