@@ -15,6 +15,7 @@ import Title from "./Title";
 import Content from "./Content";
 import Timetable from "./Timetable";
 import Homeworks from "./Homeworks";
+import VideoConferences from "./VideoConferences";
 
 const StartPage = () => {
     const {t} = useTranslation();
@@ -87,6 +88,11 @@ const StartPage = () => {
                         title={t("Hausaufgaben")}
                     >
                         <Homeworks homeworks={dailyData.homeworks} />
+                    </Content>
+                </Box>
+                <Box mb={6}>
+                    <Content title={t("Video-Konferenzen")}>
+                        <VideoConferences lessons={dailyData.videoConferenceLessons} />
                     </Content>
                 </Box>
             </Box>
