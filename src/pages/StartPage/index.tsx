@@ -1,25 +1,95 @@
-import React from "react";
-import {useTheme} from "@material-ui/core";
+import React, {useContext} from "react";
+import {Box, Button, Link} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {useUser} from "hooks";
+import {useQueryOptions} from "hooks";
+import {useQuery} from "react-query";
+import {IFetchDailyDataData, IFetchDailyDataResponse, useFetchDailyDataAPI} from "hooks/apis";
+import {AxiosError} from "axios";
+import {LoadingIndicator} from "components";
+import {ErrorContext} from "contexts";
+import dayjs, {Dayjs} from "dayjs";
+import {TimetableIcon} from "components/icons";
+import Wrapper from "components/pages/FocusedPage/Wrapper";
 
+import Title from "./Title";
+import Content from "./Content";
+import Timetable from "./Timetable";
+import Homeworks from "./Homeworks";
 
 const StartPage = () => {
-    const theme = useTheme();
     const {t} = useTranslation();
-    const user = useUser();
+    const fetchDailyData = useFetchDailyDataAPI();
+    const queryOptions = useQueryOptions();
+    const {dispatch: dispatchError} = useContext(ErrorContext);
 
-    return null;
+    const {
+        data: dailyData,
+        isLoading,
+    } = useQuery<IFetchDailyDataResponse, AxiosError, IFetchDailyDataData>(
+        ["fetch_daily_data"],
+        () => fetchDailyData(),
+        queryOptions,
+    );
 
-    /*
+    if (isLoading) {
+        return (
+            <LoadingIndicator />
+        );
+    }
+
+    if (!dailyData) {
+        dispatchError({
+            type: "setError",
+            payload: {},
+        });
+        return null;
+    }
+
+    const targetedDate: Dayjs = (() => {
+        let today = dayjs();
+        const weekday = today.day();
+
+        if (weekday === 0) {
+            today = today.add(1, "day");
+        } else if (weekday === 6) {
+            today = today.add(2, "day");
+        }
+
+        return today;
+    })();
+
+
     return (
-        <Box my={2}>
-            <Title />
-            <Content title={t("Stundenplan")}>
-                <Timetable />
-            </Content>
-        </Box>
-    );*/
+        <Wrapper>
+            <Box my={2}>
+                <Box mb={4} mx={2}>
+                    <Title />
+                </Box>
+                <Box mx={2}>
+                    <Content
+                        title={t("Fächer")}
+                        link={
+                            <Link
+                                component={Button}
+                                underline="none"
+                                startIcon={<TimetableIcon color="inherit" />}
+                            >
+                                {t("Zum Stundenplan")}
+                            </Link>
+                        }
+                    >
+                        <Timetable lessons={dailyData.lessons} />
+                    </Content>
+                </Box>
+                <Content
+                    disableMargin
+                    title={t("Hausaufgaben")}
+                >
+                    <Homeworks homeworks={dailyData.homeworks} />
+                </Content>
+            </Box>
+        </Wrapper>
+    );
 };
 
 export default StartPage;

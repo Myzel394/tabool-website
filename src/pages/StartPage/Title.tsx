@@ -1,10 +1,11 @@
 import React from "react";
 import {useUser} from "hooks";
-import {Typography} from "@material-ui/core";
+import {Typography, useTheme} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
 
 const Title = () => {
+    const theme = useTheme();
     const {t} = useTranslation();
     const user = useUser();
 
@@ -13,6 +14,7 @@ const Title = () => {
             variant="h1"
             style={{
                 fontWeight: 900,
+                color: theme.palette.primary.main,
             }}
             align="center"
         >

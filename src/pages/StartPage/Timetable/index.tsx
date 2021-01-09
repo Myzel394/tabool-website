@@ -1,34 +1,27 @@
 import React from "react";
-import {Calendar, Event as CalendarEvent} from "react-big-calendar";
-import {locale} from "utils";
+import {LessonDetail} from "types";
+import {Grid} from "@material-ui/core";
 
-import LessonEvent from "./LessonEvent";
+import SingleLesson from "./SingleLesson";
 
 export interface ICalendar {
-    lessons: CalendarEvent[];
+    lessons: LessonDetail[];
 }
 
-const style = {
-    height: 500,
+const fullWith = {
+    width: "100%",
 };
 
 const Timetable = ({
     lessons,
 }: ICalendar) => {
     return (
-        <Calendar
-            events={lessons}
-            localizer={locale}
-            startAccessor="start"
-            endAccessor="end"
-            style={style}
-            components={{
-                eventWrapper: LessonEvent,
-                resourceHeader() {
-                    return null;
-                },
-            }}
-        />
+        <Grid container spacing={2}>
+            {lessons.map(lesson =>
+                <Grid key={lesson.id} item style={fullWith}>
+                    <SingleLesson lesson={lesson} />
+                </Grid>)}
+        </Grid>
     );
 };
 

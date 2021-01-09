@@ -1,28 +1,44 @@
-import React from "react";
-import {Box, Typography} from "@material-ui/core";
+import React, {ReactNode, useState} from "react";
+import {Box, Button, Collapse} from "@material-ui/core";
 
 
 export interface IContent {
-    children: JSX.Element;
+    children: ReactNode;
     title: string;
-}
 
+    link?: ReactNode;
+    disableMargin?: boolean;
+}
 
 const Content = ({
     children,
     title,
+    link,
+    disableMargin,
 }: IContent) => {
+    const [show, setShow] = useState<boolean>(true);
+
     return (
-        <Box my={1} ml={3}>
+        <>
             <Box my={1}>
-                <Typography variant="h4" component="h2">
-                    {title}
-                </Typography>
+                <Box my={1}>
+                    <Button size="large" onClick={() => setShow(prevState => !prevState)}>
+                        {title}
+                    </Button>
+                    {link}
+                </Box>
             </Box>
-            <Box ml={1}>
-                {children}
-            </Box>
-        </Box>
+            <Collapse in={show}>
+                {disableMargin
+                    ? children
+                    : (
+                        <Box ml={4} mr={2}>
+                            {children}
+                        </Box>
+                    )
+                }
+            </Collapse>
+        </>
     );
 };
 
