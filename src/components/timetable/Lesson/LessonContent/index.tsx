@@ -57,7 +57,7 @@ const LessonContent = ({
             py={Number(!isMD)}
         >
             {showDetails ? (
-                <>
+                <Box p={1} display="flex" flexDirection="column" justifyContent="space-between" height="100%">
                     <section>
                         <div className={styles.secondary}>
                             {/* <Time> */}
@@ -98,7 +98,7 @@ const LessonContent = ({
                             text={roomName}
                         />
                     </Box>
-                </>
+                </Box>
             ) : (
                 <Typography
                     variant="h5"
