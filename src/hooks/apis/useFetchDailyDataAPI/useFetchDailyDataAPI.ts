@@ -19,8 +19,8 @@ const useFetchDailyDataAPI = () => {
     return useCallback(async ({
         date,
         maxFutureDays,
-    }: IFetchDailyDataData): Promise<IFetchDailyDataResponse> => {
-        const {data} = await instance.get("/api/", {
+    }: IFetchDailyDataData = {}): Promise<IFetchDailyDataResponse> => {
+        const {data} = await instance.get("/api/data/daily-data/", {
             params: {
                 date,
                 maxFutureDays,
