@@ -11,7 +11,7 @@ const useFetchCourseDetailAPI = () => {
 
     return useCallback(async (id: string): Promise<CourseDetail> => {
         const {data} = await instance.get(`/api/data/course/${id}/`, await getLoginConfig());
-        parseCourse(data);
+        await parseCourse(data);
 
         return data;
     }, [instance]);

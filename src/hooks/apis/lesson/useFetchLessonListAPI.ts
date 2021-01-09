@@ -29,7 +29,7 @@ const useFetchLessonListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(parseLessonApprox);
+        await Promise.allSettled(data.results.map(parseLessonApprox));
 
         return data;
     }, [instance]);

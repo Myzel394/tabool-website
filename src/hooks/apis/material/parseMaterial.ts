@@ -1,7 +1,7 @@
 import {convertToDate} from "api";
 import {MaterialDetail} from "types";
 
-const parseMaterial = (material: MaterialDetail): void => {
+const parseMaterial = async (material: MaterialDetail): Promise<void> => {
     convertToDate(material, ["addedAt"]);
 };
 

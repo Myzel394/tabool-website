@@ -41,7 +41,7 @@ const useFetchSubmissionListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(parseSubmissionApprox);
+        Promise.allSettled(data.results.map(parseSubmissionApprox));
 
         return data;
     }, [instance]);

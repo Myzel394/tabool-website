@@ -10,7 +10,7 @@ const useFetchModificationDetailAPI = () => {
 
     return useCallback(async (id: string): Promise<ModificationDetail> => {
         const {data} = await instance.get(`/api/data/modification/${id}/`, await getLoginConfig());
-        parseModification(data);
+        await parseModification(data);
 
         return data;
     }, [instance]);

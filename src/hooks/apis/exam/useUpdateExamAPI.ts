@@ -30,7 +30,7 @@ const useUpdateExamAPI = () => {
             information,
         }, await getLoginConfig());
 
-        parseExam(data);
+        await parseExam(data);
 
         return data;
     }, [instance]);

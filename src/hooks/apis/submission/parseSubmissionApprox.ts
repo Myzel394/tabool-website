@@ -1,7 +1,7 @@
 import {convertToDate} from "api";
 import {SubmissionApprox} from "types";
 
-const parseSubmissionApprox = (submission: SubmissionApprox): void => {
+const parseSubmissionApprox = async (submission: SubmissionApprox): Promise<void> => {
     convertToDate(submission, ["uploadAt"]);
 };
 

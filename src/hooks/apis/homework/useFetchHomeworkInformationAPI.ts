@@ -13,7 +13,7 @@ const useFetchHomeworkInformationAPI = () => {
     return useCallback(async (): Promise<IFetchHomeworkInformationResponse> => {
         const {data} = await instance.get("/api/data/homework/homework-information/", await getLoginConfig());
 
-        parseHomeworkInformation(data);
+        await parseHomeworkInformation(data);
 
         return data;
     }, [instance]);

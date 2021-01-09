@@ -17,6 +17,7 @@ export interface ISendExamData {
 
 export type ISendExamResponse = ExamDetail;
 
+// TODO Add delete option to exam detail!
 const useSendExamAPI = () => {
     const {instance} = useContext(AxiosContext);
 
@@ -33,7 +34,7 @@ const useSendExamAPI = () => {
             information,
         }, await getLoginConfig());
 
-        parseExam(data);
+        await parseExam(data);
 
         return data;
     }, [instance]);

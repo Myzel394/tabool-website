@@ -45,7 +45,7 @@ const useFetchEventListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(parseEventApprox);
+        await Promise.allSettled(data.results.map(parseEventApprox));
 
         return data;
     }, [instance]);

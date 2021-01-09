@@ -1,7 +1,7 @@
 import {MaterialApprox} from "types";
 import {convertToDate} from "api";
 
-const parseMaterialApprox = (material: MaterialApprox): void => {
+const parseMaterialApprox = async (material: MaterialApprox): Promise<void> => {
     convertToDate(material, ["addedAt"]);
 };
 
