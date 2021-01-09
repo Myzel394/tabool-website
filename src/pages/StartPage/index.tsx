@@ -65,7 +65,7 @@ const StartPage = () => {
                 <Box mb={4} mx={2}>
                     <Title />
                 </Box>
-                <Box mx={2}>
+                <Box mx={2} mb={6}>
                     <Content
                         title={t("Fächer")}
                         link={
@@ -81,12 +81,14 @@ const StartPage = () => {
                         <Timetable lessons={dailyData.lessons} />
                     </Content>
                 </Box>
-                <Content
-                    disableMargin
-                    title={t("Hausaufgaben")}
-                >
-                    <Homeworks homeworks={dailyData.homeworks} />
-                </Content>
+                <Box mb={6}>
+                    <Content
+                        disableMargin
+                        title={t("Hausaufgaben")}
+                    >
+                        <Homeworks homeworks={dailyData.homeworks} />
+                    </Content>
+                </Box>
             </Box>
         </Wrapper>
     );

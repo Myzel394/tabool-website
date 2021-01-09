@@ -15,9 +15,6 @@ const Homeworks = ({
     const [wrapperWidth = 0] = useElementSize($wrapper);
     const width = Math.max(200, wrapperWidth * 0.9);
 
-    // eslint-disable-next-line no-console
-    console.log(wrapperWidth);
-
     return (
         <div ref={$wrapper}>
             <HorizontalScroll<HomeworkDetail> elements={homeworks}>
