@@ -5,7 +5,7 @@ import {setBeginTime, setEndTime} from "utils/setTime";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useQuery} from "react-query";
-import {useDeviceWidth, usePersistentStorage, useQueryOptions} from "hooks";
+import {useDeviceWidth, usePersistentStorage, useQueryOptions, useQueryString} from "hooks";
 import {AxiosError} from "axios";
 import {IFetchTimetableData, IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
 import {useTranslation} from "react-i18next";
@@ -54,6 +54,9 @@ const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFe
 
 const Calendar = () => {
     // Options
+    const {
+        date: queryDateStr,
+    } = useQueryString();
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchTimetableAPI();
@@ -63,7 +66,17 @@ const Calendar = () => {
     // States
     const [activeView, setActiveView] = useState<View>(() => (isMobile ? "day" : "work_week"));
     const [activeType, setActiveType] = useState<CalendarType>("lesson");
-    const [activeDate, setActiveDate] = useState<Dayjs>(getStartDate);
+    const [activeDate, setActiveDate] = useState<Dayjs>(() => {
+        if (typeof queryDateStr === "string") {
+            const date = dayjs(queryDateStr);
+
+            if (date.isValid()) {
+                return date;
+            }
+        }
+
+        return getStartDate();
+    });
     const [showFreePeriods, setShowFreePeriods] = usePersistentStorage<boolean>(true, "timetable_showFreePeriods");
     const [showDetails, setShowDetails] = usePersistentStorage<boolean>(!isMobile, "timetable_showDetails");
 
