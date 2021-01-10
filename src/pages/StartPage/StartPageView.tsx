@@ -1,8 +1,7 @@
 import React from "react";
-import {Box, Button, Link, useTheme} from "@material-ui/core";
+import {Box, useTheme} from "@material-ui/core";
 import Wrapper from "components/pages/FocusedPage/Wrapper";
 import {useTranslation} from "react-i18next";
-import {TimetableIcon} from "components";
 import {Fade, Zoom} from "react-reveal";
 import {DailyData} from "types";
 import {Dayjs} from "dayjs";
@@ -61,15 +60,6 @@ const StartPageView = ({
                 <Box mx={2} mb={6}>
                     <Content
                         title={t("Fächer")}
-                        link={
-                            <Link
-                                component={Button}
-                                underline="none"
-                                startIcon={<TimetableIcon color="inherit" />}
-                            >
-                                {t("Zum Stundenplan")}
-                            </Link>
-                        }
                     >
                         <Timetable lessons={lessons} />
                     </Content>
