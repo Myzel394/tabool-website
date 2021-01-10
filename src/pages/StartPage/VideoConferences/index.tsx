@@ -1,9 +1,9 @@
 import React, {memo} from "react";
 import {LessonDetail} from "types";
-import {Box, Divider} from "@material-ui/core";
 import dayjs from "dayjs";
 
 import ConferenceList from "./ConferenceList";
+import Connector from "./Connector";
 
 
 export interface IVideoConferences {
@@ -29,21 +29,16 @@ const VideoConferences = ({lessons}: IVideoConferences) => {
             [dateStr]: array,
         };
     }, {});
-    // eslint-disable-next-line no-console
-    console.dir(lessonsPerDay);
+    const length = Object.keys(lessonsPerDay).length;
 
     return (
-        <Box display="flex" flexDirection="column" alignItems="center">
-            {Object.entries(lessonsPerDay).map(([dateStr, lessons]) =>
+        <>
+            {Object.entries(lessonsPerDay).map(([dateStr, lessons], index) =>
                 <>
-                    <Divider
-                        orientation="vertical" style={{
-                            height: 100,
-                        }}
-                    />
                     <ConferenceList key={dateStr} lessons={lessons} date={dayjs(dateStr)} />
+                    {index + 1 !== length && <Connector />}
                 </>)}
-        </Box>
+        </>
     );
 };
 
