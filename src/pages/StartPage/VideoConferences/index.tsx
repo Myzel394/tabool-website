@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import FlipMove from "react-flip-move";
 import {Zoom} from "react-reveal";
 import {useTheme} from "@material-ui/core";
+import {Alert} from "@material-ui/lab";
+import {useTranslation} from "react-i18next";
 
 import StartPageContext from "../StartPageContext";
 
@@ -15,6 +17,7 @@ interface LessonsPerDate {
 }
 
 const VideoConferences = () => {
+    const {t} = useTranslation();
     const {
         dailyData: {
             videoConferenceLessons: lessons,
@@ -37,6 +40,14 @@ const VideoConferences = () => {
         };
     }, {});
     const length = Object.keys(lessonsPerDay).length;
+
+    if (!lessons.length) {
+        return (
+            <Alert severity="info">
+                {t("Du hast keine Videokonferenzen in naher Zukunft.")}
+            </Alert>
+        );
+    }
 
     return (
         <FlipMove enterAnimation="fade" leaveAnimation="none">

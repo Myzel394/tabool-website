@@ -4,10 +4,14 @@ import {Homework, HorizontalScroll} from "components";
 import {useElementSize} from "hooks";
 import tinycolor from "tinycolor2";
 import update from "immutability-helper";
+import {Alert} from "@material-ui/lab";
+import {useTranslation} from "react-i18next";
+import {Box} from "@material-ui/core";
 
 import StartPageContext from "../StartPageContext";
 
 const Homeworks = () => {
+    const {t} = useTranslation();
     const {
         dailyData: {
             homeworks,
@@ -19,6 +23,16 @@ const Homeworks = () => {
     const [wrapperWidth = 0] = useElementSize($wrapper);
 
     const width = Math.max(200, wrapperWidth * 0.9);
+
+    if (!homeworks.length) {
+        return (
+            <Box mx={6}>
+                <Alert severity="info">
+                    {t("Du hast keine Hausaufgaben auf.")}
+                </Alert>
+            </Box>
+        );
+    }
 
     return (
         <div ref={$wrapper}>
