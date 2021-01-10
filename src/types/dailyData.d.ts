@@ -1,3 +1,5 @@
+import {Dayjs} from "dayjs";
+
 import {LessonDetail} from "./lesson";
 import {ModificationDetail} from "./modification";
 import {HomeworkDetail} from "./homework";
@@ -11,4 +13,6 @@ export interface DailyData {
     exams: ExamDetail[];
     events: EventDetail[];
     videoConferenceLessons: LessonDetail[];
+    earliestDateAvailable: Dayjs;
+    latestDateAvailable: Dayjs;
 }

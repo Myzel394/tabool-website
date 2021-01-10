@@ -21,12 +21,14 @@ const Form = () => {
         maxFutureDays,
         setMaxFutureDays,
         isLoading,
+        dailyData,
     } = useContext(StartPageContext);
 
     const [formTargetedDate, setFormTargetedDate] = useInheritedState<Dayjs>(targetedDate);
     const [formMaxFutureDays, setFormMaxFutureDays] = useInheritedState<number>(maxFutureDays);
 
     const dayLabel = t("Tage");
+    const {earliestDateAvailable, latestDateAvailable} = dailyData;
 
     return (
         <>
@@ -48,7 +50,9 @@ const Form = () => {
                                         </InputAdornment>
                                     ),
                                 }}
-                                onChange={date => date && setFormTargetedDate}
+                                minDate={earliestDateAvailable}
+                                maxDate={latestDateAvailable}
+                                onChange={date => date && setFormTargetedDate(date)}
                                 onBlur={() => setTargetedDate(formTargetedDate)}
                             />
                         </Grid>
@@ -58,6 +62,7 @@ const Form = () => {
                                     {dayLabel}
                                 </InputLabel>
                                 <Select
+                                    fullWidth
                                     label={dayLabel}
                                     type="number"
                                     value={formMaxFutureDays}
