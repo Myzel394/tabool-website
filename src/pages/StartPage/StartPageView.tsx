@@ -11,6 +11,7 @@ import Timetable from "./Timetable";
 import Homeworks from "./Homeworks";
 import VideoConferences from "./VideoConferences";
 import Form from "./Form";
+import Modifications from "./Modifications";
 
 
 const StartPageView = () => {
@@ -37,6 +38,11 @@ const StartPageView = () => {
                         }
                     >
                         <Timetable />
+                    </Content>
+                </Box>
+                <Box mb={6} mx={2}>
+                    <Content title={t("Veränderungen")}>
+                        <Modifications />
                     </Content>
                 </Box>
                 <Box mb={6}>

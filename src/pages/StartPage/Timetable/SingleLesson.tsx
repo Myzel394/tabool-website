@@ -2,7 +2,7 @@ import React, {memo, useMemo} from "react";
 import {LessonDetail} from "types";
 import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components";
 import {generatePath} from "react-router-dom";
-import {Link, useTheme} from "@material-ui/core";
+import {Link} from "@material-ui/core";
 import tinycolor from "tinycolor2";
 
 
@@ -11,7 +11,6 @@ export interface ILessonEvent {
 }
 
 const SingleLesson = ({lesson}: ILessonEvent) => {
-    const theme = useTheme();
     const hasHomework = Boolean(lesson.homeworks.length);
     const hasMaterials = Boolean(lesson.materials.length);
     const badges = [
