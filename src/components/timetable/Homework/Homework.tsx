@@ -10,12 +10,11 @@ import {useMutation} from "react-query";
 import {generatePath} from "react-router";
 import {ColoredBox, Information} from "components";
 import {AxiosError} from "axios";
-
 import {
     IUpdateHomeworkUserRelationData,
     IUpdateHomeworkUserRelationResponse,
     useUpdateHomeworkUserRelationAPI,
-} from "../../../hooks/apis";
+} from "hooks/apis";
 
 import styles from "./Homework.module.scss";
 import Action from "./Action";

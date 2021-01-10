@@ -5,9 +5,9 @@ import {Box, Grid, Typography} from "@material-ui/core";
 import {HiClock} from "react-icons/all";
 import DayJSEl from "react-dayjs";
 
-import ColoredBox from "../ColoredBox";
-import {Information} from "../index";
-import {RoomIcon} from "../icons";
+import ColoredBox from "../../ColoredBox";
+import Information from "../../Information";
+import {RoomIcon} from "../../icons";
 
 
 export interface IExam {
@@ -17,7 +17,6 @@ export interface IExam {
 
     room?: Room;
 }
-
 
 const Exam = ({
     course,
