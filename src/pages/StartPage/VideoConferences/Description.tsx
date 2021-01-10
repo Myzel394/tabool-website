@@ -10,6 +10,9 @@ export interface IDescription {
     secondaryText: string;
 }
 
+const wrapStyle = {
+    wordBreak: "break-word" as "break-word",
+};
 
 const Description = ({
     date,
@@ -23,11 +26,11 @@ const Description = ({
                 })}
                 underline="none"
             >
-                <Box>
+                <Box textAlign="left">
                     <Typography variant="body1" color="textPrimary">
                         {date.format("LL")}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary">
+                    <Typography variant="body2" color="textSecondary" style={wrapStyle}>
                         {secondaryText}
                     </Typography>
                 </Box>

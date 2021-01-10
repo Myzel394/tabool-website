@@ -1,7 +1,8 @@
-import React, {memo} from "react";
+import React from "react";
 import {LessonDetail} from "types";
 import {Dayjs} from "dayjs";
 import {Grid} from "@material-ui/core";
+import {AvatarGroup} from "@material-ui/lab";
 
 import Avatar from "./Avatar";
 import Description from "./Description";
@@ -15,14 +16,12 @@ export interface IConferenceList {
 
 const ConferenceList = ({lessons, date}: IConferenceList) => {
     return (
-        <Grid container direction="row" spacing={2} alignItems="center">
+        <Grid container direction="row" spacing={2} alignItems="center" wrap="nowrap">
             <Grid item>
-                <Grid container spacing={1} direction="row">
+                <AvatarGroup max={3}>
                     {lessons.map(lesson =>
-                        <Grid key={lesson.id} item>
-                            <Avatar lesson={lesson} />
-                        </Grid>)}
-                </Grid>
+                        <Avatar key={lesson.id} lesson={lesson} />)}
+                </AvatarGroup>
             </Grid>
             <Grid item>
                 <Description date={date} secondaryText={lessons.map(lesson => lesson.lessonData.course.subject.name).join(" | ")} />
@@ -31,4 +30,4 @@ const ConferenceList = ({lessons, date}: IConferenceList) => {
     );
 };
 
-export default memo(ConferenceList);
+export default ConferenceList;

@@ -1,25 +1,30 @@
-import React from "react";
-import {LessonDetail} from "types";
-import {Grid} from "@material-ui/core";
+import React, {useContext} from "react";
+import {Fade} from "react-reveal";
+import {Grid, useTheme} from "@material-ui/core";
+
+import StartPageContext from "../StartPageContext";
 
 import SingleLesson from "./SingleLesson";
-
-export interface ICalendar {
-    lessons: LessonDetail[];
-}
 
 const fullWith = {
     width: "100%",
 };
 
-const Timetable = ({
-    lessons,
-}: ICalendar) => {
+const Timetable = () => {
+    const {
+        dailyData: {
+            lessons,
+        },
+    } = useContext(StartPageContext);
+    const theme = useTheme();
+
     return (
         <Grid container spacing={2}>
-            {lessons.map(lesson =>
+            {lessons.map((lesson, index) =>
                 <Grid key={lesson.id} item style={fullWith}>
-                    <SingleLesson lesson={lesson} />
+                    <Fade left duration={theme.transitions.duration.enteringScreen} delay={index * 100}>
+                        <SingleLesson lesson={lesson} />
+                    </Fade>
                 </Grid>)}
         </Grid>
     );

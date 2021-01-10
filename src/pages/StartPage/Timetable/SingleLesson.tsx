@@ -1,8 +1,9 @@
-import React, {memo} from "react";
+import React, {memo, useMemo} from "react";
 import {LessonDetail} from "types";
 import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components";
 import {generatePath} from "react-router-dom";
-import {Link} from "@material-ui/core";
+import {Link, useTheme} from "@material-ui/core";
+import tinycolor from "tinycolor2";
 
 
 export interface ILessonEvent {
@@ -10,12 +11,20 @@ export interface ILessonEvent {
 }
 
 const SingleLesson = ({lesson}: ILessonEvent) => {
+    const theme = useTheme();
     const hasHomework = Boolean(lesson.homeworks.length);
     const hasMaterials = Boolean(lesson.materials.length);
     const badges = [
         hasHomework && <HomeworkBadge count={lesson.homeworks.length} />,
         hasMaterials && <MaterialBadge count={lesson.materials.length} />,
     ].filter(Boolean) as JSX.Element[];
+    const style = useMemo(() => {
+        const shadowColor = tinycolor(lesson.lessonData.course.subject.userRelation.color).setAlpha(0.3);
+
+        return {
+            boxShadow: `0 .4em .8em .2em ${shadowColor}`,
+        };
+    }, [lesson.lessonData.course.subject.userRelation.color]);
 
     return (
         <Link
@@ -35,6 +44,7 @@ const SingleLesson = ({lesson}: ILessonEvent) => {
                     courseName={lesson.lessonData.course.name}
                     roomName={lesson.lessonData.room.place}
                     teacherName={lesson.lessonData.course.teacher.lastName}
+                    style={style}
                 />
             </Lesson>
         </Link>
