@@ -32,7 +32,7 @@ export interface IHomework {
     onCompletedChange: () => boolean;
     onIgnoreChange: () => boolean;
 
-    onServerUpdate?: (homework: HomeworkDetail["userRelation"]) => any;
+    onServerUpdate?: (homeworkRelation: HomeworkDetail["userRelation"]) => any;
     dueDate?: Dayjs;
     completed?: boolean;
     ignore?: boolean;

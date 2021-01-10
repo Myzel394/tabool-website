@@ -1,10 +1,10 @@
 import {DailyData} from "types";
-import {createContext} from "react";
+import {createContext, Dispatch, SetStateAction} from "react";
 import {Dayjs} from "dayjs";
 
 export interface IStartPageContext {
     dailyData: DailyData;
-    setDailyData: (newData: DailyData) => void;
+    setDailyData: Dispatch<SetStateAction<DailyData>>;
 
     targetedDate: Dayjs;
     setTargetedDate: (newData: Dayjs) => void;

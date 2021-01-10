@@ -71,6 +71,8 @@ const StartPage = () => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore: DailyData checked with data guard.
                 dailyData,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 setDailyData,
                 maxFutureDays,
                 setMaxFutureDays,

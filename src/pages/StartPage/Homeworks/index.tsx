@@ -3,6 +3,7 @@ import {HomeworkDetail} from "types";
 import {Homework, HorizontalScroll} from "components";
 import {useElementSize} from "hooks";
 import tinycolor from "tinycolor2";
+import update from "immutability-helper";
 
 import StartPageContext from "../StartPageContext";
 
@@ -11,6 +12,7 @@ const Homeworks = () => {
         dailyData: {
             homeworks,
         },
+        setDailyData,
     } = useContext(StartPageContext);
 
     const $wrapper = useRef<any>();
@@ -34,6 +36,19 @@ const Homeworks = () => {
                         dueDate={homework.dueDate}
                         completed={homework.userRelation.completed}
                         ignore={homework.userRelation.ignore}
+                        onServerUpdate={newHomeworkRelation => setDailyData(prevState => {
+                            const index = prevState.homeworks.findIndex(element => element.id === homework.id);
+
+                            return update(prevState, {
+                                homeworks: {
+                                    [index]: {
+                                        userRelation: {
+                                            $set: newHomeworkRelation,
+                                        },
+                                    },
+                                },
+                            });
+                        })}
                     />
                 }
             </HorizontalScroll>
