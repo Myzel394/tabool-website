@@ -13,7 +13,6 @@ const Modifications = () => {
         },
     } = useContext(StartPageContext);
 
-
     return (
         <>
             {modifications.map(modification =>

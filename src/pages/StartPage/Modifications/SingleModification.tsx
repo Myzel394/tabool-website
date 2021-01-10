@@ -3,7 +3,7 @@ import {ModificationDetail} from "types";
 import {Box, Grid, Typography} from "@material-ui/core";
 import {ModificationType} from "api";
 import {useTranslation} from "react-i18next";
-import {MdArrowForward} from "react-icons/all";
+import {FaLongArrowAltRight} from "react-icons/all";
 
 import Avatar from "../Avatar";
 
@@ -41,9 +41,11 @@ const SingleModification = ({
                         {avatar}
                     </div>);
             case ModificationType.Replacement:
-                return (
-                    <Avatar subject={modification.newSubject ?? modification.lesson?.lessonData?.course?.subject} />
-                );
+                if (modification.newSubject) {
+                    return <Avatar subject={modification.newSubject} />;
+                }
+
+                return avatar;
             case ModificationType.SelfLearn:
                 return (
                     <div
@@ -66,12 +68,19 @@ const SingleModification = ({
             </Grid>
             <Grid item>
                 <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column">
-                    <Typography variant="body2" color="textSecondary">
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        style={{
+                            fontWeight: 900,
+                        }}
+                    >
                         {typeMap[modification.modificationType]}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                        <MdArrowForward size="1.5rem" />
+                        <FaLongArrowAltRight size="2rem" />
                     </Typography>
+
                 </Box>
             </Grid>
             <Grid item>
