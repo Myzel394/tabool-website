@@ -215,4 +215,14 @@ const DetailPage = <
     );
 };
 
+DetailPage.defaultProps = {
+    renderTopField(reorderElement) {
+        return (
+            <Grid item>
+                {reorderElement}
+            </Grid>
+        );
+    },
+};
+
 export default DetailPage;
