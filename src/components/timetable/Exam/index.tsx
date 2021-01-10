@@ -1,7 +1,7 @@
-import React, {memo} from "react";
+import React, {CSSProperties, memo, useMemo} from "react";
 import {CourseDetail, Room} from "types";
 import {Dayjs} from "dayjs";
-import {Box, Grid, Typography} from "@material-ui/core";
+import {Box, Grid, Typography, useTheme} from "@material-ui/core";
 import {HiClock} from "react-icons/all";
 import DayJSEl from "react-dayjs";
 
@@ -13,9 +13,10 @@ import {RoomIcon} from "../../icons";
 export interface IExam {
     course: CourseDetail;
     targetedDate: Dayjs;
-    information: string;
+    information: string | null;
 
     room?: Room;
+    style?: CSSProperties;
 }
 
 const Exam = ({
@@ -23,9 +24,17 @@ const Exam = ({
     information,
     room,
     targetedDate,
+    style,
 }: IExam) => {
+    const theme = useTheme();
+    const wrapperStyle = useMemo(() => ({
+        ...style,
+        borderRadius: theme.shape.borderRadius,
+    }), [theme.shape.borderRadius, style]);
+
     return (
         <ColoredBox
+            style={wrapperStyle}
             color={course.subject.userRelation.color}
         >
             <Box m={2}>

@@ -2,11 +2,12 @@ import React, {memo, useRef} from "react";
 import {HomeworkDetail} from "types";
 import {Homework, HorizontalScroll} from "components";
 import {useElementSize} from "hooks";
-import tinycolor from "tinycolor2";
 import update from "immutability-helper";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Box} from "@material-ui/core";
+
+import createShadow from "../createShadow";
 
 export interface IHomeworks {
     homeworks: HomeworkDetail[];
@@ -41,7 +42,7 @@ const Homeworks = ({
                     <Homework
                         style={{
                             width: width || "100%",
-                            boxShadow: `0 0.2em 1em 0.4em ${tinycolor(homework.lesson.lessonData.course.subject.userRelation.color).setAlpha(0.3)}`,
+                            boxShadow: createShadow(homework.lesson.lessonData.course.subject.userRelation.color),
                         }}
                         subject={homework.lesson.lessonData.course.subject}
                         information={homework.information}

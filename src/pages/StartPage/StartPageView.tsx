@@ -15,6 +15,7 @@ import Homeworks from "./Homeworks";
 import VideoConferences from "./VideoConferences";
 import Form from "./Form";
 import Modifications from "./Modifications";
+import Exams from "./Exams";
 
 
 export interface IStartPageView {
@@ -48,6 +49,7 @@ const StartPageView = ({
         lessons,
         latestDateAvailable,
         earliestDateAvailable,
+        exams,
     } = dailyData;
 
     return (
@@ -100,6 +102,11 @@ const StartPageView = ({
                 <Box mb={6} mx={2}>
                     <Content title={t("Video-Konferenzen")}>
                         <VideoConferences lessons={videoConferenceLessons} />
+                    </Content>
+                </Box>
+                <Box mb={6} mx={2}>
+                    <Content title={t("Arbeiten")}>
+                        <Exams exams={exams} />
                     </Content>
                 </Box>
                 <Box mx={2}>
