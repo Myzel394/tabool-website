@@ -1,4 +1,4 @@
-import React, {memo, useContext, useRef} from "react";
+import React, {memo, useRef} from "react";
 import {HomeworkDetail} from "types";
 import {Homework, HorizontalScroll} from "components";
 import {useElementSize} from "hooks";
@@ -8,16 +8,16 @@ import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Box} from "@material-ui/core";
 
-import StartPageContext from "../StartPageContext";
+export interface IHomeworks {
+    homeworks: HomeworkDetail[];
+    onChange: (newHomeworks: HomeworkDetail[]) => any;
+}
 
-const Homeworks = () => {
+const Homeworks = ({
+    homeworks,
+    onChange,
+}: IHomeworks) => {
     const {t} = useTranslation();
-    const {
-        dailyData: {
-            homeworks,
-        },
-        setDailyData,
-    } = useContext(StartPageContext);
 
     const $wrapper = useRef<any>();
     const [wrapperWidth = 0] = useElementSize($wrapper);
@@ -50,19 +50,18 @@ const Homeworks = () => {
                         dueDate={homework.dueDate}
                         completed={homework.userRelation.completed}
                         ignore={homework.userRelation.ignore}
-                        onServerUpdate={newHomeworkRelation => setDailyData(prevState => {
-                            const index = prevState.homeworks.findIndex(element => element.id === homework.id);
-
-                            return update(prevState, {
-                                homeworks: {
-                                    [index]: {
-                                        userRelation: {
-                                            $set: newHomeworkRelation,
-                                        },
+                        onServerUpdate={newHomeworkRelation => {
+                            const index = homeworks.findIndex(element => element.id === homework.id);
+                            const newHomeworks = update(homeworks, {
+                                [index]: {
+                                    userRelation: {
+                                        $set: newHomeworkRelation,
                                     },
                                 },
                             });
-                        })}
+
+                            onChange(newHomeworks);
+                        }}
                     />
                 }
             </HorizontalScroll>

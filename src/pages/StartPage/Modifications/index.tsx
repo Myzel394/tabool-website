@@ -1,20 +1,19 @@
-import React, {memo, useContext} from "react";
+import React, {memo} from "react";
 import {Box, Typography} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
-
-import StartPageContext from "../StartPageContext";
+import {ModificationDetail} from "types";
 
 import SingleModification from "./SingleModification";
 
+export interface IModifications {
+    modifications: ModificationDetail[];
+}
 
-const Modifications = () => {
+const Modifications = ({
+    modifications,
+}: IModifications) => {
     const {t} = useTranslation();
-    const {
-        dailyData: {
-            modifications,
-        },
-    } = useContext(StartPageContext);
 
     if (!modifications.length) {
         return (

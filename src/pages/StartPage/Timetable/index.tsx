@@ -1,21 +1,21 @@
-import React, {useContext} from "react";
+import React, {memo} from "react";
 import {Fade} from "react-reveal";
 import {Grid, useTheme} from "@material-ui/core";
-
-import StartPageContext from "../StartPageContext";
+import {LessonDetail} from "types";
 
 import SingleLesson from "./SingleLesson";
+
+export interface ITimetable {
+    lessons: LessonDetail[];
+}
 
 const fullWith = {
     width: "100%",
 };
 
-const Timetable = () => {
-    const {
-        dailyData: {
-            lessons,
-        },
-    } = useContext(StartPageContext);
+const Timetable = ({
+    lessons,
+}: ITimetable) => {
     const theme = useTheme();
 
     return (
@@ -30,4 +30,4 @@ const Timetable = () => {
     );
 };
 
-export default Timetable;
+export default memo(Timetable);

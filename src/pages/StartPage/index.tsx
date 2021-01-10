@@ -7,7 +7,6 @@ import {ErrorContext} from "contexts";
 import dayjs, {Dayjs} from "dayjs";
 import {DailyData} from "types";
 
-import StartPageContext from "./StartPageContext";
 import StartPageView from "./StartPageView";
 import SkeletonView from "./SkeletonView";
 
@@ -66,23 +65,17 @@ const StartPage = () => {
     }
 
     return (
-        <StartPageContext.Provider
-            value={{
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore: DailyData checked with data guard.
-                dailyData,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                setDailyData,
-                maxFutureDays,
-                setMaxFutureDays,
-                setTargetedDate,
-                targetedDate,
-                isLoading: isFetching,
-            }}
-        >
-            <StartPageView />
-        </StartPageContext.Provider>
+        <StartPageView
+            /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+            // @ts-ignore: Data guard (l. 59) ensures dailyData is set
+            dailyData={dailyData}
+            maxFutureDays={maxFutureDays}
+            targetedDate={targetedDate}
+            isLoading={isFetching}
+            onDailyDataChange={setDailyData}
+            onMaxFutureDaysChange={setMaxFutureDays}
+            onTargetedDateChange={setTargetedDate}
+        />
     );
 };
 

@@ -1,4 +1,4 @@
-import React, {memo, useContext} from "react";
+import React from "react";
 import {Box, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Select, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {DatePicker} from "@material-ui/pickers";
@@ -7,28 +7,43 @@ import {useColors, useInheritedState} from "hooks";
 import {FaCalendarDay} from "react-icons/all";
 import {LoadingOverlay} from "components";
 
-import StartPageContext from "./StartPageContext";
+export interface IForm {
+    onChange: (data: {
+        targetedDate: Dayjs;
+        maxFutureDays: number;
+    }) => any;
+    maxFutureDays: number;
+    targetedDate: Dayjs;
+    isLoading: boolean;
+    earliestDateAvailable: Dayjs;
+    latestDateAvailable: Dayjs;
+}
 
 
-const Form = () => {
+const Form = ({
+    isLoading,
+    maxFutureDays,
+    onChange,
+    targetedDate,
+    earliestDateAvailable,
+    latestDateAvailable,
+}: IForm) => {
     const {
         inputIconColor,
     } = useColors();
     const {t} = useTranslation();
-    const {
-        targetedDate,
-        setTargetedDate,
-        maxFutureDays,
-        setMaxFutureDays,
-        isLoading,
-        dailyData,
-    } = useContext(StartPageContext);
 
     const [formTargetedDate, setFormTargetedDate] = useInheritedState<Dayjs>(targetedDate);
     const [formMaxFutureDays, setFormMaxFutureDays] = useInheritedState<number>(maxFutureDays);
 
     const dayLabel = t("Tage");
-    const {earliestDateAvailable, latestDateAvailable} = dailyData;
+
+    const updateParentForm = () => {
+        onChange({
+            targetedDate,
+            maxFutureDays,
+        });
+    };
 
     return (
         <>
@@ -53,7 +68,7 @@ const Form = () => {
                                 minDate={earliestDateAvailable}
                                 maxDate={latestDateAvailable}
                                 onChange={date => date && setFormTargetedDate(date)}
-                                onBlur={() => setTargetedDate(formTargetedDate)}
+                                onBlur={updateParentForm}
                             />
                         </Grid>
                         <Grid item md={6} xs={12}>
@@ -70,7 +85,7 @@ const Form = () => {
                                         const value = event.target.value as number;
                                         setFormMaxFutureDays(value);
                                     }}
-                                    onBlur={() => setMaxFutureDays(formMaxFutureDays)}
+                                    onBlur={updateParentForm}
                                 >
                                     <MenuItem value={5}>
                                         {t("5 Tage")}
@@ -97,4 +112,4 @@ const Form = () => {
     );
 };
 
-export default memo(Form);
+export default Form;

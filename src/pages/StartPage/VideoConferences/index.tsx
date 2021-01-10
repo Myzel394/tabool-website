@@ -1,4 +1,4 @@
-import React, {memo, useContext} from "react";
+import React, {memo} from "react";
 import {LessonDetail} from "types";
 import dayjs from "dayjs";
 import FlipMove from "react-flip-move";
@@ -7,8 +7,6 @@ import {useTheme} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 
-import StartPageContext from "../StartPageContext";
-
 import ConferenceList from "./ConferenceList";
 import Connector from "./Connector";
 
@@ -16,13 +14,14 @@ interface LessonsPerDate {
     [key: string]: LessonDetail[];
 }
 
-const VideoConferences = () => {
+export interface IVideoConferences {
+    lessons: LessonDetail[];
+}
+
+const VideoConferences = ({
+    lessons,
+}: IVideoConferences) => {
     const {t} = useTranslation();
-    const {
-        dailyData: {
-            videoConferenceLessons: lessons,
-        },
-    } = useContext(StartPageContext);
     const theme = useTheme();
 
     const lessonsPerDay: LessonsPerDate = lessons.reduce<LessonsPerDate>((obj, lesson) => {
