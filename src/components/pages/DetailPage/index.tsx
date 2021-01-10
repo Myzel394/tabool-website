@@ -62,6 +62,7 @@ export interface IDetailPage<
 
     validationSchema?: IForm<AvailableKeys, FormikForm>["validationSchema"];
     onSubmit?: IForm<AvailableKeys, FormikForm>["onSubmit"];
+    onDelete?: () => Promise<any>;
 }
 
 const STORAGE_METHOD = localStorage;
@@ -95,6 +96,7 @@ const DetailPage = <
         subTitle,
         onSubmit,
         validationSchema,
+        onDelete,
     }: IDetailPage<AvailableKeys, FormikForm, QueryType, RelationKeys>) => {
     const {t} = useTranslation();
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
@@ -150,6 +152,7 @@ const DetailPage = <
                             onSubmit={onSubmit}
                             onOrderingChange={setOrdering}
                             onElevatedKeyChange={setElevatedKey}
+                            onDelete={onDelete}
                         />
                     </Grid>
                     {relationButtons &&
@@ -210,16 +213,6 @@ const DetailPage = <
             </Container>
         </PullToRefresh>
     );
-};
-
-DetailPage.defaultProps = {
-    renderTopField(reorderElement) {
-        return (
-            <Grid item>
-                {reorderElement}
-            </Grid>
-        );
-    },
 };
 
 export default DetailPage;

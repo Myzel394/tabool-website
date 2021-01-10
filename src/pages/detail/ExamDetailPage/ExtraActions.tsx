@@ -1,15 +1,15 @@
 import React, {memo, useState} from "react";
 import {Button, LinearProgress, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {MdDeleteForever, MdMoreVert} from "react-icons/all";
-import {useTranslation} from "react-i18next";
 import {BottomSheetAction} from "components";
 import {ICON_SIZE} from "components/BottomSheetAction";
-import {useDeleteHomeworkAPI} from "hooks/apis";
+import {useTranslation} from "react-i18next";
+import {useDeleteExamAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
-import {useSnackbar} from "hooks";
-import {useHistory} from "react-router-dom";
 import {PredefinedMessageType} from "hooks/useSnackbar";
+import {useHistory} from "react-router-dom";
+import {useSnackbar} from "hooks";
 
 
 export interface IExtraActions {
@@ -21,7 +21,7 @@ const ExtraActions = ({
     id,
 }: IExtraActions) => {
     const {t} = useTranslation();
-    const deleteHomework = useDeleteHomeworkAPI();
+    const deleteExam = useDeleteExamAPI();
     const {addError} = useSnackbar();
     const history = useHistory();
 
@@ -31,7 +31,7 @@ const ExtraActions = ({
         mutate,
         isLoading,
     } = useMutation<void, AxiosError, any>(
-        () => deleteHomework(id),
+        () => deleteExam(id),
         {
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
             onSuccess: () => history.goBack(),

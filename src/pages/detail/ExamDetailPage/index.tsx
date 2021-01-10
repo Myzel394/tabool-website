@@ -16,7 +16,9 @@ import {TextField} from "formik-material-ui";
 import {buildPath, replaceDatetime} from "utils";
 import * as yup from "yup";
 import {DatePicker} from "formik-material-ui-pickers";
-import {InputAdornment} from "@material-ui/core";
+import {Grid, InputAdornment} from "@material-ui/core";
+
+import ExtraActions from "./ExtraActions";
 
 type ExamKeys = "course" | "place" | "information" | "targetedDate";
 
@@ -163,6 +165,16 @@ const ExamDetailPage = ({match: {params: {id}}}) => {
                     },
                 },
             }}
+            renderTopField={reorderElement => (
+                <>
+                    <Grid item>
+                        {reorderElement}
+                    </Grid>
+                    <Grid item>
+                        <ExtraActions id={id} />
+                    </Grid>
+                </>
+            )}
             title={t("{{subject}}-Arbeit", {
                 subject: exam.course.subject.name,
             })}
