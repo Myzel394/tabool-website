@@ -40,8 +40,8 @@ const Form = ({
 
     const updateParentForm = () => {
         onChange({
-            targetedDate,
-            maxFutureDays,
+            targetedDate: formTargetedDate,
+            maxFutureDays: formMaxFutureDays,
         });
     };
 
