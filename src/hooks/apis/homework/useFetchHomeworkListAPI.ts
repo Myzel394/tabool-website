@@ -50,7 +50,7 @@ const useFetchHomeworkListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(parseHomeworkApprox);
+        await Promise.allSettled(data.results.map(parseHomeworkApprox));
 
         return data;
     }, [instance]);

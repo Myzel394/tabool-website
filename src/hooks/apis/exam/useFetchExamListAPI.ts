@@ -47,7 +47,7 @@ const useFetchExamListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(parseExamApprox);
+        await Promise.allSettled(data.results.map(parseExamApprox));
 
         return data;
     }, [instance]);

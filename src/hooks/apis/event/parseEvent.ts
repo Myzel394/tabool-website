@@ -2,7 +2,7 @@ import {convertToDate} from "api";
 import {isAllDay} from "utils";
 import {EventDetail} from "types";
 
-const parseEvent = (event: EventDetail): void => {
+const parseEvent = async (event: EventDetail): Promise<void> => {
     convertToDate(event, [
         "startDatetime",
         "endDatetime",

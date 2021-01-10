@@ -1,7 +1,7 @@
 import {HomeworkApprox} from "types";
 import {convertToDate} from "api";
 
-const parseHomeworkApprox = (homework: HomeworkApprox): void => {
+const parseHomeworkApprox = async (homework: HomeworkApprox): Promise<void> => {
     convertToDate(homework, ["dueDate", "createdAt"]);
 };
 

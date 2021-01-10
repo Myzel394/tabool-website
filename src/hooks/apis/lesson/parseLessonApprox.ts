@@ -1,7 +1,7 @@
 import {convertToDate} from "api";
 import {LessonApprox} from "types";
 
-const parseLessonApprox = (lesson: LessonApprox) => {
+const parseLessonApprox = async (lesson: LessonApprox): Promise<void> => {
     convertToDate(lesson, ["lessonData.date"]);
 };
 

@@ -11,7 +11,7 @@ const useFetchEventDetailAPI = () => {
 
     return useCallback(async (id: string): Promise<EventDetail> => {
         const {data} = await instance.get(`/api/data/event/${id}/`, await getLoginConfig());
-        parseEvent(data);
+        await parseEvent(data);
 
         return data;
     }, [instance]);

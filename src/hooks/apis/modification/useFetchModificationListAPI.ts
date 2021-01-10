@@ -42,7 +42,7 @@ const useFetchModificationListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(parseModificationApprox);
+        await Promise.allSettled(data.results.map(parseModificationApprox));
 
         return data;
     }, [instance]);

@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, {CSSProperties, useMemo} from "react";
 import {Dayjs} from "dayjs";
 import {HomeworkDetail, Subject} from "types";
 import {Box, CircularProgress, Grid, Link, Typography, useTheme} from "@material-ui/core";
@@ -10,12 +10,11 @@ import {useMutation} from "react-query";
 import {generatePath} from "react-router";
 import {ColoredBox, Information} from "components";
 import {AxiosError} from "axios";
-
 import {
     IUpdateHomeworkUserRelationData,
     IUpdateHomeworkUserRelationResponse,
     useUpdateHomeworkUserRelationAPI,
-} from "../../../hooks/apis";
+} from "hooks/apis";
 
 import styles from "./Homework.module.scss";
 import Action from "./Action";
@@ -32,10 +31,11 @@ export interface IHomework {
     onCompletedChange: () => boolean;
     onIgnoreChange: () => boolean;
 
-    onServerUpdate?: (homework: HomeworkDetail["userRelation"]) => any;
+    onServerUpdate?: (homeworkRelation: HomeworkDetail["userRelation"]) => any;
     dueDate?: Dayjs;
     completed?: boolean;
     ignore?: boolean;
+    style?: CSSProperties;
 }
 
 const TIME_FORMAT = "ll";
@@ -51,6 +51,7 @@ const Homework = ({
     onCompletedChange,
     onIgnoreChange,
     onServerUpdate,
+    style: givenStyle,
 }: IHomework) => {
     const theme = useTheme();
     const updateHomeworkRelation = useUpdateHomeworkUserRelationAPI();
@@ -65,15 +66,18 @@ const Homework = ({
         },
     );
     const style = useMemo(() => ({
+        ...givenStyle,
         borderRadius: theme.shape.borderRadius,
         filter: ignore ? "grayscale(.5)" : "",
         opacity: ignore ? 0.8 : 1,
-    }), [ignore, theme.shape.borderRadius]);
+    }), [ignore, theme.shape.borderRadius, givenStyle]);
     const isCompleted = !ignore && completed;
 
     return (
         <ColoredBox
-            style={style} className={styles.wrapper} color={subject.userRelation.color}
+            style={style}
+            className={styles.wrapper}
+            color={subject.userRelation.color}
         >
             <Link
                 href={generatePath("/agenda/homework/detail/:id/", {

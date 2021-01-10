@@ -10,7 +10,7 @@ const useFetchExamDetailAPI = () => {
 
     return useCallback(async (id: string): Promise<ExamDetail> => {
         const {data} = await instance.get(`/api/data/exam/${id}/`, await getLoginConfig());
-        parseExam(data);
+        await parseExam(data);
 
         return data;
     }, [instance]);

@@ -6,12 +6,12 @@ import {parseEvent} from "../event";
 import {parseExam} from "../exam";
 
 const parseTimetable = async (timetable: Timetable): Promise<void> => {
-    await Promise.allSettled(timetable.lessons.map(parseLesson));
-
-    timetable.events.forEach(parseEvent);
-    timetable.exams.forEach(parseExam);
-
     convertToDate(timetable, ["earliestDateAvailable", "latestDateAvailable"]);
+    await Promise.allSettled([
+        ...timetable.lessons.map(parseLesson),
+        ...timetable.events.map(parseEvent),
+        ...timetable.exams.map(parseExam),
+    ]);
 };
 
 export default parseTimetable;

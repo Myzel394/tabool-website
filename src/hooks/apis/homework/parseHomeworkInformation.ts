@@ -1,7 +1,7 @@
 import {convertToDate} from "api";
 import {HomeworkInformation} from "types";
 
-const parseHomeworkInformation = (homework: HomeworkInformation): void => {
+const parseHomeworkInformation = async (homework: HomeworkInformation): Promise<void> => {
     convertToDate(homework, [
         "dueDateMin",
         "dueDateMax",

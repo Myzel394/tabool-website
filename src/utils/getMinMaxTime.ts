@@ -14,7 +14,7 @@ export const DEFAULT_MAX_TIME = dayjs()
     .set("minute", 0)
     .set("second", 0);
 
-const getMinMaxTime = (events: CalendarEvent[]): [Date, Date] => {
+const getMinMaxTime = (events: CalendarEvent[], timePadding: number = TIME_PADDING): [Date, Date] => {
     const notAllDayEvents = events.filter(element => !element.allDay);
 
     const startTimes = notAllDayEvents.map(element =>
@@ -27,8 +27,8 @@ const getMinMaxTime = (events: CalendarEvent[]): [Date, Date] => {
     const minTime = dayjs.unix(minUnix);
     const maxTime = dayjs.unix(maxUnix);
 
-    const minDatetime = combineDatetime(dayjs(), minTime).subtract(TIME_PADDING, "minute");
-    const maxDatetime = combineDatetime(dayjs(), maxTime).add(TIME_PADDING, "minute");
+    const minDatetime = combineDatetime(dayjs(), minTime).subtract(timePadding, "minute");
+    const maxDatetime = combineDatetime(dayjs(), maxTime).add(timePadding, "minute");
 
     return [
         (minDatetime.isValid() ? minDatetime : DEFAULT_MIN_TIME).toDate(),

@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from "react";
+import React, {CSSProperties, useContext, useMemo} from "react";
 import clsx from "clsx";
 import {Box, Typography, useTheme} from "@material-ui/core";
 import {useDeviceWidth} from "hooks";
@@ -17,6 +17,7 @@ export interface ILessonContent {
 
     className?: any;
     showDetails?: boolean;
+    style?: CSSProperties;
 }
 
 const TIME_FORMAT = "LT";
@@ -27,16 +28,18 @@ const LessonContent = ({
     roomName,
     className,
     showDetails,
+    style,
 }: ILessonContent) => {
     const theme = useTheme();
     const {isDisabled, startTime, endTime} = useContext(LessonContext);
     const {isMD} = useDeviceWidth();
 
     const wrapperStyle = useMemo(() => ({
+        ...style,
         backgroundColor: theme.palette.primary.main,
         padding: isMD ? ".4em" : ".1em",
         borderRadius: theme.shape.borderRadius,
-    }), [isMD, theme.palette.primary.main, theme.shape.borderRadius]);
+    }), [isMD, theme.palette.primary.main, theme.shape.borderRadius, style]);
 
     return (
         <Box
@@ -57,7 +60,7 @@ const LessonContent = ({
             py={Number(!isMD)}
         >
             {showDetails ? (
-                <>
+                <Box p={1} display="flex" flexDirection="column" justifyContent="space-between" height="100%">
                     <section>
                         <div className={styles.secondary}>
                             {/* <Time> */}
@@ -98,7 +101,7 @@ const LessonContent = ({
                             text={roomName}
                         />
                     </Box>
-                </>
+                </Box>
             ) : (
                 <Typography
                     variant="h5"

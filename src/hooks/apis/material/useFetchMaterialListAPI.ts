@@ -53,7 +53,7 @@ const useFetchMaterialListAPI = () => {
             },
             ...await getLoginConfig(),
         });
-        data.results.forEach(parseMaterialApprox);
+        await Promise.allSettled(data.results.map(parseMaterialApprox));
 
         return data;
     }, [instance]);

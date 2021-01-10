@@ -1,0 +1,11 @@
+.wrapper {
+  width: 100% !important;
+  margin: 0 !important;
+  overflow-y: scroll !important;
+  scroll-snap-type: x mandatory;
+
+  > * {
+    scroll-snap-align: center;
+    scroll-snap-stop: normal;
+  }
+}
