@@ -4,6 +4,8 @@ import {getLoginConfig} from "api";
 import {Dayjs} from "dayjs";
 import {DailyData} from "types";
 
+import {lazyDatetime} from "../../../utils";
+
 import parseFetchDailyData from "./parseFetchDailyData";
 
 export interface IFetchDailyDataData {
@@ -22,7 +24,7 @@ const useFetchDailyDataAPI = () => {
     }: IFetchDailyDataData = {}): Promise<IFetchDailyDataResponse> => {
         const {data} = await instance.get("/api/data/daily-data/", {
             params: {
-                date,
+                date: lazyDatetime(date, "date"),
                 maxFutureDays,
             },
             ...await getLoginConfig(),
