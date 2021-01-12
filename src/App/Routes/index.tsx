@@ -1,32 +1,21 @@
-import React, {useContext} from "react";
+import React from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
-import {UserContext} from "contexts";
 import Calendar from "pages/calendar/index";
-import {
-    AddPage,
-    ConfirmEmail,
-    ExamAddPage,
-    ExamDetailPage,
-    FillOutData,
-    HomeworkAddPage,
-    HomeworkDetailPage,
-    HomeworkListPage,
-    LessonDetailPage,
-    Login,
-    Register,
-    RoomAddPage,
-    StartPage,
-    TeacherDetailPage,
-} from "pages";
+import {ConfirmEmail, FillOutData, Login, Register, StartPage} from "pages";
+import {generatePath} from "react-router";
+import {useUser} from "hooks";
+
+import agendaRoutes from "./agendaRoutes";
+import addRoutes from "./addRoutes";
 
 
 // TODO: Add formik search page!
-// TODO: Refactor routes!
 export default function Routes() {
-    const {state: user} = useContext(UserContext);
+    const user = useUser();
 
     return (
         <Switch>
+            {/* Authentication routes */}
             <Route
                 exact
                 path="/auth/registration"
@@ -39,7 +28,8 @@ export default function Routes() {
                 component={Login}
                 redirectUrl="/"
             />
-            {!user.isAuthenticated && <Redirect to="/auth/login/" />}
+            {!user.isAuthenticated && <Redirect to={generatePath("/auth/login/")} />}
+            {/* Registration routes */}
             <Route
                 exact
                 path="/auth/registration/email/:code?"
@@ -52,8 +42,11 @@ export default function Routes() {
                 component={FillOutData}
                 redirectUrl="/auth/login/"
             />
-            {!user.isEmailVerified && <Redirect to="/auth/registration/email/" />}
-            {!user.isFullyRegistered && <Redirect to="/auth/registration/fill/" />}
+            {!user.isEmailVerified && <Redirect to={generatePath("/auth/registration/email/")} />}
+            {!user.isFullyRegistered && <Redirect to={generatePath("/auth/registration/fill/")} />}
+            {/* App routes */}
+            {agendaRoutes}
+            {addRoutes}
             <Route
                 exact
                 path="/"
@@ -63,51 +56,6 @@ export default function Routes() {
                 exact
                 path="/timetable/"
                 component={Calendar}
-            />
-            <Route
-                exact
-                path="/agenda/homework/detail/:id/"
-                component={HomeworkDetailPage}
-            />
-            <Route
-                exact
-                path="/agenda/lesson/detail/:id/"
-                component={LessonDetailPage}
-            />
-            <Route
-                exact
-                path="/agenda/teacher/detail/:id/"
-                component={TeacherDetailPage}
-            />
-            <Route
-                exact
-                path="/agenda/exam/detail/:id/"
-                component={ExamDetailPage}
-            />
-            <Route
-                exact
-                path="/add/homework/"
-                component={HomeworkAddPage}
-            />
-            <Route
-                exact
-                path="/add/"
-                component={AddPage}
-            />
-            <Route
-                exact
-                path="/add/exam/"
-                component={ExamAddPage}
-            />
-            <Route
-                exact
-                path="/add/room/"
-                component={RoomAddPage}
-            />
-            <Route
-                exact
-                path="/agenda/homework/"
-                component={HomeworkListPage}
             />
         </Switch>
     );
