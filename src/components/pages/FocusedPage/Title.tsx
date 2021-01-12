@@ -5,10 +5,15 @@ export interface ITitle {
     title: string;
 }
 
+const style = {
+    wordBreak: "break-all" as "break-all",
+};
+
 const Title = ({title}: ITitle) => {
     const theme = useTheme();
 
     const headerColor = {
+        ...style,
         color: theme.palette.primary.main,
         fontWeight: 900,
     };

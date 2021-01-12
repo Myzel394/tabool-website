@@ -32,7 +32,8 @@
         "@typescript-eslint/array-type": ["error", {
             "default": "array"
         }],
-        "jsx-a11y/no-autofocus": "off"
+        "jsx-a11y/no-autofocus": "off",
+        "promise/catch-or-return": 1
     },
     "env": {
         "browser": true,
