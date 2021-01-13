@@ -15,10 +15,18 @@ export interface IFocusedPage {
     important?: boolean;
     disableBackButton?: boolean;
     showLogo?: boolean;
+    onBackButtonClick?: () => any;
 }
 
 
-export default function FocusedPage({children, title, important, disableBackButton, showLogo}: IFocusedPage) {
+export default function FocusedPage({
+    children,
+    title,
+    important,
+    disableBackButton,
+    showLogo,
+    onBackButtonClick,
+}: IFocusedPage) {
     const {t} = useTranslation();
 
     return (
@@ -31,7 +39,7 @@ export default function FocusedPage({children, title, important, disableBackButt
                                 <>
                                     {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
                                     <span>
-                                        <BackButton confirm={important} />
+                                        <BackButton confirm={important} onBack={onBackButtonClick} />
                                     </span>
                                 </>
                             </Tooltip>

@@ -7,15 +7,26 @@ import ConfirmationDialog from "./ConfirmationDialog";
 
 export interface IBackButton {
     confirm: boolean;
+
+    onBack?: () => any;
 }
 
 
-const BackButton = ({confirm}: IBackButton) => {
+const BackButton = ({
+    confirm,
+    onBack,
+}: IBackButton) => {
     const history = useHistory();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const goBack = () => history.goBack();
+    const goBack = () => {
+        if (onBack) {
+            onBack();
+        } else {
+            history.goBack();
+        }
+    };
     const handleButtonClick = () => {
         return confirm ? setIsOpen(true) : goBack();
     };
