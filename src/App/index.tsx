@@ -18,6 +18,7 @@ import Contexts from "./Contexts";
 import BottomNavigation from "./BottomNavigation";
 import ErrorContextHandler from "./ErrorContextHandler";
 import RequiredPermissions from "./RequiredPermissions";
+import OhNoChecks from "./OhNoChecks";
 
 
 const App = () => {
@@ -34,33 +35,35 @@ const App = () => {
         <Router>
             <ThemeProvider theme={theme}>
                 <Contexts bottomSheetHeight={bottomHeight}>
-                    <RequiredPermissions>
-                        <ErrorContextHandler>
-                            <MuiPickersUtilsProvider utils={DayjsUtils}>
-                                <SnackbarProvider
-                                    ref={$snackbar}
-                                    maxSnack={isMobile ? 2 : 5}
-                                    dense={isMobile}
-                                    style={snackbarStyles}
-                                    action={(key) =>
-                                        <IconButton onClick={() => closeSnackbar(key)}>
-                                            <MdClose />
-                                        </IconButton>
-                                    }
-                                >
-                                    <CssBaseline />
-                                    <Routes />
-                                </SnackbarProvider>
-                            </MuiPickersUtilsProvider>
-                        </ErrorContextHandler>
-                        {/* Bottom padding */}
-                        <div
-                            style={{
-                                height: bottomHeight,
-                            }}
-                        />
-                        <BottomNavigation innerRef={$bottom} />
-                    </RequiredPermissions>
+                    <OhNoChecks>
+                        <RequiredPermissions>
+                            <ErrorContextHandler>
+                                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                                    <SnackbarProvider
+                                        ref={$snackbar}
+                                        maxSnack={isMobile ? 2 : 5}
+                                        dense={isMobile}
+                                        style={snackbarStyles}
+                                        action={(key) =>
+                                            <IconButton onClick={() => closeSnackbar(key)}>
+                                                <MdClose />
+                                            </IconButton>
+                                        }
+                                    >
+                                        <CssBaseline />
+                                        <Routes />
+                                    </SnackbarProvider>
+                                </MuiPickersUtilsProvider>
+                            </ErrorContextHandler>
+                            {/* Bottom padding */}
+                            <div
+                                style={{
+                                    height: bottomHeight,
+                                }}
+                            />
+                            <BottomNavigation innerRef={$bottom} />
+                        </RequiredPermissions>
+                    </OhNoChecks>
                 </Contexts>
             </ThemeProvider>
         </Router>
