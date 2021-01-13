@@ -189,7 +189,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                         {reorderElement}
                     </Grid>
                     <Grid item>
-                        <ExtraActions id={id} />
+                        <ExtraActions id={id} allow={Boolean(canEditHomework)} />
                     </Grid>
                 </>
             )}

@@ -14,11 +14,13 @@ import {PredefinedMessageType} from "hooks/useSnackbar";
 
 export interface IExtraActions {
     id: string;
+    allow: boolean;
 }
 
 
 const ExtraActions = ({
     id,
+    allow,
 }: IExtraActions) => {
     const {t} = useTranslation();
     const deleteHomework = useDeleteHomeworkAPI();
@@ -47,7 +49,7 @@ const ExtraActions = ({
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
             >
-                <ListItem button disabled={isLoading} onClick={mutate}>
+                <ListItem button disabled={isLoading || !allow} onClick={mutate}>
                     <ListItemIcon>
                         <MdDeleteForever size={ICON_SIZE} />
                     </ListItemIcon>
