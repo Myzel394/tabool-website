@@ -1,14 +1,14 @@
 import React, {ReactNode} from "react";
-import {Box} from "@material-ui/core";
+import {Box, BoxProps} from "@material-ui/core";
 import {Container} from "components/containers";
 
 import BasePage from "../BasePage";
 
-export interface IDefaultPage {
+export interface IDefaultPage extends BoxProps {
     children: ReactNode;
 }
 
-const DefaultPage = ({children}: IDefaultPage) => {
+const DefaultPage = ({children, ...other}: IDefaultPage) => {
     return (
         <BasePage>
             <Container>
@@ -18,6 +18,7 @@ const DefaultPage = ({children}: IDefaultPage) => {
                     marginX={1}
                     marginY={2}
                     alignItems="center"
+                    {...other}
                 >
                     {children}
                 </Box>

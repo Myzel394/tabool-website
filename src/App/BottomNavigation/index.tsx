@@ -2,7 +2,7 @@ import React, {memo, useContext, useEffect, useState} from "react";
 import {UserContext} from "contexts";
 import {BottomNavigation as MuiBottomNavigation, BottomNavigationAction} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {FaTable, MdAdd, MdEventNote, MdHome} from "react-icons/all";
+import {FaTable, MdEventNote, MdHome, MdSettings} from "react-icons/all";
 import {useLocation} from "react-router";
 import {useHistory} from "react-router-dom";
 
@@ -46,10 +46,10 @@ const BottomNavigation = ({innerRef}) => {
                     onClick={() => setSelectedValue("/agenda")}
                 />
                 <BottomNavigationAction
-                    label={t("Hinzufügen").toString()}
-                    icon={<MdAdd />}
-                    value="/add"
-                    onClick={() => setSelectedValue("/add")}
+                    label={t("Einstellungen").toString()}
+                    icon={<MdSettings />}
+                    value="/settings"
+                    onClick={() => setSelectedValue("/settings")}
                 />
             </MuiBottomNavigation>
         );

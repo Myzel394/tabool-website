@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
+import {PermissionType} from "hooks/usePermissions";
 
 import PressOnAllow from "../PressOnAllow";
 import RequestPermission from "../RequestPermission";
-import PermissionType from "../permissionType";
 
 import {location} from "./svg";
 

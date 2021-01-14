@@ -1,7 +1,7 @@
 import React from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 import Calendar from "pages/calendar/index";
-import {ConfirmEmail, FillOutData, Login, Register, StartPage} from "pages";
+import {ConfirmEmail, FillOutData, Login, Register, SettingsPage, StartPage} from "pages";
 import {generatePath} from "react-router";
 import {useUser} from "hooks";
 
@@ -56,6 +56,11 @@ export default function Routes() {
                 exact
                 path="/timetable/"
                 component={Calendar}
+            />
+            <Route
+                exact
+                path="/settings/"
+                component={SettingsPage}
             />
         </Switch>
     );
