@@ -11,8 +11,8 @@ const useFetchSessionsAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async (): Promise<IFetchSessionsResponse> => {
-        const {data} = await instance.get("/api/data/sessions/", await getLoginConfig());
-        await parseSession(data);
+        const {data} = await instance.get("/api/data/session/", await getLoginConfig());
+        await Promise.allSettled(data.results.map(parseSession));
 
         return data;
     }, [instance]);
