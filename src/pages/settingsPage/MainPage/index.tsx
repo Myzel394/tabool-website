@@ -3,12 +3,13 @@ import {useTranslation} from "react-i18next";
 import {DefaultPage} from "components";
 import {Grid} from "@material-ui/core";
 
+import Area from "../Area";
+
 import Permissions from "./Permissions";
-import Area from "./Area";
 import Account from "./Account";
 
 
-const SettingsPage = () => {
+const MainPage = () => {
     const {t} = useTranslation();
 
     return (
@@ -29,4 +30,4 @@ const SettingsPage = () => {
     );
 };
 
-export default SettingsPage;
+export default MainPage;
