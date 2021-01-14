@@ -10,8 +10,7 @@ import {HiddenTextField, LoadingOverlay, PrimaryButton, SecondaryButton} from "c
 import {Alert} from "@material-ui/lab";
 import {ErrorFieldsInjection} from "types";
 import {generatePath} from "react-router-dom";
-
-import {useColors} from "../../../hooks";
+import {useColors} from "hooks";
 
 import RequestTokenDialog from "./RequestTokenDialog";
 
@@ -47,7 +46,7 @@ const Form = ({onSubmit}: IForm) => {
             .required("Das Passwort wird benötigt."),
         passwordConfirmation: yup
             .string()
-            .oneOf([yup.ref("password"), null], t("DIe Passwörter stimmen nicht überein.")),
+            .oneOf([yup.ref("password"), null], t("Die Passwörter stimmen nicht überein.")),
     });
 
     return (

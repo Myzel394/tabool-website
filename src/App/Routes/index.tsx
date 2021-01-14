@@ -2,6 +2,7 @@ import React from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 import Calendar from "pages/calendar/index";
 import {
+    ChangePasswordPage,
     ConfirmEmail,
     FillOutData,
     LoggedInDevicesPage,
@@ -20,8 +21,6 @@ import addRoutes from "./addRoutes";
 // TODO: Add formik search page!
 export default function Routes() {
     const user = useUser();
-    // eslint-disable-next-line no-console
-    console.log(user);
 
     return (
         <Switch>
@@ -76,6 +75,11 @@ export default function Routes() {
                 exact
                 path="/settings/logged-in-devices/"
                 component={LoggedInDevicesPage}
+            />
+            <Route
+                exact
+                path="/settings/change-password/"
+                component={ChangePasswordPage}
             />
         </Switch>
     );
