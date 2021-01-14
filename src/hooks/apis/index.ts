@@ -15,3 +15,4 @@ export * from "./room";
 export * from "./subject";
 export * from "./submission";
 export * from "./teacher";
+export * from "./session";

@@ -1,6 +1,7 @@
 import React from "react";
 import {usePermissions} from "hooks";
 import {PermissionType} from "hooks/usePermissions";
+import {isIOS} from "react-device-detect";
 
 import {LocationPermission, NotificationPermission} from "./permissions";
 
@@ -13,12 +14,12 @@ const PermissionsHandler = ({children}) => {
     const hasUndecidedPermissions = new Set(Object.values(permStates)).has(PermissionType.Default);
 
     if (hasUndecidedPermissions) {
-        if (permStates.notification === PermissionType.Default) {
+        if (permStates.notification === PermissionType.Default && !isIOS) {
             return (
                 <NotificationPermission
-                    onDone={hasGranted => setPermStates({
+                    onDone={state => setPermStates({
                         ...permStates,
-                        notification: hasGranted,
+                        notification: state,
                     })}
                 />
             );
@@ -26,9 +27,9 @@ const PermissionsHandler = ({children}) => {
         if (permStates.location === PermissionType.Default) {
             return (
                 <LocationPermission
-                    onDone={hasGranted => setPermStates({
+                    onDone={state => setPermStates({
                         ...permStates,
-                        location: hasGranted,
+                        location: state,
                     })}
                 />
             );

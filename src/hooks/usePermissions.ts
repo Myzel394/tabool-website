@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from "react";
+import {Dispatch, SetStateAction, useCallback, useEffect} from "react";
 
 import usePersistentStorage from "./usePersistentStorage";
 import useAsync from "./useAsync";
@@ -10,10 +10,14 @@ export interface Permissions {
 
 export interface IUsePermissions {
     state: Permissions;
-    setState: (newState: Permissions) => void;
+    setState: Dispatch<SetStateAction<Permissions>>;
     check: {
         notification: () => Promise<PermissionType>;
         location: () => Promise<PermissionType | undefined>;
+    };
+    ask: {
+        notification: () => Promise<PermissionType>;
+        location: () => Promise<PermissionType>;
     };
     isLoading: boolean;
 }
@@ -21,18 +25,19 @@ export interface IUsePermissions {
 export enum PermissionType {
     NotGranted = "not_granted",
     Granted = "granted",
-    Default = "default",
-    NotAvailable = "not_available"
+    NotAvailable = "not_available",
+    Blocked = "blocked",
+    Default = "default"
 }
 
 const hasNotificationGranted = async (): Promise<PermissionType> => {
     switch (Notification.permission) {
-        case "denied":
+        case "default":
             return PermissionType.NotGranted;
+        case "denied":
+            return PermissionType.Blocked;
         case "granted":
             return PermissionType.Granted;
-        case "default":
-            return PermissionType.Default;
     }
 };
 
@@ -42,30 +47,82 @@ const hasLocationGranted = async (): Promise<PermissionType | undefined> => {
 
         switch (state) {
             case "denied":
-                return PermissionType.NotGranted;
+                return PermissionType.Blocked;
             case "granted":
                 return PermissionType.Granted;
         }
 
-        return PermissionType.Default;
+        return PermissionType.NotGranted;
     }
     return undefined;
 };
 
+const askNotification = () => new Promise<PermissionType>((resolve) => {
+    const handleResult = result => {
+        switch (result) {
+            case "granted":
+                resolve(PermissionType.Granted);
+                break;
+            case "denied":
+                resolve(PermissionType.Blocked);
+                break;
+            default:
+                resolve(PermissionType.Default);
+        }
+    };
+
+    if ("Notification" in window) {
+        Notification.requestPermission(handleResult)
+            .then(handleResult);
+    } else {
+        resolve(PermissionType.NotAvailable);
+    }
+});
+
+const askLocation = () =>
+    new Promise<PermissionType>((resolve) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(() => {
+                resolve(PermissionType.Granted);
+            }, error => {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        resolve(PermissionType.Blocked);
+                        break;
+                    case error.TIMEOUT:
+                    case error.POSITION_UNAVAILABLE:
+                        resolve(PermissionType.Granted);
+                }
+            });
+        } else {
+            resolve(PermissionType.NotAvailable);
+        }
+    });
+
+const defaultValue = {
+    notification: PermissionType.Default,
+    location: PermissionType.Default,
+};
+
 const usePermissions = (): IUsePermissions => {
-    const [permStates, setPermStates] = usePersistentStorage<Permissions>({
-        notification: PermissionType.Default,
-        location: PermissionType.Default,
-    }, "_permissions");
+    const [permStates, setPermStates] = usePersistentStorage<Permissions>(defaultValue, "permissions");
 
     const checkPermissionStates = useCallback(async () => {
         const [notification, location] = await Promise.all([hasNotificationGranted(), hasLocationGranted()]);
 
-        setPermStates(prevState => ({
-            ...prevState,
-            notification,
-            location: location ?? prevState.location,
-        }));
+        setPermStates(prevState => {
+            const newState = {...prevState};
+
+            if (prevState.notification !== PermissionType.Default) {
+                newState.notification = notification;
+            }
+
+            if (prevState.location !== PermissionType.Default) {
+                newState.location = location ?? prevState.location;
+            }
+
+            return newState;
+        });
     }, [setPermStates]);
 
     // Get permission states
@@ -96,6 +153,10 @@ const usePermissions = (): IUsePermissions => {
         check: {
             notification: hasNotificationGranted,
             location: hasLocationGranted,
+        },
+        ask: {
+            notification: askNotification,
+            location: askLocation,
         },
         isLoading: status === "pending",
     };
