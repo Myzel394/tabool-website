@@ -7,27 +7,19 @@ import {useQueryOptions} from "hooks";
 import {Alert} from "@material-ui/lab";
 import {AxiosError} from "axios";
 import {DefaultPage} from "components";
-import {Session as SessionType} from "types";
 import update from "immutability-helper";
+import {Session as SessionType} from "types";
 
 import Area from "../Area";
 
 import Session from "./Session";
-
-interface SessionWithId extends SessionType {
-    id: string;
-}
-
-
-const createId = (session: SessionType): string =>
-    session.lastActivity.toISOString() + session.ip + session.userAgent + session.isThis;
 
 const LoggedInDevicesPage = () => {
     const {t} = useTranslation();
     const fetchSessions = useFetchSessionsAPI();
     const queryOptions = useQueryOptions();
 
-    const [sessions, setSessions] = useState<SessionWithId[]>([]);
+    const [sessions, setSessions] = useState<SessionType[]>([]);
 
     const {
         isLoading,
@@ -38,28 +30,9 @@ const LoggedInDevicesPage = () => {
         fetchSessions,
         {
             ...queryOptions,
-            onSuccess: response =>
-                Promise.allSettled(
-                    response.results.map(
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore: Type is changed
-                        async (element: SessionWithId) => {
-                            element.id = createId(element);
-                            return element;
-                        },
-                    ),
-                ).then(promiseResults => {
-                    const results = promiseResults
-                        .map(result => result.status === "fulfilled" && result.value)
-                        .filter(Boolean);
-
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore: Filter already checks that there is no `false`
-                    setSessions(results);
-                }),
+            onSuccess: response => setSessions(response.results),
         },
     );
-
 
     return (
         <DefaultPage>
