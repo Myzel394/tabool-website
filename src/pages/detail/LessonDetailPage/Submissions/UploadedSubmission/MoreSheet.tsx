@@ -11,8 +11,7 @@ import {
 import {MdCloudUpload, MdDeleteForever, MdFileDownload, MdSettings} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {BottomSheetAction} from "components";
-
-import {ICON_SIZE} from "../../../../../components/BottomSheetAction";
+import {ICON_SIZE} from "components/BottomSheetAction";
 
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
 

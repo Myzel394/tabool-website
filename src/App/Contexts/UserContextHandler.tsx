@@ -20,8 +20,8 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 
         case "login": {
             const {
-                isFullyRegistered,
-                isEmailVerified,
+                hasFilledOutData,
+                isConfirmed,
                 firstName,
                 lastName,
                 email,
@@ -35,10 +35,10 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                         $set: true,
                     },
                     isFullyRegistered: {
-                        $set: isFullyRegistered,
+                        $set: hasFilledOutData,
                     },
                     isEmailVerified: {
-                        $set: isEmailVerified,
+                        $set: isConfirmed,
                     },
                     data: {
                         $apply: value => update<IUser["data"]>(value ?? {} as IUser["data"], {

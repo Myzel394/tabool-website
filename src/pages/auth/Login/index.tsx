@@ -1,7 +1,7 @@
-import React, {memo, useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import {useQueryString} from "hooks";
 import {useMutation} from "react-query";
-import {ILoginResponse, ILoginData, useSendLoginAPI} from "hooks/apis";
+import {ILoginData, ILoginResponse, useSendLoginAPI} from "hooks/apis";
 import {AxiosError} from "axios";
 import {FocusedPage} from "components";
 import {useTranslation} from "react-i18next";
