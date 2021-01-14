@@ -1,10 +1,10 @@
-import React, {memo} from "react";
+import React, {memo, useLayoutEffect} from "react";
 import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
-import {Grid, Link} from "@material-ui/core";
+import {CircularProgress, Grid} from "@material-ui/core";
 import {IFetchMaterialDownloadLinkResponse, useFetchMaterialDownloadLinkAPI} from "hooks/apis";
 
 import {LoadingIndicator} from "../indicators";
@@ -23,7 +23,7 @@ const GetDownloadLink = ({materialId, onClose, onDownload}: IGetDownloadLink) =>
     const fetchDownloadLink = useFetchMaterialDownloadLinkAPI();
 
     const {
-        data,
+        data: materialDownloadLink,
         isSuccess,
         isError,
         isLoading,
@@ -40,6 +40,16 @@ const GetDownloadLink = ({materialId, onClose, onDownload}: IGetDownloadLink) =>
             },
         },
     );
+
+    const downloadLink = materialDownloadLink?.file;
+
+    // If download link available, download file
+    useLayoutEffect(() => {
+        if (downloadLink) {
+            window.open(downloadLink, "download");
+            onClose();
+        }
+    }, [downloadLink, onClose]);
 
     if (isLoading) {
         return (
@@ -70,16 +80,7 @@ const GetDownloadLink = ({materialId, onClose, onDownload}: IGetDownloadLink) =>
     }
 
     return (
-        <Link
-            component={PrimaryButton}
-            href={data?.file}
-            onClick={() => {
-                onClose();
-                onDownload?.();
-            }}
-        >
-            {t("Datei runterladen")}
-        </Link>
+        <CircularProgress />
     );
 };
 

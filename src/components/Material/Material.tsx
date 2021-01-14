@@ -23,9 +23,9 @@ import {
 } from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import prettyBytes from "pretty-bytes";
+import {usePersistentStorage} from "hooks";
 
 import Information from "../Information";
-import {usePersistentStorage} from "../../hooks";
 import TimeRelative from "../TimeRelative";
 
 import GetDownloadLink from "./GetDownloadLink";
@@ -67,7 +67,7 @@ const Material = ({name, addedAt, id, size, isDeleted}: IMaterial) => {
     );
 
     const informationStyle = useMemo(() => ({
-        overflowWrap: "anywhere" as "anywhere",
+        wordBreak: "break-all" as "break-all",
         opacity: isDeleted ? theme.palette.action.disabledOpacity : 1,
     }), [isDeleted, theme.palette.action.disabledOpacity]);
 

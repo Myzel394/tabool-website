@@ -11,13 +11,12 @@ import {
 import {Box, Button, ButtonGroup, Collapse, Grid, Link, Paper, Typography} from "@material-ui/core";
 import update from "immutability-helper";
 import dayjs from "dayjs";
-import {DetailPage, Homework, IllEmailButton, LoadingIndicator} from "components";
+import {DetailPage, Homework, IllEmailButton, LoadingIndicator, Material, ScoosoMaterial} from "components";
 import {FaChalkboardTeacher, FaRunning, FaVideo, FiMonitor, MdPlace} from "react-icons/all";
 import {generatePath} from "react-router-dom";
 import {useMutation, useQuery} from "react-query";
 import {LessonDetail} from "types";
 import {ErrorContext} from "contexts";
-import Material from "components/Material";
 import {buildPath, combineDatetime} from "utils";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
@@ -205,14 +204,25 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                             <Grid container spacing={1}>
                                 {lesson.materials.map(material =>
                                     <Grid key={material.id} item style={gridItemStyle}>
-                                        <Material
-                                            key={material.id}
-                                            id={material.id}
-                                            name={material.name}
-                                            addedAt={material.addedAt}
-                                            size={material.size}
-                                            isDeleted={material.isDeleted}
-                                        />
+                                        {material.size
+                                            ? (
+                                                <Material
+                                                    key={material.id}
+                                                    id={material.id}
+                                                    name={material.name}
+                                                    addedAt={material.addedAt}
+                                                    size={material.size}
+                                                    isDeleted={material.isDeleted}
+                                                />
+                                            )
+                                            : (
+                                                <ScoosoMaterial
+                                                    key={material.id}
+                                                    name={material.name}
+                                                    id={material.id}
+                                                />
+                                            )
+                                        }
                                     </Grid>)}
                             </Grid>
                         ) : (

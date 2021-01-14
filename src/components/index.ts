@@ -10,6 +10,7 @@ export * from "./timetable";
 export * from "./DropZone";
 export * from "./icons";
 export * from "./formik";
+export * from "./Material";
 
 export {default as SimpleCenter} from "./SimpleCenter";
 export {default as Tooltip} from "./Tooltip";
