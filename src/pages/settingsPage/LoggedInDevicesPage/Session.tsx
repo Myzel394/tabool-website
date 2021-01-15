@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from "react";
-import {Dayjs} from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
 import {
     DialogContentText,
     IconButton,
@@ -82,14 +82,13 @@ const Session = ({
             onSuccess: onDelete,
         },
     );
-    const suffixMessage = isThis ? t(" (Dieses Gerät)") : "";
     const uaInstance = useMemo(() => new UAParser(userAgent), [userAgent]);
     const vendor = uaInstance.getDevice().vendor?.toLowerCase?.();
     const Icon = vendor && DEVICE_VENDOR_ICON_MAP[vendor];
 
     return (
         <>
-            <ListItem key={id} disabled={isLoading}>
+            <ListItem key={id} button disabled={isLoading}>
                 <ListItemIcon>
                     {Icon && <Icon size="2rem" />}
                 </ListItemIcon>
@@ -98,9 +97,13 @@ const Session = ({
                     primaryTypographyProps={{
                         color: isThis ? "primary" : "textPrimary",
                     }}
-                    primary={ip + suffixMessage}
-                    secondary={t("Letzte Aktivität: {{lastActivity}}", {
-                        lastActivity: lastActivity.format("LLL"),
+                    primary={t("{{browserName}} ({{browserVersion}}) auf einem {{os}}-Gerät", {
+                        browserName: uaInstance.getBrowser().name,
+                        browserVersion: uaInstance.getBrowser().version,
+                        os: uaInstance.getOS().name,
+                    }) + (isThis ? ` ${t(" (Dieses Gerät)")}` : "")}
+                    secondary={t("Letzte Aktivität {{lastActivity}}", {
+                        lastActivity: dayjs().to(lastActivity),
                     })}
                 />
                 <ListItemSecondaryAction>
