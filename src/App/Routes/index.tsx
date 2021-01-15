@@ -5,11 +5,13 @@ import {
     ChangePasswordPage,
     ChangeScoosoCredentialsPage,
     ConfirmEmail,
+    ConfirmPasswordReset,
     FillOutData,
     LoggedInDevicesPage,
     Login,
     MainPage as MainSettingsPage,
     Register,
+    RequestPasswordToken,
     StartPage,
 } from "pages";
 import {generatePath} from "react-router";
@@ -25,6 +27,17 @@ export default function Routes() {
 
     return (
         <Switch>
+            {/* Forgot password */}
+            <Route
+                exact
+                path="/auth/forgot-password/"
+                component={RequestPasswordToken}
+            />
+            <Route
+                exact
+                path="/auth/forgot-password/confirm/"
+                component={ConfirmPasswordReset}
+            />
             {/* Authentication routes */}
             <Route
                 exact
