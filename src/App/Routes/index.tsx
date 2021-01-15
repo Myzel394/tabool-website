@@ -9,6 +9,7 @@ import {
     FillOutData,
     LoggedInDevicesPage,
     Login,
+    Logout,
     MainPage as MainSettingsPage,
     Register,
     RequestPasswordToken,
@@ -41,15 +42,18 @@ export default function Routes() {
             {/* Authentication routes */}
             <Route
                 exact
-                path="/auth/registration"
+                path="/auth/registration/"
                 component={Register}
-                redirectUrl="/"
             />
             <Route
                 exact
-                path="/auth/login"
+                path="/auth/login/"
                 component={Login}
-                redirectUrl="/"
+            />
+            <Route
+                exact
+                path="/auth/logout/"
+                component={Logout}
             />
             {!user.isAuthenticated && <Redirect to={generatePath("/auth/login/")} />}
             {/* Registration routes */}

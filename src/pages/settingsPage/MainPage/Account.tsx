@@ -1,7 +1,7 @@
 import React, {memo} from "react";
 import {Avatar, Link, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Paper} from "@material-ui/core";
 import {useUser} from "hooks";
-import {MdAccountCircle, MdDevices, MdEnhancedEncryption, MdLock} from "react-icons/all";
+import {FiLogOut, MdAccountCircle, MdDevices, MdEnhancedEncryption, MdLock} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {generatePath} from "react-router-dom";
 
@@ -61,6 +61,17 @@ const Account = () => {
                         <MdDevices />
                     </ListItemIcon>
                     <ListItemText primary={t("Angemeldete Geräte")} />
+                </ListItem>
+                <ListItem
+                    button
+                    color="textPrimary"
+                    href={generatePath("/auth/logout/")}
+                    component={Link}
+                >
+                    <ListItemIcon>
+                        <FiLogOut />
+                    </ListItemIcon>
+                    <ListItemText primary={t("Abmelden")} />
                 </ListItem>
             </List>
         </Paper>
