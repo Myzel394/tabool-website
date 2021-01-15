@@ -22,6 +22,7 @@ const HorizontalScroll = <DataType extends any>({
             direction="row"
             wrap="nowrap"
             className={styles.wrapper}
+            alignItems="center"
         >
             {elements.map(element =>
                 <Grid key={getKey(element)} item>
