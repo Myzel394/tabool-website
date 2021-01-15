@@ -1,6 +1,6 @@
-import React, {memo, useContext, useEffect, useState} from "react";
+import React, {memo, useContext, useEffect, useMemo, useState} from "react";
 import {UserContext} from "contexts";
-import {BottomNavigation as MuiBottomNavigation, BottomNavigationAction} from "@material-ui/core";
+import {BottomNavigation as MuiBottomNavigation, BottomNavigationAction, useTheme} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {FaTable, MdEventNote, MdHome, MdSettings} from "react-icons/all";
 import {useLocation} from "react-router";
@@ -11,12 +11,17 @@ import styles from "./BottomNavigation.module.scss";
 
 const BottomNavigation = ({innerRef}) => {
     const {t} = useTranslation();
+    const theme = useTheme();
     const {state} = useContext(UserContext);
     const location = useLocation();
     const history = useHistory();
     const baseLocation = `/${location.pathname.split("/")[1]}`;
 
     const [selectedValue, setSelectedValue] = useState<string>(baseLocation);
+
+    const style = useMemo(() => ({
+        zIndex: theme.zIndex.appBar - 1,
+    }), [theme.zIndex.appBar]);
 
     useEffect(() => {
         if (selectedValue !== baseLocation) {
@@ -26,7 +31,7 @@ const BottomNavigation = ({innerRef}) => {
 
     if (state.isFullyRegistered) {
         return (
-            <MuiBottomNavigation ref={innerRef} value={selectedValue} className={styles.container}>
+            <MuiBottomNavigation ref={innerRef} style={style} value={selectedValue} className={styles.container}>
                 <BottomNavigationAction
                     label={t("Start").toString()}
                     icon={<MdHome />}

@@ -8,7 +8,8 @@ import DayjsUtils from "@date-io/dayjs";
 import {SnackbarProvider} from "notistack";
 import {isMobile} from "react-device-detect";
 import {MdClose} from "react-icons/md";
-import {useElementSize} from "hooks";
+import {useElementSize, usePersistentStorage} from "hooks";
+import dark from "themes/dark";
 
 import "./global.scss";
 
@@ -20,9 +21,12 @@ import ErrorContextHandler from "./ErrorContextHandler";
 import RequiredPermissions from "./RequiredPermissions";
 import OhNoChecks from "./OhNoChecks";
 
+const THEME_MAP = {
+    light,
+    dark,
+};
 
 const App = () => {
-    const theme = light;
     const $snackbar = useRef<any>();
     const $bottom = useRef<any>();
     const [, bottomHeight] = useElementSize($bottom);
@@ -31,10 +35,12 @@ const App = () => {
     }), [bottomHeight]);
     const closeSnackbar = (key) => $snackbar.current.closeSnackbar(key);
 
+    const [activeTheme, setActiveTheme] = usePersistentStorage<"light" | "dark">("light", "active_theme");
+
     return (
         <Router>
-            <ThemeProvider theme={theme}>
-                <Contexts bottomSheetHeight={bottomHeight}>
+            <ThemeProvider theme={THEME_MAP[activeTheme]}>
+                <Contexts bottomSheetHeight={bottomHeight} setActiveTheme={setActiveTheme} activeTheme={activeTheme}>
                     <OhNoChecks>
                         <RequiredPermissions>
                             <ErrorContextHandler>

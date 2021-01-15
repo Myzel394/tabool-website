@@ -5,22 +5,29 @@ import Checks from "../Checks";
 
 import UserContextHandler from "./UserContextHandler";
 import AxiosContextHandler from "./AxiosContextHandler";
-import UtilsContextHandler from "./UtilsContextHandler";
+import UtilsContextHandler, {IUtilsContextHandler} from "./UtilsContextHandler";
 
 
 export interface IContexts {
     children: ReactNode;
+    activeTheme: IUtilsContextHandler["activeTheme"];
+    setActiveTheme: IUtilsContextHandler["setActiveTheme"];
+
     bottomSheetHeight?: number;
 }
 
 const queryClient = new QueryClient();
 
-const Contexts = ({children, bottomSheetHeight}: IContexts) => {
+const Contexts = ({children, setActiveTheme, activeTheme, bottomSheetHeight}: IContexts) => {
     return (
         <QueryClientProvider client={queryClient}>
             <UserContextHandler>
                 <AxiosContextHandler>
-                    <UtilsContextHandler bottomSheetHeight={bottomSheetHeight}>
+                    <UtilsContextHandler
+                        activeTheme={activeTheme}
+                        setActiveTheme={setActiveTheme}
+                        bottomSheetHeight={bottomSheetHeight}
+                    >
                         <Checks>
                             {children}
                         </Checks>
