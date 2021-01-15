@@ -8,7 +8,11 @@ import Area from "../Area";
 import Permissions from "./Permissions";
 import Account from "./Account";
 import Statistics from "./Statistics";
+import Design from "./Design";
 
+const style = {
+    width: "100%",
+};
 
 const MainPage = () => {
     const {t} = useTranslation();
@@ -24,6 +28,11 @@ const MainPage = () => {
                 <Grid item>
                     <Area title={t("Berechtigungen")}>
                         <Permissions />
+                    </Area>
+                </Grid>
+                <Grid item style={style}>
+                    <Area title={t("Design")}>
+                        <Design />
                     </Area>
                 </Grid>
                 <Grid item>
