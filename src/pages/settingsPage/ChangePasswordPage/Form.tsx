@@ -133,7 +133,7 @@ const Form = ({onSubmit}: IForm) => {
                             <Link
                                 component={SecondaryButton}
                                 underline="none"
-                                href={generatePath("/settings/reset-password/")}
+                                href={generatePath("/auth/forgot-password/")}
                             >
                                 {t("Passwort vergessen")}
                             </Link>
