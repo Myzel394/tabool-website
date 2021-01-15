@@ -1,7 +1,6 @@
 export * from "./useFetchContactsAPI";
 export * from "./useFetchTimetableAPI";
 export * from "./useFetchDailyDataAPI";
-export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
 
 export * from "./auth";
 export * from "./course";
@@ -16,3 +15,6 @@ export * from "./subject";
 export * from "./submission";
 export * from "./teacher";
 export * from "./session";
+export * from "./scoosoCredentials";
+
+export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
