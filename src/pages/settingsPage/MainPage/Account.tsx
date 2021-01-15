@@ -1,7 +1,7 @@
 import React, {memo} from "react";
 import {Avatar, Link, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Paper} from "@material-ui/core";
 import {useUser} from "hooks";
-import {ImConfused2, MdAccountCircle, MdDevices, MdEnhancedEncryption, MdLock} from "react-icons/all";
+import {MdAccountCircle, MdDevices, MdEnhancedEncryption, MdLock} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {generatePath} from "react-router-dom";
 
@@ -50,17 +50,6 @@ const Account = () => {
                         <MdEnhancedEncryption />
                     </ListItemIcon>
                     <ListItemText primary={t("Scooso-Daten ändern")} />
-                </ListItem>
-                <ListItem
-                    button
-                    color="textPrimary"
-                    href={generatePath("/forgot-password")}
-                    component={Link}
-                >
-                    <ListItemIcon>
-                        <ImConfused2 />
-                    </ListItemIcon>
-                    <ListItemText primary={t("Passwort vergessen")} />
                 </ListItem>
                 <ListItem
                     button
