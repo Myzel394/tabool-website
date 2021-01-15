@@ -3,6 +3,7 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import Calendar from "pages/calendar/index";
 import {
     ChangePasswordPage,
+    ChangeScoosoCredentialsPage,
     ConfirmEmail,
     FillOutData,
     LoggedInDevicesPage,
@@ -80,6 +81,11 @@ export default function Routes() {
                 exact
                 path="/settings/change-password/"
                 component={ChangePasswordPage}
+            />
+            <Route
+                exact
+                path="/settings/change-scooso-credentials/"
+                component={ChangeScoosoCredentialsPage}
             />
         </Switch>
     );

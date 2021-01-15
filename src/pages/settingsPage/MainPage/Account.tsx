@@ -43,7 +43,7 @@ const Account = () => {
                 <ListItem
                     button
                     color="textPrimary"
-                    href={generatePath("/settings/change-scooso/")}
+                    href={generatePath("/settings/change-scooso-credentials/")}
                     component={Link}
                 >
                     <ListItemIcon>
