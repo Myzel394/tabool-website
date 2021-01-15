@@ -13,7 +13,7 @@ export interface HomeworkApprox {
     truncatedInformation: string;
 }
 
-export interface HomeworkDetail extends Omit<HomeworkApprox, "truncatedInformation" | "lesson" | "subject"> {
+export interface HomeworkDetail extends Omit<HomeworkApprox, "lesson" | "subject"> {
     lesson: LessonDetail;
     isPrivate: boolean;
     information: string;

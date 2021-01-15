@@ -1,10 +1,12 @@
 import React, {memo} from "react";
 import {ExamDetail} from "types";
-import {Exam} from "components";
+import {Exam, SecondaryButton} from "components";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
-import {useTheme} from "@material-ui/core";
+import {Box, useTheme} from "@material-ui/core";
 import {Zoom} from "react-reveal";
+import {generatePath} from "react-router-dom";
+import {MdAdd} from "react-icons/all";
 
 import createShadow from "../createShadow";
 
@@ -22,9 +24,16 @@ const Exams = ({
 
     if (!exams.length) {
         return (
-            <Alert severity="info">
-                {t("Du hast keine Arbeiten in naher Zukunft.")}
-            </Alert>
+            <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column">
+                <Box mb={2}>
+                    <Alert severity="info">
+                        {t("Du hast keine Arbeiten in naher Zukunft.")}
+                    </Alert>
+                </Box>
+                <SecondaryButton href={generatePath("/add/exam/")} startIcon={<MdAdd />}>
+                    {t("Arbeit hinzufügen")}
+                </SecondaryButton>
+            </Box>
         );
     }
 

@@ -45,7 +45,7 @@ const Homeworks = ({
                             boxShadow: createShadow(homework.lesson.lessonData.course.subject.userRelation.color),
                         }}
                         subject={homework.lesson.lessonData.course.subject}
-                        information={homework.information}
+                        information={homework.truncatedInformation}
                         id={homework.id}
                         creationDate={homework.createdAt}
                         dueDate={homework.dueDate}
