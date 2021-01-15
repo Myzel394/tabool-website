@@ -16,6 +16,7 @@ export interface ISimpleDialog extends Omit<DialogProps, "open"> {
     title: string;
 
     transition?: AvailableAnimations;
+    secondaryButton?: JSX.Element;
 }
 
 const TRANSITION_MAPPING: Record<AvailableAnimations, ExoticComponent> = {
@@ -30,6 +31,7 @@ const SimpleDialog = ({
     title,
     children,
     transition,
+    secondaryButton,
     ...other
 }: ISimpleDialog) => {
     const {t} = useTranslation();
@@ -48,10 +50,12 @@ const SimpleDialog = ({
                 {children}
             </DialogContent>
             <DialogActions>
+                {secondaryButton ? secondaryButton : (
+                    <SecondaryButton onClick={onClose}>
+                        {t("Schließen")}
+                    </SecondaryButton>
+                )}
                 {primaryButton}
-                <SecondaryButton onClick={onClose}>
-                    {t("Schließen")}
-                </SecondaryButton>
             </DialogActions>
         </Dialog>
     );
