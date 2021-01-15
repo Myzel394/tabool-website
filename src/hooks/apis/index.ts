@@ -16,5 +16,6 @@ export * from "./submission";
 export * from "./teacher";
 export * from "./session";
 export * from "./scoosoCredentials";
+export * from "./forgotPassword";
 
 export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
