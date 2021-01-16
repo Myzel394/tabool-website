@@ -1,5 +1,5 @@
 import React, {memo, useMemo} from "react";
-import {Box, Container, Typography, useTheme} from "@material-ui/core";
+import {Box, Container, Typography} from "@material-ui/core";
 import {useAdaptedColor} from "hooks";
 import tinycolor from "tinycolor2";
 
@@ -11,8 +11,7 @@ export interface ITitle {
 }
 
 const Title = ({title, color, subTitle}: ITitle) => {
-    const theme = useTheme();
-    const [backgroundColor, textColor] = useAdaptedColor(color);
+    const [textColor, backgroundColor] = useAdaptedColor(color);
     const divStyle = useMemo(() => ({
         backgroundColor,
     }), [backgroundColor]);

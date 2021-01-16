@@ -14,6 +14,9 @@ export interface IConferenceList {
     lessons: LessonDetail[];
 }
 
+const style = {
+    width: "100%",
+};
 
 const ConferenceList = ({lessons, date}: IConferenceList) => {
     return (
@@ -24,7 +27,7 @@ const ConferenceList = ({lessons, date}: IConferenceList) => {
                         <Avatar key={lesson.id} lesson={lesson} />)}
                 </AvatarGroup>
             </Grid>
-            <Grid item>
+            <Grid item style={style}>
                 <Description date={date} secondaryText={lessons.map(lesson => lesson.lessonData.course.subject.name).join(" | ")} />
             </Grid>
         </Grid>

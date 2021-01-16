@@ -10,7 +10,8 @@ export interface IDescription {
     secondaryText: string;
 }
 
-const wrapStyle = {
+const style = {
+    width: "100%",
     wordBreak: "break-word" as "break-word",
 };
 
@@ -19,7 +20,10 @@ const Description = ({
     secondaryText,
 }: IDescription) => {
     return (
-        <ButtonLike>
+        <ButtonLike
+            style={style}
+            justifyContent="flex-start"
+        >
             <Link
                 href={buildPath("/timetable", undefined, {
                     date: lazyDatetime(date, "date"),
@@ -30,7 +34,7 @@ const Description = ({
                     <Typography variant="body1" color="textPrimary">
                         {date.format("LL")}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" style={wrapStyle}>
+                    <Typography variant="body2" color="textSecondary">
                         {secondaryText}
                     </Typography>
                 </Box>

@@ -27,9 +27,14 @@ const getAdaptedColor = ({
     const isBackgroundDark = isDark(tinyBackgroundColor);
 
     let realTextColor = textColor;
-    let realBackgroundColor = backgroundColor;
+    let realBackgroundColor = backgroundColor ?? textColor;
 
     if (type === "light") {
+        if (isBackgroundLight) {
+            realTextColor = realBackgroundColor;
+            realBackgroundColor = textColor;
+        }
+
         if (isColorLight && isBackgroundLight) {
             realTextColor = darkText;
         } else if (isColorDark && isBackgroundDark) {

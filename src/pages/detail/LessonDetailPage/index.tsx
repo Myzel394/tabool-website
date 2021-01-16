@@ -243,7 +243,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                                     <Grid key={homework.id} item style={gridItemStyle}>
                                         <Homework
                                             subject={lesson.lessonData.course.subject}
-                                            information={homework.information}
+                                            information={homework.truncatedInformation}
                                             id={homework.id}
                                             creationDate={homework.createdAt}
                                         />

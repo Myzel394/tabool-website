@@ -110,4 +110,3 @@ const styles = (theme: Theme) => {
 };
 
 export default withStyles(styles)(DefaultCalendar);
-

@@ -1,20 +1,21 @@
 import React, {memo, ReactNode} from "react";
-import {Box, ButtonBase, useTheme} from "@material-ui/core";
+import {Box, BoxProps, ButtonBase, useTheme} from "@material-ui/core";
 
 
-export interface IButtonLike {
+export interface IButtonLike extends BoxProps {
     children: ReactNode;
 }
 
 
-const ButtonLike = ({children}: IButtonLike) => {
+const ButtonLike = ({children, style: givenStyle, ...other}: IButtonLike) => {
     const theme = useTheme();
     const style = {
+        ...givenStyle,
         borderRadius: theme.shape.borderRadius,
     };
 
     return (
-        <Box component={ButtonBase} p={1} style={style}>
+        <Box {...other} component={ButtonBase} p={1} style={style}>
             {children}
         </Box>
     );

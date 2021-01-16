@@ -16,8 +16,8 @@ describe("getAdaptedColor works in light mode with", () => {
             backgroundColor: "#fff",
         });
 
-        expectToBeDark(textColor);
-        expectToBeLight(backgroundColor);
+        expectToBeLight(textColor);
+        expectToBeDark(backgroundColor);
     });
     test("bright background and bright text", () => {
         const [textColor, backgroundColor] = getAdaptedColor({
@@ -48,13 +48,6 @@ describe("getAdaptedColor works in light mode with", () => {
 
         expectToBeLight(textColor);
         expectToBeDark(backgroundColor);
-    });
-
-    test("random test", () => {
-        const [textColor, backgroundColor] = getAdaptedColor({
-            textColor: "#1e67ff",
-            backgroundColor: "#f0f0f0",
-        });
     });
 });
 
