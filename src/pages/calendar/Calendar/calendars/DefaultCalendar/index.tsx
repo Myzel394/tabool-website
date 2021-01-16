@@ -3,9 +3,10 @@ import {useWindowSize} from "hooks";
 import {Calendar as BigCalendar, CalendarProps, Event as CalendarEvent, EventWrapperProps} from "react-big-calendar";
 import dayjs from "dayjs";
 import {findNextDate, getMinMaxTime, locale} from "utils";
-import update from "immutability-helper";
-
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import {Theme, withStyles} from "@material-ui/core";
+import tinycolor from "tinycolor2";
+
 import CalendarContext from "../../../CalendarContext";
 
 import Toolbar from "./Toolbar";
@@ -22,21 +23,22 @@ export interface IDefaultCalendar<TEvent extends Record<string, any> = Record<st
     > {
     events: CalendarEvent[];
     eventComponent: ComponentType<EventWrapperProps<TEvent>>;
+    classes: any;
 }
 
 const DefaultCalendar = ({
     style: givenStyles = {},
     events,
     eventComponent,
+    classes,
     ...other
 }: IDefaultCalendar) => {
     const {date, activeView, onDateChange} = useContext(CalendarContext);
     const [, height] = useWindowSize();
 
-    const style = useMemo(() => update(givenStyles, {
-        height: {
-            $set: Math.min(2500, Math.max(800, height)),
-        },
+    const style = useMemo(() => ({
+        ...givenStyles,
+        height: Math.min(2500, Math.max(800, height)),
     }), [givenStyles, height]);
     const components = useMemo(() => ({
         toolbar: Toolbar,
@@ -53,6 +55,7 @@ const DefaultCalendar = ({
             min={minTime}
             max={maxTime}
             localizer={locale}
+            className={classes.root}
             step={30}
             dayLayoutAlgorithm="no-overlap"
             date={date.toDate()}
@@ -79,5 +82,32 @@ const DefaultCalendar = ({
     );
 };
 
-export default DefaultCalendar;
+const styles = (theme: Theme) => {
+    const color = tinycolor(theme.palette.text.primary).setAlpha(0.1).toString();
+
+    return {
+        root: {
+            "& .rbc-timeslot-group": {
+                borderColor: color,
+            },
+            "& .rbc-time-content": {
+                borderColor: color,
+            },
+            "& .rbc-time-view": {
+                borderColor: color,
+            },
+            "& .rbc-events-container": {
+                borderColor: color,
+            },
+            "& .rbc-time-header-content": {
+                borderColor: color,
+            },
+            "& .rbc-time-slot": {
+                border: "none",
+            },
+        },
+    };
+};
+
+export default withStyles(styles)(DefaultCalendar);
 
