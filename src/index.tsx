@@ -10,6 +10,7 @@ import "./extends/dayjs";
 import "./extends/immutability-helper";
 import "./extends/yup";
 import "./supports";
+import "./firebase";
 
 ReactDOM.render(
     <React.StrictMode>

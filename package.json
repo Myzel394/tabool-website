@@ -20,6 +20,7 @@
     "clsx": "^1.1.1",
     "common-validators": "^0.3.0",
     "dayjs": "^1.9.4",
+    "firebase": "^8.2.3",
     "fontsource-roboto": "^3.0.3",
     "formik": "^2.2.6",
     "formik-material-ui": "^3.0.1",

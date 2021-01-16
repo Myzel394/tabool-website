@@ -1,8 +1,6 @@
 import React, {ReactNode} from "react";
 import {QueryClient, QueryClientProvider} from "react-query";
 
-import Checks from "../Checks";
-
 import UserContextHandler from "./UserContextHandler";
 import AxiosContextHandler from "./AxiosContextHandler";
 import UtilsContextHandler, {IUtilsContextHandler} from "./UtilsContextHandler";
@@ -28,9 +26,7 @@ const Contexts = ({children, setActiveTheme, activeTheme, bottomSheetHeight}: IC
                         setActiveTheme={setActiveTheme}
                         bottomSheetHeight={bottomSheetHeight}
                     >
-                        <Checks>
-                            {children}
-                        </Checks>
+                        {children}
                     </UtilsContextHandler>
                 </AxiosContextHandler>
             </UserContextHandler>

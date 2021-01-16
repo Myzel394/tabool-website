@@ -1,6 +1,7 @@
 export * from "./useFetchContactsAPI";
 export * from "./useFetchTimetableAPI";
 export * from "./useFetchDailyDataAPI";
+export * from "./useSendFCMTokenAPI";
 
 export * from "./auth";
 export * from "./course";
@@ -19,3 +20,4 @@ export * from "./scoosoCredentials";
 export * from "./forgotPassword";
 
 export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
+export {default as useSendFCMTokenAPI} from "./useSendFCMTokenAPI";

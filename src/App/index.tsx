@@ -13,13 +13,14 @@ import dark from "themes/dark";
 
 import "./global.scss";
 
-
 import Routes from "./Routes";
 import Contexts from "./Contexts";
 import BottomNavigation from "./BottomNavigation";
 import ErrorContextHandler from "./ErrorContextHandler";
 import RequiredPermissions from "./RequiredPermissions";
 import OhNoChecks from "./OhNoChecks";
+import Checks from "./Checks";
+import FCMHandler from "./FCMHandler";
 
 const THEME_MAP = {
     light,
@@ -41,35 +42,39 @@ const App = () => {
         <Router>
             <ThemeProvider theme={THEME_MAP[activeTheme]}>
                 <Contexts bottomSheetHeight={bottomHeight} setActiveTheme={setActiveTheme} activeTheme={activeTheme}>
-                    <OhNoChecks>
-                        <RequiredPermissions>
-                            <ErrorContextHandler>
-                                <MuiPickersUtilsProvider utils={DayjsUtils}>
-                                    <SnackbarProvider
-                                        ref={$snackbar}
-                                        maxSnack={isMobile ? 2 : 5}
-                                        dense={isMobile}
-                                        style={snackbarStyles}
-                                        action={(key) =>
-                                            <IconButton onClick={() => closeSnackbar(key)}>
-                                                <MdClose />
-                                            </IconButton>
-                                        }
-                                    >
-                                        <CssBaseline />
-                                        <Routes />
-                                    </SnackbarProvider>
-                                </MuiPickersUtilsProvider>
-                            </ErrorContextHandler>
-                            {/* Bottom padding */}
-                            <div
-                                style={{
-                                    height: bottomHeight,
-                                }}
-                            />
-                            <BottomNavigation innerRef={$bottom} />
-                        </RequiredPermissions>
-                    </OhNoChecks>
+                    <Checks>
+                        <OhNoChecks>
+                            <FCMHandler>
+                                <RequiredPermissions>
+                                    <ErrorContextHandler>
+                                        <MuiPickersUtilsProvider utils={DayjsUtils}>
+                                            <SnackbarProvider
+                                                ref={$snackbar}
+                                                maxSnack={isMobile ? 2 : 5}
+                                                dense={isMobile}
+                                                style={snackbarStyles}
+                                                action={(key) =>
+                                                    <IconButton onClick={() => closeSnackbar(key)}>
+                                                        <MdClose />
+                                                    </IconButton>
+                                                }
+                                            >
+                                                <CssBaseline />
+                                                <Routes />
+                                            </SnackbarProvider>
+                                        </MuiPickersUtilsProvider>
+                                    </ErrorContextHandler>
+                                    {/* Bottom padding */}
+                                    <div
+                                        style={{
+                                            height: bottomHeight,
+                                        }}
+                                    />
+                                    <BottomNavigation innerRef={$bottom} />
+                                </RequiredPermissions>
+                            </FCMHandler>
+                        </OhNoChecks>
+                    </Checks>
                 </Contexts>
             </ThemeProvider>
         </Router>
