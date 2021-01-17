@@ -2,6 +2,7 @@ import React from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 import Calendar from "pages/calendar/index";
 import {
+    AgendaPage,
     ChangePasswordPage,
     ChangeScoosoCredentialsPage,
     ConfirmEmail,
@@ -84,6 +85,11 @@ export default function Routes() {
                 exact
                 path={buildPath("/timetable/")}
                 component={Calendar}
+            />
+            <Route
+                exact
+                path={buildPath("/agenda/")}
+                component={AgendaPage}
             />
             <Route
                 exact

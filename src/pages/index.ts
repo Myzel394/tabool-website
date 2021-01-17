@@ -7,3 +7,4 @@ export * from "./settingsPage";
 export * from "./forgotPassword";
 export {default as AddPage} from "./AddPage";
 export {default as StartPage} from "./StartPage";
+export {default as AgendaPage} from "./AgendaPage";
