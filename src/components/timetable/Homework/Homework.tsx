@@ -7,7 +7,6 @@ import {FaCheck, FaCheckCircle, FaExclamationTriangle, HiBan, HiClock} from "rea
 import {CSSTransition} from "react-transition-group";
 import clsx from "clsx";
 import {useMutation} from "react-query";
-import {generatePath} from "react-router";
 import {ColoredBox, Information} from "components";
 import {AxiosError} from "axios";
 import {
@@ -15,6 +14,8 @@ import {
     IUpdateHomeworkUserRelationResponse,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks/apis";
+
+import {buildPath} from "../../../utils";
 
 import styles from "./Homework.module.scss";
 import Action from "./Action";
@@ -80,7 +81,7 @@ const Homework = ({
             color={subject.userRelation.color}
         >
             <Link
-                href={generatePath("/agenda/homework/detail/:id/", {
+                href={buildPath("/agenda/homework/detail/:id/", {
                     id,
                 })}
             >

@@ -1,12 +1,12 @@
 import React, {useEffect} from "react";
 import {useHistory} from "react-router-dom";
 import {FCMNotification} from "types";
-import {generatePath} from "react-router";
 import camelcaseKeys from "camelcase-keys";
 import {IconButton} from "@material-ui/core";
 import {FaBookOpen} from "react-icons/all";
 
 import {message} from "../firebase";
+import {buildPath} from "../utils";
 
 import useSnackbar from "./useSnackbar";
 
@@ -34,15 +34,15 @@ const useOnFCMMessageHandler = () => {
                     if (notification.data?.type) {
                         switch (notification.data.type) {
                             case "homework":
-                                link = generatePath("/agenda/homework/detail/:id/", {
+                                link = buildPath("/agenda/homework/detail/:id/", {
                                     id: notification.data.payload.id,
                                 });
                                 break;
                             case "scooso_data_invalid":
-                                link = generatePath("/settings/change-scooso-credentials/");
+                                link = buildPath("/settings/change-scooso-credentials/");
                                 break;
                             case "modification":
-                                link = generatePath("/agenda/lesson/detail/:id/", {
+                                link = buildPath("/agenda/lesson/detail/:id/", {
                                     id: notification.data.payload.lessonId,
                                 });
                                 break;

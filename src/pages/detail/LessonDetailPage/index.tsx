@@ -13,7 +13,6 @@ import update from "immutability-helper";
 import dayjs from "dayjs";
 import {DetailPage, Homework, IllEmailButton, LoadingIndicator, Material, ScoosoMaterial} from "components";
 import {FaChalkboardTeacher, FaRunning, FaVideo, FiMonitor, MdPlace} from "react-icons/all";
-import {generatePath} from "react-router-dom";
 import {useMutation, useQuery} from "react-query";
 import {LessonDetail} from "types";
 import {ErrorContext} from "contexts";
@@ -120,7 +119,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 <Link
                     component={Button}
                     underline="none"
-                    href={generatePath("/agenda/teacher/detail/:id/", {
+                    href={buildPath("/agenda/teacher/detail/:id/", {
                         id: lesson.lessonData.course.teacher.id,
                     })}
                 >

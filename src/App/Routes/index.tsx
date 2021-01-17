@@ -15,8 +15,9 @@ import {
     RequestPasswordToken,
     StartPage,
 } from "pages";
-import {generatePath} from "react-router";
 import {useUser} from "hooks";
+
+import {buildPath} from "../../utils";
 
 import agendaRoutes from "./agendaRoutes";
 import addRoutes from "./addRoutes";
@@ -31,77 +32,77 @@ export default function Routes() {
             {/* Forgot password */}
             <Route
                 exact
-                path="/auth/forgot-password/"
+                path={buildPath("/auth/forgot-password/")}
                 component={RequestPasswordToken}
             />
             <Route
                 exact
-                path="/auth/forgot-password/confirm/"
+                path={buildPath("/auth/forgot-password/confirm/")}
                 component={ConfirmPasswordReset}
             />
             {/* Authentication routes */}
             <Route
                 exact
-                path="/auth/registration/"
+                path={buildPath("/auth/registration/")}
                 component={Register}
             />
             <Route
                 exact
-                path="/auth/login/"
+                path={buildPath("/auth/login/")}
                 component={Login}
             />
             <Route
                 exact
-                path="/auth/logout/"
+                path={buildPath("/auth/logout/")}
                 component={Logout}
             />
-            {!user.isAuthenticated && <Redirect to={generatePath("/auth/login/")} />}
+            {!user.isAuthenticated && <Redirect to={buildPath("/auth/login/")} />}
             {/* Registration routes */}
             <Route
                 exact
-                path="/auth/registration/email/:code?"
+                path="/app/auth/registration/email/:code?"
                 component={ConfirmEmail}
                 redirectUrl="/auth/login/"
             />
             <Route
                 exact
-                path="/auth/registration/fill"
+                path="/app/auth/registration/fill"
                 component={FillOutData}
                 redirectUrl="/auth/login/"
             />
-            {!user.isEmailVerified && <Redirect to={generatePath("/auth/registration/email/")} />}
-            {!user.isFullyRegistered && <Redirect to={generatePath("/auth/registration/fill/")} />}
+            {!user.isEmailVerified && <Redirect to={buildPath("/auth/registration/email/")} />}
+            {!user.isFullyRegistered && <Redirect to={buildPath("/auth/registration/fill/")} />}
             {/* App routes */}
             {agendaRoutes}
             {addRoutes}
             <Route
                 exact
-                path="/"
+                path={buildPath("/")}
                 component={StartPage}
             />
             <Route
                 exact
-                path="/timetable/"
+                path={buildPath("/timetable/")}
                 component={Calendar}
             />
             <Route
                 exact
-                path="/settings/"
+                path={buildPath("/settings/")}
                 component={MainSettingsPage}
             />
             <Route
                 exact
-                path="/settings/logged-in-devices/"
+                path={buildPath("/settings/logged-in-devices/")}
                 component={LoggedInDevicesPage}
             />
             <Route
                 exact
-                path="/settings/change-password/"
+                path={buildPath("/settings/change-password/")}
                 component={ChangePasswordPage}
             />
             <Route
                 exact
-                path="/settings/change-scooso-credentials/"
+                path={buildPath("/settings/change-scooso-credentials/")}
                 component={ChangeScoosoCredentialsPage}
             />
         </Switch>

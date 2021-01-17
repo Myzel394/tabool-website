@@ -26,7 +26,6 @@ import {
 } from "react-icons/all";
 import dayjs, {Dayjs} from "dayjs";
 import {HomeworkDetail} from "types";
-import {generatePath} from "react-router";
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import {ErrorContext} from "contexts";
@@ -176,7 +175,6 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             updatedAt={dayjs(dataUpdatedAt)}
             color={homework.lesson.lessonData.course.subject.userRelation.color}
             orderingStorageName="detail:ordering:homework"
-            searchAllPath={generatePath("/agenda/homework/")}
             addPath={buildPath("/add/homework/", undefined, {
                 lesson: homework.lesson.id,
                 type: homework.type,
@@ -280,7 +278,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
                         <Link
                             underline="none"
                             component={Button}
-                            href={generatePath("/agenda/lesson/detail/:id/", {
+                            href={buildPath("/agenda/lesson/detail/:id/", {
                                 id: homework.lesson.id,
                             })}
                         >

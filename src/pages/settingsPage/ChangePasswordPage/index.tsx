@@ -4,11 +4,11 @@ import {IChangePasswordData, useChangePasswordAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {useHistory} from "react-router-dom";
-import {generatePath} from "react-router";
 import {Box, Paper} from "@material-ui/core";
 import {DefaultPage} from "components";
 
 import Area from "../Area";
+import {buildPath} from "../../../utils";
 
 import Form from "./Form";
 
@@ -22,7 +22,7 @@ const PasswordResetPage = () => {
     } = useMutation<void, AxiosError, IChangePasswordData>(
         changePassword,
         {
-            onSuccess: () => history.push(generatePath("/settings")),
+            onSuccess: () => history.push(buildPath("/settings")),
         },
     );
 

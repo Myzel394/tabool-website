@@ -3,7 +3,8 @@ import {LessonDetail, Subject} from "types";
 import {useAdaptedColor} from "hooks";
 import {Avatar as MUIAvatar, Link, useTheme} from "@material-ui/core";
 import tinycolor from "tinycolor2";
-import {generatePath} from "react-router-dom";
+
+import {buildPath} from "../../utils";
 
 
 export interface IAvatar {
@@ -26,7 +27,7 @@ const Avatar = ({lesson, subject}: IAvatar) => {
     if (lesson) {
         return (
             <Link
-                href={generatePath("/agenda/lesson/detail/:id/", {
+                href={buildPath("/agenda/lesson/detail/:id/", {
                     id: lesson.id,
                 })}
                 underline="none"

@@ -7,11 +7,16 @@ const buildPath = (
     url: string,
     params?: { [paramName: string]: string | number | boolean | undefined; },
     queryParams?: ParsedUrlQueryInput,
-) => {
-    const path = generatePath(url, params);
-    const queries = queryString.stringify(queryParams);
+): string => {
+    const path = `/app${generatePath(url, params)}`;
 
-    return `${path}?${queries}`;
+    if (queryParams) {
+        const queries = queryString.stringify(queryParams);
+
+        return `${path}?${queries}`;
+    }
+
+    return path;
 };
 
 export default buildPath;

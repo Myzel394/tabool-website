@@ -11,7 +11,8 @@ import {
     VideoConferenceBadge,
 } from "components";
 import {ModificationType} from "api";
-import {generatePath} from "react-router-dom";
+
+import {buildPath} from "../../../../../../utils";
 
 import styles from "./LessonEvent.module.scss";
 
@@ -51,7 +52,7 @@ const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWh
 
     return (!showWhenFreePeriod && isFreePeriod) ? null : (
         <Link
-            href={generatePath("/agenda/lesson/detail/:id/", {
+            href={buildPath("/agenda/lesson/detail/:id/", {
                 id: lesson.id,
             })}
         >

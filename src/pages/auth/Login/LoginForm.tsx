@@ -6,12 +6,13 @@ import {TextField} from "formik-material-ui";
 import {useTranslation} from "react-i18next";
 import {MdEmail, MdLock} from "react-icons/all";
 import {HiddenTextField, LoadingOverlay, PrimaryButton, SecondaryButton} from "components";
-import {generatePath} from "react-router-dom";
 import {ILoginData, ILoginResponse} from "hooks/apis";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
 import {ErrorFieldsInjection} from "types";
 import {useColors} from "hooks";
+
+import {buildPath} from "../../../utils";
 
 
 export interface ILoginPage {
@@ -110,7 +111,7 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                                 </PrimaryButton>
                             </Grid>
                             <Grid item>
-                                <Link component={SecondaryButton} underline="none" href={generatePath("/auth/registration/")}>
+                                <Link component={SecondaryButton} underline="none" href={buildPath("/auth/registration/")}>
                                     {t("Registrieren")}
                                 </Link>
                             </Grid>

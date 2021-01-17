@@ -2,7 +2,8 @@ import React, {memo} from "react";
 import {ExamDetail} from "types";
 import {Button, Link} from "@material-ui/core";
 import {ExamIcon} from "components/icons";
-import {generatePath} from "react-router-dom";
+
+import {buildPath} from "../../../../../utils";
 
 
 export interface IExamEvent {
@@ -14,7 +15,7 @@ const ExamEvent = ({event}: IExamEvent) => {
     return (
         <Link
             fullWidth
-            href={generatePath("/agenda/exam/detail/:id/", {
+            href={buildPath("/agenda/exam/detail/:id/", {
                 id: event.id,
             })}
             underline="none"

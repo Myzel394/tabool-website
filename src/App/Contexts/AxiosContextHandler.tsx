@@ -3,10 +3,8 @@ import AxiosContext, {IAxios} from "contexts/AxiosContext";
 import axios, {AxiosError} from "axios";
 import {UserContext} from "contexts";
 import {useLocation} from "react-router";
-import {useMemoOne} from "use-memo-one";
 import camelcaseKeys from "camelcase-keys";
-import {parseErrors, snakeCaseKeys} from "utils";
-import {generatePath} from "react-router-dom";
+import {buildPath, parseErrors, snakeCaseKeys} from "utils";
 
 export interface IAxiosContextHandler {
     children: ReactNode;
@@ -40,7 +38,7 @@ const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
         instance.interceptors.response.use(response => response, (error: AxiosError) => {
             if (error.response) {
                 // Logout user on authentication error
-                if (error.response.status === 401 && location.pathname !== generatePath("/auth/login/")) {
+                if (error.response.status === 401 && location.pathname !== buildPath("/auth/login/")) {
                     dispatch({type: "logout",
                         payload: {}});
                 }

@@ -5,10 +5,10 @@ import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Box, useTheme} from "@material-ui/core";
 import {Zoom} from "react-reveal";
-import {generatePath} from "react-router-dom";
 import {MdAdd} from "react-icons/all";
 
 import createShadow from "../createShadow";
+import {buildPath} from "../../../utils";
 
 
 export interface IExams {
@@ -30,7 +30,7 @@ const Exams = ({
                         {t("Du hast keine Arbeiten in naher Zukunft.")}
                     </Alert>
                 </Box>
-                <SecondaryButton href={generatePath("/add/exam/")} startIcon={<MdAdd />}>
+                <SecondaryButton href={buildPath("/add/exam/")} startIcon={<MdAdd />}>
                     {t("Arbeit hinzufügen")}
                 </SecondaryButton>
             </Box>

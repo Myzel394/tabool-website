@@ -7,7 +7,8 @@ import {FocusedPage} from "components";
 import {useTranslation} from "react-i18next";
 import {UserContext} from "contexts";
 import {useHistory} from "react-router-dom";
-import {generatePath} from "react-router";
+
+import {buildPath} from "../../../utils";
 
 import LoginForm from "./LoginForm";
 import SuspiciousLoginForm from "./SuspiciousLoginForm";
@@ -39,7 +40,7 @@ const Login = () => {
                     type: "login",
                     payload: data,
                 });
-                history.push(typeof next === "string" ? next : generatePath("/"));
+                history.push(typeof next === "string" ? next : buildPath("/"));
             },
         },
     );

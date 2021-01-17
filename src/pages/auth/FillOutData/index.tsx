@@ -4,9 +4,10 @@ import {UserContext} from "contexts";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {useHistory} from "react-router-dom";
-import {generatePath} from "react-router";
 import {FocusedPage} from "components";
 import {useTranslation} from "react-i18next";
+
+import {buildPath} from "../../../utils";
 
 import Form from "./Form";
 
@@ -26,7 +27,7 @@ const FillOutData = () => {
                     type: "fill-out-data",
                     payload: data,
                 });
-                history.push(generatePath("/"));
+                history.push(buildPath("/"));
             },
         },
     );

@@ -10,7 +10,8 @@ import {IChangePasswordData} from "hooks/apis";
 import {FormikHelpers} from "formik/dist/types";
 import {MdLock, MdLockOpen} from "react-icons/all";
 import {useColors} from "hooks";
-import {generatePath} from "react-router-dom";
+
+import {buildPath} from "../../../utils";
 
 
 type FormikForm = ErrorFieldsInjection & IChangePasswordData & {
@@ -133,7 +134,7 @@ const Form = ({onSubmit}: IForm) => {
                             <Link
                                 component={SecondaryButton}
                                 underline="none"
-                                href={generatePath("/auth/forgot-password/")}
+                                href={buildPath("/auth/forgot-password/")}
                             >
                                 {t("Passwort vergessen")}
                             </Link>

@@ -1,10 +1,10 @@
 import React, {memo} from "react";
 import {LessonDetail} from "types";
 import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components";
-import {generatePath} from "react-router-dom";
 import {Link} from "@material-ui/core";
 
 import createShadow from "../createShadow";
+import {buildPath} from "../../../utils";
 
 
 export interface ILessonEvent {
@@ -21,7 +21,7 @@ const SingleLesson = ({lesson}: ILessonEvent) => {
 
     return (
         <Link
-            href={generatePath("/agenda/lesson/detail/:id/", {
+            href={buildPath("/agenda/lesson/detail/:id/", {
                 id: lesson.id,
             })}
             underline="none"

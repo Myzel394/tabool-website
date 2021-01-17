@@ -2,9 +2,11 @@ import React from "react";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {ISendHomeworkData, ISendHomeworkResponse, useSendHomeworkAPI} from "hooks/apis";
-import {generatePath, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {FocusedPage} from "components";
 import {useTranslation} from "react-i18next";
+
+import {buildPath} from "../../../utils";
 
 import Form from "./Form";
 
@@ -19,7 +21,7 @@ const HomeworkAddPage = () => {
     } = useMutation<ISendHomeworkResponse, AxiosError, ISendHomeworkData>(
         sendHomework,
         {
-            onSuccess: homework => history.push(generatePath("/agenda/homework/detail/:id", {
+            onSuccess: homework => history.push(buildPath("/agenda/homework/detail/:id", {
                 id: homework.id,
             })),
         },

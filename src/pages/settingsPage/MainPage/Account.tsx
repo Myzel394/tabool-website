@@ -3,7 +3,8 @@ import {Avatar, Link, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText
 import {useUser} from "hooks";
 import {FiLogOut, MdAccountCircle, MdDevices, MdEnhancedEncryption, MdLock} from "react-icons/all";
 import {useTranslation} from "react-i18next";
-import {generatePath} from "react-router-dom";
+
+import {buildPath} from "../../../utils";
 
 
 const Account = () => {
@@ -32,7 +33,7 @@ const Account = () => {
                 <ListItem
                     button
                     color="textPrimary"
-                    href={generatePath("/settings/change-password/")}
+                    href={buildPath("/settings/change-password/")}
                     component={Link}
                 >
                     <ListItemIcon>
@@ -43,7 +44,7 @@ const Account = () => {
                 <ListItem
                     button
                     color="textPrimary"
-                    href={generatePath("/settings/change-scooso-credentials/")}
+                    href={buildPath("/settings/change-scooso-credentials/")}
                     component={Link}
                 >
                     <ListItemIcon>
@@ -54,7 +55,7 @@ const Account = () => {
                 <ListItem
                     button
                     color="textPrimary"
-                    href={generatePath("/settings/logged-in-devices/")}
+                    href={buildPath("/settings/logged-in-devices/")}
                     component={Link}
                 >
                     <ListItemIcon>
@@ -65,7 +66,7 @@ const Account = () => {
                 <ListItem
                     button
                     color="textPrimary"
-                    href={generatePath("/auth/logout/")}
+                    href={buildPath("/auth/logout/")}
                     component={Link}
                 >
                     <ListItemIcon>

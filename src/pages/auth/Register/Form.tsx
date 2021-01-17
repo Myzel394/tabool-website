@@ -9,8 +9,9 @@ import * as yup from "yup";
 import {HiddenTextField, LoadingOverlay, PrimaryButton, SecondaryButton} from "components";
 import {Alert} from "@material-ui/lab";
 import {ErrorFieldsInjection} from "types";
-import {generatePath} from "react-router-dom";
 import {useColors} from "hooks";
+
+import {buildPath} from "../../../utils";
 
 import RequestTokenDialog from "./RequestTokenDialog";
 
@@ -173,7 +174,7 @@ const Form = ({onSubmit}: IForm) => {
                                 </PrimaryButton>
                             </Grid>
                             <Grid item>
-                                <Link component={SecondaryButton} underline="none" href={generatePath("/auth/login/")}>
+                                <Link component={SecondaryButton} underline="none" href={buildPath("/auth/login/")}>
                                     {t("Anmelden")}
                                 </Link>
                             </Grid>

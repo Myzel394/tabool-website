@@ -15,7 +15,7 @@ const BottomNavigation = ({innerRef}) => {
     const {state} = useContext(UserContext);
     const location = useLocation();
     const history = useHistory();
-    const baseLocation = `/${location.pathname.split("/")[1]}`;
+    const baseLocation = `/${location.pathname.split("/")[2]}`;
 
     const [selectedValue, setSelectedValue] = useState<string>(baseLocation);
 
@@ -25,7 +25,7 @@ const BottomNavigation = ({innerRef}) => {
 
     useEffect(() => {
         if (selectedValue !== baseLocation) {
-            history.push(selectedValue);
+            history.push(`/app${selectedValue}`);
         }
     }, [selectedValue, baseLocation, history]);
 

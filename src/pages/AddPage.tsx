@@ -3,7 +3,7 @@ import {List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {ExamIcon, HomeworkIcon, RoomIcon} from "components/icons";
 import {useTranslation} from "react-i18next";
 import {FocusedPage} from "components";
-import {generatePath} from "react-router-dom";
+import {buildPath} from "utils";
 
 const ITEM_SIZE = "1.5rem";
 
@@ -15,7 +15,7 @@ const AddPage = () => {
             <List>
                 <ListItem
                     button
-                    href={generatePath("/add/homework")}
+                    href={buildPath("/add/homework")}
                     component="a"
                 >
                     <ListItemIcon>
@@ -27,7 +27,7 @@ const AddPage = () => {
                 </ListItem>
                 <ListItem
                     button
-                    href={generatePath("/add/exam")}
+                    href={buildPath("/add/exam")}
                     component="a"
                 >
                     <ListItemIcon>
@@ -39,7 +39,7 @@ const AddPage = () => {
                 </ListItem>
                 <ListItem
                     button
-                    href={generatePath("/add/room")}
+                    href={buildPath("/add/room")}
                     component="a"
                 >
                     <ListItemIcon>
