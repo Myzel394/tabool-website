@@ -33,7 +33,8 @@
             "default": "array"
         }],
         "jsx-a11y/no-autofocus": "off",
-        "promise/catch-or-return": 1
+        "promise/catch-or-return": 1,
+        "no-process-env": "off"
     },
     "env": {
         "browser": true,

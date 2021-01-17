@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {ISendFCMTokenData, useSendFCMTokenAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
-import {usePermissions, usePersistentStorage} from "hooks";
+import {useOnFCMMessageHandler, usePermissions, usePersistentStorage} from "hooks";
 
 import {message} from "../firebase";
 import {PermissionType} from "../hooks/usePermissions";
@@ -32,18 +32,23 @@ const FCMHandler = ({children}: IFCMHandler) => {
     );
 
     useEffect(() => {
-        message.getToken({
-            vapidKey: "BOr7IMa796K1HWTCRkZsW-fGh8wZvGPr9su0tJPjIAZnhxAnQrqQNu4NLNkIZPT4dxxoCByfPzX_34OnbEEgNmw",
-        }).then(registrationId => {
-            const hasAllowedNotifications = !isLoading && state.notification === PermissionType.Granted;
+        message
+            .getToken({
+                vapidKey: process.env.REACT_APP_FCM_VAPID_KEY,
+            })
+            .then(registrationId => {
+                const hasAllowedNotifications = !isLoading && state.notification === PermissionType.Granted;
 
-            if (!hasSent && hasAllowedNotifications) {
-                mutate({
-                    registrationId,
-                });
-            }
-        });
+                if (!hasSent && hasAllowedNotifications && registrationId) {
+                    mutate({
+                        registrationId,
+                    });
+                }
+            })
+            .catch(() => null);
     }, [mutate, hasSent, isLoading, state.notification]);
+
+    useOnFCMMessageHandler();
 
     return children;
 };

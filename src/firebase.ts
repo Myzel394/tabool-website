@@ -15,8 +15,5 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export const message = firebase.messaging();
 
-// eslint-disable-next-line no-console
-message.onMessage(console.log);
-
 export default firebase;
 

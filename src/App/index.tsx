@@ -44,35 +44,35 @@ const App = () => {
                 <Contexts bottomSheetHeight={bottomHeight} setActiveTheme={setActiveTheme} activeTheme={activeTheme}>
                     <Checks>
                         <OhNoChecks>
-                            <FCMHandler>
-                                <RequiredPermissions>
-                                    <ErrorContextHandler>
-                                        <MuiPickersUtilsProvider utils={DayjsUtils}>
-                                            <SnackbarProvider
-                                                ref={$snackbar}
-                                                maxSnack={isMobile ? 2 : 5}
-                                                dense={isMobile}
-                                                style={snackbarStyles}
-                                                action={(key) =>
-                                                    <IconButton onClick={() => closeSnackbar(key)}>
-                                                        <MdClose />
-                                                    </IconButton>
-                                                }
-                                            >
+                            <SnackbarProvider
+                                ref={$snackbar}
+                                maxSnack={isMobile ? 2 : 5}
+                                dense={isMobile}
+                                style={snackbarStyles}
+                                action={(key) =>
+                                    <IconButton onClick={() => closeSnackbar(key)}>
+                                        <MdClose />
+                                    </IconButton>
+                                }
+                            >
+                                <FCMHandler>
+                                    <RequiredPermissions>
+                                        <ErrorContextHandler>
+                                            <MuiPickersUtilsProvider utils={DayjsUtils}>
                                                 <CssBaseline />
                                                 <Routes />
-                                            </SnackbarProvider>
-                                        </MuiPickersUtilsProvider>
-                                    </ErrorContextHandler>
-                                    {/* Bottom padding */}
-                                    <div
-                                        style={{
-                                            height: bottomHeight,
-                                        }}
-                                    />
-                                    <BottomNavigation innerRef={$bottom} />
-                                </RequiredPermissions>
-                            </FCMHandler>
+                                            </MuiPickersUtilsProvider>
+                                        </ErrorContextHandler>
+                                        {/* Bottom padding */}
+                                        <div
+                                            style={{
+                                                height: bottomHeight,
+                                            }}
+                                        />
+                                        <BottomNavigation innerRef={$bottom} />
+                                    </RequiredPermissions>
+                                </FCMHandler>
+                            </SnackbarProvider>
                         </OhNoChecks>
                     </Checks>
                 </Contexts>
