@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require("webpack");
 const dotenv = require("dotenv");
+const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 
 module.exports = () => {
     // call dotenv and it will return an Object with a parsed key
@@ -15,6 +16,10 @@ module.exports = () => {
     return {
         plugins: [
             new webpack.DefinePlugin(envKeys),
+            new WorkboxWebpackPlugin.InjectManifest({
+                swSrc: "./src/service-worker.js",
+                swDest: "sw.js",
+            }),
         ],
     };
 };

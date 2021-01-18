@@ -76,6 +76,10 @@
     "use-memo-one": "^1.1.1",
     "use-persisted-reducer": "^2.1.0",
     "uuid": "^8.3.1",
+    "workbox-cacheable-response": "^6.0.2",
+    "workbox-expiration": "^6.0.2",
+    "workbox-routing": "^6.0.2",
+    "workbox-strategies": "^6.0.2",
     "yup": "^0.32.8",
     "yup-locales": "^1.2.0"
   },
@@ -134,6 +138,9 @@
     "@types/ua-parser-js": "^0.7.35",
     "@types/use-deep-compare-effect": "^1.2.0",
     "@types/uuid": "^8.3.0",
+    "@types/workbox-cacheable-response": "^4.3.0",
+    "@types/workbox-routing": "^4.3.0",
+    "@types/workbox-strategies": "^4.3.0",
     "@types/yup": "^0.29.11",
     "@typescript-eslint/eslint-plugin": "4.1.x",
     "@typescript-eslint/parser": "4.1.x",
@@ -147,7 +154,8 @@
     "static-server": "^2.2.1",
     "ts-jest": "^26.4.1",
     "ts-node": "^9.1.1",
-    "typescript": "4.0.x"
+    "typescript": "4.0.x",
+    "workbox-webpack-plugin": "^6.0.2"
   },
   "jest": {
     "moduleNameMapper": {
