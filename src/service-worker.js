@@ -2,6 +2,7 @@ import {registerRoute} from "workbox-routing";
 import {CacheFirst, StaleWhileRevalidate} from "workbox-strategies";
 import {CacheableResponsePlugin} from "workbox-cacheable-response";
 import {ExpirationPlugin} from "workbox-expiration";
+import {precacheAndRoute} from "workbox-precaching";
 
 // Google fonts
 // Cache the underlying font files with a cache-first strategy for 1 year
@@ -23,8 +24,11 @@ registerRoute(
 
 // API
 registerRoute(
-    ({url}) => url.origin === "https://tabool.com" &&
-        url.pathname.startsWith("/api/"),
+    ({url}) => (
+        url.origin === "https://tabool.com" &&
+        url.pathname.startsWith("/api/") &&
+            url.protocol === ""
+    ),
     new StaleWhileRevalidate(),
 );
 
@@ -38,3 +42,6 @@ registerRoute(
         cacheName: "static-resources",
     }),
 );
+
+// Manifest
+precacheAndRoute(self.__WB_MANIFEST);
