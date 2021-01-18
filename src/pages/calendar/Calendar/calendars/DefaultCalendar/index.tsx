@@ -103,7 +103,10 @@ const styles = (theme: Theme) => {
                 borderColor: color,
             },
             "& .rbc-time-slot": {
-                border: "none",
+                border: "none !important",
+            },
+            "& .rbc-today": {
+                backgroundColor: theme.palette.background.default,
             },
         },
     };
