@@ -1,6 +1,5 @@
 import {Route} from "react-router-dom";
-import React from "react";
-import {AddPage, ExamAddPage, HomeworkAddPage, RoomAddPage} from "pages";
+import React, {lazy} from "react";
 import {buildPath} from "utils";
 
 const addRoutes = [
@@ -8,25 +7,25 @@ const addRoutes = [
         key="add_route"
         exact
         path={buildPath("/add/")}
-        component={AddPage}
+        component={lazy(() => import("pages/AddPage"))}
     />,
     <Route
         key="add_homework_route"
         exact
         path={buildPath("/add/homework/")}
-        component={HomeworkAddPage}
+        component={lazy(() => import("pages/add/HomeworkAddPage"))}
     />,
     <Route
         key="add_exam_route"
         exact
         path={buildPath("/add/exam/")}
-        component={ExamAddPage}
+        component={lazy(() => import("pages/add/ExamAddPage"))}
     />,
     <Route
         key="add_room_route"
         exact
         path={buildPath("/add/room/")}
-        component={RoomAddPage}
+        component={lazy(() => import("pages/add/RoomAddPage"))}
     />,
 ];
 
