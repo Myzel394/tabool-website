@@ -12,7 +12,7 @@ const useFetchPollsAPI = () => {
 
     return useCallback(async (): Promise<IFetchPollsResponse> => {
         const {data} = await instance.get("/api/data/poll/", await getLoginConfig());
-        await Promise.allSettled(data.map(parsePoll));
+        await Promise.allSettled(data.results.map(parsePoll));
 
         return data;
     }, [instance]);

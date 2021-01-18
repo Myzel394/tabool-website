@@ -34,3 +34,4 @@ export {default as renderDayWithLessonWeekdays} from "./renderDayWithLessonWeekd
 export {default as BottomSheetAction} from "./BottomSheetAction";
 export {default as HorizontalScroll} from "./HorizontalScroll";
 export {default as ButtonLike} from "./ButtonLike";
+export {default as Poll} from "./Poll";

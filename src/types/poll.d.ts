@@ -1,6 +1,6 @@
 import {Dayjs} from "dayjs";
 
-export interface Choice {
+export interface PollChoice {
     text: string;
     color: string;
     id: string;
@@ -22,10 +22,11 @@ export interface Poll {
     createdAt: Dayjs;
     maxVoteChoices: number;
     id: string;
-    choices: Choice[];
-    results: VoteResult[];
-    userVote: UserVote;
+    hasVoted: boolean;
+    choices: PollChoice[];
 
+    results: VoteResult[] | null;
+    userVote: UserVote | null;
     maxVoteDate: Dayjs | null;
     showResultsDate: Dayjs | null;
 }

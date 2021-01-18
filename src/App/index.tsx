@@ -21,6 +21,7 @@ import RequiredPermissions from "./RequiredPermissions";
 import OhNoChecks from "./OhNoChecks";
 import Checks from "./Checks";
 import FCMHandler from "./FCMHandler";
+import PollHandler from "./PollHandler";
 
 const THEME_MAP = {
     light,
@@ -56,21 +57,23 @@ const App = () => {
                                 }
                             >
                                 <FCMHandler>
-                                    <RequiredPermissions>
-                                        <ErrorContextHandler>
-                                            <MuiPickersUtilsProvider utils={DayjsUtils}>
-                                                <CssBaseline />
-                                                <Routes />
-                                            </MuiPickersUtilsProvider>
-                                        </ErrorContextHandler>
-                                        {/* Bottom padding */}
-                                        <div
-                                            style={{
-                                                height: bottomHeight,
-                                            }}
-                                        />
-                                        <BottomNavigation innerRef={$bottom} />
-                                    </RequiredPermissions>
+                                    <PollHandler>
+                                        <RequiredPermissions>
+                                            <ErrorContextHandler>
+                                                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                                                    <CssBaseline />
+                                                    <Routes />
+                                                </MuiPickersUtilsProvider>
+                                            </ErrorContextHandler>
+                                            {/* Bottom padding */}
+                                            <div
+                                                style={{
+                                                    height: bottomHeight,
+                                                }}
+                                            />
+                                            <BottomNavigation innerRef={$bottom} />
+                                        </RequiredPermissions>
+                                    </PollHandler>
                                 </FCMHandler>
                             </SnackbarProvider>
                         </OhNoChecks>

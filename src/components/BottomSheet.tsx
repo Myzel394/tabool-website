@@ -1,5 +1,5 @@
-import React from "react";
-import {Container, ContainerProps, SwipeableDrawer, SwipeableDrawerProps} from "@material-ui/core";
+import React, {useMemo} from "react";
+import {Box, Container, ContainerProps, SwipeableDrawer, SwipeableDrawerProps, useTheme} from "@material-ui/core";
 import {isIOS} from "react-device-detect";
 import {Breakpoint} from "@material-ui/core/styles/createBreakpoints";
 
@@ -11,14 +11,33 @@ export interface IBottomSheet extends Omit<
     "open" |
     "children" |
     "anchor" |
-    "onOpen"
+    "onOpen" |
+    "onClose"
 > {
     isOpen: SwipeableDrawerProps["open"];
     children: ContainerProps["children"];
     maxWidth?: Breakpoint;
+    onClose?: SwipeableDrawerProps["onClose"];
 }
 
-const BottomSheet = ({children, maxWidth, isOpen, style: givenStyle, ...other}: IBottomSheet) => {
+const wrapperStyle = {
+    borderRadius: "2em 2em 0 0",
+};
+
+const BottomSheet = ({
+    children,
+    maxWidth,
+    isOpen,
+    onClose,
+    style: givenStyle,
+    ...other
+}: IBottomSheet) => {
+    const theme = useTheme();
+    const style = useMemo(() => ({
+        ...givenStyle,
+        borderRadius: theme.shape.borderRadius,
+    }), [theme.shape.borderRadius, givenStyle]);
+
     return (
         <SwipeableDrawer
             {...other}
@@ -27,10 +46,17 @@ const BottomSheet = ({children, maxWidth, isOpen, style: givenStyle, ...other}: 
             open={isOpen}
             disableBackdropTransition={!isIOS}
             disableDiscovery={isIOS}
+            style={wrapperStyle}
+            PaperProps={{
+                style: wrapperStyle,
+            }}
+            onClose={onClose ?? (() => null)}
             onOpen={() => null}
         >
             <Container maxWidth={maxWidth}>
-                {children}
+                <Box p={2} style={style}>
+                    {children}
+                </Box>
             </Container>
         </SwipeableDrawer>
     );
