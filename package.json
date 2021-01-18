@@ -76,16 +76,12 @@
     "use-memo-one": "^1.1.1",
     "use-persisted-reducer": "^2.1.0",
     "uuid": "^8.3.1",
-    "workbox-cacheable-response": "^6.0.2",
-    "workbox-expiration": "^6.0.2",
-    "workbox-routing": "^6.0.2",
-    "workbox-strategies": "^6.0.2",
     "yup": "^0.32.8",
     "yup-locales": "^1.2.0"
   },
   "scripts": {
     "start": "BROWSER=None react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "GENERATE_SOURCEMAP=false react-app-rewired build",
     "test": "jest --coverage",
     "eject": "react-app-rewired eject"
   },
@@ -155,6 +151,12 @@
     "ts-jest": "^26.4.1",
     "ts-node": "^9.1.1",
     "typescript": "4.0.x",
+    "webpack": "^5.15.0",
+    "workbox-cacheable-response": "^6.0.2",
+    "workbox-expiration": "^6.0.2",
+    "workbox-precaching": "^6.0.2",
+    "workbox-routing": "^6.0.2",
+    "workbox-strategies": "^6.0.2",
     "workbox-webpack-plugin": "^6.0.2"
   },
   "jest": {

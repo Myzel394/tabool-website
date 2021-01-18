@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+const path = require("path");
+
 const webpack = require("webpack");
 const dotenv = require("dotenv");
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
@@ -17,7 +18,7 @@ module.exports = () => {
         plugins: [
             new webpack.DefinePlugin(envKeys),
             new WorkboxWebpackPlugin.InjectManifest({
-                swSrc: "./src/service-worker.js",
+                swSrc: path.join(process.cwd(), "./src/service-worker.js"),
                 swDest: "sw.js",
             }),
         ],
