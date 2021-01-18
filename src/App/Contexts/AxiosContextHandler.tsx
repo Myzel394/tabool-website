@@ -10,11 +10,15 @@ export interface IAxiosContextHandler {
     children: ReactNode;
 }
 
+const baseURL = process.env.NODE_ENV === "production" ? "" : "http://127.0.0.1:8000/";
+
 const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
     const {dispatch} = useContext(UserContext);
     const location = useLocation();
     const client: IAxios = useMemo(() => {
-        const instance = axios.create({baseURL: "http://127.0.0.1:8000/"});
+        const instance = axios.create({
+            baseURL,
+        });
 
         // Camelcase response
         instance.interceptors.response.use(response => {
