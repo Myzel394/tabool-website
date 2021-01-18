@@ -18,6 +18,7 @@ export * from "./teacher";
 export * from "./session";
 export * from "./scoosoCredentials";
 export * from "./forgotPassword";
+export * from "./poll";
 
 export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
 export {default as useSendFCMTokenAPI} from "./useSendFCMTokenAPI";
