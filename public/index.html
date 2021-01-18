@@ -1,45 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <head>
+        <meta charset="utf-8">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+        <meta name="theme-color" content="#FFA723">
+        <meta name="description" content="tabool - Die sichere & schnelle App für uns Schüler.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+        <!-- iOS -->
+        <meta name="apple-mobile-web-app-title" content="tabool">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <link rel="apple-touch-icon" href="logo192.png">
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+        <!-- Tap highlighting  -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <!-- Fitscreen  -->
+        <meta name="viewport" content="uc-fitscreen=yes">
+        <!-- Orientation  -->
+        <meta name="screen-orientation" content="portrait">
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+        <link href="icons/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
+        <link href="icons/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32">
+        <link href="icons/favicon-48x48.png" rel="icon" type="image/png" sizes="48x48">
+        <link href="icons/favicon-96x96.png" rel="icon" type="image/png" sizes="96x96">
+
+        <link href="icons/apple-icon-180x180.png" rel="apple-touch-icon">
+        <link href="icons/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
+        <link href="icons/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
+        <link href="icons/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+        <link href="icons/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
+        <link href="icons/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+        <link href="icons/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
+        <link href="icons/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
+        <link href="icons/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+        <link href="icons/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
+        <link href="icons/apple-icon-180x180.png" rel="apple-touch-icon">
+        <link href="icons/apple-icon-480x480.png" rel="apple-touch-startup-image">
+
+        <link href="icons/logo.svg" rel="mask-icon" size="any" color="#ffa723">
+
+        <link href="icons/android-icon-192x192.png" rel="icon" sizes="192x192">
+        <link href="icons/android-icon-128x128.png" rel="icon" sizes="128x128">
+
+        <link rel="manifest" href="manifest.json">
+
+        <title>tabool</title>
+    </head>
+    <body>
+    <noscript>
+        <h1>Aktiviere Javascript um tabool nutzen zu können</h1>
+        <a href="https://www.enable-javascript.com/de/" rel="noopener noreferrer" target="_blank">Wie aktiviere ich Javascript?</a>
+    </noscript>
+    <div id="root">
+        <h1>
+            Seite wird geladen...
+        </h1>
+    </div>
+    <script>
+        if ("serviceWorker" in navigator){
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("/sw.js");
+            })
+        }
+    </script>
+    </body>
 </html>
