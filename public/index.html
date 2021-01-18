@@ -2,13 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
         <meta name="theme-color" content="#FFA723">
         <meta name="description" content="tabool - Die sichere & schnelle App für uns Schüler.">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover, uc-fitscreen=yes">
         <meta name="mobile-web-app-capable" content="yes">
 
         <!-- iOS -->
@@ -19,54 +17,60 @@
 
         <!-- Tap highlighting  -->
         <meta name="msapplication-tap-highlight" content="no">
-        <!-- Fitscreen  -->
-        <meta name="viewport" content="uc-fitscreen=yes">
         <!-- Orientation  -->
         <meta name="screen-orientation" content="portrait">
 
-        <link href="icons/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
-        <link href="icons/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32">
-        <link href="icons/favicon-48x48.png" rel="icon" type="image/png" sizes="48x48">
-        <link href="icons/favicon-96x96.png" rel="icon" type="image/png" sizes="96x96">
+        <link href="/icons/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
+        <link href="/icons/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32">
+        <link href="/icons/favicon-48x48.png" rel="icon" type="image/png" sizes="48x48">
+        <link href="/icons/favicon-96x96.png" rel="icon" type="image/png" sizes="96x96">
 
-        <link href="icons/apple-icon-180x180.png" rel="apple-touch-icon">
-        <link href="icons/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
-        <link href="icons/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
-        <link href="icons/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
-        <link href="icons/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
-        <link href="icons/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
-        <link href="icons/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
-        <link href="icons/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
-        <link href="icons/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
-        <link href="icons/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
-        <link href="icons/apple-icon-180x180.png" rel="apple-touch-icon">
-        <link href="icons/apple-icon-480x480.png" rel="apple-touch-startup-image">
+        <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon">
+        <link href="/icons/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
+        <link href="/icons/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
+        <link href="/icons/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+        <link href="/icons/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
+        <link href="/icons/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+        <link href="/icons/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
+        <link href="/icons/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
+        <link href="/icons/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+        <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
+        <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon">
+        <link href="/icons/apple-icon-480x480.png" rel="apple-touch-startup-image">
 
-        <link href="icons/logo.svg" rel="mask-icon" size="any" color="#ffa723">
+        <link href="/icons/logo.svg" rel="mask-icon" size="any" color="#ffa723">
 
-        <link href="icons/android-icon-192x192.png" rel="icon" sizes="192x192">
-        <link href="icons/android-icon-128x128.png" rel="icon" sizes="128x128">
+        <link href="/icons/android-icon-192x192.png" rel="icon" sizes="192x192">
+        <link href="/icons/android-icon-128x128.png" rel="icon" sizes="128x128">
 
-        <link rel="manifest" href="manifest.json">
+        <link rel="/manifest" href="manifest.json">
 
         <title>tabool</title>
     </head>
     <body>
-    <noscript>
-        <h1>Aktiviere Javascript um tabool nutzen zu können</h1>
-        <a href="https://www.enable-javascript.com/de/" rel="noopener noreferrer" target="_blank">Wie aktiviere ich Javascript?</a>
-    </noscript>
-    <div id="root">
-        <h1>
-            Seite wird geladen...
-        </h1>
-    </div>
-    <script async defer>
-        if ("serviceWorker" in navigator){
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("/sw.js");
-            })
-        }
-    </script>
+        <noscript>
+            <h1>Aktiviere Javascript um tabool nutzen zu können</h1>
+            <a href="https://www.enable-javascript.com/de/" rel="noopener noreferrer" target="_blank">Wie aktiviere ich Javascript?</a>
+            <style>
+                #root {
+                    display: none;
+                }
+            </style>
+        </noscript>
+        <div id="root">
+            <div style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100vh;">
+                <img src="/logo512.png" alt="tabool logo" style="width: 50%" />
+                <h1 style="color: #ffa723; font-family: 'Roboto', Roboto, Google Sans, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                    Wird geladen...
+                </h1>
+            </div>
+        </div>
+        <script async defer>
+            if ("serviceWorker" in navigator){
+                window.addEventListener("load", () => {
+                    navigator.serviceWorker.register("/sw.js");
+                })
+            }
+        </script>
     </body>
 </html>
