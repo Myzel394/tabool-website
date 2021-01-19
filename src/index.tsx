@@ -18,3 +18,6 @@ ReactDOM.render(
     </React.StrictMode>,
     document.getElementById("root"),
 );
+
+// eslint-disable-next-line no-console
+console.log(process.env);

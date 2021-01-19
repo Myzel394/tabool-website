@@ -32,15 +32,13 @@ const FCMHandler = ({children}: IFCMHandler) => {
     );
 
     useEffect(() => {
-        if (state.notification === PermissionType.Granted) {
+        if (!isLoading && state.notification === PermissionType.Granted && !hasSent) {
             message
                 .getToken({
                     vapidKey: process.env.REACT_APP_FCM_VAPID_KEY,
                 })
                 .then(registrationId => {
-                    const hasAllowedNotifications = !isLoading && state.notification === PermissionType.Granted;
-
-                    if (!hasSent && hasAllowedNotifications && registrationId) {
+                    if (registrationId) {
                         mutate({
                             registrationId,
                         });

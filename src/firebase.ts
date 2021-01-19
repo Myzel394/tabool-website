@@ -1,6 +1,5 @@
 import firebase from "firebase/app";
 import "firebase/messaging";
-import "firebase/analytics";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCda3WcMdN1O449MNgcAC4mNaWsYN_Knz4",
@@ -15,7 +14,6 @@ const firebaseConfig = {
 // Initialization
 firebase.initializeApp(firebaseConfig);
 export const message = firebase.messaging();
-export const analytics = firebase.analytics();
 
 export default firebase;
 
