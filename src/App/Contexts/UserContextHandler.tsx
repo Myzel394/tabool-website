@@ -2,7 +2,6 @@ import React, {ReactNode} from "react";
 import {UserContext} from "contexts";
 import {initialUserState, IUser} from "contexts/UserContext";
 import {ActionType} from "types";
-import update from "immutability-helper";
 import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
 
@@ -28,58 +27,32 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                 id,
             } = action.payload;
 
-            return update(
-                state,
-                {
-                    isAuthenticated: {
-                        $set: true,
-                    },
-                    isFullyRegistered: {
-                        $set: hasFilledOutData,
-                    },
-                    isEmailVerified: {
-                        $set: isConfirmed,
-                    },
-                    data: {
-                        $apply: value => update<IUser["data"]>(value ?? {} as IUser["data"], {
-                            firstName: {
-                                $set: firstName,
-                            },
-                            lastName: {
-                                $set: lastName,
-                            },
-                            email: {
-                                $set: email,
-                            },
-                            id: {
-                                $set: id,
-                            },
-                        }),
-                    },
+            return {
+                ...state,
+                isAuthenticated: true,
+                isFullyRegistered: hasFilledOutData,
+                isEmailVerified: isConfirmed,
+                data: {
+                    firstName,
+                    lastName,
+                    email,
+                    id,
                 },
-            );
+            };
         }
 
         case "verify-email": {
-            return update(
-                state,
-                {
-                    isEmailVerified: {
-                        $set: true,
-                    },
-                },
-            );
+            return {
+                ...state,
+                isEmailVerified: true,
+            };
         }
 
         case "fill-out-data": {
-            return update(
-                state,
-                {
-                    isFullyRegistered: {
-                        $set: true,
-                    },
-                },
-            );
+            return {
+                ...state,
+                isFullyRegistered: true,
+            };
         }
 
         case "registration": {
@@ -90,19 +63,25 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                 id,
             } = action.payload;
 
-            return update(state, {
-                isAuthenticated: {
-                    $set: true,
-                },
+            return {
+                ...state,
+                isAuthenticated: true,
                 data: {
-                    $set: {
-                        firstName,
-                        email,
-                        id,
-                        lastName,
-                    },
+                    firstName,
+                    email,
+                    id,
+                    lastName,
                 },
-            });
+            };
+        }
+
+        case "setPreferences": {
+            const {newPreference} = action.payload;
+
+            return {
+                ...state,
+                preferences: newPreference,
+            };
         }
 
         default: {

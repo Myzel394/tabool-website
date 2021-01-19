@@ -1,5 +1,6 @@
 import {createContext} from "react";
 import {ReducerType} from "types";
+import {Dayjs} from "dayjs";
 
 export interface IUser {
     isAuthenticated: boolean;
@@ -12,6 +13,20 @@ export interface IUser {
         firstName?: string;
         lastName?: string;
     };
+    preferences: null | {
+        global: {
+            theme: string;
+            allowStatistics: boolean;
+        };
+        detailPage: {
+            ordering: Record<string, string[]>;
+            downloadedMaterials: Record<string, Dayjs>;
+        };
+        timetable: {
+            showFreePeriods: boolean;
+            showDetails: boolean;
+        };
+    };
 }
 
 export const initialUserState: IUser = {
@@ -20,6 +35,7 @@ export const initialUserState: IUser = {
     isEmailVerified: false,
     isAdmin: false,
     data: null,
+    preferences: null,
 };
 
 
