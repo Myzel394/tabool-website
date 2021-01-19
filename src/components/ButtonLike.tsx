@@ -1,4 +1,4 @@
-import React, {memo, ReactNode} from "react";
+import React, {ReactNode} from "react";
 import {Box, BoxProps, ButtonBase, useTheme} from "@material-ui/core";
 
 
@@ -21,4 +21,4 @@ const ButtonLike = ({children, style: givenStyle, ...other}: IButtonLike) => {
     );
 };
 
-export default memo(ButtonLike);
+export default ButtonLike;

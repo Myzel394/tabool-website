@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {PollChoice, UserVote, VoteResult} from "types";
 import dayjs, {Dayjs} from "dayjs";
 import {Box, Checkbox, Collapse, Container, Drawer, FormControlLabel, TextField, Typography} from "@material-ui/core";
@@ -10,6 +10,7 @@ import {IVotePollData, IVotePollResponse, useVotePollAPI} from "hooks/apis";
 import {PrimaryButton} from "../buttons";
 
 import SingleChoice from "./SingleChoice";
+import MultipleChoice from "./MultipleChoice";
 
 
 export interface IPoll {
@@ -43,7 +44,6 @@ const Poll = ({
     const {t} = useTranslation();
     const votePoll = useVotePollAPI();
 
-    const $hasOnceSelected = useRef<boolean>();
     const [value, setValue] = useState<any>();
     const [feedback, setFeedback] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -56,19 +56,12 @@ const Poll = ({
     );
 
     const diffDays = maxVoteDate?.diff(dayjs(), "day");
+    const hasSelected = maxVoteChoices === 1 ? Boolean(value) : value?.length === maxVoteChoices;
 
     // Animate in
     useEffect(() => {
         setTimeout(() => setIsOpen(true), 50);
     }, []);
-
-    // Automatically setShowFeedback
-    useEffect(() => {
-        if (value && !$hasOnceSelected.current) {
-            $hasOnceSelected.current = true;
-            setShowFeedback(true);
-        }
-    }, [value]);
 
     return (
         <Drawer
@@ -97,7 +90,7 @@ const Poll = ({
                         <Box pb={2}>
                             {maxVoteChoices === 1
                                 ? <SingleChoice value={value} choices={choices} onChange={setValue} />
-                                : null}
+                                : <MultipleChoice value={value} choices={choices} voteChoicesAmount={maxVoteChoices} onChange={setValue} />}
                         </Box>
                         <Box>
                             <FormControlLabel
@@ -108,7 +101,7 @@ const Poll = ({
                                     />
                                 }
                                 label={t("Feedback schreiben")}
-                                disabled={!value}
+                                disabled={!hasSelected}
                             />
                             <Collapse in={showFeedback}>
                                 <Box pt={1}>
@@ -128,7 +121,7 @@ const Poll = ({
                         </Box>
                     </Box>
                     <PrimaryButton
-                        disabled={value === undefined} onClick={() => {
+                        disabled={!hasSelected} onClick={() => {
                             setIsOpen(false);
                             mutate({
                                 feedback,
