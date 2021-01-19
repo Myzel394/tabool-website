@@ -2,6 +2,21 @@ import {createContext} from "react";
 import {ReducerType} from "types";
 import {Dayjs} from "dayjs";
 
+export interface UserPreferences {
+    global?: {
+        theme?: string;
+        allowStatistics?: boolean;
+    };
+    detailPage?: {
+        ordering?: Record<string, string[]>;
+        downloadedMaterials?: Record<string, Dayjs>;
+    };
+    timetable?: {
+        showFreePeriods?: boolean;
+        showDetails?: boolean;
+    };
+}
+
 export interface IUser {
     isAuthenticated: boolean;
     isFullyRegistered: boolean;
@@ -13,20 +28,7 @@ export interface IUser {
         firstName?: string;
         lastName?: string;
     };
-    preferences: null | {
-        global: {
-            theme: string;
-            allowStatistics: boolean;
-        };
-        detailPage: {
-            ordering: Record<string, string[]>;
-            downloadedMaterials: Record<string, Dayjs>;
-        };
-        timetable: {
-            showFreePeriods: boolean;
-            showDetails: boolean;
-        };
-    };
+    preferences: null | UserPreferences;
 }
 
 export const initialUserState: IUser = {

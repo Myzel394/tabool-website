@@ -76,11 +76,11 @@ const reducer = (state: IUser, action: ActionType): IUser => {
         }
 
         case "setPreferences": {
-            const {newPreference} = action.payload;
+            const {newPreferences} = action.payload;
 
             return {
                 ...state,
-                preferences: newPreference,
+                preferences: newPreferences,
             };
         }
 
