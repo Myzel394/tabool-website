@@ -11,7 +11,7 @@ import {
 import {Box, Button, ButtonGroup, Collapse, Grid, Link, Paper, Typography} from "@material-ui/core";
 import update from "immutability-helper";
 import dayjs from "dayjs";
-import {DetailPage, Homework, IllEmailButton, LoadingIndicator, Material, ScoosoMaterial} from "components";
+import {DetailPage, Homework, IllEmailButton, LoadingPage, Material, ScoosoMaterial} from "components";
 import {FaChalkboardTeacher, FaRunning, FaVideo, FiMonitor, MdPlace} from "react-icons/all";
 import {useMutation, useQuery} from "react-query";
 import {LessonDetail} from "types";
@@ -75,7 +75,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
 
     // Rendering
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <LoadingPage title={t("Stunde wird geladen...")} />;
     }
 
     if (!lesson) {

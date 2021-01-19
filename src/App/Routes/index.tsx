@@ -2,18 +2,20 @@ import React, {lazy, Suspense} from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 import {useUser} from "hooks";
 import {buildPath} from "utils";
+import {LoadingPage} from "components";
+import {useTranslation} from "react-i18next";
 
 import agendaRoutes from "./agendaRoutes";
 import addRoutes from "./addRoutes";
-import Loading from "./Loading";
 
 
 // TODO: Add formik search page!
 export default function Routes() {
+    const {t} = useTranslation();
     const user = useUser();
 
     return (
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<LoadingPage title={t("Seite wird geladen...")} />}>
             <Switch>
                 {/* Forgot password */}
                 <Route

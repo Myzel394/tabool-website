@@ -4,7 +4,7 @@ import React, {useContext} from "react";
 import dayjs from "dayjs";
 import {Grid, Link, Typography} from "@material-ui/core";
 import {CgCompress, FaTransgenderAlt, MdEmail, MdTextFields} from "react-icons/all";
-import {DetailPage, GenderStatus, LoadingIndicator} from "components";
+import {DetailPage, GenderStatus, LoadingPage} from "components";
 import {
     IFetchTeacherInformationResponse,
     IFetchTeacherListResponse,
@@ -56,7 +56,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
 
     // Rendering
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <LoadingPage title={t("Lehrer wird geladen...")} />;
     }
 
     if (!teacher) {

@@ -9,7 +9,7 @@ import {
     useUpdateHomeworkDataAPI,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks/apis";
-import {BooleanStatus, DetailPage, HomeworkTypeField, LoadingIndicator, renderDayWithLessonWeekdays} from "components";
+import {BooleanStatus, DetailPage, HomeworkTypeField, LoadingPage, renderDayWithLessonWeekdays} from "components";
 import {useTranslation} from "react-i18next";
 import {
     BiBarChartSquare,
@@ -124,7 +124,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
 
     // Rendering
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <LoadingPage title={t("Hausaufgabe wird geladen...")} />;
     }
 
     if (!homework?.lesson) {

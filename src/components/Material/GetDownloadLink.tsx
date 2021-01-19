@@ -7,7 +7,6 @@ import {useTranslation} from "react-i18next";
 import {CircularProgress, Grid} from "@material-ui/core";
 import {IFetchMaterialDownloadLinkResponse, useFetchMaterialDownloadLinkAPI} from "hooks/apis";
 
-import {LoadingIndicator} from "../indicators";
 import {PrimaryButton} from "../buttons";
 
 export interface IGetDownloadLink {
@@ -55,7 +54,7 @@ const GetDownloadLink = ({materialId, onClose, onDownload}: IGetDownloadLink) =>
         return (
             <Grid container spacing={1} direction="column">
                 <Grid item>
-                    <LoadingIndicator />
+                    <CircularProgress />
                 </Grid>
                 <Grid item>
                     <Alert severity="info">

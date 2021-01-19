@@ -5,7 +5,7 @@ import {AxiosError} from "axios";
 import {useColors, useQueryOptions, useSnackbar} from "hooks";
 import {ExamDetail} from "types";
 import {PredefinedMessageType} from "hooks/useSnackbar";
-import {CourseIcon, DetailPage, LoadingIndicator, PlaceField, renderDayWithLessonWeekdays, RoomIcon} from "components";
+import {CourseIcon, DetailPage, LoadingPage, PlaceField, renderDayWithLessonWeekdays, RoomIcon} from "components";
 import {ErrorContext} from "contexts";
 import {formatRoom} from "format";
 import {useTranslation} from "react-i18next";
@@ -67,7 +67,7 @@ const ExamDetailPage = ({match: {params: {id}}}) => {
 
     // Rendering
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <LoadingPage title={t("Arbeit wird geladen...")} />;
     }
 
     if (!exam) {

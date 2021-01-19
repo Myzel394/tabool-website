@@ -1,7 +1,6 @@
 export * from "./buttons";
 export * from "./containers";
 export * from "./forms";
-export * from "./indicators";
 export * from "./inputs";
 export * from "./mixins";
 export * from "./overlays";
