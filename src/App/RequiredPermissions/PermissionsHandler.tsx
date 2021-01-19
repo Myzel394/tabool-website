@@ -17,20 +17,23 @@ const PermissionsHandler = ({children}) => {
         if (permStates.notification === PermissionType.Default && !isIOS) {
             return (
                 <NotificationPermission
-                    onDone={state => setPermStates({
-                        ...permStates,
-                        notification: state,
-                    })}
+                    onDone={state =>
+                        setPermStates({
+                            ...permStates,
+                            notification: state,
+                        })}
                 />
             );
         }
         if (permStates.location === PermissionType.Default) {
             return (
                 <LocationPermission
-                    onDone={state => setPermStates({
-                        ...permStates,
-                        location: state,
-                    })}
+                    onDone={state =>
+                        setPermStates({
+                            ...permStates,
+                            location: state,
+                        })
+                    }
                 />
             );
         }

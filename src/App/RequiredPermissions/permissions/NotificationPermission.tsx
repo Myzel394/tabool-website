@@ -26,8 +26,7 @@ const NotificationPermission = ({onDone}: IRequestPermission) => {
                     setIsRequesting(true);
                     Notification.requestPermission()
                         .then(() => onDone(PermissionType.Granted))
-                        .catch(() => onDone(PermissionType.NotGranted))
-                        .finally(() => setIsRequesting(false));
+                        .catch(() => onDone(PermissionType.NotGranted));
                 }}
                 onDismiss={() => onDone(PermissionType.NotGranted)}
             />

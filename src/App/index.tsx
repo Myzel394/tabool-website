@@ -13,15 +13,11 @@ import dark from "themes/dark";
 
 import "./global.scss";
 
-import Routes from "./Routes";
+import AppRoutes from "./AppRoutes";
 import Contexts from "./Contexts";
 import BottomNavigation from "./BottomNavigation";
 import ErrorContextHandler from "./ErrorContextHandler";
-import RequiredPermissions from "./RequiredPermissions";
-import OhNoChecks from "./OhNoChecks";
 import Checks from "./Checks";
-import FCMHandler from "./FCMHandler";
-import PollHandler from "./PollHandler";
 
 const THEME_MAP = {
     light,
@@ -44,39 +40,31 @@ const App = () => {
             <ThemeProvider theme={THEME_MAP[activeTheme]}>
                 <Contexts bottomSheetHeight={bottomHeight} setActiveTheme={setActiveTheme} activeTheme={activeTheme}>
                     <Checks>
-                        <OhNoChecks>
-                            <SnackbarProvider
-                                ref={$snackbar}
-                                maxSnack={isMobile ? 2 : 5}
-                                dense={isMobile}
-                                style={snackbarStyles}
-                                action={(key) =>
-                                    <IconButton onClick={() => closeSnackbar(key)}>
-                                        <MdClose />
-                                    </IconButton>
-                                }
-                            >
-                                <FCMHandler>
-                                    <PollHandler>
-                                        <RequiredPermissions>
-                                            <ErrorContextHandler>
-                                                <MuiPickersUtilsProvider utils={DayjsUtils}>
-                                                    <CssBaseline />
-                                                    <Routes />
-                                                </MuiPickersUtilsProvider>
-                                            </ErrorContextHandler>
-                                            {/* Bottom padding */}
-                                            <div
-                                                style={{
-                                                    height: bottomHeight,
-                                                }}
-                                            />
-                                            <BottomNavigation innerRef={$bottom} />
-                                        </RequiredPermissions>
-                                    </PollHandler>
-                                </FCMHandler>
-                            </SnackbarProvider>
-                        </OhNoChecks>
+                        <SnackbarProvider
+                            ref={$snackbar}
+                            maxSnack={isMobile ? 2 : 5}
+                            dense={isMobile}
+                            style={snackbarStyles}
+                            action={(key) =>
+                                <IconButton onClick={() => closeSnackbar(key)}>
+                                    <MdClose />
+                                </IconButton>
+                            }
+                        >
+                            <ErrorContextHandler>
+                                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                                    <CssBaseline />
+                                    <AppRoutes />
+                                </MuiPickersUtilsProvider>
+                            </ErrorContextHandler>
+                            {/* Bottom padding */}
+                            <div
+                                style={{
+                                    height: bottomHeight,
+                                }}
+                            />
+                            <BottomNavigation innerRef={$bottom} />
+                        </SnackbarProvider>
                     </Checks>
                 </Contexts>
             </ThemeProvider>

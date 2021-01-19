@@ -20,9 +20,6 @@ const Form = ({onSubmit}: IForm) => {
     const user = useUser();
     const {t} = useTranslation();
 
-    // eslint-disable-next-line no-console
-    console.log(user);
-
     return (
         <Formik<IRequestPasswordResetData & ErrorFieldsInjection>
             initialValues={{

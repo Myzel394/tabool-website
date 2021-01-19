@@ -1,7 +1,6 @@
-import {Dispatch, SetStateAction, useCallback, useEffect} from "react";
+import {Dispatch, SetStateAction} from "react";
 
 import usePersistentStorage from "./usePersistentStorage";
-import useAsync from "./useAsync";
 
 export interface Permissions {
     notification: PermissionType;
@@ -33,7 +32,7 @@ export enum PermissionType {
 const hasNotificationGranted = async (): Promise<PermissionType> => {
     switch (Notification.permission) {
         case "default":
-            return PermissionType.NotGranted;
+            return PermissionType.Default;
         case "denied":
             return PermissionType.Blocked;
         case "granted":
@@ -106,46 +105,6 @@ const defaultValue = {
 
 const usePermissions = (): IUsePermissions => {
     const [permStates, setPermStates] = usePersistentStorage<Permissions>(defaultValue, "permissions");
-
-    const checkPermissionStates = useCallback(async () => {
-        const [notification, location] = await Promise.all([hasNotificationGranted(), hasLocationGranted()]);
-
-        setPermStates(prevState => {
-            const newState = {...prevState};
-
-            if (prevState.notification !== PermissionType.Default) {
-                newState.notification = notification;
-            }
-
-            if (prevState.location !== PermissionType.Default) {
-                newState.location = location ?? prevState.location;
-            }
-
-            return newState;
-        });
-    }, [setPermStates]);
-
-    // Get permission states
-    const {
-        status,
-    } = useAsync(checkPermissionStates);
-
-    // Check availability of permissions
-    useEffect(() => {
-        setPermStates(prevState => {
-            const newState = {...prevState};
-
-            if (!("Notification" in navigator)) {
-                newState.notification = PermissionType.NotAvailable;
-            }
-
-            if (!("geolocation" in navigator)) {
-                newState.location = PermissionType.NotAvailable;
-            }
-
-            return newState;
-        });
-    }, [setPermStates]);
 
     return {
         state: permStates,

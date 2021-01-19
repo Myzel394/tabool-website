@@ -30,7 +30,6 @@ const LocationPermission = ({onDone}: ILocationPermission) => {
                     setIsRequesting(true);
                     navigator.geolocation.getCurrentPosition(() => {
                         onDone(PermissionType.Granted);
-                        setIsRequesting(false);
                     }, error => {
                         switch (error.code) {
                             case error.PERMISSION_DENIED:
@@ -40,8 +39,6 @@ const LocationPermission = ({onDone}: ILocationPermission) => {
                             case error.POSITION_UNAVAILABLE:
                                 onDone(PermissionType.NotAvailable);
                         }
-
-                        setIsRequesting(false);
                     });
                 }}
                 onDismiss={() => onDone(PermissionType.NotGranted)}

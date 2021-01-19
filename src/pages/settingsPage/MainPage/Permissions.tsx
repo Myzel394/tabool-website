@@ -23,7 +23,7 @@ interface Permissions {
 }
 
 const PERMISSION_UNAVAILABLE = [
-    PermissionType.Blocked, PermissionType.Blocked,
+    PermissionType.Blocked, PermissionType.NotAvailable,
 ];
 
 const Permissions = () => {

@@ -5,8 +5,8 @@ import {buildPath} from "utils";
 import {LoadingPage} from "components";
 import {useTranslation} from "react-i18next";
 
-import agendaRoutes from "./agendaRoutes";
 import addRoutes from "./addRoutes";
+import agendaRoutes from "./agendaRoutes";
 
 
 // TODO: Add formik search page!
