@@ -3,9 +3,10 @@ import React, {memo, useState} from "react";
 import {ErrorMessage, Field, Form as IkForm, Formik, FormikHelpers} from "formik";
 import {Box, FormGroup, FormHelperText, Grid} from "@material-ui/core";
 import {
-    FormikLessonField,
     HomeworkInformationField,
     HomeworkTypeField,
+    LessonField,
+    LessonFieldRef,
     LoadingOverlay,
     PrimaryButton,
     renderDayWithLessonWeekdays,
@@ -15,7 +16,6 @@ import {ISendHomeworkData} from "hooks/apis";
 import * as yup from "yup";
 import dayjs from "dayjs";
 import {useQueryString} from "hooks";
-import {LessonFieldRef} from "components/inputs/LessonField";
 import {CourseDetail, ErrorFieldsInjection} from "types";
 import {CheckboxWithLabel} from "formik-material-ui";
 import {Alert} from "@material-ui/lab";
@@ -87,7 +87,7 @@ const Form = ({
                                         type="text"
                                         label={t("Stunde")}
                                         helpText={t("Von welcher Stunde aus die Hausaufgabe aufgegeben wurde.").toString()}
-                                        component={FormikLessonField}
+                                        component={LessonField}
                                         onChange={value => setFieldValue("lesson", value)}
                                     />
                                 </Grid>

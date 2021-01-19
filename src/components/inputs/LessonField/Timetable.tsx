@@ -6,8 +6,8 @@ import {ThemeProvider, useTheme} from "@material-ui/core";
 import {useWindowSize} from "hooks";
 import {Timetable as TimetableType} from "types";
 
-import Toolbar from "./Toolbar";
 import LessonEvent from "./LessonEvent";
+import Toolbar from "./Toolbar";
 
 export interface ITimetable {
     timetable: TimetableType;

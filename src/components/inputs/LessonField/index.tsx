@@ -11,8 +11,8 @@ import {Alert} from "@material-ui/lab";
 import {LessonDetail} from "types";
 
 import {LessonIcon} from "../../icons";
-import SimpleDialog from "../../SimpleDialog";
 import {PrimaryButton} from "../../buttons";
+import {SimpleDialog} from "../../components";
 
 import Timetable, {ITimetable} from "./Timetable";
 

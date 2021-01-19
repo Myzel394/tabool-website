@@ -5,9 +5,8 @@ import {Box, Grid, Typography, useTheme} from "@material-ui/core";
 import {HiClock} from "react-icons/all";
 import DayJSEl from "react-dayjs";
 
-import ColoredBox from "../../ColoredBox";
-import Information from "../../Information";
 import {RoomIcon} from "../../icons";
+import {ColoredBox, Information} from "../../components";
 
 
 export interface IExam {

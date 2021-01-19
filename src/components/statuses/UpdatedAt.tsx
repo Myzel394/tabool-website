@@ -2,8 +2,7 @@ import React, {memo, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {Box, ButtonBase, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-
-import {usePersistentStorage} from "../hooks";
+import {usePersistentStorage} from "hooks";
 
 export interface IUpdatedAt {
     value: Dayjs;

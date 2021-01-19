@@ -1,10 +1,9 @@
-import React, {memo} from "react";
+import React from "react";
 import {FaGenderless, FaQuestion, IoMdFemale, IoMdMale} from "react-icons/all";
 import {useTranslation} from "react-i18next";
+import {Gender} from "api";
 
-import {Gender} from "../api";
-
-import Information from "./Information";
+import {Information} from "../components";
 
 export interface IGenderField {
     value: Gender;
@@ -36,4 +35,4 @@ const GenderStatus = ({value}: IGenderField) => {
     );
 };
 
-export default memo(GenderStatus);
+export default GenderStatus;

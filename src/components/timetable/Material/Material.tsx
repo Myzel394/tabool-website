@@ -25,8 +25,8 @@ import {useTranslation} from "react-i18next";
 import prettyBytes from "pretty-bytes";
 import {usePersistentStorage} from "hooks";
 
-import Information from "../Information";
-import TimeRelative from "../TimeRelative";
+import {Information} from "../../components";
+import {TimeRelative} from "../../statuses";
 
 import GetDownloadLink from "./GetDownloadLink";
 

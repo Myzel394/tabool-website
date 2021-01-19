@@ -3,7 +3,7 @@ import {Box, Checkbox, FormControlLabel, FormGroup, Typography} from "@material-
 import {PollChoice} from "types";
 import {useTranslation} from "react-i18next";
 
-import ButtonLike from "../ButtonLike";
+import {ButtonLike} from "../components";
 
 
 export interface IMultipleChoice {
@@ -24,8 +24,6 @@ const MultipleChoice = ({
 
     const change = (id: string, include: boolean) => {
         const uniqueValues = new Set(Array.isArray(value) ? value : []);
-        // eslint-disable-next-line no-console
-        console.log(id, include);
 
         if (include) {
             uniqueValues.add(id);

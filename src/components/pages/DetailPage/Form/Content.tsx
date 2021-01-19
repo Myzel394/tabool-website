@@ -15,8 +15,7 @@ import {useTranslation} from "react-i18next";
 import {FormikProps} from "formik/dist/types";
 import Truncate from "react-truncate";
 
-import Tooltip from "../../../Tooltip";
-import SimpleDialog from "../../../SimpleDialog";
+import {SimpleDialog, Tooltip} from "../../../components";
 
 interface RenderFieldProps extends FormikProps<any> {
     helperText?: string | JSX.Element;

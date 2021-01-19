@@ -2,7 +2,7 @@ import React, {ExoticComponent} from "react";
 import {Dialog, DialogActions, DialogContent, DialogProps, DialogTitle} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
-import {SecondaryButton} from "../buttons";
+import {SecondaryButton} from "../../buttons";
 
 import SlideTransition from "./SlideTransition";
 import FadeTransition from "./FadeTransition";

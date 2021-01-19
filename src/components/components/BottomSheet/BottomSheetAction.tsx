@@ -11,8 +11,6 @@ export interface IBottomSheetAction {
     title?: string;
 }
 
-export const ICON_SIZE = "1.5rem";
-
 const wordBreakStyle = {
     wordBreak: "break-all" as "break-all",
 };

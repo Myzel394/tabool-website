@@ -11,7 +11,6 @@ import {
 import {MdCloudUpload, MdDeleteForever, MdFileDownload, MdSettings} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {BottomSheetAction} from "components";
-import {ICON_SIZE} from "components/BottomSheetAction";
 
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
 
@@ -26,7 +25,6 @@ export interface IMoreSheet {
     onShowSettings: () => any;
     onUploadToScooso: () => any;
 }
-
 
 const MoreSheet = ({
     isOpen,
@@ -56,7 +54,7 @@ const MoreSheet = ({
                     }}
                 >
                     <ListItemIcon>
-                        <MdSettings size={ICON_SIZE} />
+                        <MdSettings size="1.5rem" />
                     </ListItemIcon>
                     <ListItemText>
                         {t("Einstellungen")}
@@ -65,7 +63,7 @@ const MoreSheet = ({
                 <Link download underline="none" color="inherit" href={submission.file}>
                     <ListItem button>
                         <ListItemIcon>
-                            <MdFileDownload size={ICON_SIZE} />
+                            <MdFileDownload size="1.5rem" />
                         </ListItemIcon>
                         <ListItemText>
                             {t("Datei runterladen")}
@@ -81,7 +79,7 @@ const MoreSheet = ({
                     }}
                 >
                     <ListItemIcon>
-                        <MdCloudUpload size={ICON_SIZE} />
+                        <MdCloudUpload size="1.5rem" />
                     </ListItemIcon>
                     <ListItemText>
                         {t("Datei auf Scooso hochladen")}
@@ -100,7 +98,7 @@ const MoreSheet = ({
                     }}
                 >
                     <ListItemIcon>
-                        <MdDeleteForever size={ICON_SIZE} />
+                        <MdDeleteForever size="1.5rem" />
                     </ListItemIcon>
                     <ListItemText>
                         {t("Datei löschen")}

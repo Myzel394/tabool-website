@@ -7,7 +7,7 @@ import {useTranslation} from "react-i18next";
 import {CircularProgress, Grid} from "@material-ui/core";
 import {IFetchMaterialDownloadLinkResponse, useFetchMaterialDownloadLinkAPI} from "hooks/apis";
 
-import {PrimaryButton} from "../buttons";
+import {PrimaryButton} from "../../buttons";
 
 export interface IGetDownloadLink {
     materialId: string;

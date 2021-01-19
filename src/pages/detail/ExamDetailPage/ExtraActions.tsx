@@ -2,7 +2,6 @@ import React, {memo, useState} from "react";
 import {Button, LinearProgress, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {MdDeleteForever, MdMoreVert} from "react-icons/all";
 import {BottomSheetAction} from "components";
-import {ICON_SIZE} from "components/BottomSheetAction";
 import {useTranslation} from "react-i18next";
 import {useDeleteExamAPI} from "hooks/apis";
 import {useMutation} from "react-query";
@@ -11,11 +10,9 @@ import {PredefinedMessageType} from "hooks/useSnackbar";
 import {useHistory} from "react-router-dom";
 import {useSnackbar} from "hooks";
 
-
 export interface IExtraActions {
     id: string;
 }
-
 
 const ExtraActions = ({
     id,
@@ -49,7 +46,7 @@ const ExtraActions = ({
             >
                 <ListItem button disabled={isLoading} onClick={mutate}>
                     <ListItemIcon>
-                        <MdDeleteForever size={ICON_SIZE} />
+                        <MdDeleteForever size="1.5rem" />
                     </ListItemIcon>
                     <ListItemText
                         primary={t("Löschen")}

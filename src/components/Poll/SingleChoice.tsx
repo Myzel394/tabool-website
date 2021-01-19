@@ -2,7 +2,7 @@ import React, {memo} from "react";
 import {FormControlLabel, Radio, RadioGroup} from "@material-ui/core";
 import {PollChoice} from "types";
 
-import ButtonLike from "../ButtonLike";
+import {ButtonLike} from "../components";
 
 
 export interface ISingleChoice {

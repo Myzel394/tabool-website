@@ -1,10 +1,10 @@
 import React, {ReactNode} from "react";
 import {Box} from "@material-ui/core";
-import {BackButton, Tooltip} from "components";
 import {useTranslation} from "react-i18next";
 
-import Logo from "../../Logo";
 import BasePage from "../BasePage";
+import {Logo, Tooltip} from "../../components";
+import {BackButton} from "../../buttons";
 
 import Title from "./Title";
 import Wrapper from "./Wrapper";

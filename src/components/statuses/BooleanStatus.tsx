@@ -1,9 +1,9 @@
-import React, {memo} from "react";
+import React from "react";
 import {MdCancel, MdCheckCircle} from "react-icons/all";
 import {useTheme} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
-import Information from "./Information";
+import {Information} from "../components";
 
 export interface IBooleanStatus {
     value: boolean;
@@ -25,4 +25,4 @@ const BooleanStatus = ({value}: IBooleanStatus) => {
     );
 };
 
-export default memo(BooleanStatus);
+export default BooleanStatus;

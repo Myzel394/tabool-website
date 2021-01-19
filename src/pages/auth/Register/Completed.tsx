@@ -1,17 +1,22 @@
 import React from "react";
-import {SuccessMixin} from "components";
 import {useTranslation} from "react-i18next";
+import {Box, Typography} from "@material-ui/core";
 
 
 const Completed = () => {
     const {t} = useTranslation();
 
     return (
-        <SuccessMixin
-            title={t("Super!")}
-            description={t("Überprüfte jetzt deine E-Mail. Dort geht's dann weiter!")}
-        />
+        <Box>
+            <Typography variant="h1">
+                {t("Super")}
+            </Typography>
+            <Typography variant="body1">
+                {t("Überprüfe jetzt deine E-Mail. Dort geht's dann weiter!")}
+            </Typography>
+        </Box>
     );
 };
+
 
 export default Completed;

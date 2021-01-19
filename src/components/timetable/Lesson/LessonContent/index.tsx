@@ -7,7 +7,7 @@ import {isMobile} from "react-device-detect";
 
 import LessonContext from "../LessonContext";
 import styles from "../LessonContent.module.scss";
-import Information from "../../../Information";
+import {Information} from "../../../components";
 
 
 export interface ILessonContent {
