@@ -9,6 +9,7 @@ import Permissions from "./Permissions";
 import Account from "./Account";
 import Statistics from "./Statistics";
 import Design from "./Design";
+import Faq from "./Faq";
 
 const style = {
     width: "100%",
@@ -38,6 +39,11 @@ const MainPage = () => {
                 <Grid item>
                     <Area title={t("Statistiken")}>
                         <Statistics />
+                    </Area>
+                </Grid>
+                <Grid item>
+                    <Area title={t("Fragen")}>
+                        <Faq />
                     </Area>
                 </Grid>
             </Grid>

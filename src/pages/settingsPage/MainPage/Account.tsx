@@ -3,8 +3,7 @@ import {Avatar, Link, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText
 import {useUser} from "hooks";
 import {FiLogOut, MdAccountCircle, MdDevices, MdEnhancedEncryption, MdLock} from "react-icons/all";
 import {useTranslation} from "react-i18next";
-
-import {buildPath} from "../../../utils";
+import {buildPath} from "utils";
 
 
 const Account = () => {
