@@ -1,9 +1,6 @@
 import {createContext} from "react";
 
 export interface IUtilsContext {
-    activeTheme: "dark" | "light";
-    setActiveTheme: (newTheme: "dark" | "light") => any;
-
     bottomSheetHeight?: number;
 }
 

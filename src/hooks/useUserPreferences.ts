@@ -11,6 +11,8 @@ export interface IUseUserPreferences {
         global: {
             setTheme: (theme: "light" | "dark") => void;
             setAllowStatistics: (allowStatistics: boolean) => void;
+            setUpdatedAtTimeView: (view: "static" | "dynamic") => void;
+            setStartPageMaxFutureDays: (date: number) => void;
         };
 
         detailPage: {
@@ -30,7 +32,7 @@ export interface IUseUserPreferences {
 const useUserPreferences = (): IUseUserPreferences => {
     const {
         dispatch,
-        state: {preferences},
+        state: {preferences = {}},
     } = useContext(UserContext);
 
     const updatePreferences = useCallback((newPreferences: IUser["preferences"]) =>
@@ -63,6 +65,26 @@ const useUserPreferences = (): IUseUserPreferences => {
             },
         }))
     , [updatePreferences, preferences]);
+    const setUpdatedAtTimeView = useCallback((view: "static" | "dynamic") =>
+        updatePreferences(update(preferences, {
+            global: {
+                $apply: (value = {}) => ({
+                    ...value,
+                    updatedAtTimeView: view,
+                }),
+            },
+        }))
+    , [updatePreferences, preferences]);
+    const setStartPageMaxFutureDays = useCallback((date: number) =>
+        updatePreferences(update(preferences, {
+            global: {
+                $apply: (value = {}) => ({
+                    ...value,
+                    startPageMaxFutureDays: date,
+                }),
+            },
+        }))
+    , [updatePreferences, preferences]);
 
     // detail page
     const addOrdering = useCallback((identifier: string, ordering: string[]) =>
@@ -70,9 +92,10 @@ const useUserPreferences = (): IUseUserPreferences => {
             detailPage: {
                 $apply: (value = {}) => update(value, {
                     ordering: {
-                        [identifier]: {
-                            $set: ordering,
-                        },
+                        $apply: (value = {}) => ({
+                            ...value,
+                            [identifier]: ordering,
+                        }),
                     },
                 }),
             },
@@ -85,9 +108,10 @@ const useUserPreferences = (): IUseUserPreferences => {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore: Dayjs is stored as string but passed as Dayjs instance
                     downloadedMaterials: {
-                        [materialId]: {
-                            $set: dayjs().toISOString(),
-                        },
+                        $apply: (value = {}) => ({
+                            ...value,
+                            [materialId]: dayjs().toISOString(),
+                        }),
                     },
                 }),
             },
@@ -137,6 +161,8 @@ const useUserPreferences = (): IUseUserPreferences => {
             global: {
                 setTheme,
                 setAllowStatistics,
+                setUpdatedAtTimeView,
+                setStartPageMaxFutureDays,
             },
             detailPage: {
                 addOrdering,

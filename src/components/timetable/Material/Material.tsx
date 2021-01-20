@@ -1,5 +1,5 @@
 import React, {memo, useMemo, useState} from "react";
-import dayjs, {Dayjs} from "dayjs";
+import {Dayjs} from "dayjs";
 import {
     Box,
     Dialog,
@@ -23,7 +23,7 @@ import {
 } from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import prettyBytes from "pretty-bytes";
-import {usePersistentStorage} from "hooks";
+import {useUserPreferences} from "hooks";
 
 import {Information} from "../../components";
 import {TimeRelative} from "../../statuses";
@@ -52,19 +52,10 @@ const EXTENSION_ICON_MAPPING = {
 
 const Material = ({name, addedAt, id, size, isDeleted}: IMaterial) => {
     const theme = useTheme();
+    const {state, update} = useUserPreferences();
     const {t} = useTranslation();
 
     const [downloadFile, setDownloadFile] = useState<boolean>(false);
-    const [downloadDate, setDownloadDate] = usePersistentStorage<Dayjs | null>(
-        null,
-        `material_has_downloaded_${id}`,
-        undefined,
-        value => (value ? value.toISOString() : JSON.stringify(null)),
-        string => {
-            const date = dayjs(string);
-            return date.isValid() ? date : null;
-        },
-    );
 
     const informationStyle = useMemo(() => ({
         wordBreak: "break-all" as "break-all",
@@ -73,6 +64,8 @@ const Material = ({name, addedAt, id, size, isDeleted}: IMaterial) => {
 
     const extension = name.split(".").pop();
     const FormatIcon = (extension && EXTENSION_ICON_MAPPING[extension]) ?? FaFile;
+    const downloadDate = state?.detailPage?.downloadedMaterials?.[id];
+    const setDownloadDate = () => update.detailPage.addDownloadedMaterialsDate(id);
 
     return (
         <>
@@ -144,7 +137,7 @@ const Material = ({name, addedAt, id, size, isDeleted}: IMaterial) => {
                     <GetDownloadLink
                         materialId={id}
                         onClose={() => setDownloadFile(false)}
-                        onDownload={() => setDownloadDate(dayjs())}
+                        onDownload={setDownloadDate}
                     />
                 </DialogContent>
             </Dialog>

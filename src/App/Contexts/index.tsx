@@ -3,27 +3,23 @@ import {QueryClient, QueryClientProvider} from "react-query";
 
 import UserContextHandler from "./UserContextHandler";
 import AxiosContextHandler from "./AxiosContextHandler";
-import UtilsContextHandler, {IUtilsContextHandler} from "./UtilsContextHandler";
+import UtilsContextHandler from "./UtilsContextHandler";
 
 
 export interface IContexts {
     children: ReactNode;
-    activeTheme: IUtilsContextHandler["activeTheme"];
-    setActiveTheme: IUtilsContextHandler["setActiveTheme"];
 
     bottomSheetHeight?: number;
 }
 
 const queryClient = new QueryClient();
 
-const Contexts = ({children, setActiveTheme, activeTheme, bottomSheetHeight}: IContexts) => {
+const Contexts = ({children, bottomSheetHeight}: IContexts) => {
     return (
         <QueryClientProvider client={queryClient}>
             <UserContextHandler>
                 <AxiosContextHandler>
                     <UtilsContextHandler
-                        activeTheme={activeTheme}
-                        setActiveTheme={setActiveTheme}
                         bottomSheetHeight={bottomSheetHeight}
                     >
                         {children}

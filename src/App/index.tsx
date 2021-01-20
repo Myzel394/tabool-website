@@ -1,15 +1,13 @@
 import React, {useMemo, useRef} from "react";
-import {CssBaseline, IconButton, ThemeProvider} from "@material-ui/core";
+import {CssBaseline, IconButton} from "@material-ui/core";
 import "fontsource-roboto";
-import light from "themes/light";
 import {BrowserRouter as Router} from "react-router-dom";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DayjsUtils from "@date-io/dayjs";
 import {SnackbarProvider} from "notistack";
 import {isMobile} from "react-device-detect";
 import {MdClose} from "react-icons/md";
-import {useElementSize, usePersistentStorage} from "hooks";
-import dark from "themes/dark";
+import {useElementSize} from "hooks";
 
 import "./global.scss";
 
@@ -18,11 +16,7 @@ import Contexts from "./Contexts";
 import BottomNavigation from "./BottomNavigation";
 import ErrorContextHandler from "./ErrorContextHandler";
 import Checks from "./Checks";
-
-const THEME_MAP = {
-    light,
-    dark,
-};
+import ThemeHandler from "./ThemeHandler";
 
 const App = () => {
     const $snackbar = useRef<any>();
@@ -33,12 +27,10 @@ const App = () => {
     }), [bottomHeight]);
     const closeSnackbar = (key) => $snackbar.current.closeSnackbar(key);
 
-    const [activeTheme, setActiveTheme] = usePersistentStorage<"light" | "dark">("light", "active_theme");
-
     return (
         <Router>
-            <ThemeProvider theme={THEME_MAP[activeTheme]}>
-                <Contexts bottomSheetHeight={bottomHeight} setActiveTheme={setActiveTheme} activeTheme={activeTheme}>
+            <Contexts bottomSheetHeight={bottomHeight}>
+                <ThemeHandler>
                     <Checks>
                         <SnackbarProvider
                             ref={$snackbar}
@@ -66,8 +58,8 @@ const App = () => {
                             <BottomNavigation innerRef={$bottom} />
                         </SnackbarProvider>
                     </Checks>
-                </Contexts>
-            </ThemeProvider>
+                </ThemeHandler>
+            </Contexts>
         </Router>
     );
 };

@@ -9,15 +9,21 @@ import {
     Paper,
     Switch,
 } from "@material-ui/core";
-import {usePersistentStorage} from "hooks";
+import {useUserPreferences} from "hooks";
 import {PrimaryButton, SecondaryButton, SimpleDialog} from "components";
 
 
 const Statistics = () => {
     const {t} = useTranslation();
+    const {
+        state,
+        update,
+    } = useUserPreferences();
 
-    const [allow, setAllow] = usePersistentStorage<boolean>(true, "allow_statistics");
     const [confirm, setConfirm] = useState<boolean>(false);
+
+    const allow = state?.global?.allowStatistics ?? true;
+    const setAllow = update.global.setAllowStatistics;
 
     return (
         <>

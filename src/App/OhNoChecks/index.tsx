@@ -21,7 +21,7 @@ const OhNoChecks = ({
     const [checks, setChecks] = usePersistentStorage<Checks>({
         ios: false,
         notChrome: false,
-    }, "_checks");
+    }, "checks");
 
     if (!isChrome && !checks.notChrome) {
         return (

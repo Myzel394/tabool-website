@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, {ReactNode, useEffect, useState} from "react";
+import React, {ReactNode, useCallback, useEffect, useState} from "react";
 import {
     Button,
     ButtonGroup,
@@ -12,21 +12,15 @@ import {
     Typography,
 } from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {usePersistentStorage} from "hooks";
+import {useUserPreferences} from "hooks";
 import {Dayjs} from "dayjs";
 import {PullToRefresh, UpdatedAt} from "components";
 import _ from "lodash";
-import {StorageType} from "hooks/usePersistentStorage";
-import {ButtonProps} from "@material-ui/core/Button";
 import {MdAdd, MdSearch} from "react-icons/all";
 
 import Title, {ITitle} from "./Title";
 import Form, {IForm} from "./Form";
 import ToggleButtonsForm, {IToggleButtonsForm} from "./ToggleButtonsForm";
-
-interface IButton extends ButtonProps {
-    title: string;
-}
 
 export interface IDetailPage<
     AvailableKeys extends string,
@@ -65,12 +59,11 @@ export interface IDetailPage<
     onDelete?: () => Promise<any>;
 }
 
-const STORAGE_METHOD = localStorage;
-
 const fullWidth = {
     width: "100%",
 };
 
+const emptyArray = [];
 
 const DetailPage = <
     AvailableKeys extends string,
@@ -99,9 +92,13 @@ const DetailPage = <
         onDelete,
     }: IDetailPage<AvailableKeys, FormikForm, QueryType, RelationKeys>) => {
     const {t} = useTranslation();
+    const {
+        state,
+        update,
+    } = useUserPreferences();
+
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
     const [elevatedKey, setElevatedKey] = useState<AvailableKeys | null>(null);
-    const [ordering, setOrdering] = usePersistentStorage<AvailableKeys[]>(defaultOrdering, orderingStorageName, StorageType.Local);
 
     const initialValues = Object
         .entries(data)
@@ -111,13 +108,19 @@ const DetailPage = <
             [key]: value.nativeValue ?? value.information,
         }), {});
 
+    const ordering = (state?.detailPage?.ordering?.[orderingStorageName] ?? emptyArray) as AvailableKeys[];
+    const setOrdering = useCallback(ordering => {
+        const change = update.detailPage.addOrdering;
+        change(orderingStorageName, ordering);
+    },
+    [update.detailPage.addOrdering, orderingStorageName]);
+
     // If `defaultOrdering's elements !== savedOrdering's elements`, reset it.
     useEffect(() => {
         if (!_.isEqual(new Set(ordering), new Set(defaultOrdering))) {
-            STORAGE_METHOD.removeItem(orderingStorageName);
             setOrdering(defaultOrdering);
         }
-    }, [defaultOrdering, ordering, orderingStorageName, setOrdering]);
+    }, [defaultOrdering, ordering, setOrdering]);
 
     return (
         <PullToRefresh isRefreshing={isRefreshing} onRefresh={refetch}>

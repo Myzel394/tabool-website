@@ -2,7 +2,7 @@ import React, {memo, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {Box, ButtonBase, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {usePersistentStorage} from "hooks";
+import {useUserPreferences} from "hooks";
 
 export interface IUpdatedAt {
     value: Dayjs;
@@ -11,13 +11,31 @@ export interface IUpdatedAt {
 
 const UpdatedAt = ({value, frequency}: IUpdatedAt) => {
     const {t} = useTranslation();
-    const [prefersStatic, setPrefersStatic] = usePersistentStorage<boolean>(false, "display:time:preferredView");
+    const {
+        state,
+        update,
+    } = useUserPreferences();
+
     const [now, setNow] = useState<Dayjs>(() => dayjs());
-    const format = prefersStatic ? t("Zuletzt aktualisiert: {{updatedAtFormatted}}", {
-        updatedAtFormatted: `${value.format("L")}, ${value.format("LTS")}`,
-    }) : t("Zuletzt aktualisiert {{updatedAtRelative}}", {
-        updatedAtRelative: value.from(now.add(1, "second")),
-    });
+
+    const preferredView = state?.global?.updatedAtTimeView ?? "dynamic";
+    const setPreferredView = view => {
+
+        update.global.setUpdatedAtTimeView(view);
+    };
+
+    const format = (() => {
+        switch (preferredView) {
+            case "dynamic":
+                return t("Zuletzt aktualisiert {{updatedAtRelative}}", {
+                    updatedAtRelative: value.from(now.add(1, "second")),
+                });
+            case "static":
+                return t("Zuletzt aktualisiert: {{updatedAtFormatted}}", {
+                    updatedAtFormatted: `${value.format("L")}, ${value.format("LTS")}`,
+                });
+        }
+    })();
 
     useEffect(() => {
         const $interval = setInterval(() => {
@@ -29,7 +47,7 @@ const UpdatedAt = ({value, frequency}: IUpdatedAt) => {
 
     return (
         <ButtonBase
-            onClick={() => setPrefersStatic(prevState => !prevState)}
+            onClick={() => setPreferredView(preferredView === "static" ? "dynamic" : "static")}
         >
             <Box p={1}>
                 <Typography variant="body2" align="left">

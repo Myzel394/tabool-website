@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {usePersistentStorage, useQueryOptions} from "hooks";
+import {useQueryOptions, useUserPreferences} from "hooks";
 import {useQuery} from "react-query";
 import {IFetchDailyDataData, IFetchDailyDataResponse, useFetchDailyDataAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -28,10 +28,16 @@ const StartPage = () => {
     const fetchDailyData = useFetchDailyDataAPI();
     const queryOptions = useQueryOptions();
     const {dispatch: dispatchError} = useContext(ErrorContext);
+    const {
+        state,
+        update,
+    } = useUserPreferences();
 
     const [dailyData, setDailyData] = useState<DailyData>();
     const [targetedDate, setTargetedDate] = useState<Dayjs>(getTargetedDate);
-    const [maxFutureDays, setMaxFutureDays] = usePersistentStorage<number>(7, "start_page:max_future_days");
+
+    const maxFutureDays = state?.global?.startPageMaxFutureDays ?? 7;
+    const setMaxFutureDays = update.global.setStartPageMaxFutureDays;
 
     const {
         data,

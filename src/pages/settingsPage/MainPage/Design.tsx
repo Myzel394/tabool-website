@@ -1,15 +1,15 @@
-import React, {memo, useContext} from "react";
+import React, {memo} from "react";
 import {useTranslation} from "react-i18next";
 import {FormControl, FormControlLabel, List, ListItem, ListItemText, Paper, Radio, RadioGroup} from "@material-ui/core";
-import {UtilsContext} from "contexts";
+import {useUserPreferences} from "hooks";
 
 
 const Design = () => {
     const {t} = useTranslation();
     const {
-        activeTheme,
-        setActiveTheme,
-    } = useContext(UtilsContext);
+        state,
+        update,
+    } = useUserPreferences();
 
     return (
         <Paper>
@@ -19,8 +19,8 @@ const Design = () => {
                         <ListItemText primary={t("Thema")} />
                         <RadioGroup
                             name="_active_theme"
-                            value={activeTheme}
-                            onChange={event => setActiveTheme(event.target.value as "light" | "dark")}
+                            value={state?.global?.theme ?? "light"}
+                            onChange={event => update.global.setTheme(event.target.value as "light" | "dark")}
                         >
                             <FormControlLabel value="light" control={<Radio />} label={t("Hell")} />
                             <FormControlLabel value="dark" control={<Radio />} label={t("Dunkel")} />

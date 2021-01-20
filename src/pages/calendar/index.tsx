@@ -5,7 +5,7 @@ import {setBeginTime, setEndTime} from "utils/setTime";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useQuery} from "react-query";
-import {useDeviceWidth, usePersistentStorage, useQueryOptions, useQueryString} from "hooks";
+import {useDeviceWidth, useQueryOptions, useQueryString, useUserPreferences} from "hooks";
 import {AxiosError} from "axios";
 import {IFetchTimetableData, IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
 import {useTranslation} from "react-i18next";
@@ -62,6 +62,10 @@ const Calendar = () => {
     const fetchTimetable = useFetchTimetableAPI();
     const {isMD} = useDeviceWidth();
     const {dispatch: dispatchError} = useContext(ErrorContext);
+    const {
+        state,
+        update,
+    } = useUserPreferences();
 
     // States
     const [activeView, setActiveView] = useState<View>(() => (isMobile ? "day" : "work_week"));
@@ -77,8 +81,9 @@ const Calendar = () => {
 
         return getStartDate();
     });
-    const [showFreePeriods, setShowFreePeriods] = usePersistentStorage<boolean>(true, "timetable_showFreePeriods");
-    const [showDetails, setShowDetails] = usePersistentStorage<boolean>(!isMobile, "timetable_showDetails");
+
+    const showFreePeriods = state?.timetable?.showFreePeriods ?? true;
+    const showDetails = state?.timetable?.showDetails ?? !isMobile;
 
     // Data
     const startDate = getStartDate(activeDate);
@@ -178,8 +183,8 @@ const Calendar = () => {
                 onCalendarTypeChange: setActiveType,
                 onDateChange: changeDate,
                 onViewChange: setActiveView,
-                onShowFreePeriodsChange: setShowFreePeriods,
-                onShowDetailsChange: setShowDetails,
+                onShowFreePeriodsChange: update.timetable.setShowFreePeriod,
+                onShowDetailsChange: update.timetable.setShowDetails,
             }}
         >
             {children}

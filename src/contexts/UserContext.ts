@@ -6,6 +6,8 @@ export interface UserPreferences {
     global?: {
         theme?: string;
         allowStatistics?: boolean;
+        updatedAtTimeView?: string;
+        startPageMaxFutureDays?: number;
     };
     detailPage?: {
         ordering?: Record<string, string[]>;
