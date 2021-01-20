@@ -17,6 +17,7 @@ export interface IPoll {
     id: string;
     title: string;
     choices: PollChoice[];
+    minVoteChoices: number;
     maxVoteChoices: number;
 
     results?: VoteResult[] | null;
@@ -37,6 +38,7 @@ const style = {
 const Poll = ({
     id,
     choices,
+    minVoteChoices,
     maxVoteChoices,
     maxVoteDate,
     title,
@@ -56,7 +58,8 @@ const Poll = ({
     );
 
     const diffDays = maxVoteDate?.diff(dayjs(), "day");
-    const hasSelected = maxVoteChoices === 1 ? Boolean(value) : value?.length === maxVoteChoices;
+    const hasSelected = (minVoteChoices === 1 && maxVoteChoices === 1 && Boolean(value)) ||
+        (value?.length >= minVoteChoices && value?.length <= maxVoteChoices);
 
     // Animate in
     useEffect(() => {
@@ -88,9 +91,16 @@ const Poll = ({
                     )}
                     <Box py={4}>
                         <Box pb={2}>
-                            {maxVoteChoices === 1
+                            {minVoteChoices === 1 && maxVoteChoices === 1
                                 ? <SingleChoice value={value} choices={choices} onChange={setValue} />
-                                : <MultipleChoice value={value} choices={choices} voteChoicesAmount={maxVoteChoices} onChange={setValue} />}
+                                : (
+                                    <MultipleChoice
+                                        value={value}
+                                        choices={choices}
+                                        minVoteChoices={minVoteChoices}
+                                        maxVoteChoices={maxVoteChoices}
+                                        onChange={setValue}
+                                    />)}
                         </Box>
                         <Box>
                             <FormControlLabel

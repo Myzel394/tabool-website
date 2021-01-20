@@ -32,6 +32,7 @@ const PollHandler = ({children}: IPollHandler) => {
                 <Poll
                     key={poll.id}
                     id={poll.id}
+                    minVoteChoices={poll.minVoteChoices}
                     maxVoteChoices={poll.maxVoteChoices}
                     maxVoteDate={poll.maxVoteDate}
                     choices={poll.choices}

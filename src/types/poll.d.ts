@@ -20,6 +20,7 @@ export interface UserVote {
 export interface Poll {
     title: string;
     createdAt: Dayjs;
+    minVoteChoices: number;
     maxVoteChoices: number;
     id: string;
     hasVoted: boolean;

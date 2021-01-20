@@ -1,7 +1,7 @@
 import React from "react";
 import {Box, Checkbox, FormControlLabel, FormGroup, Typography} from "@material-ui/core";
 import {PollChoice} from "types";
-import {useTranslation} from "react-i18next";
+import {Trans, useTranslation} from "react-i18next";
 
 import {ButtonLike} from "../components";
 
@@ -10,7 +10,8 @@ export interface IMultipleChoice {
     onChange: (value: string[]) => any;
     value: string[];
     choices: PollChoice[];
-    voteChoicesAmount: number;
+    minVoteChoices: number;
+    maxVoteChoices: number;
 }
 
 
@@ -18,7 +19,8 @@ const MultipleChoice = ({
     choices,
     onChange,
     value,
-    voteChoicesAmount,
+    minVoteChoices,
+    maxVoteChoices,
 }: IMultipleChoice) => {
     const {t} = useTranslation();
 
@@ -36,11 +38,38 @@ const MultipleChoice = ({
     return (
         <>
             <Box pb={2}>
-                <Typography variant="body1" color={value?.length === voteChoicesAmount ? "textPrimary" : "error"}>
-                    {t("Wähle {{amount}} Elemente aus", {
-                        amount: voteChoicesAmount,
-                    })}
-                </Typography>
+                {(() => {
+                    if (minVoteChoices === maxVoteChoices) {
+                        return (
+                            <Typography variant="body1" color={value?.length === minVoteChoices ? "textPrimary" : "error"}>
+                                {t("Wähle {{amount}} Elemente aus")}
+                            </Typography>
+                        );
+                    } else {
+                        return (
+                            <Typography
+                                variant="body1"
+                                color={value?.length >= minVoteChoices && value?.length <= maxVoteChoices
+                                    ? "textPrimary"
+                                    : "error"}
+                            >
+                                <Trans>
+                                    Wähle zwischen{" "}
+                                    <Box component="span" fontWeight={value?.length >= minVoteChoices ? 100 : 900}>
+                                        {{minVoteChoices}}
+                                    </Box>
+                                    {" "}
+                                        -
+                                    {" "}
+                                    <Box component="span" fontWeight={value?.length <= maxVoteChoices ? 100 : 900}>
+                                        {{maxVoteChoices}}
+                                    </Box>
+                                    {" "}Elementen aus
+                                </Trans>
+                            </Typography>
+                        );
+                    }
+                })}
             </Box>
             <FormGroup>
                 {choices.map(choice =>
