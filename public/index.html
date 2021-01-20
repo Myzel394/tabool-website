@@ -58,7 +58,7 @@
             </style>
         </noscript>
         <div id="root">
-            <div id="loading_content" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100vh;">
+            <div id="loading_content" style="background: #fff; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100vh;">
                 <img src="/logo512.png" alt="tabool logo" style="width: 50%" />
                 <h1 style="color: #ffa723; font-family: 'Roboto', Roboto, Google Sans, Helvetica Neue, Helvetica, Arial, sans-serif;">
                     Wird geladen...
@@ -70,7 +70,7 @@
                     var user = JSON.parse(localStorage.getItem("user"));
                     var theme = user === null || user === void 0 || (_user$preferences = user.preferences) === null || _user$preferences === void 0 || (_user$preferences$glo = _user$preferences.global) === null || _user$preferences$glo === void 0 ? void 0 : _user$preferences$glo.theme;
                     var $element = document.getElementById("loading_content");
-                    theme === "dark" && ($element.style.backgroundColor = "#121212");
+                    theme === "dark" && ($element.style.backgroundColor = "#1e1e1e");
 
                     /*
                     const user = JSON.parse(localStorage.getItem("user"));
@@ -78,7 +78,7 @@
                     const $element = document.getElementById("loading_content");
 
                     if (theme === "dark") {
-                        $element.style.backgroundColor = "#121212";
+                        $element.style.backgroundColor = "#1e1e1e";
                     }*/
                 </script>
             </div>
