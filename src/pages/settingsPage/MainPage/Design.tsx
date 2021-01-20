@@ -1,7 +1,18 @@
 import React, {memo} from "react";
 import {useTranslation} from "react-i18next";
-import {FormControl, FormControlLabel, List, ListItem, ListItemText, Paper, Radio, RadioGroup} from "@material-ui/core";
+import {
+    FormControl,
+    FormControlLabel,
+    List,
+    ListItem,
+    ListItemText,
+    Paper,
+    Radio,
+    RadioGroup,
+} from "@material-ui/core";
 import {useUserPreferences} from "hooks";
+import {Information} from "components";
+import {FaMoon, FaSun, IoIosWater, WiMoonFull} from "react-icons/all";
 
 
 const Design = () => {
@@ -20,10 +31,44 @@ const Design = () => {
                         <RadioGroup
                             name="_active_theme"
                             value={state?.global?.theme ?? "light"}
-                            onChange={event => update.global.setTheme(event.target.value as "light" | "dark")}
+                            onChange={event => update.global.setTheme(event.target.value as "light" | "dark" | "blue" | "midnight")}
                         >
-                            <FormControlLabel value="light" control={<Radio />} label={t("Hell")} />
-                            <FormControlLabel value="dark" control={<Radio />} label={t("Dunkel")} />
+                            <FormControlLabel
+                                value="light"
+                                control={<Radio />}
+                                label={
+                                    <Information
+                                        getIcon={props => <FaSun {...props} />}
+                                        text={t("Hell")}
+                                    />}
+                            />
+                            <FormControlLabel
+                                value="dark"
+                                control={<Radio />}
+                                label={
+                                    <Information
+                                        getIcon={props => <FaMoon {...props} />}
+                                        text={t("Dunkel")}
+                                    />}
+                            />
+                            <FormControlLabel
+                                value="blue"
+                                control={<Radio />}
+                                label={
+                                    <Information
+                                        getIcon={props => <IoIosWater {...props} />}
+                                        text={t("Dunkelblau")}
+                                    />}
+                            />
+                            <FormControlLabel
+                                value="midnight"
+                                control={<Radio />}
+                                label={
+                                    <Information
+                                        getIcon={props => <WiMoonFull {...props} />}
+                                        text={t("Schwarz")}
+                                    />}
+                            />
                         </RadioGroup>
                     </FormControl>
                 </ListItem>

@@ -65,21 +65,31 @@
                 </h1>
                 <script async>
                     // Loading content improving
+
                     var _user$preferences, _user$preferences$glo;
 
                     var user = JSON.parse(localStorage.getItem("user"));
                     var theme = user === null || user === void 0 || (_user$preferences = user.preferences) === null || _user$preferences === void 0 || (_user$preferences$glo = _user$preferences.global) === null || _user$preferences$glo === void 0 ? void 0 : _user$preferences$glo.theme;
                     var $element = document.getElementById("loading_content");
-                    theme === "dark" && ($element.style.backgroundColor = "#1e1e1e");
+                    theme === "dark" ? $element.style.backgroundColor = "#1e1e1e" : theme === "blue" ? $element.style.backgroundColor = "#091740" : theme === "midnight" ? $element.style.backgroundColor = "#090909" : void 0;
 
                     /*
                     const user = JSON.parse(localStorage.getItem("user"));
                     const theme = user?.preferences?.global?.theme;
                     const $element = document.getElementById("loading_content");
 
-                    if (theme === "dark") {
-                        $element.style.backgroundColor = "#1e1e1e";
-                    }*/
+                    switch (theme) {
+                        case "dark":
+                            $element.style.backgroundColor = "#1e1e1e";
+                            break;
+                        case "blue":
+                            $element.style.backgroundColor = "#091740";
+                            break;
+                        case "midnight":
+                            $element.style.backgroundColor = "#090909";
+                            break;
+                    }
+                    */
                 </script>
             </div>
         </div>

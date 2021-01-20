@@ -4,7 +4,7 @@ import {Dayjs} from "dayjs";
 
 export interface UserPreferences {
     global?: {
-        theme?: string;
+        theme?: "light" | "dark" | "blue" | "midnight";
         allowStatistics?: boolean;
         updatedAtTimeView?: string;
         startPageMaxFutureDays?: number;

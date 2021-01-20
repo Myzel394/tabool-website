@@ -9,7 +9,7 @@ import _ from "lodash";
 export interface IUseUserPreferences {
     update: {
         global: {
-            setTheme: (theme: "light" | "dark") => void;
+            setTheme: (theme: "light" | "dark" | "blue" | "midnight") => void;
             setAllowStatistics: (allowStatistics: boolean) => void;
             setUpdatedAtTimeView: (view: "static" | "dynamic") => void;
             setStartPageMaxFutureDays: (date: number) => void;
@@ -32,8 +32,9 @@ export interface IUseUserPreferences {
 const useUserPreferences = (): IUseUserPreferences => {
     const {
         dispatch,
-        state: {preferences = {}},
+        state: {preferences},
     } = useContext(UserContext);
+
 
     const updatePreferences = useCallback((newPreferences: IUser["preferences"]) =>
         dispatch({
@@ -45,8 +46,8 @@ const useUserPreferences = (): IUseUserPreferences => {
     , [dispatch]);
 
     // global
-    const setTheme = useCallback((theme: "light" | "dark") =>
-        updatePreferences(update(preferences, {
+    const setTheme = useCallback((theme: "light" | "dark" | "blue" | "midnight") =>
+        updatePreferences(update(preferences ?? {}, {
             global: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -56,7 +57,7 @@ const useUserPreferences = (): IUseUserPreferences => {
         }))
     , [updatePreferences, preferences]);
     const setAllowStatistics = useCallback((allowStatistics: boolean) =>
-        updatePreferences(update(preferences, {
+        updatePreferences(update(preferences ?? {}, {
             global: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -66,7 +67,7 @@ const useUserPreferences = (): IUseUserPreferences => {
         }))
     , [updatePreferences, preferences]);
     const setUpdatedAtTimeView = useCallback((view: "static" | "dynamic") =>
-        updatePreferences(update(preferences, {
+        updatePreferences(update(preferences ?? {}, {
             global: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -76,7 +77,7 @@ const useUserPreferences = (): IUseUserPreferences => {
         }))
     , [updatePreferences, preferences]);
     const setStartPageMaxFutureDays = useCallback((date: number) =>
-        updatePreferences(update(preferences, {
+        updatePreferences(update(preferences ?? {}, {
             global: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -88,7 +89,7 @@ const useUserPreferences = (): IUseUserPreferences => {
 
     // detail page
     const addOrdering = useCallback((identifier: string, ordering: string[]) =>
-        updatePreferences(update(preferences, {
+        updatePreferences(update(preferences ?? {}, {
             detailPage: {
                 $apply: (value = {}) => update(value, {
                     ordering: {
@@ -102,7 +103,7 @@ const useUserPreferences = (): IUseUserPreferences => {
         }))
     , [updatePreferences, preferences]);
     const addDownloadedMaterialsDate = useCallback((materialId: string) =>
-        updatePreferences(update(preferences, {
+        updatePreferences(update(preferences ?? {}, {
             detailPage: {
                 $apply: (value = {}) => update(value, {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -120,7 +121,7 @@ const useUserPreferences = (): IUseUserPreferences => {
 
     // timetable
     const setShowFreePeriod = useCallback((showFreePeriods: boolean) =>
-        updatePreferences(update(preferences, {
+        updatePreferences(update(preferences ?? {}, {
             timetable: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -130,7 +131,7 @@ const useUserPreferences = (): IUseUserPreferences => {
         }))
     , [updatePreferences, preferences]);
     const setShowDetails = useCallback((showDetails: boolean) =>
-        updatePreferences(update(preferences, {
+        updatePreferences(update(preferences ?? {}, {
             timetable: {
                 $apply: (value = {}) => ({
                     ...value,

@@ -5,6 +5,7 @@ import {
     Link,
     List,
     ListItem,
+    ListItemIcon,
     ListItemSecondaryAction,
     ListItemText,
     Paper,
@@ -13,7 +14,7 @@ import {
 import {usePermissions} from "hooks";
 import {useTranslation} from "react-i18next";
 import {PermissionType} from "hooks/usePermissions";
-import {MdNotifications} from "react-icons/all";
+import {MdLocationOff, MdLocationOn, MdNotifications, MdNotificationsOff} from "react-icons/all";
 import {Alert} from "@material-ui/lab";
 import {LoadingOverlay, SecondaryButton} from "components";
 
@@ -58,6 +59,12 @@ const Permissions = () => {
                 <List>
                     {/* Notification */}
                     <ListItem disabled={isNotificationDisabled}>
+                        <ListItemIcon>
+                            {state.notification === PermissionType.Granted
+                                ? <MdNotifications />
+                                : <MdNotificationsOff />
+                            }
+                        </ListItemIcon>
                         <ListItemText primary={t("Benachrichtigungen")} />
                         <ListItemSecondaryAction>
                             <Switch
@@ -79,6 +86,12 @@ const Permissions = () => {
                     </Collapse>
                     {/* Location */}
                     <ListItem disabled={isLocationDisabled}>
+                        <ListItemIcon>
+                            {state.location === PermissionType.Granted
+                                ? <MdLocationOn />
+                                : <MdLocationOff />
+                            }
+                        </ListItemIcon>
                         <ListItemText primary={t("Standort")} />
                         <ListItemSecondaryAction>
                             <Switch
@@ -90,14 +103,14 @@ const Permissions = () => {
                     </ListItem>
                 </List>
                 {(isNotificationDisabled || isLocationDisabled) &&
-                <Alert severity="warning">
-                    {t("Du hast Berechtigungen verboten, diese können daher nicht mehr angefragt werden. " +
-                        "Wenn du sie dennoch wieder erlauben möchtest, musst du sie in den Einstellungen ändern.")}
-                    <br />
-                    <Link href="https://support.google.com/chromebook/answer/114662?hl=de" rel="noopener noreferrer" component="a">
-                        {t("Wie ändere ich Website-Berechtigungen?")}
-                    </Link>
-                </Alert>}
+                    <Alert severity="warning">
+                        {t("Du hast Berechtigungen verboten, diese können daher nicht mehr angefragt werden. " +
+                            "Wenn du sie dennoch wieder erlauben möchtest, musst du sie in den Einstellungen ändern.")}
+                        <br />
+                        <Link href="https://support.google.com/chromebook/answer/114662?hl=de" rel="noopener noreferrer" component="a">
+                            {t("Wie ändere ich Website-Berechtigungen?")}
+                        </Link>
+                    </Alert>}
             </LoadingOverlay>
         </Paper>
     );
