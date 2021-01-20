@@ -47,7 +47,7 @@
 
         <title>tabool</title>
     </head>
-    <body>
+    <body style="margin: 0; padding: 0;">
         <noscript>
             <h1>Aktiviere Javascript um tabool nutzen zu können</h1>
             <a href="https://www.enable-javascript.com/de/" rel="noopener noreferrer" target="_blank">Wie aktiviere ich Javascript?</a>
@@ -58,11 +58,29 @@
             </style>
         </noscript>
         <div id="root">
-            <div style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100vh;">
+            <div id="loading_content" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100vh;">
                 <img src="/logo512.png" alt="tabool logo" style="width: 50%" />
                 <h1 style="color: #ffa723; font-family: 'Roboto', Roboto, Google Sans, Helvetica Neue, Helvetica, Arial, sans-serif;">
                     Wird geladen...
                 </h1>
+                <script async>
+                    // Loading content improving
+                    var _user$preferences, _user$preferences$glo;
+
+                    var user = JSON.parse(localStorage.getItem("user"));
+                    var theme = user === null || user === void 0 || (_user$preferences = user.preferences) === null || _user$preferences === void 0 || (_user$preferences$glo = _user$preferences.global) === null || _user$preferences$glo === void 0 ? void 0 : _user$preferences$glo.theme;
+                    var $element = document.getElementById("loading_content");
+                    theme === "dark" && ($element.style.backgroundColor = "#121212");
+
+                    /*
+                    const user = JSON.parse(localStorage.getItem("user"));
+                    const theme = user?.preferences?.global?.theme;
+                    const $element = document.getElementById("loading_content");
+
+                    if (theme === "dark") {
+                        $element.style.backgroundColor = "#121212";
+                    }*/
+                </script>
             </div>
         </div>
         <script async defer>
