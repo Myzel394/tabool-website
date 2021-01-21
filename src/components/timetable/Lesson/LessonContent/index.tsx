@@ -57,10 +57,10 @@ const LessonContent = ({
                 },
                 className,
             )}
-            py={Number(!isMD)}
+            py={0}
         >
             {showDetails ? (
-                <Box p={1} display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+                <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
                     <section>
                         <div className={styles.secondary}>
                             {/* <Time> */}
@@ -88,14 +88,13 @@ const LessonContent = ({
                         flexDirection="row"
                         flexWrap="wrap"
                         m={0}
-                        className={clsx(
-                            styles.information,
-                        )}
                     >
-                        <Information
-                            getIcon={props => <FaGraduationCap {...props} />}
-                            text={teacherName}
-                        />
+                        <Box mr={1}>
+                            <Information
+                                getIcon={props => <FaGraduationCap {...props} />}
+                                text={teacherName}
+                            />
+                        </Box>
                         <Information
                             getIcon={props => <FaMapMarkerAlt {...props} />}
                             text={roomName}

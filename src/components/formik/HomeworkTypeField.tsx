@@ -9,6 +9,7 @@ import {
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {AiFillTool} from "react-icons/all";
+import {FormGroup, FormHelperText} from "@material-ui/core";
 
 import AutocompleteField from "./AutocompleteField";
 
@@ -43,6 +44,8 @@ const HomeworkTypeField = ({
 
     const [search, setSearch] = useState<string | null>(null);
 
+    const error = form.errors[field.name];
+
     const {
         data,
         isLoading,
@@ -54,28 +57,33 @@ const HomeworkTypeField = ({
     );
 
     return (
-        <AutocompleteField
-            {...field}
-            {...other}
-            multiple={false}
-            isLoading={isLoading}
-            autocompletionList={
-                Array.from(new Set([
-                    ...(data?.results?.map?.(element => element.text) ?? []),
-                    ...DEFAULT_TYPES,
-                ]))
-            }
-            startIcon={<AiFillTool />}
-            onSearchChange={setSearch}
-            onChange={value =>
-                field.onChange({
-                    target: {
-                        name: field.name,
-                        value,
-                    },
-                })
-            }
-        />
+        <FormGroup>
+            <AutocompleteField
+                {...field}
+                {...other}
+                multiple={false}
+                isLoading={isLoading}
+                autocompletionList={
+                    Array.from(new Set([
+                        ...(data?.results?.map?.(element => element.text) ?? []),
+                        ...DEFAULT_TYPES,
+                    ]))
+                }
+                startIcon={<AiFillTool />}
+                onSearchChange={setSearch}
+                onChange={value =>
+                    field.onChange({
+                        target: {
+                            name: field.name,
+                            value,
+                        },
+                    })
+                }
+            />
+            <FormHelperText>
+                {(form.touched[field.name] && error) ? error : helperText}
+            </FormHelperText>
+        </FormGroup>
     );
 };
 

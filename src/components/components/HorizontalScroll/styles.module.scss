@@ -1,7 +1,7 @@
 .wrapper {
   width: 100% !important;
   margin: 0 !important;
-  overflow-y: scroll !important;
+  overflow-x: scroll !important;
   scroll-snap-type: x mandatory;
 
   > * {

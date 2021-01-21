@@ -1,10 +1,12 @@
 import React, {useMemo} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {Calendar as BigCalendar, Event as CalendarEvent} from "react-big-calendar";
+import {Calendar, Event as CalendarEvent} from "react-big-calendar";
 import {combineDatetime, createSmallTheme, getMinMaxTime, locale} from "utils";
-import {ThemeProvider, useTheme} from "@material-ui/core";
+import {ThemeProvider, useTheme, withStyles} from "@material-ui/core";
 import {useWindowSize} from "hooks";
 import {Timetable as TimetableType} from "types";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import calendarStyles from "components/calendarStyles";
 
 import LessonEvent from "./LessonEvent";
 import Toolbar from "./Toolbar";
@@ -16,6 +18,7 @@ export interface ITimetable {
     selectedLesson: string | null;
     onLessonSelect: (lessonId: string) => any;
 
+    classes?: any;
     minDate?: Dayjs;
     maxDate?: Dayjs;
     minTime?: Dayjs;
@@ -37,6 +40,7 @@ const Timetable = ({
     allowedLessons,
     allowedCourses,
     allowedWeekdays,
+    classes,
     maxTime: allowedMaxTime,
     minTime: allowedMinTime,
 }: ITimetable) => {
@@ -102,7 +106,8 @@ const Timetable = ({
 
     return (
         <ThemeProvider theme={createSmallTheme}>
-            <BigCalendar
+            <Calendar
+                className={classes.root}
                 events={lessons}
                 views={["work_week"]}
                 view="work_week"
@@ -119,4 +124,4 @@ const Timetable = ({
     );
 };
 
-export default Timetable;
+export default withStyles(calendarStyles)(Timetable);
