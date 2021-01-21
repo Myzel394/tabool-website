@@ -17,6 +17,13 @@ export default function Routes() {
     return (
         <Suspense fallback={<LoadingPage title={t("Seite wird geladen...")} />}>
             <Switch>
+                {/* Landing page */}
+                {!user.isAuthenticated &&
+                    <Route
+                        exact
+                        path={buildPath("/")}
+                        component={lazy(() => import("pages/LandingPage"))}
+                    />}
                 {/* Forgot password */}
                 <Route
                     exact
@@ -44,7 +51,7 @@ export default function Routes() {
                     path={buildPath("/auth/logout/")}
                     component={lazy(() => import("pages/auth/Logout"))}
                 />
-                {!user.isAuthenticated && <Redirect to={buildPath("/auth/login/")} />}
+                {!user.isAuthenticated && <Redirect to={buildPath("/")} />}
                 {/* Registration routes */}
                 <Route
                     exact
