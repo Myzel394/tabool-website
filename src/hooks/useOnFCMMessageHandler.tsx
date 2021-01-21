@@ -24,9 +24,20 @@ const useOnFCMMessageHandler = () => {
             }
 
             const notification = camelcaseKeys(rawNotification, {deep: true});
+            let variant = "info" as "info" | "error" | "success" | "warning" | "default";
+
+            switch (notification.data?.type) {
+                case "scooso_data_invalid":
+                case "submission_scooso_upload_failed":
+                    variant = "error";
+                    break;
+                case "submission_scooso_upload_succeeded":
+                    variant = "success";
+                    break;
+            }
 
             addSnackbar(notification.notification.title, {
-                variant: "info",
+                variant,
                 autoHideDuration: 10 * 1000,
                 action() {
                     let link;

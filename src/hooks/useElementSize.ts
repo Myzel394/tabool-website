@@ -6,7 +6,7 @@ const useElementSize = (reference): [number | undefined, number | undefined] => 
 
     useLayoutEffect(() => {
         const setSize = () => {
-            const elementReal = reference.current;
+            const elementReal = reference?.current ?? reference;
 
             if (elementReal) {
                 const {clientWidth, clientHeight} = elementReal;
