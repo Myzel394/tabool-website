@@ -1,4 +1,4 @@
-import React, {useMemo, useRef} from "react";
+import React, {useMemo, useRef, useState} from "react";
 import {CssBaseline, IconButton} from "@material-ui/core";
 import "fontsource-roboto";
 import {BrowserRouter as Router} from "react-router-dom";
@@ -15,13 +15,12 @@ import AppRoutes from "./AppRoutes";
 import Contexts from "./Contexts";
 import BottomNavigation from "./BottomNavigation";
 import ErrorContextHandler from "./ErrorContextHandler";
-import Checks from "./Checks";
 import ThemeHandler from "./ThemeHandler";
 
 const App = () => {
     const $snackbar = useRef<any>();
-    const $bottom = useRef<any>();
-    const [, bottomHeight] = useElementSize($bottom);
+    const [bottomRef, setBottomRef] = useState();
+    const [, bottomHeight] = useElementSize(bottomRef);
     const snackbarStyles = useMemo(() => ({
         marginBottom: bottomHeight,
     }), [bottomHeight]);
@@ -31,33 +30,37 @@ const App = () => {
         <Router>
             <Contexts bottomSheetHeight={bottomHeight}>
                 <ThemeHandler>
-                    <Checks>
-                        <SnackbarProvider
-                            ref={$snackbar}
-                            maxSnack={isMobile ? 2 : 5}
-                            dense={isMobile}
-                            style={snackbarStyles}
-                            action={(key) =>
-                                <IconButton onClick={() => closeSnackbar(key)}>
-                                    <MdClose />
-                                </IconButton>
-                            }
-                        >
-                            <ErrorContextHandler>
-                                <MuiPickersUtilsProvider utils={DayjsUtils}>
-                                    <CssBaseline />
-                                    <AppRoutes />
-                                </MuiPickersUtilsProvider>
-                            </ErrorContextHandler>
-                            {/* Bottom padding */}
-                            <div
-                                style={{
-                                    height: bottomHeight,
-                                }}
-                            />
-                            <BottomNavigation innerRef={$bottom} />
-                        </SnackbarProvider>
-                    </Checks>
+                    <SnackbarProvider
+                        ref={$snackbar}
+                        maxSnack={isMobile ? 2 : 5}
+                        dense={isMobile}
+                        style={snackbarStyles}
+                        action={(key) =>
+                            <IconButton onClick={() => closeSnackbar(key)}>
+                                <MdClose />
+                            </IconButton>
+                        }
+                    >
+                        <ErrorContextHandler>
+                            <MuiPickersUtilsProvider utils={DayjsUtils}>
+                                <CssBaseline />
+                                <AppRoutes />
+                            </MuiPickersUtilsProvider>
+                        </ErrorContextHandler>
+                        {/* Bottom padding */}
+                        <div
+                            style={{
+                                height: bottomHeight,
+                            }}
+                        />
+                        <BottomNavigation
+                            innerRef={ref => {
+                                if (ref) {
+                                    setBottomRef(ref);
+                                }
+                            }}
+                        />
+                    </SnackbarProvider>
                 </ThemeHandler>
             </Contexts>
         </Router>
