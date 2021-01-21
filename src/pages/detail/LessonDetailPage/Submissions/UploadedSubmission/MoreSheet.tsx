@@ -48,6 +48,7 @@ const MoreSheet = ({
             >
                 <ListItem
                     button
+                    disabled={submission.isUploaded || isFileUploading}
                     onClick={() => {
                         onClose();
                         onShowSettings();

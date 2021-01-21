@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {useQueryString} from "hooks";
+import {useQueryString, useUser} from "hooks";
 import {useMutation} from "react-query";
 import {ILoginData, ILoginResponse, useSendLoginAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -7,8 +7,7 @@ import {FocusedPage} from "components";
 import {useTranslation} from "react-i18next";
 import {UserContext} from "contexts";
 import {useHistory} from "react-router-dom";
-
-import {buildPath} from "../../../utils";
+import {buildPath} from "utils";
 
 import LoginForm from "./LoginForm";
 import SuspiciousLoginForm from "./SuspiciousLoginForm";
@@ -20,6 +19,7 @@ const Login = () => {
     const {next} = useQueryString();
     const {dispatch} = useContext(UserContext);
     const history = useHistory();
+    const user = useUser();
 
     const [isSuspicious, setIsSuspicious] = useState<boolean>(false);
     const [loginData, setLoginData] = useState<ILoginData>();
@@ -46,7 +46,7 @@ const Login = () => {
     );
 
     return (
-        <FocusedPage title={isSuspicious ? undefined : t("Anmelden")}>
+        <FocusedPage title={isSuspicious ? undefined : t("Anmelden")} disableBackButton={!user.isAuthenticated}>
             {(isSuspicious && loginData)
                 ? <SuspiciousLoginForm loginData={loginData} onSubmit={mutateAsync} />
                 : <LoginForm onSubmit={mutateAsync} />

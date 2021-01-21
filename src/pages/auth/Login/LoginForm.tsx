@@ -46,7 +46,7 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                 onSubmit(values)
                     .catch((error: AxiosError) => {
                         if (error.response?.status === 400) {
-                            setErrors(error.response?.data);
+                            setErrors(error.response?.data ?? {});
                         }
                     })
                     .finally(() => setSubmitting(false))

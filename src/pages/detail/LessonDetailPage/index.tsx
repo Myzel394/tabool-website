@@ -24,6 +24,7 @@ import _ from "lodash";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 
 import Submissions from "./Submissions";
+import ModificationsNode from "./ModificationsNode";
 
 
 const gridItemStyle = {
@@ -148,6 +149,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             isRefreshing={isFetching}
             updatedAt={dayjs(dataUpdatedAt)}
             data={data}
+            headerNode={lesson?.modifications.length > 0 && <ModificationsNode lesson={lesson} />}
             relationButtons={{
                 values: {
                     attendance: {

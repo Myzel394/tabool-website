@@ -79,7 +79,13 @@ const Calendar = () => {
             }
         }
 
-        return getStartDate();
+        const now = dayjs();
+
+        if (now.day() === 6 || now.day() === 0) {
+            return getStartDate();
+        }
+
+        return dayjs();
     });
 
     const showFreePeriods = state?.timetable?.showFreePeriods ?? true;

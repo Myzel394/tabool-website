@@ -4,10 +4,10 @@ import {Calendar as BigCalendar, CalendarProps, Event as CalendarEvent, EventWra
 import dayjs from "dayjs";
 import {findNextDate, getMinMaxTime, locale} from "utils";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {Theme, withStyles} from "@material-ui/core";
-import tinycolor from "tinycolor2";
+import {withStyles} from "@material-ui/core";
 
 import CalendarContext from "../../../CalendarContext";
+import {calendarStyles} from "../../../../../components";
 
 import Toolbar from "./Toolbar";
 
@@ -82,34 +82,4 @@ const DefaultCalendar = ({
     );
 };
 
-const styles = (theme: Theme) => {
-    const color = tinycolor(theme.palette.text.primary).setAlpha(0.1).toString();
-
-    return {
-        root: {
-            "& .rbc-timeslot-group": {
-                borderColor: color,
-            },
-            "& .rbc-time-content": {
-                borderColor: color,
-            },
-            "& .rbc-time-view": {
-                borderColor: color,
-            },
-            "& .rbc-events-container": {
-                borderColor: color,
-            },
-            "& .rbc-time-header-content": {
-                borderColor: color,
-            },
-            "& .rbc-time-slot": {
-                border: "none !important",
-            },
-            "& .rbc-today": {
-                backgroundColor: theme.palette.background.default,
-            },
-        },
-    };
-};
-
-export default withStyles(styles)(DefaultCalendar);
+export default withStyles(calendarStyles)(DefaultCalendar);

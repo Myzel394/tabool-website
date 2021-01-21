@@ -1,13 +1,15 @@
 import React, {useMemo, useState} from "react";
-import dayjs, {Dayjs} from "dayjs";
+import {Dayjs} from "dayjs";
 import {
     DialogContentText,
+    Grid,
     IconButton,
     LinearProgress,
     ListItem,
     ListItemIcon,
     ListItemSecondaryAction,
     ListItemText,
+    Typography,
 } from "@material-ui/core";
 import {
     FaApple,
@@ -25,7 +27,7 @@ import {
 } from "react-icons/all";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
-import {PrimaryButton, SimpleDialog} from "components";
+import {PrimaryButton, SimpleDialog, TimeRelative} from "components";
 import {useDeleteSessionAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {useTranslation} from "react-i18next";
@@ -71,6 +73,7 @@ const Session = ({
     const {addError} = useSnackbar();
 
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+    const [showDetails, setShowDetails] = useState<boolean>(false);
 
     const {
         mutate,
@@ -88,24 +91,31 @@ const Session = ({
 
     return (
         <>
-            <ListItem key={id} button disabled={isLoading}>
+            <ListItem
+                key={id}
+                button
+                disabled={isLoading}
+                onClick={() => setShowDetails(true)}
+            >
                 <ListItemIcon>
                     {Icon && <Icon size="2rem" />}
                 </ListItemIcon>
-                <ListItemText
-                    inset={!Icon}
-                    primaryTypographyProps={{
-                        color: isThis ? "primary" : "textPrimary",
-                    }}
-                    primary={t("{{browserName}} ({{browserVersion}}) auf einem {{os}}-Gerät", {
-                        browserName: uaInstance.getBrowser().name,
-                        browserVersion: uaInstance.getBrowser().version,
-                        os: uaInstance.getOS().name,
-                    }) + (isThis ? ` ${t(" (Dieses Gerät)")}` : "")}
-                    secondary={t("Letzte Aktivität {{lastActivity}}", {
-                        lastActivity: dayjs().to(lastActivity),
-                    })}
-                />
+                <TimeRelative>
+                    {now =>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                color: isThis ? "primary" : "textPrimary",
+                            }}
+                            primary={t("{{browserName}} ({{browserVersion}}) auf einem {{os}}-Gerät", {
+                                browserName: uaInstance.getBrowser().name,
+                                browserVersion: uaInstance.getBrowser().version,
+                                os: uaInstance.getOS().name,
+                            }) + (isThis ? ` ${t(" (Dieses Gerät)")}` : "")}
+                            secondary={t("Letzte Aktivität {{lastActivity}}", {
+                                lastActivity: now.to(lastActivity),
+                            })}
+                        />}
+                </TimeRelative>
                 <ListItemSecondaryAction>
                     <IconButton disabled={isThis} edge="end" onClick={() => setConfirmDelete(true)}>
                         <MdDelete />
@@ -113,6 +123,39 @@ const Session = ({
                 </ListItemSecondaryAction>
                 {isLoading && <LinearProgress />}
             </ListItem>
+            <SimpleDialog
+                isOpen={showDetails}
+                primaryButton={null}
+                title={t("Details")}
+                onClose={() => setShowDetails(false)}
+            >
+                <Grid container spacing={2} component="dl">
+                    <Grid item>
+                        <Typography variant="body1" component="dd">
+                            {t("IP-Adresse")}
+                        </Typography>
+                        <Typography variant="body2" component="dt" color="textSecondary">
+                            {ip}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="body1" component="dd">
+                            {t("User-Agent")}
+                        </Typography>
+                        <Typography variant="body2" component="dt" color="textSecondary">
+                            {userAgent}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="body1" component="dd">
+                            {t("Letzte Aktivität")}
+                        </Typography>
+                        <Typography variant="body2" component="dt" color="textSecondary">
+                            {lastActivity.format("LLL")}
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </SimpleDialog>
             <SimpleDialog
                 isOpen={confirmDelete}
                 primaryButton={

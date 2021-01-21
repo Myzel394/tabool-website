@@ -11,8 +11,7 @@ import {
     VideoConferenceBadge,
 } from "components";
 import {ModificationType} from "api";
-
-import {buildPath} from "../../../../../../utils";
+import {buildPath} from "utils";
 
 import styles from "./LessonEvent.module.scss";
 

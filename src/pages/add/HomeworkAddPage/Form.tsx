@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, {memo, useState} from "react";
 import {ErrorMessage, Field, Form as IkForm, Formik, FormikHelpers} from "formik";
-import {Box, FormGroup, FormHelperText, Grid} from "@material-ui/core";
+import {Box, FormGroup, FormHelperText, Grid, InputAdornment} from "@material-ui/core";
 import {
     HomeworkInformationField,
     HomeworkTypeField,
@@ -15,11 +15,12 @@ import {useTranslation} from "react-i18next";
 import {ISendHomeworkData} from "hooks/apis";
 import * as yup from "yup";
 import dayjs from "dayjs";
-import {useQueryString} from "hooks";
+import {useColors, useQueryString} from "hooks";
 import {CourseDetail, ErrorFieldsInjection} from "types";
 import {CheckboxWithLabel} from "formik-material-ui";
 import {Alert} from "@material-ui/lab";
 import {DateTimePicker} from "formik-material-ui-pickers";
+import {FaCalendarDay} from "react-icons/all";
 
 export interface IForm {
     onSubmit: (data: ISendHomeworkData, formikHelpers: FormikHelpers<ISendHomeworkData>) => Promise<any>;
@@ -30,6 +31,9 @@ type FormikForm = ISendHomeworkData & ErrorFieldsInjection;
 const Form = ({
     onSubmit,
 }: IForm) => {
+    const {
+        inputIconColor,
+    } = useColors();
     const {t} = useTranslation();
     const {
         lesson: lessonId,
@@ -68,7 +72,7 @@ const Form = ({
             initialValues={initialValues}
             onSubmit={onSubmit}
         >
-            {({isSubmitting, setFieldValue, touched, errors}) => (
+            {({isSubmitting, setFieldValue, touched, errors, values}) => (
                 <LoadingOverlay isLoading={isSubmitting}>
                     <IkForm>
                         <Box mb={2}>
@@ -83,6 +87,7 @@ const Form = ({
                                                 setCourse(referenceCourse);
                                             }
                                         }}
+                                        value={values.lesson}
                                         name="lesson"
                                         type="text"
                                         label={t("Stunde")}
@@ -95,15 +100,25 @@ const Form = ({
                                     <Field
                                         fullWidth
                                         name="dueDate"
+                                        inputVariant="outlined"
+                                        format="LLL"
                                         label={t("Fälligkeitsdatum")}
                                         component={DateTimePicker}
                                         renderDay={renderDueDateDay}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <FaCalendarDay color={inputIconColor} />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Field
                                         type="text"
                                         name="type"
+                                        label={t("Typ")}
                                         component={HomeworkTypeField}
                                         helperText={t("Typ der Hausaufgabe - Beispiel: Wiederholung, Vorbereitung")}
                                     />
