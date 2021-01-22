@@ -1,5 +1,6 @@
 import {convertToDate} from "api";
 import {HomeworkDetail} from "types";
+import {createShort} from "utils";
 
 
 const parseHomework = async (homework: HomeworkDetail): Promise<void> => {
@@ -7,6 +8,7 @@ const parseHomework = async (homework: HomeworkDetail): Promise<void> => {
         "dueDate",
         "createdAt",
     ]);
+    homework.truncatedInformation = createShort(homework.information);
     if (homework.lesson) {
         const lesson = await import("../lesson");
         await lesson.parseLesson(homework.lesson);

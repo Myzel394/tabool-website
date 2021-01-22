@@ -1,7 +1,6 @@
 import React, {memo, useState} from "react";
-import {Box, Dialog, DialogContent, DialogTitle, Grid, Link, Paper, Typography} from "@material-ui/core";
+import {Box, Dialog, DialogContent, DialogTitle, Link, Paper, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {MdWarning} from "react-icons/all";
 
 import GetDownloadLink from "./GetDownloadLink";
 
@@ -36,22 +35,10 @@ const ScoosoMaterial = ({
                         {name}
                     </Typography>
                     <Box py={2}>
-                        <Grid container direction="row" alignItems="center" spacing={1}>
-                            <Grid item xs={2}>
-                                <Box p={1}>
-                                    <Typography variant="body2" color="textSecondary">
-                                        <MdWarning size="100%" />
-                                    </Typography>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={10}>
-                                <Typography variant="body2" color="textSecondary">
-                                    {t("Diese Datei könnte schädlich sein, daher wurde sie nicht auf tabool runtergeladen. " +
-                                        "Du kannst sie aber über Scooso runterladen. " +
-                                    "Klicke, um sie über Scooso runterzuladen.")}
-                                </Typography>
-                            </Grid>
-                        </Grid>
+                        <Typography variant="body2" color="textSecondary">
+                            {t("Diese Datei könnte schädlich sein, daher wurde sie nicht auf tabool runtergeladen. " +
+                                "Du kannst sie aber über Scooso runterladen. Tippe, um sie über Scooso runterzuladen.")}
+                        </Typography>
                     </Box>
                 </Box>
             </Link>

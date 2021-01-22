@@ -4,7 +4,7 @@ import {ModificationDetail} from "../api";
 
 import {Room} from "./room";
 import {CourseDetail} from "./course";
-import {ClassBook} from "./classBook";
+import {Classbook} from "./classbook";
 import {MaterialDetail} from "./material";
 import {HomeworkDetail} from "./homework";
 import {SubmissionDetail} from "./submission";
@@ -32,7 +32,7 @@ export interface LessonApprox {
 
 export interface LessonDetail extends Omit<LessonApprox, "lessonData" | "hasConference"> {
     lessonData: LessonDataDetail;
-    classBook: ClassBook | null;
+    classbook: Classbook | null;
     materials: MaterialDetail[];
     homeworks: HomeworkDetail[];
     modifications: ModificationDetail[];

@@ -59,58 +59,60 @@ const LessonContent = ({
             )}
             py={0}
         >
-            {showDetails ? (
-                <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
-                    <section>
-                        <div className={styles.secondary}>
-                            {/* <Time> */}
-                            <Typography variant="body2" color="textSecondary">
-                                {startTime.format(TIME_FORMAT)} - {endTime.format(TIME_FORMAT)}
-                            </Typography>
-                            {/* </Time> */}
-                        </div>
-                        <Box>
-                            {/* <Course> */}
-                            <Typography
-                                variant="h5"
-                                component="h1"
-                                className={styles.title}
-                                color="textPrimary"
-                            >
-                                {courseName}
-                            </Typography>
-                            {/* </Course> */}
-                        </Box>
-                    </section>
-                    <Box
-                        component="dl"
-                        display="flex"
-                        flexDirection="row"
-                        flexWrap="wrap"
-                        m={0}
-                    >
-                        <Box mr={1}>
+            <Box p={1}>
+                {showDetails ? (
+                    <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+                        <section>
+                            <div className={styles.secondary}>
+                                {/* <Time> */}
+                                <Typography variant="body2" color="textSecondary">
+                                    {startTime.format(TIME_FORMAT)} - {endTime.format(TIME_FORMAT)}
+                                </Typography>
+                                {/* </Time> */}
+                            </div>
+                            <Box>
+                                {/* <Course> */}
+                                <Typography
+                                    variant="h5"
+                                    component="h1"
+                                    className={styles.title}
+                                    color="textPrimary"
+                                >
+                                    {courseName}
+                                </Typography>
+                                {/* </Course> */}
+                            </Box>
+                        </section>
+                        <Box
+                            component="dl"
+                            display="flex"
+                            flexDirection="row"
+                            flexWrap="wrap"
+                            m={0}
+                        >
+                            <Box mr={1}>
+                                <Information
+                                    getIcon={props => <FaGraduationCap {...props} />}
+                                    text={teacherName}
+                                />
+                            </Box>
                             <Information
-                                getIcon={props => <FaGraduationCap {...props} />}
-                                text={teacherName}
+                                getIcon={props => <FaMapMarkerAlt {...props} />}
+                                text={roomName}
                             />
                         </Box>
-                        <Information
-                            getIcon={props => <FaMapMarkerAlt {...props} />}
-                            text={roomName}
-                        />
                     </Box>
-                </Box>
-            ) : (
-                <Typography
-                    variant="h5"
-                    component="h1"
-                    className={styles.title}
-                    color="textPrimary"
-                >
-                    {courseName}
-                </Typography>
-            )}
+                ) : (
+                    <Typography
+                        variant="h5"
+                        component="h1"
+                        className={styles.title}
+                        color="textPrimary"
+                    >
+                        {courseName}
+                    </Typography>
+                )}
+            </Box>
         </Box>
     );
 };

@@ -1,4 +1,4 @@
-export interface ClassBook {
+export interface Classbook {
     presenceContent: string;
     distanceContent: string;
 }
