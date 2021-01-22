@@ -88,6 +88,27 @@ const Faq = () => {
                     </Typography>
                 </AccordionDetails>
             </Accordion>
+            <Accordion>
+                <AccordionSummary>
+                    <Typography variant="body1">
+                        {t("Wieso werden nicht alle Dateien runter- oder hochgeladen?")}
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Box>
+                        <Typography variant="body2" color="textSecondary">
+                            {t("Um uns Schülern auf tabool maximale Sicherheit gewährleisten können, müssen wir sicherstellen, " +
+                                "dass keine Datei von Scooso schädlich für den einzelnen oder für den gesamten Server ist. " +
+                                "Darum wird jede Datei bevor sie runtergeladen wird überprüft (Die Überprüfung ersetzt jedoch " +
+                                "keinen Virenscanner!).")}
+                        </Typography>
+                        <br />
+                        <Typography variant="body2" color="textSecondary">
+                            {t("Da wir Hacking-Angriffe so stark wie möglich vermeiden wollen, kann nicht jede Datei hochgeladen werden.")}
+                        </Typography>
+                    </Box>
+                </AccordionDetails>
+            </Accordion>
         </Paper>
     );
 };
