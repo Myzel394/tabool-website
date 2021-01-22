@@ -20,7 +20,6 @@ import {buildPath, combineDatetime} from "utils";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
 import {CourseIcon, ExamIcon, HomeworkIcon, TeacherIcon} from "components/icons";
-import _ from "lodash";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 
 import Submissions from "./Submissions";
@@ -94,48 +93,6 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     const subTitle = `${lessonDateFormat}, ${startTimeFormat} - ${endTimeFormat}`;
     const {videoConferenceLink} = lesson;
 
-    const data: any = _.pickBy({
-        presenceContent: {
-            icon: <FaChalkboardTeacher />,
-            title: t("Inhalt Präsenzunterricht"),
-            information: lesson.classBook?.presenceContent,
-        },
-        distanceContent: {
-            icon: <FiMonitor />,
-            title: t("Inhalt Fernunterricht"),
-            information: lesson.classBook?.distanceContent,
-        },
-        course: {
-            icon: <CourseIcon />,
-            title: t("Kurs"),
-            information: lesson.lessonData.course.name,
-            disableShowMore: true,
-        },
-        teacher: {
-            icon: <TeacherIcon />,
-            title: t("Lehrer"),
-            information: `${lesson.lessonData.course.teacher.firstName} ${lesson.lessonData.course.teacher.lastName}`,
-            disableShowMore: true,
-            helperText: (
-                <Link
-                    component={Button}
-                    underline="none"
-                    href={buildPath("/agenda/teacher/detail/:id/", {
-                        id: lesson.lessonData.course.teacher.id,
-                    })}
-                >
-                    {t("Zum Lehrer")}
-                </Link>
-            ),
-        },
-        room: {
-            icon: <MdPlace />,
-            title: t("Raum"),
-            information: lesson.lessonData.room.place,
-            disableShowMore: true,
-        },
-    }, _.negate(_.isUndefined));
-
     return (
         <DetailPage<LessonKeys, "attendance", IFetchLessonsResponse>
             title={lesson.lessonData.course.name}
@@ -148,7 +105,47 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             refetch={refetch}
             isRefreshing={isFetching}
             updatedAt={dayjs(dataUpdatedAt)}
-            data={data}
+            data={{
+                presenceContent: {
+                    icon: <FaChalkboardTeacher />,
+                    title: t("Inhalt Präsenzunterricht"),
+                    information: lesson.classbook?.presenceContent,
+                },
+                distanceContent: {
+                    icon: <FiMonitor />,
+                    title: t("Inhalt Fernunterricht"),
+                    information: lesson.classbook?.distanceContent,
+                },
+                course: {
+                    icon: <CourseIcon />,
+                    title: t("Kurs"),
+                    information: lesson.lessonData.course.name,
+                    disableShowMore: true,
+                },
+                teacher: {
+                    icon: <TeacherIcon />,
+                    title: t("Lehrer"),
+                    information: `${lesson.lessonData.course.teacher.firstName} ${lesson.lessonData.course.teacher.lastName}`,
+                    disableShowMore: true,
+                    helperText: (
+                        <Link
+                            component={Button}
+                            underline="none"
+                            href={buildPath("/agenda/teacher/detail/:id/", {
+                                id: lesson.lessonData.course.teacher.id,
+                            })}
+                        >
+                            {t("Zum Lehrer")}
+                        </Link>
+                    ),
+                },
+                room: {
+                    icon: <MdPlace />,
+                    title: t("Raum"),
+                    information: lesson.lessonData.room.place,
+                    disableShowMore: true,
+                },
+            }}
             headerNode={lesson?.modifications.length > 0 && <ModificationsNode lesson={lesson} />}
             relationButtons={{
                 values: {

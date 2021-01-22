@@ -11,14 +11,16 @@ const informationProps = {
     display: "flex",
     alignItems: "center",
     style: {
-        wordBreak: "break-all" as "break-all",
+        wordBreak: "break-word" as "break-word",
     },
 };
 
 const SecondaryInformation = ({icon, text}: ISecondaryInformation) => {
     return (
         <Box {...informationProps}>
-            {icon}
+            <Box mr={1}>
+                {icon}
+            </Box>
             {text}
         </Box>
     );
