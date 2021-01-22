@@ -3,6 +3,7 @@ import {Box, IconButton, Paper, useTheme} from "@material-ui/core";
 import {GoThreeBars} from "react-icons/all";
 import {useElementSize} from "hooks";
 import {DraggableProvidedDragHandleProps} from "react-beautiful-dnd";
+import {Zoom} from "react-reveal";
 
 import TransitionWrapper from "./TransitionWrapper";
 import Content, {IContent} from "./Content";
@@ -42,31 +43,33 @@ const Field = ({
     const elevation = isElevated ? 5 : 1;
 
     return (
-        <Paper
-            elevation={elevation}
-            style={paperStyle}
-        >
-            <TransitionWrapper active={reorder} offsetAmount={buttonWidth}>
-                {style => (
-                    <Box
-                        display="flex"
-                        alignItems="center"
-                        p={2}
-                        style={style}
-                    >
-                        <div style={buttonStyle}>
-                            <IconButton ref={$button} {...dragHandleProps}>
-                                <GoThreeBars />
-                            </IconButton>
-                        </div>
-                        <Content
-                            {...contentProps}
-                            isUpdating={isUpdating}
-                        />
-                    </Box>
-                )}
-            </TransitionWrapper>
-        </Paper>
+        <Zoom duration={theme.transitions.duration.enteringScreen}>
+            <Paper
+                elevation={elevation}
+                style={paperStyle}
+            >
+                <TransitionWrapper active={reorder} offsetAmount={buttonWidth}>
+                    {style => (
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            p={2}
+                            style={style}
+                        >
+                            <div style={buttonStyle}>
+                                <IconButton ref={$button} {...dragHandleProps}>
+                                    <GoThreeBars />
+                                </IconButton>
+                            </div>
+                            <Content
+                                {...contentProps}
+                                isUpdating={isUpdating}
+                            />
+                        </Box>
+                    )}
+                </TransitionWrapper>
+            </Paper>
+        </Zoom>
     );
 };
 

@@ -14,8 +14,7 @@ import {MdClose, MdEdit} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {FormikProps} from "formik/dist/types";
 import Truncate from "react-truncate";
-
-import {SimpleDialog, Tooltip} from "../../../components";
+import {SimpleDialog, Tooltip} from "components";
 
 interface RenderFieldProps extends FormikProps<any> {
     helperText?: string | JSX.Element;
@@ -25,7 +24,7 @@ interface RenderFieldProps extends FormikProps<any> {
 export interface IContent {
     title: string;
     icon: JSX.Element | null | ((value: any) => JSX.Element | null);
-    information: string | JSX.Element;
+    information?: string | JSX.Element | null;
     value: any;
     isUpdating: boolean;
     onReset: () => any;
