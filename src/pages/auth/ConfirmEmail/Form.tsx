@@ -10,6 +10,7 @@ import {MdVpnKey} from "react-icons/all";
 import {Alert} from "@material-ui/lab";
 import {ErrorFieldsInjection} from "types";
 import {useColors} from "hooks";
+import {useParams} from "react-router-dom";
 
 
 export interface IForm {
@@ -21,6 +22,9 @@ const Form = ({onSubmit}: IForm) => {
     const {
         inputIconColor,
     } = useColors();
+    const {code} = useParams<{
+        code: string;
+    }>();
     const {t} = useTranslation();
 
     const validationSchema = yup.object({
@@ -30,10 +34,13 @@ const Form = ({onSubmit}: IForm) => {
             .max(40, t("Der Code ist 40 Zeichen lang.")),
     });
 
+    // eslint-disable-next-line no-console
+    console.log(code);
+
     return (
         <Formik<IConfirmEmailData & ErrorFieldsInjection>
             initialValues={{
-                confirmationKey: "",
+                confirmationKey: code,
             }}
             validationSchema={validationSchema}
             onSubmit={onSubmit}

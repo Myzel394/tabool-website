@@ -10,8 +10,7 @@ import {HiddenTextField, LoadingOverlay, PrimaryButton, SecondaryButton} from "c
 import {Alert} from "@material-ui/lab";
 import {ErrorFieldsInjection} from "types";
 import {useColors} from "hooks";
-
-import {buildPath} from "../../../utils";
+import {buildPath} from "utils";
 
 import RequestTokenDialog from "./RequestTokenDialog";
 
@@ -19,11 +18,9 @@ export interface FormikForm extends IRegistrationData {
     passwordConfirmation: string;
 }
 
-
 export interface IForm {
     onSubmit: FormikConfig<IRegistrationData>["onSubmit"];
 }
-
 
 const Form = ({onSubmit}: IForm) => {
     const {t} = useTranslation();
@@ -83,6 +80,7 @@ const Form = ({onSubmit}: IForm) => {
                                                     <MdEmail color={inputIconColor} />
                                                 </InputAdornment>
                                             ),
+                                            inputMode: "email",
                                         }}
                                         variant="outlined"
                                     />
@@ -116,7 +114,6 @@ const Form = ({onSubmit}: IForm) => {
                                             fullWidth
                                             required
                                             name="password"
-                                            type="text"
                                             label={t("Passwort")}
                                             component={HiddenTextField}
                                             variant="outlined"
@@ -153,7 +150,6 @@ const Form = ({onSubmit}: IForm) => {
                                         required
                                         fullWidth
                                         name="passwordConfirmation"
-                                        type="text"
                                         label={t("Passwort bestätigen")}
                                         component={HiddenTextField}
                                         variant="outlined"

@@ -71,7 +71,10 @@ const askNotification = () => new Promise<PermissionType>((resolve) => {
     };
 
     if ("Notification" in window) {
-        Notification.requestPermission(handleResult)
+        // Notification doesn't throw an exception
+        // eslint-disable-next-line promise/catch-or-return
+        Notification
+            .requestPermission(handleResult)
             .then(handleResult);
     } else {
         resolve(PermissionType.NotAvailable);

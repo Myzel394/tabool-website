@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import {useTranslation} from "react-i18next";
 import {IRegistrationData, IRegistrationResponse, useSendRegistrationAPI} from "hooks/apis";
 import {useMutation} from "react-query";
@@ -13,26 +13,23 @@ import Completed from "./Completed";
 const Register = () => {
     const {t} = useTranslation();
     const sendRegistration = useSendRegistrationAPI();
-    const {dispatch} = useContext(UserContext);
-
-    const [isCompleted, setIsCompleted] = useState<boolean>(false);
+    const {dispatch, state: user} = useContext(UserContext);
 
     const {
         mutateAsync,
     } = useMutation<IRegistrationResponse, AxiosError, IRegistrationData>(
         sendRegistration,
         {
-            onSuccess: (data) => {
+            onSuccess: (data) =>
                 dispatch({
                     type: "registration",
                     payload: data,
-                });
-                setIsCompleted(true);
-            },
+                })
+            ,
         },
     );
 
-    return isCompleted
+    return user.isAuthenticated
         ? <Completed />
         : (
             <FocusedPage showLogo title={t("Registrieren")}>

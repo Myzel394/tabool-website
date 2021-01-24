@@ -4,9 +4,9 @@ import {FCMNotification} from "types";
 import camelcaseKeys from "camelcase-keys";
 import {IconButton} from "@material-ui/core";
 import {FaBookOpen} from "react-icons/all";
+import {buildPath} from "utils";
 
 import {message} from "../firebase";
-import {buildPath} from "../utils";
 
 import useSnackbar from "./useSnackbar";
 

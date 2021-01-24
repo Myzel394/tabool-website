@@ -6,7 +6,7 @@ export interface ITitle {
 }
 
 const style = {
-    wordBreak: "break-all" as "break-all",
+    wordBreak: "break-word" as "break-word",
 };
 
 const Title = ({title}: ITitle) => {

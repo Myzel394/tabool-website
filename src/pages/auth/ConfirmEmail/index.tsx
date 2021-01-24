@@ -5,10 +5,9 @@ import {AxiosError} from "axios";
 import {useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router";
-
-import {FocusedPage} from "../../../components";
-import {UserContext} from "../../../contexts";
-import {buildPath} from "../../../utils";
+import {FocusedPage} from "components";
+import {UserContext} from "contexts";
+import {buildPath} from "utils";
 
 import Form from "./Form";
 

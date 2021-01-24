@@ -35,7 +35,9 @@ const Search = ({
                         {isLoading && <CircularProgress color="inherit" size="1rem" />}
                     </InputAdornment>
                 ),
+                inputMode: "search",
             }}
+            type="search"
             variant="outlined"
             onChange={event => onChange(event.target.value)}
         />
