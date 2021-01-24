@@ -9,6 +9,7 @@ import {DailyData} from "types";
 
 import StartPageView from "./StartPageView";
 import SkeletonView from "./SkeletonView";
+import NotLoaded from "./NotLoaded";
 
 
 const getTargetedDate = (): Dayjs => {
@@ -43,6 +44,7 @@ const StartPage = () => {
         data,
         isLoading,
         isFetching,
+        error,
     } = useQuery<IFetchDailyDataResponse, AxiosError, IFetchDailyDataData>(
         ["fetch_daily_data", maxFutureDays, targetedDate],
         () => fetchDailyData({
@@ -59,6 +61,12 @@ const StartPage = () => {
     if (isLoading) {
         return (
             <SkeletonView />
+        );
+    }
+
+    if (error?.response?.status === 503) {
+        return (
+            <NotLoaded />
         );
     }
 
