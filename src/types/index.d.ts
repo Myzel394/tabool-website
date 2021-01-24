@@ -1,4 +1,5 @@
 export * from "./api";
+export * from "./absence";
 export * from "./classBook";
 export * from "./exam";
 export * from "./course";

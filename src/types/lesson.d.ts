@@ -1,6 +1,6 @@
+/* eslint-disable import/no-cycle */
 import {Dayjs} from "dayjs";
-
-import {ModificationDetail} from "../api";
+import {ModificationDetail} from "api";
 
 import {Room} from "./room";
 import {CourseDetail} from "./course";
@@ -8,6 +8,7 @@ import {Classbook} from "./classbook";
 import {MaterialDetail} from "./material";
 import {HomeworkDetail} from "./homework";
 import {SubmissionDetail} from "./submission";
+import {Absence} from "./absence";
 
 export interface LessonDataApprox {
     course: string;
@@ -27,19 +28,21 @@ export interface LessonDataDetail extends Omit<LessonDataApprox, "course" | "roo
 export interface LessonApprox {
     lessonData: LessonDataApprox;
     date: Dayjs;
+    hasConference: boolean;
     id: string;
 }
 
-export interface LessonDetail extends Omit<LessonApprox, "lessonData" | "hasConference"> {
+export interface LessonRelatedDetail extends Omit<LessonApprox, "lessonData" | "hasConference"> {
     lessonData: LessonDataDetail;
     classbook: Classbook | null;
+    videoConferenceLink?: string;
+}
+
+export interface LessonDetail extends LessonRelatedDetail {
     materials: MaterialDetail[];
     homeworks: HomeworkDetail[];
     modifications: ModificationDetail[];
     submissions: SubmissionDetail[];
-    userRelation: {
-        attendance: boolean;
-    };
-    videoConferenceLink?: string;
+    absence?: Absence;
 }
 

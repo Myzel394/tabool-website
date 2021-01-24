@@ -1,8 +1,8 @@
 import React from "react";
-import {LessonDetail} from "types";
 import {Dayjs} from "dayjs";
 import {Grid} from "@material-ui/core";
 import {AvatarGroup} from "@material-ui/lab";
+import {LessonRelatedDetail} from "types";
 
 import Avatar from "../Avatar";
 
@@ -11,7 +11,7 @@ import Description from "./Description";
 
 export interface IConferenceList {
     date: Dayjs;
-    lessons: LessonDetail[];
+    lessons: LessonRelatedDetail[];
 }
 
 const style = {
@@ -28,7 +28,10 @@ const ConferenceList = ({lessons, date}: IConferenceList) => {
                 </AvatarGroup>
             </Grid>
             <Grid item style={style}>
-                <Description date={date} secondaryText={lessons.map(lesson => lesson.lessonData.course.subject.name).join(" | ")} />
+                <Description
+                    date={date}
+                    secondaryText={lessons.map(lesson => lesson.lessonData.course.subject.name).join(" | ")}
+                />
             </Grid>
         </Grid>
     );

@@ -1,22 +1,24 @@
 import React, {memo} from "react";
-import {LessonDetail} from "types";
+import {HomeworkDetail, LessonRelatedDetail, MaterialDetail} from "types";
 import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components";
 import {Link} from "@material-ui/core";
+import {buildPath} from "utils";
 
 import createShadow from "../createShadow";
-import {buildPath} from "../../../utils";
 
 
 export interface ILessonEvent {
-    lesson: LessonDetail;
+    lesson: LessonRelatedDetail;
+    homeworks: HomeworkDetail[];
+    materials: MaterialDetail[];
 }
 
-const SingleLesson = ({lesson}: ILessonEvent) => {
-    const hasHomework = Boolean(lesson.homeworks.length);
-    const hasMaterials = Boolean(lesson.materials.length);
+const SingleLesson = ({lesson, homeworks, materials}: ILessonEvent) => {
+    const lessonHomeworks = homeworks.filter(homework => homework.lesson.id === lesson.id);
+    const lessonMaterials = materials.filter(material => material.lesson.id === lesson.id);
     const badges = [
-        hasHomework && <HomeworkBadge count={lesson.homeworks.length} />,
-        hasMaterials && <MaterialBadge count={lesson.materials.length} />,
+        lessonHomeworks.length && <HomeworkBadge count={lessonHomeworks.length} />,
+        lessonMaterials.length && <MaterialBadge count={lessonMaterials.length} />,
     ].filter(Boolean) as JSX.Element[];
 
     return (

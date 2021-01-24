@@ -15,8 +15,7 @@ export interface IAutocompleteField extends Omit<AutocompleteProps<any, false, a
     "getOptionLabel" |
     "renderInput" |
     "filterOptions" |
-    "onChange"
-    > {
+    "onChange"> {
     isLoading: boolean;
     autocompletionList: string[];
     onSearchChange: (search: string) => void;
@@ -53,7 +52,19 @@ const AutocompleteField = ({
             freeSolo
             loading={isLoading}
             options={autocompletionList}
-            getOptionLabel={(option: any) => option?.text ?? option}
+            getOptionLabel={(option) => {
+                // Value selected with enter, right from the input
+                if (typeof option === "string") {
+                    return option;
+                }
+                // Add "xxx" option created dynamically
+                if (option.inputValue) {
+                    return option.inputValue;
+                }
+                // Regular option
+                return option.text;
+            }}
+            renderOption={(option) => option.text ?? option}
             renderInput={params =>
                 <TextField
                     {...params}

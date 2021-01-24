@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {createContext} from "react";
-import {EventDetail, ExamDetail, LessonDetail} from "types";
+import {EventDetail, ExamDetail, HomeworkDetail, LessonRelatedDetail, MaterialDetail, ModificationDetail} from "types";
 import {Dayjs} from "dayjs";
 import {View} from "react-big-calendar";
 import {RefetchOptions} from "react-query";
@@ -8,9 +8,12 @@ import {RefetchOptions} from "react-query";
 export type CalendarType = "lesson" | "homework";
 
 export interface ICalendarContext<TEvent extends Record<string, any> = Record<string, any>> {
-    lessons: LessonDetail[];
+    lessons: LessonRelatedDetail[];
     events: EventDetail[];
     exams: ExamDetail[];
+    homeworks: HomeworkDetail[];
+    materials: MaterialDetail[];
+    modifications: ModificationDetail[];
 
     onViewChange: (view: View) => any;
     activeView: View;

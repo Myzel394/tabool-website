@@ -3,7 +3,7 @@ import {convertToDate} from "api";
 
 import {parseEvent} from "../event";
 import {parseExam} from "../exam";
-import {parseLesson} from "../lesson";
+import {parseLessonRelatedDetail} from "../lesson";
 import {parseHomework} from "../homework";
 import {parseModification} from "../modification";
 
@@ -17,9 +17,9 @@ const parseFetchDailyData = async (data: DailyData): Promise<void> => {
         ...data.events.map(parseEvent),
         ...data.exams.map(parseExam),
         ...data.homeworks.map(parseHomework),
-        ...data.lessons.map(parseLesson),
+        ...data.lessons.map(parseLessonRelatedDetail),
         ...data.modifications.map(parseModification),
-        ...data.videoConferenceLessons.map(parseLesson),
+        ...data.videoConferenceLessons.map(parseLessonRelatedDetail),
     ]);
 };
 

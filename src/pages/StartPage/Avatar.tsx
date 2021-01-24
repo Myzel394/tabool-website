@@ -1,14 +1,13 @@
 import React from "react";
-import {LessonDetail, Subject} from "types";
+import {LessonRelatedDetail, Subject} from "types";
 import {useAdaptedColor} from "hooks";
 import {Avatar as MUIAvatar, Link, useTheme} from "@material-ui/core";
 import tinycolor from "tinycolor2";
-
-import {buildPath} from "../../utils";
+import {buildPath} from "utils";
 
 
 export interface IAvatar {
-    lesson?: LessonDetail;
+    lesson?: LessonRelatedDetail;
     subject?: Subject;
 }
 

@@ -1,17 +1,21 @@
-import {EventDetail, ExamDetail, LessonDetail} from "types";
+import {EventDetail, ExamDetail, HomeworkDetail, LessonRelatedDetail, MaterialDetail, ModificationDetail} from "types";
 import {combineDatetime} from "utils";
 import {Event as CalendarEvent} from "react-big-calendar";
 
 interface IBuildCalendarEvents {
-    lessons?: LessonDetail[];
+    lessons?: LessonRelatedDetail[];
     events?: EventDetail[];
     exams?: ExamDetail[];
+    homeworks?: HomeworkDetail[];
+    materials?: MaterialDetail[];
+    modifications?: ModificationDetail[];
 }
 
 export const buildCalendarEvents = ({
     lessons,
     events,
     exams,
+    modifications,
 }: IBuildCalendarEvents): CalendarEvent[] => {
     const calendarLessons = (lessons ?? []).map(
         (lesson): CalendarEvent => ({
@@ -37,26 +41,21 @@ export const buildCalendarEvents = ({
             },
         }),
     );
-    const calendarModifications = (lessons ?? []).reduce<CalendarEvent[]>(
-        (array, lesson) => [
-            ...array,
-            ...lesson.modifications
-                .filter(modification => !(
-                    modification.startDatetime.isSame(combineDatetime(lesson.date, lesson.lessonData.startTime)) &&
-                        modification.endDatetime.isSame(combineDatetime(lesson.date, lesson.lessonData.endTime))
-                ))
-                .map(modification => ({
-                    start: modification.startDatetime.toDate(),
-                    end: modification.endDatetime.toDate(),
-                    title: lesson.lessonData.course.subject.name,
-                    resource: {
-                        ...modification,
-                        type: "modification",
-                    },
-                })),
-        ],
-        [],
-    );
+    const calendarModifications = (modifications ?? [])
+        .filter(modification =>
+            !(
+                modification.startDatetime.isSame(combineDatetime(modification.lesson.date, modification.lesson.lessonData.startTime)) &&
+                modification.endDatetime.isSame(combineDatetime(modification.lesson.date, modification.lesson.lessonData.endTime))
+            ))
+        .map(modification => ({
+            start: modification.startDatetime.toDate(),
+            end: modification.endDatetime.toDate(),
+            title: modification.lesson.lessonData.course.subject.name,
+            resource: {
+                ...modification,
+                type: "modification",
+            },
+        }));
     const calendarExams = (exams ?? []).map((exam): CalendarEvent => ({
         start: exam.targetedDate.toDate(),
         end: exam.targetedDate.toDate(),

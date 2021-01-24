@@ -99,7 +99,6 @@ const Calendar = () => {
         endDatetime: getISODatetime(endDate),
     };
 
-
     const {
         data,
         isLoading,
@@ -182,6 +181,9 @@ const Calendar = () => {
                 lessons: contextData?.lessons ?? [],
                 events: contextData?.events ?? [],
                 exams: contextData?.exams ?? [],
+                homeworks: contextData?.homeworks ?? [],
+                materials: contextData?.materials ?? [],
+                modifications: contextData?.modifications ?? [],
                 calendarType: activeType,
                 date: activeDate,
                 earliestDateAvailable: contextData?.earliestDateAvailable,

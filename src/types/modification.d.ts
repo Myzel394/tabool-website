@@ -4,7 +4,7 @@ import {ModificationType} from "api";
 import {Room} from "./room";
 import {TeacherDetail} from "./teacher";
 import {Subject} from "./subject";
-import {LessonDetail} from "./lesson";
+import {LessonRelatedDetail} from "./lesson";
 
 export interface ModificationApprox {
     lesson?: string;
@@ -17,9 +17,10 @@ export interface ModificationApprox {
 }
 
 export interface ModificationDetail extends Omit<ModificationApprox, "truncatedInformation" | "lesson"> {
+    lesson: LessonRelatedDetail;
+    information: string;
+
     newRoom?: Room;
     newTeacher?: TeacherDetail;
     newSubject?: Subject;
-    lesson?: LessonDetail;
-    information: string;
 }

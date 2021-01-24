@@ -1,29 +1,23 @@
-import React, {useContext, useState} from "react";
+import React, {useCallback, useContext, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
-import {
-    IFetchLessonsResponse,
-    IUpdateLessonUserRelationData,
-    IUpdateLessonUserRelationResponse,
-    useFetchLessonDetailAPI,
-    useUpdateLessonUserRelationAPI,
-} from "hooks/apis";
+import {useDetailPageError, useQueryOptions} from "hooks";
+import {IFetchLessonsResponse, useFetchLessonDetailAPI} from "hooks/apis";
 import {Box, Button, ButtonGroup, Collapse, Grid, Link, Paper, Typography} from "@material-ui/core";
-import update from "immutability-helper";
 import dayjs from "dayjs";
-import {DetailPage, Homework, IllEmailButton, LoadingPage, Material, ScoosoMaterial} from "components";
+import {DetailPage, Homework, LoadingPage, Material, ScoosoMaterial} from "components";
 import {FaChalkboardTeacher, FaRunning, FaVideo, FiMonitor, MdPlace} from "react-icons/all";
-import {useMutation, useQuery} from "react-query";
+import {useQuery} from "react-query";
 import {LessonDetail} from "types";
 import {ErrorContext} from "contexts";
 import {buildPath, combineDatetime} from "utils";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
 import {CourseIcon, ExamIcon, HomeworkIcon, TeacherIcon} from "components/icons";
-import {PredefinedMessageType} from "hooks/useSnackbar";
 
 import Submissions from "./Submissions";
 import ModificationsNode from "./ModificationsNode";
+import useAbsence from "./useAbsence";
+import AbsenceForm from "./AbsenceForm";
 
 
 const gridItemStyle = {
@@ -36,12 +30,17 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchLesson = useFetchLessonDetailAPI();
-    const updateLessonUserRelation = useUpdateLessonUserRelationAPI();
     const {onFetchError} = useDetailPageError();
     const {dispatch: dispatchError} = useContext(ErrorContext);
-    const {addError} = useSnackbar();
 
     const [lesson, setLesson] = useState<LessonDetail>();
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Lesson is set when method is called
+    const updateLessonAbsence = useCallback(absence => setLesson(prevState => ({
+        ...prevState,
+        absence,
+    })), []);
 
     // Lesson
     const {
@@ -58,20 +57,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
             onError: (error) => onFetchError(error, Boolean(lesson)),
         },
     );
-    // Relation
-    const {
-        mutateAsync: mutateRelation,
-    } = useMutation<IUpdateLessonUserRelationResponse, AxiosError, IUpdateLessonUserRelationData>(
-        newRelation => updateLessonUserRelation(id, newRelation),
-        {
-            onSuccess: newRelation => setLesson(prevState => update(prevState, {
-                userRelation: {
-                    $set: newRelation,
-                },
-            })),
-            onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
-        },
-    );
+    const absence = useAbsence(updateLessonAbsence, lesson);
 
     // Rendering
     if (isLoading) {
@@ -151,20 +137,23 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 values: {
                     attendance: {
                         title: t("Anwesend"),
-                        isActive: lesson.userRelation.attendance,
+                        isActive: !lesson.absence,
                         icon: <FaRunning />,
                     },
                 },
-                onSubmit: (newRelation, {resetForm, setSubmitting}) =>
-                    mutateRelation(newRelation)
-                        .then(relation => setLesson(prevState => update(prevState, {
-                            userRelation: {
-                                $set: relation,
-                            },
-                        })))
-                        .catch(resetForm)
-                        .finally(() => setSubmitting(true))
-                ,
+                onSubmit: async ({attendance}, {resetForm, setSubmitting}) => {
+                    try {
+                        if (attendance) {
+                            await absence.remove();
+                        } else {
+                            await absence.add();
+                        }
+                    } catch (error) {
+                        resetForm();
+                    } finally {
+                        setSubmitting(false);
+                    }
+                },
             }}
             renderTopField={reorderElement => (
                 <>
@@ -173,25 +162,32 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                     </Grid>
                     <Grid item>
                         {videoConferenceLink &&
-                            <Link
-                                href={videoConferenceLink}
-                                rel="noopener noreferrer"
-                                component={Button}
-                                underline="none"
-                                target="_blank"
-                                startIcon={<FaVideo />}
-                            >
-                                {t("Video-Konferenz öffnen")}
-                            </Link>}
+                        <Link
+                            href={videoConferenceLink}
+                            rel="noopener noreferrer"
+                            component={Button}
+                            underline="none"
+                            target="_blank"
+                            startIcon={<FaVideo />}
+                        >
+                            {t("Video-Konferenz öffnen")}
+                        </Link>}
                     </Grid>
                 </>
             )}
             bottomNode={[
                 <Collapse
                     key={`write_illness_email_${lesson.id}`}
-                    in={!lesson.userRelation.attendance}
+                    in={Boolean(lesson.absence)}
                 >
-                    <IllEmailButton />
+                    <AbsenceForm
+                        absence={lesson.absence}
+                        onSubmit={(values, {setSubmitting}) =>
+                            absence
+                                .update(values)
+                                .finally(() => setSubmitting(false))
+                        }
+                    />
                 </Collapse>,
                 <Paper key="materials" elevation={0}>
                     <Box p={3}>

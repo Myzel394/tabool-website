@@ -1,6 +1,7 @@
 import {Dayjs} from "dayjs";
 
-import {LessonDetail} from "./lesson";
+// eslint-disable-next-line import/no-cycle
+import {LessonRelatedDetail} from "./lesson";
 import {Subject} from "./subject";
 
 export interface HomeworkApprox {
@@ -14,7 +15,7 @@ export interface HomeworkApprox {
 }
 
 export interface HomeworkDetail extends Omit<HomeworkApprox, "lesson" | "subject"> {
-    lesson: LessonDetail;
+    lesson: LessonRelatedDetail;
     isPrivate: boolean;
     information: string;
     type: string | null;

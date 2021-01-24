@@ -9,10 +9,8 @@ const parseHomework = async (homework: HomeworkDetail): Promise<void> => {
         "createdAt",
     ]);
     homework.truncatedInformation = createShort(homework.information);
-    if (homework.lesson) {
-        const lesson = await import("../lesson");
-        await lesson.parseLesson(homework.lesson);
-    }
+    const lesson = await import("../lesson");
+    await lesson.parseLessonRelatedDetail(homework.lesson);
 };
 
 export default parseHomework;

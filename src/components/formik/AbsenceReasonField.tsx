@@ -2,9 +2,9 @@ import React, {memo, useState} from "react";
 import {FieldProps} from "formik";
 import {AutocompleteProps} from "@material-ui/lab";
 import {
-    IFetchHomeworkTypeAutocompletionData,
-    IFetchHomeworkTypeAutocompletionResponse,
-    useFetchHomeworkTypeAutocompletionAPI,
+    IFetchAbsenceReasonAutocompletionData,
+    IFetchAbsenceReasonAutocompletionResponse,
+    useFetchAbsenceReasonAutocompletionAPI,
 } from "hooks/apis";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
@@ -32,16 +32,16 @@ export type IHomeworkTypeField = Omit<AutocompleteProps<any, false, any, true>,
 };
 
 const DEFAULT_TYPES = [
-    "Wiederholung", "Vorbereitung", "Hausaufgabe", "Übung",
+    "Krank", "Arztbesuch", "Beurlaubung",
 ];
 
-const HomeworkTypeField = ({
+const AbsenceReasonField = ({
     field,
     form,
     helperText,
     ...other
 }: IHomeworkTypeField) => {
-    const fetchHomework = useFetchHomeworkTypeAutocompletionAPI();
+    const fetchReasons = useFetchAbsenceReasonAutocompletionAPI();
 
     const [search, setSearch] = useState<string | null>(null);
 
@@ -50,9 +50,9 @@ const HomeworkTypeField = ({
     const {
         data,
         isLoading,
-    } = useQuery<IFetchHomeworkTypeAutocompletionResponse, AxiosError, IFetchHomeworkTypeAutocompletionData>(
-        ["fetch_homework_type", search],
-        () => fetchHomework({
+    } = useQuery<IFetchAbsenceReasonAutocompletionResponse, AxiosError, IFetchAbsenceReasonAutocompletionData>(
+        ["fetch_absence_reasons", search],
+        () => fetchReasons({
             query: search ?? undefined,
         }),
     );
@@ -83,4 +83,4 @@ const HomeworkTypeField = ({
     );
 };
 
-export default memo(HomeworkTypeField);
+export default memo(AbsenceReasonField);

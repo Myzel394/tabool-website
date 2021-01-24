@@ -1,5 +1,5 @@
 import React, {memo} from "react";
-import {LessonDetail} from "types";
+import {LessonRelatedDetail} from "types";
 import dayjs from "dayjs";
 import FlipMove from "react-flip-move";
 import {Zoom} from "react-reveal";
@@ -10,12 +10,10 @@ import {useTranslation} from "react-i18next";
 import ConferenceList from "./ConferenceList";
 import Connector from "./Connector";
 
-interface LessonsPerDate {
-    [key: string]: LessonDetail[];
-}
+type LessonsPerDate = Record<string, LessonRelatedDetail[]>;
 
 export interface IVideoConferences {
-    lessons: LessonDetail[];
+    lessons: LessonRelatedDetail[];
 }
 
 const VideoConferences = ({

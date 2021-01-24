@@ -49,6 +49,7 @@ const StartPageView = ({
         latestDateAvailable,
         earliestDateAvailable,
         exams,
+        materials,
     } = dailyData;
 
     return (
@@ -61,7 +62,7 @@ const StartPageView = ({
                     <Content
                         title={t("Fächer")}
                     >
-                        <Timetable lessons={lessons} />
+                        <Timetable lessons={lessons} homeworks={homeworks} materials={materials} />
                     </Content>
                 </Box>
                 <Box mb={6} mx={2}>

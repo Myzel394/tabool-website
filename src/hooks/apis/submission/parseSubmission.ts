@@ -5,10 +5,8 @@ const parseSubmission = async (submission: SubmissionDetail): Promise<void> => {
     convertToDate(submission, [
         "uploadDate", "createdAt",
     ]);
-    if (submission.lesson) {
-        const lesson = await import("../lesson");
-        await lesson.parseLesson(submission.lesson);
-    }
+    const lesson = await import("../lesson");
+    await lesson.parseLessonRelatedDetail(submission.lesson);
 };
 
 export default parseSubmission;

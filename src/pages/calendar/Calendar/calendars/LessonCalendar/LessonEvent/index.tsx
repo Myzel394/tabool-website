@@ -1,5 +1,5 @@
 import React from "react";
-import {LessonDetail, ModificationDetail} from "types";
+import {LessonRelatedDetail, ModificationDetail} from "types";
 import {Link} from "@material-ui/core";
 import {
     Badges,
@@ -19,14 +19,21 @@ import styles from "./LessonEvent.module.scss";
 export interface ILessonEvent {
     homeworkCount: number;
     materialCount: number;
-    lesson: LessonDetail;
+    lesson: LessonRelatedDetail;
     showWhenFreePeriod: boolean;
     showDetails: boolean;
 
     modification?: ModificationDetail;
 }
 
-const LessonEvent = ({homeworkCount, materialCount, lesson, modification, showWhenFreePeriod, showDetails}: ILessonEvent) => {
+const LessonEvent = ({
+    homeworkCount,
+    materialCount,
+    lesson,
+    modification,
+    showWhenFreePeriod,
+    showDetails,
+}: ILessonEvent) => {
     const isFreePeriod = modification?.modificationType === ModificationType.FreePeriod ||
         modification?.modificationType === ModificationType.SelfLearn;
 

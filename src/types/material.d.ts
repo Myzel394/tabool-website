@@ -1,6 +1,7 @@
 import {Dayjs} from "dayjs";
 
-import {LessonDetail} from "./lesson";
+// eslint-disable-next-line import/no-cycle
+import {LessonRelatedDetail} from "./lesson";
 
 export interface MaterialApprox {
     name: string;
@@ -11,8 +12,8 @@ export interface MaterialApprox {
 
 export interface MaterialDetail extends Omit<MaterialApprox, "lesson"> {
     isDeleted: boolean;
+    lesson: LessonRelatedDetail;
 
-    lesson?: LessonDetail;
     size?: number;
     file?: string;
     scoosoDownloadLink?: string;

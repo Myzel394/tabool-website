@@ -4,6 +4,7 @@ export * from "./useFetchDailyDataAPI";
 export * from "./useSendFCMTokenAPI";
 
 export * from "./auth";
+export * from "./absence";
 export * from "./course";
 export * from "./event";
 export * from "./exam";

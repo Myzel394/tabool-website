@@ -1,5 +1,5 @@
 import React, {ReactNode} from "react";
-import {EventDetail, ExamDetail, LessonDetail, ModificationDetail} from "types";
+import {EventDetail, ExamDetail, HomeworkDetail, LessonRelatedDetail, MaterialDetail, ModificationDetail} from "types";
 import {Event as CalendarEvent} from "react-big-calendar";
 import {ThemeProvider} from "@material-ui/core";
 import {createSmallTheme, getEventWrapperStyles} from "utils";
@@ -15,6 +15,9 @@ interface IEvent {
     style: any;
     showFreePeriods: boolean;
     showDetails: boolean;
+    modifications: ModificationDetail[];
+    homeworks: HomeworkDetail[];
+    materials: MaterialDetail[];
 }
 
 const Event = ({
@@ -22,6 +25,9 @@ const Event = ({
     style,
     showFreePeriods,
     showDetails,
+    homeworks,
+    materials,
+    modifications,
 }: IEvent) => {
     const divStyle = {
         ...getEventWrapperStyles(style ?? {}, calendarEvent),
@@ -32,10 +38,10 @@ const Event = ({
 
     switch (calendarEvent.resource.type) {
         case "lesson": {
-            const lesson: LessonDetail = calendarEvent.resource;
-            const homeworkCount = lesson.homeworks.length;
-            const materialCount = lesson.materials.length;
-            const modification = lesson.modifications[0];
+            const lesson: LessonRelatedDetail = calendarEvent.resource;
+            const homeworkCount = homeworks.filter(homework => homework.lesson.id === lesson.id).length;
+            const materialCount = materials.filter(material => material.lesson.id === lesson.id).length;
+            const modification = modifications.filter(modification => modification.lesson.id === lesson.id)[0];
 
             children = (
                 <LessonEvent
@@ -86,14 +92,23 @@ const Event = ({
 const eventProxy = ({
     showFreePeriods,
     showDetails,
+    modifications,
+    homeworks,
+    materials,
 }: {
     showFreePeriods: IEvent["showFreePeriods"];
     showDetails: IEvent["showDetails"];
+    modifications: IEvent["modifications"];
+    homeworks: IEvent["homeworks"];
+    materials: IEvent["materials"];
 }) => props =>
     Event({
         ...props,
         showFreePeriods,
         showDetails,
+        modifications,
+        homeworks,
+        materials,
     });
 
 
