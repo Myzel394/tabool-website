@@ -1,11 +1,17 @@
 import {AutocompleteType} from "types";
 
-const combineAutocompletions = (list?: AutocompleteType[], predefined: string[] = []): string[] => {
-    const uniqueValues = new Set([
+const getUniqueValues = (list: AutocompleteType[] = [], predefined: string[] = []): string[] =>
+    Array.from(new Set([
         ...predefined.map(element => element.toLowerCase()),
-        ...(list ?? []).map(element => element.text.toLowerCase()),
-    ]);
-    return Array.from(uniqueValues).map(element => element.charAt(0).toUpperCase() + element.slice(1));
+        ...list.map(element => element.text.toLowerCase()),
+    ]));
+
+const capitalize = (text: string): string =>
+    text.charAt(0).toUpperCase() + text.slice(1);
+
+const combineAutocompletions = (list: AutocompleteType[] = [], predefined: string[] = []): string[] => {
+    const uniqueValues = getUniqueValues(list, predefined);
+    return uniqueValues.map(capitalize);
 };
 
 export default combineAutocompletions;

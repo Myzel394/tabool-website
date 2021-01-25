@@ -1,8 +1,9 @@
 import React from "react";
 import {ExamIcon, FocusedPage, HomeworkIcon, RoomIcon} from "components";
-import {Box, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
+import {Box, Divider, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
 import {buildPath} from "utils";
 import {useTranslation} from "react-i18next";
+import {FaPenNib} from "react-icons/all";
 
 const ITEM_SIZE = "1.5rem";
 
@@ -11,6 +12,21 @@ const AgendaPage = () => {
 
     return (
         <FocusedPage disableBackButton title={t("Agenda")}>
+            <List>
+                <ListItem
+                    button
+                    href={buildPath("/agenda/absence/")}
+                    component="a"
+                >
+                    <ListItemIcon>
+                        <FaPenNib size={ITEM_SIZE} />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary={t("Entschuldigungsliste")}
+                    />
+                </ListItem>
+            </List>
+            <Divider />
             <List>
                 <ListItem
                     button

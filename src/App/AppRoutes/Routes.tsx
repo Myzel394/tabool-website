@@ -19,11 +19,11 @@ export default function Routes() {
             <Switch>
                 {/* Landing page */}
                 {!user.isAuthenticated &&
-                    <Route
-                        exact
-                        path={buildPath("/")}
-                        component={lazy(() => import("pages/LandingPage"))}
-                    />}
+                <Route
+                    exact
+                    path={buildPath("/")}
+                    component={lazy(() => import("pages/LandingPage"))}
+                />}
                 {/* Forgot password */}
                 <Route
                     exact
@@ -81,7 +81,12 @@ export default function Routes() {
                 <Route
                     exact
                     path={buildPath("/agenda/")}
-                    component={lazy(() => import("pages/AgendaPage"))}
+                    component={lazy(() => import("pages/agenda/AgendaPage"))}
+                />
+                <Route
+                    exact
+                    path={buildPath("/agenda/absence/")}
+                    component={lazy(() => import("pages/agenda/AbsenceList/index"))}
                 />
                 {/* Settings page */}
                 <Route

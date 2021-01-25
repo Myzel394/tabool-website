@@ -5,9 +5,9 @@ import dayjs from "dayjs";
 import {findNextDate, getMinMaxTime, locale} from "utils";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import {withStyles} from "@material-ui/core";
+import {calendarStyles} from "components";
 
 import CalendarContext from "../../../CalendarContext";
-import {calendarStyles} from "../../../../../components";
 
 import Toolbar from "./Toolbar";
 
@@ -19,8 +19,7 @@ export interface IDefaultCalendar<TEvent extends Record<string, any> = Record<st
     | "min"
     | "max"
     | "dayLayoutAlgorithm"
-    | "date"
-    > {
+    | "date"> {
     events: CalendarEvent[];
     eventComponent: ComponentType<EventWrapperProps<TEvent>>;
     classes: any;

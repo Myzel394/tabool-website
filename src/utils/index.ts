@@ -50,3 +50,4 @@ export {default as lazyDatetime} from "./lazyDatetime";
 export {default as buildPath} from "./buildPath";
 export {default as createShort} from "./createShort";
 export {default as combineAutocompletions} from "./combineAutocompletions";
+export {default as getPerDate} from "./getPerDate";

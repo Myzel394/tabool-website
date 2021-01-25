@@ -8,10 +8,9 @@ import {
 } from "hooks/apis";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
-import {AiFillTool} from "react-icons/all";
+import {FaThermometerThreeQuarters} from "react-icons/all";
 import {FormGroup, FormHelperText} from "@material-ui/core";
-
-import {combineAutocompletions} from "../../utils";
+import {combineAutocompletions} from "utils";
 
 import AutocompleteField from "./AutocompleteField";
 
@@ -32,7 +31,7 @@ export type IHomeworkTypeField = Omit<AutocompleteProps<any, false, any, true>,
 };
 
 const DEFAULT_TYPES = [
-    "Krank", "Arztbesuch", "Beurlaubung",
+    "Krank", "Arztbesuch", "Beurlaubung", "Termin", "Privat",
 ];
 
 const AbsenceReasonField = ({
@@ -65,7 +64,7 @@ const AbsenceReasonField = ({
                 multiple={false}
                 isLoading={isLoading}
                 autocompletionList={combineAutocompletions(data?.results, DEFAULT_TYPES)}
-                startIcon={<AiFillTool />}
+                startIcon={<FaThermometerThreeQuarters />}
                 onSearchChange={setSearch}
                 onChange={value =>
                     field.onChange({

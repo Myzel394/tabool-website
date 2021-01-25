@@ -27,11 +27,27 @@ const calendarStyles = (theme: Theme) => {
             "& .rbc-day-bg": {
                 borderColor: `${color}!important`,
             },
+            "& .rbc-month-row": {
+                borderColor: `${color}!important`,
+            },
+            "& .rbc-month-view": {
+                borderColor: `${color}!important`,
+            },
             "& .rbc-time-slot": {
                 border: "none !important",
             },
             "& .rbc-today": {
                 backgroundColor: theme.palette.background.default,
+            },
+            "& .rbc-off-range-bg": {
+                backgroundColor: theme.palette.background.default,
+                opacity: theme.palette.action.disabledOpacity,
+            },
+            "& .rbc-overlay": {
+                backgroundColor: theme.palette.background.paper,
+            },
+            "& .rbc-show-more": {
+                display: "none",
             },
         },
     };

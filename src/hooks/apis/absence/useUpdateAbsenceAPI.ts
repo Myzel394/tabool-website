@@ -3,6 +3,8 @@ import {AxiosContext} from "contexts";
 import {getLoginConfig} from "api";
 import {Absence} from "types";
 
+import {parseLesson} from "../lesson";
+
 export interface IUpdateAbsenceData {
     reason?: string;
     isSigned?: boolean;
@@ -19,6 +21,7 @@ const useUpdateAbsenceAPI = () => {
             isSigned,
             reason,
         }, await getLoginConfig());
+        await parseLesson(data.lesson);
 
         return data;
     }, [instance]);
