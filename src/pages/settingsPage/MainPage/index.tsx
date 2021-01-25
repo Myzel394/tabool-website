@@ -7,9 +7,9 @@ import Area from "../Area";
 
 import Permissions from "./Permissions";
 import Account from "./Account";
-import Statistics from "./Statistics";
 import Design from "./Design";
 import Faq from "./Faq";
+import DataShare from "./DataShare";
 
 const MainPage = () => {
     const {t} = useTranslation();
@@ -34,8 +34,8 @@ const MainPage = () => {
                         </Area>
                     </Grid>
                     <Grid item xs={12}>
-                        <Area title={t("Statistiken")}>
-                            <Statistics />
+                        <Area title={t("Daten teilen & sammeln")}>
+                            <DataShare />
                         </Area>
                     </Grid>
                     <Grid item xs={12}>

@@ -4,6 +4,7 @@ import {initialUserState, IUser} from "contexts/UserContext";
 import {ActionType} from "types";
 import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
+import update from "immutability-helper";
 
 const usePersistedReducer = createPersistedReducer("user");
 
@@ -17,6 +18,18 @@ const reducer = (state: IUser, action: ActionType): IUser => {
             return initialUserState;
         }
 
+        case "change_load_scooso_data": {
+            const {loadScoosoData} = action.payload;
+
+            return update(state, {
+                data: {
+                    loadScoosoData: {
+                        $set: loadScoosoData,
+                    },
+                },
+            });
+        }
+
         case "login": {
             const {
                 hasFilledOutData,
@@ -25,6 +38,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                 lastName,
                 email,
                 id,
+                loadScoosoData,
             } = action.payload;
 
             return {
@@ -37,6 +51,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                     lastName,
                     email,
                     id,
+                    loadScoosoData,
                 },
             };
         }
@@ -71,6 +86,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                     email,
                     id,
                     lastName,
+                    loadScoosoData: true,
                 },
             };
         }

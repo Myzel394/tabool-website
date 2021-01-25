@@ -1,14 +1,6 @@
-import React, {memo, useState} from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {
-    DialogContentText,
-    List,
-    ListItem,
-    ListItemSecondaryAction,
-    ListItemText,
-    Paper,
-    Switch,
-} from "@material-ui/core";
+import {DialogContentText, ListItem, ListItemSecondaryAction, ListItemText, Switch} from "@material-ui/core";
 import {useUserPreferences} from "hooks";
 import {PrimaryButton, SecondaryButton, SimpleDialog} from "components";
 
@@ -27,25 +19,21 @@ const Statistics = () => {
 
     return (
         <>
-            <Paper>
-                <List>
-                    <ListItem>
-                        <ListItemText primary={t("Anonyme Statistiken senden")} />
-                        <ListItemSecondaryAction>
-                            <Switch
-                                checked={allow}
-                                onChange={event => {
-                                    if (event.target.checked) {
-                                        setAllow(true);
-                                    } else {
-                                        setConfirm(true);
-                                    }
-                                }}
-                            />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                </List>
-            </Paper>
+            <ListItem>
+                <ListItemText primary={t("Anonyme Statistiken senden")} />
+                <ListItemSecondaryAction>
+                    <Switch
+                        checked={allow}
+                        onChange={event => {
+                            if (event.target.checked) {
+                                setAllow(true);
+                            } else {
+                                setConfirm(true);
+                            }
+                        }}
+                    />
+                </ListItemSecondaryAction>
+            </ListItem>
             <SimpleDialog
                 isOpen={confirm}
                 primaryButton={(
@@ -77,4 +65,4 @@ const Statistics = () => {
     );
 };
 
-export default memo(Statistics);
+export default Statistics;

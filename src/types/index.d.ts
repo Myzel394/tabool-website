@@ -21,3 +21,4 @@ export * from "./dailyData";
 export * from "./session";
 export * from "./notification";
 export * from "./poll";
+export * from "./user";
