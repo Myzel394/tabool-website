@@ -3,23 +3,23 @@ import {IconButton, ListItem, ListItemIcon, ListItemSecondaryAction} from "@mate
 import {ExtensionAvatar, LoadingOverlay} from "components";
 import {MdSettings} from "react-icons/all";
 import {useMutation} from "react-query";
-import {ISendSubmissionData, ISendSubmissionResponse, useSendSubmissionAPI} from "hooks/apis";
+import {ISendSubmissionData, ISendSubmissionResponse, IUpdateSubmissionData, useSendSubmissionAPI} from "hooks/apis";
 import {AxiosError} from "axios";
 import {useTranslation} from "react-i18next";
 import compressImage from "browser-image-compression";
 import {Alert} from "@material-ui/lab";
 import {getISODatetime} from "utils";
 
-import SettingsModal, {Settings} from "../SettingsModal";
+import SettingsModal from "../SettingsModal";
 import FileInformation from "../FileInformation";
 import SubmissionsContext from "../SubmissionsContext";
 
 
 export interface IElement {
-    settings: Settings;
+    settings: IUpdateSubmissionData;
     nativeFile: File;
     compressImages: boolean;
-    onSettingsChange: (settings: Settings) => any;
+    onSettingsChange: (settings: IUpdateSubmissionData) => any;
     onDone: () => any;
     onDelete: () => any;
 }
@@ -129,9 +129,9 @@ const Element = ({
                 </ListItemSecondaryAction>
             </ListItem>
             {errorMessage &&
-                <Alert severity="error">
-                    {errorMessage}
-                </Alert>
+            <Alert severity="error">
+                {errorMessage}
+            </Alert>
             }
             <SettingsModal
                 value={settings}

@@ -102,12 +102,12 @@ const SelectList = <ElementType extends any = any>({
                                 />
                             </Grid>
                             {formFooter &&
-                                <Grid item xs={12}>
-                                    {formFooter}
-                                </Grid>
+                            <Grid item xs={12}>
+                                {formFooter}
+                            </Grid>
                             }
                             {formElements.map(element =>
-                                <Grid key={element.key} item xs={6} md={3}>
+                                <Grid key={element.key} item xs={12} md={4}>
                                     {element}
                                 </Grid>)}
                         </Grid>

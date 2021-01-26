@@ -7,18 +7,15 @@ import dayjs, {Dayjs} from "dayjs";
 import {useTranslation} from "react-i18next";
 import update from "immutability-helper";
 import {useInheritedState} from "hooks";
+import {IUpdateSubmissionData} from "hooks/apis";
 
 import SubmissionsContext from "../SubmissionsContext";
 
 import Day from "./Day";
 
-export interface Settings {
-    uploadDate: Dayjs | null;
-}
-
 export interface ISettingsDialog {
-    value: Settings;
-    onChange: (newSettings: Settings) => any;
+    value: IUpdateSubmissionData;
+    onChange: (newSettings: IUpdateSubmissionData) => any;
     isOpen: boolean;
     onClose: () => any;
 }
@@ -32,14 +29,14 @@ const SettingsModal = ({
     const {t} = useTranslation();
     const {lesson} = useContext(SubmissionsContext);
 
-    const [uploadDate, setUploadDate] = useInheritedState<Dayjs | null>(value.uploadDate);
+    const [uploadDate, setUploadDate] = useInheritedState<Dayjs | null>(value.uploadDate ?? null);
 
     const now = dayjs();
     const saveChanges = () => {
         onClose();
         onChange(update(value, {
             uploadDate: {
-                $set: uploadDate,
+                $set: uploadDate ?? null,
             },
         }));
     };

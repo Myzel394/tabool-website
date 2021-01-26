@@ -57,7 +57,9 @@ const SubmitFiles = () => {
                     <>
                         <List>
                             {files.map((file, index) => (
-                                <div key={`submission_add_${file.nativeFile.name}_${file.nativeFile.size}_${file.uploadDate?.toISOString()}`}>
+                                <div
+                                    key={`submission_add_${file.nativeFile.name}_${file.nativeFile.size}_${file.uploadDate?.toISOString()}`}
+                                >
                                     <Element
                                         ref={elementRef => $files.current[index] = elementRef}
                                         nativeFile={file.nativeFile}
@@ -68,7 +70,7 @@ const SubmitFiles = () => {
                                         onSettingsChange={newSettings => setFiles(update(files, {
                                             [index]: {
                                                 uploadDate: {
-                                                    $set: newSettings.uploadDate,
+                                                    $set: newSettings.uploadDate ?? null,
                                                 },
                                             },
                                         }))}

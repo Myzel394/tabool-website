@@ -43,6 +43,9 @@ const MoreSheet = ({
         <>
             <BottomSheetAction
                 title={submission.filename}
+                description={t("Eingestellt am {{date}}", {
+                    date: submission.createdAt.format("LLL"),
+                })}
                 isOpen={isOpen}
                 onClose={onClose}
             >

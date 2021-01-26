@@ -1,151 +1,187 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import {Button, Typography} from "@material-ui/core";
-import {usePrevious, useSnackbar} from "hooks";
-import {ExtensionAvatar, LoadingOverlay, SelectList} from "components";
+import {usePrevious} from "hooks";
+import {ExtensionAvatar, SelectList} from "components";
 import prettyBytes from "pretty-bytes";
-import {MdDeleteForever} from "react-icons/all";
+import {MdClear, MdCloudUpload, MdDeleteForever} from "react-icons/all";
 import {useTranslation} from "react-i18next";
-import {IDelete, SubmissionDetail} from "types";
+import {SubmissionDetail} from "types";
 import CountUp from "react-countup";
-import {useDeleteSubmissionAPI} from "hooks/apis";
-import {useMutation} from "react-query";
-import {AxiosError} from "axios";
-import {PredefinedMessageType} from "hooks/useSnackbar";
 import update from "immutability-helper";
 
 import SubmissionsContext from "../SubmissionsContext";
 
+import Element, {ElementReference} from "./Element";
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
-import ElementManager from "./ElementManager";
+import UploadConfirmDialog from "./UploadConfirmDialog";
+import ResetUploadDateConfirmDialog from "./ResetUploadDateConfirmDialog";
 
 
 const UploadedSubmissions = () => {
     const {t} = useTranslation();
     const {submissions, onSubmissionsChange} = useContext(SubmissionsContext);
-    const {addError} = useSnackbar();
-    const deleteSubmission = useDeleteSubmissionAPI();
 
     const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+    const [confirmUpload, setConfirmUpload] = useState<boolean>(false);
+    const [confirmResetUploadDates, setConfirmResetUploadDates] = useState<boolean>(false);
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-    const fullSize = submissions.reduce<number>((value, submission) =>
-        value + submission.size * Number(selectedKeys.includes(submission.id))
-    , 0);
+
+    const $submissionsRef = useRef<Record<string, ElementReference>>({});
+
+    const selectedSubmissionsRef = Object
+        .entries($submissionsRef.current)
+        .filter(([key, x]) => selectedKeys.includes(key))
+        .map(([x, value]) => value);
+    const selectedSubmissions = submissions
+        .filter(submission =>
+            selectedKeys.includes(submission.id));
+    const fullSize = selectedSubmissions
+        .reduce((count, submission) =>
+            count + submission.size, 0);
+
     const previousFullSize = usePrevious<number>(fullSize, 0);
 
-    const {
-        mutate,
-        isLoading,
-    } = useMutation<void, AxiosError, IDelete>(
-        deleteSubmission,
-        {
-            onMutate: (variables) => {
-                // Remove deleted keys from selected keys
-                // No need to remove if no key is selected
-                if (selectedKeys.length > 0) {
-                    const keys = variables.ids;
-                    const removeKeys = keys.reduce<string[]>((array, current) => {
-                        if (selectedKeys.includes(current)) {
-                            array.push(current);
-                        }
-                        return array;
-                    }, []);
-                    const newKeys = update(selectedKeys, {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore: Command does exist
-                        $spliceDynamically: [
-                            removeKeys,
-                            (key: string, array: string[]) => array.indexOf(key),
-                        ],
-                    });
-                    setSelectedKeys(newKeys);
-                }
+    const findIndex = (submission: SubmissionDetail): number =>
+        submissions.findIndex(element => submission.id === element.id);
 
-                // Hide dialog
-                setConfirmDelete(false);
-            },
-            onSuccess: (x, variables) => {
-                // Update submissions
-                const newSubmissions = update(submissions, {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore: Command does exist
-                    $spliceDynamically: [
-                        variables.ids,
-                        (key: string, arr: SubmissionDetail[]) => arr.findIndex(element => element.id === key),
-                    ],
-                });
-                onSubmissionsChange(newSubmissions);
-            },
-            onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
-        },
-    );
+    const deleteSubmissions = () =>
+        selectedSubmissionsRef.forEach(submission => submission.delete());
 
-    const filename = (() => {
-        if (selectedKeys.length === 1) {
-            const index = submissions.findIndex(element => element.id === selectedKeys[0]);
-            const element = submissions[index];
+    const uploadSubmissions = () =>
+        selectedSubmissionsRef.forEach(submission => submission.upload());
 
-            return element?.filename;
-        }
-        return null;
-    })();
-    const amount = selectedKeys.length;
+    const resetUploadDates = () =>
+        selectedSubmissionsRef.forEach(submission => submission.resetUploadDate());
+
+    const selectedAlreadyUploaded = selectedSubmissions.every(submission => submission.isUploaded);
+    const selectedUploadDatesAlreadyNone = selectedSubmissions.every(submission => !submission.uploadDate);
 
     return (
         <>
-            <LoadingOverlay isLoading={isLoading}>
-                <SelectList<SubmissionDetail>
-                    selectedKeys={selectedKeys}
-                    data={submissions}
-                    getElementKey={(submission: SubmissionDetail) => submission.id}
-                    renderIcon={(submission: SubmissionDetail) =>
-                        <ExtensionAvatar name={submission.filename} />
-                    }
-                    formFooter={
-                        <>
-                            {fullSize &&
-                                <Typography color="textSecondary" variant="body2">
-                                    {t("Größe aller Dateien: ")}
-                                    <CountUp
-                                        start={previousFullSize}
-                                        end={fullSize}
-                                        formattingFn={value => prettyBytes(value, {
-                                            locale: "de",
-                                        })}
-                                        duration={0.8}
-                                    />
-                                </Typography>}
-                        </>
-                    }
-                    formElements={[
-                        <Button
-                            key="delete_selected_submissions"
-                            color="secondary"
-                            startIcon={<MdDeleteForever />}
-                            onClick={() => setConfirmDelete(true)}
-                        >
-                            {t("Löschen")}
-                        </Button>,
-                    ]}
-                    renderElement={(submission: SubmissionDetail, iconElement) =>
-                        <ElementManager
-                            submission={submission}
-                            iconElement={iconElement}
-                            onDelete={() => mutate({
-                                ids: [submission.id],
+            <SelectList<SubmissionDetail>
+                selectedKeys={selectedKeys}
+                data={submissions}
+                getElementKey={(submission: SubmissionDetail) => submission.id}
+                renderIcon={(submission: SubmissionDetail) =>
+                    <ExtensionAvatar name={submission.filename} />
+                }
+                formFooter={
+                    <Typography color="textSecondary" variant="body2">
+                        {t("Größe aller Dateien: ")}
+                        <CountUp
+                            start={previousFullSize}
+                            end={fullSize}
+                            formattingFn={value => prettyBytes(value, {
+                                locale: "de",
                             })}
+                            duration={0.8}
                         />
-                    }
-                    onSelectedKeysChange={setSelectedKeys}
-                />
-            </LoadingOverlay>
+                    </Typography>
+                }
+                formElements={[
+                    <Button
+                        key="delete_selected_submissions"
+                        startIcon={<MdDeleteForever />}
+                        onClick={() => setConfirmDelete(true)}
+                    >
+                        {t("Löschen")}
+                    </Button>,
+                    <Button
+                        key="upload_selected_submissions"
+                        startIcon={<MdCloudUpload />}
+                        disabled={selectedAlreadyUploaded}
+                        onClick={() => setConfirmUpload(true)}
+                    >
+                        {t("Hochladen")}
+                    </Button>,
+                    <Button
+                        key="upload_selected_submissions"
+                        startIcon={<MdClear />}
+                        disabled={selectedUploadDatesAlreadyNone}
+                        onClick={() => setConfirmResetUploadDates(true)}
+                    >
+                        {t("Datum zurücksetzen")}
+                    </Button>,
+                ]}
+                renderElement={(submission: SubmissionDetail, iconElement) =>
+                    <Element
+                        ref={(reference: ElementReference | null) => {
+                            if (reference) {
+                                $submissionsRef.current[submission.id] = reference;
+                            }
+                        }}
+                        submission={submission}
+                        iconElement={iconElement}
+                        onUploaded={async didChange => {
+                            if (didChange) {
+                                const submissionIndex = findIndex(submission);
+                                const newSubmissions = update(submissions, {
+                                    [submissionIndex]: {
+                                        $apply: currentSubmission => ({
+                                            ...currentSubmission,
+                                            isUploaded: true,
+                                        }),
+                                    },
+                                });
+
+                                onSubmissionsChange(newSubmissions);
+                            }
+                        }}
+                        onUpdate={async newSubmission => {
+                            if (newSubmission) {
+                                const submissionIndex = findIndex(submission);
+                                const newSubmissions = update(submissions, {
+                                    [submissionIndex]: {
+                                        $set: newSubmission,
+                                    },
+                                });
+
+                                onSubmissionsChange(newSubmissions);
+                            }
+                        }}
+                        onDeleted={async () => {
+                            const submissionIndex = findIndex(submission);
+                            const newSubmissions = update(submissions, {
+                                $splice: [
+                                    [submissionIndex, 1],
+                                ],
+                            });
+
+                            onSubmissionsChange(newSubmissions);
+                        }}
+                    />
+                }
+                onSelectedKeysChange={setSelectedKeys}
+            />
             <DeleteConfirmDialog
                 isOpen={confirmDelete}
-                filename={filename}
-                amount={amount}
-                onConfirm={() => mutate({
-                    ids: selectedKeys,
-                })}
+                filename={selectedSubmissions.length === 1 ? submissions[0].filename : undefined}
+                amount={selectedKeys.length}
+                onConfirm={() => {
+                    setConfirmDelete(false);
+                    deleteSubmissions();
+                }}
                 onClose={() => setConfirmDelete(false)}
+            />
+            <UploadConfirmDialog
+                isOpen={confirmUpload}
+                filename={selectedSubmissions.length === 1 ? submissions[0].filename : undefined}
+                amount={selectedKeys.length}
+                onConfirm={() => {
+                    setConfirmUpload(false);
+                    uploadSubmissions();
+                }}
+                onClose={() => setConfirmUpload(false)}
+            />
+            <ResetUploadDateConfirmDialog
+                isOpen={confirmResetUploadDates}
+                filename={selectedSubmissions.length === 1 ? submissions[0].filename : undefined}
+                amount={selectedKeys.length}
+                onConfirm={() => {
+                    setConfirmResetUploadDates(false);
+                    resetUploadDates();
+                }}
+                onClose={() => setConfirmResetUploadDates(false)}
             />
         </>
     );

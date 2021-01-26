@@ -1,51 +1,66 @@
-import React, {useState} from "react";
+import React, {forwardRef, useImperativeHandle, useState} from "react";
 import {LoadingOverlay} from "components";
 import {IconButton, LinearProgress, ListItem, ListItemSecondaryAction} from "@material-ui/core";
 import {MdMoreVert} from "react-icons/all";
 import {SubmissionDetail} from "types";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
+import {UploadStatus} from "api";
 
 import FileInformation from "../FileInformation";
-import SettingsModal, {ISettingsDialog} from "../SettingsModal";
-
+import SettingsModal from "../SettingsModal";
 
 import MoreSheet from "./MoreSheet";
+import useSubmission, {IUseSubmissionResult} from "./useSubmission";
 
 
 export interface IElement {
-    isLoading: boolean;
-    isFileUploading: boolean;
-    isFileUploaded: boolean;
     submission: SubmissionDetail;
     iconElement: JSX.Element;
 
-    onDelete: () => any;
-    onSettingsChange: ISettingsDialog["onChange"];
-    onUploadToScooso: () => any;
+    onDeleted: () => void;
+    onUpdate: (newSubmission: SubmissionDetail | void) => void;
+    onUploaded: (changed: boolean) => void;
+}
 
-    errorMessage?: string | null;
+export interface ElementReference {
+    delete: IUseSubmissionResult["delete"];
+    upload: IUseSubmissionResult["upload"];
+    resetUploadDate: () => Promise<SubmissionDetail>;
 }
 
 const Element = ({
     submission,
-    onDelete,
-    onSettingsChange,
     iconElement,
-    isLoading,
-    onUploadToScooso,
-    isFileUploading,
-    isFileUploaded,
-    errorMessage,
-}: IElement) => {
+    onUpdate,
+    onDeleted,
+    onUploaded,
+}: IElement, ref) => {
     const {t} = useTranslation();
+    const {
+        update,
+        upload,
+        isUpdatingSettings,
+        status,
+        delete: del,
+    } = useSubmission(submission);
 
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
     const [showMore, setShowMore] = useState<boolean>(false);
 
+    const isFileUploading = status === UploadStatus.Pending;
+
+    useImperativeHandle(ref, () => ({
+        upload,
+        delete: del,
+        resetUploadDate: () => update({
+            uploadDate: null,
+        }),
+    }));
+
     return (
         <>
-            <LoadingOverlay isLoading={isLoading}>
+            <LoadingOverlay isLoading={isUpdatingSettings}>
                 <ListItem>
                     {iconElement}
                     <FileInformation
@@ -61,26 +76,22 @@ const Element = ({
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItem>
-                {errorMessage &&
-                    <Alert severity="error">
-                        {errorMessage}
-                    </Alert>
+                {status === UploadStatus.Uploaded &&
+                <Alert severity="success">
+                    {t("Datei wurde auf Scooso hochgeladen")}
+                </Alert>
                 }
-                {isFileUploaded &&
-                    <Alert severity="success">
-                        {t("Datei wurde auf Scooso hochgeladen")}
-                    </Alert>
-                }
-                {isFileUploading &&
-                    <LinearProgress />
-                }
+                {isFileUploading && <LinearProgress />}
             </LoadingOverlay>
             <SettingsModal
                 value={{
                     uploadDate: submission.uploadDate,
                 }}
                 isOpen={isSettingsOpen}
-                onChange={onSettingsChange}
+                onChange={values =>
+                    update(values)
+                        .then(onUpdate)
+                }
                 onClose={() => setIsSettingsOpen(false)}
             />
             <MoreSheet
@@ -88,12 +99,18 @@ const Element = ({
                 isOpen={showMore}
                 isFileUploading={isFileUploading}
                 onClose={() => setShowMore(false)}
-                onDelete={onDelete}
+                onDelete={() =>
+                    del()
+                        .then(onDeleted)
+                }
                 onShowSettings={() => setIsSettingsOpen(true)}
-                onUploadToScooso={onUploadToScooso}
+                onUploadToScooso={() =>
+                    upload()
+                        .then(value => onUploaded(Boolean(value)))
+                }
             />
         </>
     );
 };
 
-export default Element;
+export default forwardRef(Element);

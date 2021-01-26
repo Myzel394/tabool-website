@@ -9,6 +9,7 @@ export interface IBottomSheetAction {
     children: ReactNode;
 
     title?: string;
+    description?: string;
 }
 
 const wordBreakStyle = {
@@ -17,6 +18,7 @@ const wordBreakStyle = {
 
 const BottomSheetAction = ({
     title,
+    description,
     isOpen,
     onClose,
     children,
@@ -27,11 +29,17 @@ const BottomSheetAction = ({
             onClose={onClose}
         >
             {title &&
-                <Box m={2}>
-                    <Typography variant="h5" style={wordBreakStyle}>
-                        {title}
-                    </Typography>
-                </Box>}
+            <Box mt={2} mx={2}>
+                <Typography variant="h5" style={wordBreakStyle}>
+                    {title}
+                </Typography>
+            </Box>}
+            {description &&
+            <Box mt={1} mb={2} mx={2}>
+                <Typography variant="body2" color="textSecondary" style={wordBreakStyle}>
+                    {description}
+                </Typography>
+            </Box>}
             <List>
                 {children}
             </List>

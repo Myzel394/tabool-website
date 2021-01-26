@@ -17,6 +17,7 @@ const useAbsence = (onChange: (newValue: Absence | null) => void, lesson?: Lesso
     const updateAbsence = useUpdateAbsenceAPI();
     const {addError} = useSnackbar();
 
+    // Add
     const {mutateAsync: add} = useMutation<Absence, AxiosError, void>(
         () => {
             if (!lesson) {
@@ -36,6 +37,7 @@ const useAbsence = (onChange: (newValue: Absence | null) => void, lesson?: Lesso
             onSuccess: onChange,
         },
     );
+    // Remove
     const {mutateAsync: remove} = useMutation<void, AxiosError, void>(
         () => {
             if (!lesson) {
@@ -53,6 +55,7 @@ const useAbsence = (onChange: (newValue: Absence | null) => void, lesson?: Lesso
             onSuccess: () => onChange(null),
         },
     );
+    // Update
     const {mutateAsync: update} = useMutation<Absence, AxiosError, IUpdateAbsenceData>(
         values => {
             if (!lesson) {

@@ -24,19 +24,25 @@ const DeleteConfirmDialog = ({amount, filename, isOpen, onClose, onConfirm}: IDe
             isOpen={isOpen}
             primaryButton={
                 <PrimaryButton onClick={onConfirm}>
-                    {t("Löschen")}
+                    {t("Zurücksetzen")}
                 </PrimaryButton>
             }
-            title={t("Datei(en) löschen")}
+            title={t("Hochladedaten zurücksetzen")}
             onClose={onClose}
         >
             <DialogContentText>
                 {filename
                     ? <Trans>
-                        Möchtest du wirklich die Datei <Box m={2} style={breakStyle}><i>{{filename}}</i></Box> löschen?
+                        Möchtest du wirklich das Hochladedatum der Datei
+                        <Box
+                            m={2}
+                            style={breakStyle}
+                        >
+                            <i>{{filename}}</i>
+                        </Box> zurücksetzen?
                     </Trans>
                     : <Trans count={amount}>
-                        Möchtest du wirklich <strong>{{amount}}</strong> Dateien löschen?
+                        Möchtest du wirklich die Hochladedaten <strong>{{amount}}</strong> Dateien zurücksetzen?
                     </Trans>
                 }
             </DialogContentText>
