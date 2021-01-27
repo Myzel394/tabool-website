@@ -8,14 +8,14 @@ import {
     FaMoon,
     FaShippingFast,
     FaSignal,
+    FiLogIn,
     MdAirplanemodeActive,
     MdNotifications,
     MdSecurity,
     MdTimelapse,
 } from "react-icons/all";
 import {useTranslation} from "react-i18next";
-
-import {buildPath} from "../../utils";
+import {buildPath} from "utils";
 
 import Element from "./Element";
 
@@ -38,13 +38,13 @@ const LandingPage = () => {
                     <Box>
                         <Typography variant="body2" color="textSecondary">
                             {t("tabool ist von uns Schülern entwickelt. Wir werden die App für unsere Bedürfnisse anpassen " +
-                                "und auf die Wünsche der Schüler auch eingehen.")}
+                                "und unsere Wünsche verwirklichen.")}
                         </Typography>
                         <br />
                         <Typography variant="body2" color="textSecondary">
                             {t("Dabei wird tabool so fair wie möglich alle behandeln. Es wird keine Werbung für " +
                                 "Schülervertretungen geben, es wird keine Umfragen seitens der Lehrer erscheinen oder sonst " +
-                                "irgendetwas, welches eine bestimme Partei bevorzugt oder vernachlässigt.")}
+                                "irgendetwas, welches eine bestimme Partei bevorzugen oder vernachlässigen kann.")}
                         </Typography>
                     </Box>
                 </Element>
@@ -52,6 +52,13 @@ const LandingPage = () => {
                     <Typography variant="body2" color="textSecondary">
                         {t("Du erhälst automatisch Benachrichtigungen wenn Hausaufgaben hinzugefügt werden, " +
                             "Stunden ausfallen, Veränderungen stattfinden, etc....")}
+                    </Typography>
+                </Element>
+                <Element icon={MdSecurity} title={t("Sicherheit steht an erster Stelle")}>
+                    <Typography variant="body2" color="textSecondary">
+                        {t("Bei der Entwicklung von tabool steht Sicherheit an erster Stelle. " +
+                            "Wir halten uns an internationale Sicherheitsstandards und gehen sorgfältig mit deinen Daten um. " +
+                            "Ein Hackerangriff ist so gut wie nicht möglich.")}
                     </Typography>
                 </Element>
                 <Element icon={FaShippingFast} title={t("Superschnelle App")}>
@@ -77,7 +84,7 @@ const LandingPage = () => {
                         </Typography>
                     </Box>
                 </Element>
-                <Element icon={MdTimelapse} title={t("Materialien verzögert hochladen")}>
+                <Element icon={MdTimelapse} title={t("Hausaufgaben verzögert hochladen")}>
                     <Typography variant="body2" color="textSecondary">
                         {t("Du hast eine Hausaufgabe gemacht und musst sie innerhalb einer bestimmten Zeit abgeben? " +
                             "Aber du bist dir nicht ganz sicher, vielleicht möchtest du noch was verändern? " +
@@ -86,11 +93,9 @@ const LandingPage = () => {
                             "hochgeladen und kann jederzeit von dir abgebrochen oder verändert werden.")}
                     </Typography>
                 </Element>
-                <Element icon={MdSecurity} title={t("Sicherheit steht an erster Stelle")}>
+                <Element icon={FiLogIn} title={t("Kein lästiges Anmelden")}>
                     <Typography variant="body2" color="textSecondary">
-                        {t("Bei der Entwicklung von tabool steht Sicherheit an erster Stelle. " +
-                            "Wir halten uns an internationale Sicherheitsstandards und gehen sorgfältig mit deinen Daten um. " +
-                            "Ein Hackerangriff ist so gut wie nicht möglich.")}
+                        {t("Du brauchst dich nur einmal anzumelden und das war's. ")}
                     </Typography>
                 </Element>
                 <Element icon={FaMoon} title={t("Dark-Mode verfügbar")}>

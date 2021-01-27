@@ -41,20 +41,27 @@ const UploadedSubmissions = () => {
 
     const previousFullSize = usePrevious<number>(fullSize, 0);
 
+    const resetKeys = () => setSelectedKeys([]);
     const findIndex = (submission: SubmissionDetail): number =>
         submissions.findIndex(element => submission.id === element.id);
 
-    const deleteSubmissions = () =>
+    const deleteSubmissions = () => {
+        resetKeys();
         selectedSubmissionsRef.forEach(submission => submission.delete());
+    };
 
-    const uploadSubmissions = () =>
+    const uploadSubmissions = () => {
+        resetKeys();
         selectedSubmissionsRef.forEach(submission => submission.upload());
+    };
 
-    const resetUploadDates = () =>
+    const resetUploadDates = () => {
+        resetKeys();
         selectedSubmissionsRef.forEach(submission => submission.resetUploadDate());
+    };
 
     const selectedAlreadyUploaded = selectedSubmissions.every(submission => submission.isUploaded);
-    const selectedUploadDatesAlreadyNone = selectedSubmissions.every(submission => !submission.uploadDate);
+    const selectedUploadDatesAlreadyNone = selectedSubmissions.every(submission => !submission.uploadDate && !submission.isUploaded);
 
     return (
         <>
@@ -117,10 +124,9 @@ const UploadedSubmissions = () => {
                                 const submissionIndex = findIndex(submission);
                                 const newSubmissions = update(submissions, {
                                     [submissionIndex]: {
-                                        $apply: currentSubmission => ({
-                                            ...currentSubmission,
-                                            isUploaded: true,
-                                        }),
+                                        isUploaded: {
+                                            $set: true,
+                                        },
                                     },
                                 });
 

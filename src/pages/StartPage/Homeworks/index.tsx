@@ -1,11 +1,13 @@
 import React, {memo, useRef} from "react";
 import {HomeworkDetail} from "types";
-import {Homework, HorizontalScroll} from "components";
+import {Homework, HorizontalScroll, SecondaryButton} from "components";
 import {useElementSize} from "hooks";
 import update from "immutability-helper";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Box} from "@material-ui/core";
+import {buildPath} from "utils";
+import {MdAdd} from "react-icons/all";
 
 import createShadow from "../createShadow";
 
@@ -27,10 +29,15 @@ const Homeworks = ({
 
     if (!homeworks.length) {
         return (
-            <Box mx={6}>
-                <Alert severity="info">
-                    {t("Du hast keine Hausaufgaben auf.")}
-                </Alert>
+            <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column">
+                <Box mb={2}>
+                    <Alert severity="info">
+                        {t("Du hast keine Hausaufgaben auf!")}
+                    </Alert>
+                </Box>
+                <SecondaryButton href={buildPath("/add/homework/")} startIcon={<MdAdd />}>
+                    {t("Hausaufgabe hinzufügen")}
+                </SecondaryButton>
             </Box>
         );
     }

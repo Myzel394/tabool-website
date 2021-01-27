@@ -58,8 +58,8 @@ const Faq = () => {
                     <Box>
                         <Typography variant="body2" color="textSecondary">
                             {t("Bei der Programmierung von tabool war das Hauptkriterium Sicherheit. " +
-                            "Wir halten uns an internationale Sicherheitsstandards und updaten die App regelmäßig. " +
-                            "Durch automatisiertes Testen können wir die Sicherheit bestätigen.")}
+                                "Wir halten uns an internationale Sicherheitsstandards und updaten die App regelmäßig. " +
+                                "Durch automatisiertes Testen können wir die Sicherheit bestätigen.")}
                         </Typography>
                         <br />
                         <Link
@@ -99,7 +99,7 @@ const Faq = () => {
                         <Typography variant="body2" color="textSecondary">
                             {t("Um uns Schülern auf tabool maximale Sicherheit gewährleisten können, müssen wir sicherstellen, " +
                                 "dass keine Datei von Scooso schädlich für den einzelnen oder für den gesamten Server ist. " +
-                                "Darum wird jede Datei bevor sie runtergeladen wird überprüft (Die Überprüfung ersetzt jedoch " +
+                                "Darum wird jede Datei, bevor sie runtergeladen wird, überprüft (Die Überprüfung ersetzt jedoch " +
                                 "keinen Virenscanner!).")}
                         </Typography>
                         <br />

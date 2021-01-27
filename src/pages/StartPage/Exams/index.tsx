@@ -6,9 +6,9 @@ import {useTranslation} from "react-i18next";
 import {Box, useTheme} from "@material-ui/core";
 import {Zoom} from "react-reveal";
 import {MdAdd} from "react-icons/all";
+import {buildPath} from "utils";
 
 import createShadow from "../createShadow";
-import {buildPath} from "../../../utils";
 
 
 export interface IExams {

@@ -35,7 +35,6 @@ const useSubmission = (submission: SubmissionDetail): IUseSubmissionResult => {
     const uploadSubmissionToScooso = useUploadFileOnScoosoSubmissionAPI();
     const deleteSubmission = useDeleteSubmissionAPI();
 
-
     // Get status
     const {
         data: statusData,
@@ -75,6 +74,8 @@ const useSubmission = (submission: SubmissionDetail): IUseSubmissionResult => {
     // Upload file to Scooso
     const {
         mutateAsync: upload,
+        isLoading: isUploading,
+        isSuccess: isUploaded,
     } = useMutation<IUploadFileOnScoosoSubmissionResponse | void, AxiosError, void>(
         async () => {
             if (submission.isUploaded) {
@@ -109,7 +110,17 @@ const useSubmission = (submission: SubmissionDetail): IUseSubmissionResult => {
         upload,
         isUpdatingSettings,
         delete: del,
-        status: statusData?.uploadStatus ?? UploadStatus.Resting,
+        status: (() => {
+            if (isUploaded) {
+                return UploadStatus.Uploaded;
+            } else if (isUploading) {
+                return UploadStatus.Pending;
+            } else if (statusData?.uploadStatus) {
+                return statusData.uploadStatus;
+            } else {
+                return UploadStatus.Resting;
+            }
+        })(),
     };
 };
 

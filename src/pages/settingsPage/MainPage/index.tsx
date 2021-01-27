@@ -1,7 +1,8 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {DefaultPage} from "components";
-import {Container, Grid} from "@material-ui/core";
+import {Box, Container, Grid, Typography} from "@material-ui/core";
+import {useUser} from "hooks";
 
 import Area from "../Area";
 
@@ -13,6 +14,7 @@ import DataShare from "./DataShare";
 
 const MainPage = () => {
     const {t} = useTranslation();
+    const user = useUser();
 
     return (
         <DefaultPage>
@@ -44,6 +46,13 @@ const MainPage = () => {
                         </Area>
                     </Grid>
                 </Grid>
+                <Box mt={6} mb={2} alignItems="center">
+                    <Typography variant="body2" color="textSecondary" align="center">
+                        {t("Deine Benutzer-ID: {{id}}", {
+                            id: user.data?.id,
+                        })}
+                    </Typography>
+                </Box>
             </Container>
         </DefaultPage>
     );

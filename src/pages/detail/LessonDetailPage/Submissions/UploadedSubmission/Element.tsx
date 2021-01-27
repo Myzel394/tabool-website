@@ -51,11 +51,17 @@ const Element = ({
     const isFileUploading = status === UploadStatus.Pending;
 
     useImperativeHandle(ref, () => ({
-        upload,
-        delete: del,
-        resetUploadDate: () => update({
-            uploadDate: null,
-        }),
+        upload: () =>
+            upload()
+                .then(value => onUploaded(Boolean(value))),
+        delete: data =>
+            del(data)
+                .then(onDeleted),
+        resetUploadDate: () =>
+            update({
+                uploadDate: null,
+            })
+                .then(onUpdate),
     }));
 
     return (

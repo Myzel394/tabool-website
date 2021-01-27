@@ -119,30 +119,30 @@ const Form = ({onSubmit}: IForm) => {
                                             variant="outlined"
                                         />
                                         {!(touched.password && errors.password) &&
-                                            <FormHelperText>
-                                                <Trans>
-                                                    Wenn du Schwierigkeiten hast, dir starke Passwörter zu merken,
-                                                    sie dir aufschreibst oder gar welche doppelt benutzt,
-                                                    solltest du lieber einen Passwort-Manager wie{" "}
-                                                    <Link
-                                                        href="https://bitwarden.com/"
-                                                        rel="noopener noreferrer"
-                                                        target="_blank"
-                                                    >
-                                                        Bitwarden
-                                                    </Link>
-                                                    {" "}oder{" "}
-                                                    <Link
-                                                        href="https://passwords.google.com/"
-                                                        rel="noopener noreferrer"
-                                                        target="_blank"
-                                                    >
-                                                        Googles Passwort-Manager
-                                                    </Link>
-                                                    {" "}benutzen. Diese sind sicher, einfach zu benutzen und
-                                                    viel viel besser als schlechte oder doppelte Passwörter.
-                                                </Trans>
-                                            </FormHelperText>}
+                                        <FormHelperText>
+                                            <Trans>
+                                                Wenn du Schwierigkeiten hast, dir starke Passwörter zu merken,
+                                                sie dir aufschreibst oder gar welche doppelt benutzt,
+                                                solltest du lieber einen Passwort-Manager wie{" "}
+                                                <Link
+                                                    href="https://bitwarden.com/"
+                                                    rel="noopener noreferrer"
+                                                    target="_blank"
+                                                >
+                                                    Bitwarden
+                                                </Link>
+                                                {" "}oder{" "}
+                                                <Link
+                                                    href="https://passwords.google.com/"
+                                                    rel="noopener noreferrer"
+                                                    target="_blank"
+                                                >
+                                                    Googles Passwort-Manager
+                                                </Link>
+                                                {" "}benutzen. Diese sind sicher, einfach zu benutzen und
+                                                viel viel besser als schlechte oder doppelte Passwörter.
+                                            </Trans>
+                                        </FormHelperText>}
                                     </FormControl>
                                 </Grid>
                                 <Grid item md={6} xs={12}>
@@ -157,11 +157,22 @@ const Form = ({onSubmit}: IForm) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     {errors.nonFieldErrors &&
-                                        <Alert severity="error">
-                                            {errors.nonFieldErrors}
-                                        </Alert>}
+                                    <Alert severity="error">
+                                        {errors.nonFieldErrors}
+                                    </Alert>}
                                 </Grid>
                             </Grid>
+                            <FormHelperText>
+                                <Trans>
+                                    Mit der Registrierung stimmst du den
+                                    {" "}
+                                    <Link href="/static/datenschutz-nutzungsbedingungen.pdf">
+                                        Datenschutzrichtlinien und Nutzungsbedingungen
+                                    </Link>
+                                    {" "}
+                                    zu.
+                                </Trans>
+                            </FormHelperText>
                         </Box>
                         <Grid container spacing={1}>
                             <Grid item>
