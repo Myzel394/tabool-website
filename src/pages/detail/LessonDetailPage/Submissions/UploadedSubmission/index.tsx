@@ -61,7 +61,7 @@ const UploadedSubmissions = () => {
     };
 
     const selectedAlreadyUploaded = selectedSubmissions.every(submission => submission.isUploaded);
-    const selectedUploadDatesAlreadyNone = selectedSubmissions.every(submission => !submission.uploadDate && !submission.isUploaded);
+    const selectedUploadDatesAlreadyNone = selectedSubmissions.every(submission => submission.isUploaded || !submission.uploadDate);
 
     return (
         <>

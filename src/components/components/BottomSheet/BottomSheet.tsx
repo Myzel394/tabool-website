@@ -27,6 +27,7 @@ const BottomSheet = ({
     maxWidth,
     isOpen,
     onClose,
+    PaperProps,
     style: givenStyle,
     ...other
 }: IBottomSheet) => {
@@ -46,6 +47,7 @@ const BottomSheet = ({
             disableDiscovery={isIOS}
             style={wrapperStyle}
             PaperProps={{
+                ...PaperProps,
                 style: wrapperStyle,
             }}
             onClose={onClose ?? (() => null)}

@@ -4,8 +4,8 @@ import {useDetailPageError, useQueryOptions} from "hooks";
 import {IFetchLessonsResponse, useFetchLessonDetailAPI} from "hooks/apis";
 import {Box, Button, ButtonGroup, Collapse, Grid, Link, Paper, Typography} from "@material-ui/core";
 import dayjs from "dayjs";
-import {DetailPage, Homework, LoadingPage, Material, ScoosoMaterial} from "components";
-import {FaChalkboardTeacher, FaRunning, FaVideo, FiMonitor, MdPlace} from "react-icons/all";
+import {DetailPage, Homework, LoadingPage, Material, ScoosoMaterial, SecondaryButton} from "components";
+import {FaChalkboardTeacher, FaRunning, FaVideo, FiMonitor, MdAdd, MdPlace} from "react-icons/all";
 import {useQuery} from "react-query";
 import {LessonDetail} from "types";
 import {ErrorContext} from "contexts";
@@ -244,9 +244,17 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                                     </Grid>)}
                             </Grid>
                         ) : (
-                            <Alert severity="info">
-                                {t("Keine Hausaufgaben, yay!")}
-                            </Alert>
+
+                            <Box alignItems="center" justifyContent="center" display="flex" flexDirection="column">
+                                <Box mb={2}>
+                                    <Alert severity="info">
+                                        {t("Keine Hausaufgaben, yay!")}
+                                    </Alert>
+                                </Box>
+                                <SecondaryButton startIcon={<MdAdd />} href={buildPath("/agenda/add/homework/")}>
+                                    {t("Hausaufgabe hinzufügen")}
+                                </SecondaryButton>
+                            </Box>
                         )}
                     </Box>
                 </Paper>,
