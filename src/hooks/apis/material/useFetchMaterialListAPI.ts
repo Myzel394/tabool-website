@@ -34,11 +34,13 @@ const useFetchMaterialListAPI = () => {
         lessonDateMax,
         lessonDateMin,
         search,
+        pageSize,
     }: IFetchMaterialListData = {}, page = 1): Promise<IFetchMaterialListResponse> => {
         const {data} = await instance.get("/api/data/material/", {
             params: {
                 page,
                 ordering,
+                pageSize,
                 search,
                 course: courseId,
                 subject: subjectId,

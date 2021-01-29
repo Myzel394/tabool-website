@@ -5,7 +5,8 @@ import {CourseApprox, FetchListData, PaginatedResponse} from "types";
 
 import parseCourseApprox from "./parseCourseApprox";
 
-export interface IFetchCourseListData extends FetchListData {}
+export interface IFetchCourseListData extends FetchListData {
+}
 
 export type IFetchCourseListResponse = PaginatedResponse<CourseApprox[]>;
 
@@ -14,7 +15,7 @@ const useFetchCourseListAPI = () => {
 
     return useCallback(async ({
         search,
-    }: IFetchCourseListData, page = 1): Promise<IFetchCourseListResponse> => {
+    }: IFetchCourseListData = {}, page = 1): Promise<IFetchCourseListResponse> => {
         const {data} = await instance.get("/api/data/course/", {
             ...await getLoginConfig(),
             params: {

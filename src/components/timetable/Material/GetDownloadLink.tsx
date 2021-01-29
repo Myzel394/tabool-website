@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect} from "react";
+import React from "react";
 import {useQueryOptions, useUserPreferences} from "hooks";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
@@ -24,7 +24,7 @@ const GetDownloadLink = ({materialId, onClose, onDownload, isOpen}: IGetDownload
     const {update} = useUserPreferences();
 
     const {
-        data,
+        isError,
         isLoading,
     } = useQuery<IFetchMaterialDownloadLinkResponse, AxiosError>(
         `fetch_material_download_link_${materialId}`,
@@ -32,36 +32,21 @@ const GetDownloadLink = ({materialId, onClose, onDownload, isOpen}: IGetDownload
         {
             ...queryOptions,
             onSuccess: materialDownloadLink => {
-                window.open(materialDownloadLink.file, "download");
                 onClose();
                 onDownload?.();
+
+                window.open(materialDownloadLink.file, "download");
+                update.detailPage.addDownloadedMaterialsDate(materialId);
             },
             enabled: isOpen,
         },
     );
 
-    const downloadLink = data?.file;
-
-    // If download link available, download file
-    useLayoutEffect(() => {
-        if (downloadLink) {
-            onClose();
-            window.open(downloadLink, "download");
-        }
-    }, [downloadLink, onClose]);
-
-    useEffect(() => {
-        if (downloadLink && isOpen) {
-            update.detailPage.addDownloadedMaterialsDate(materialId);
-            onClose();
-        }
-    }, [downloadLink, isOpen, update.detailPage, onClose, materialId]);
-
     return (
         <SimpleDialog isOpen={isOpen} primaryButton={null} title={t("Datei runterladen")} onClose={onClose}>
             <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column">
                 {isLoading && <CircularProgress />}
-                {(!downloadLink && isLoading) && (
+                {isError && (
                     <Alert severity="error">
                         {t("Download-Link konnte nicht geladen werden.")}
                     </Alert>
