@@ -19,9 +19,8 @@ import {AbsenceReasonField, LoadingOverlay} from "components";
 import {IUpdateAbsenceData, useUpdateAbsenceAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
-
-import {useAdaptedColor} from "../../../hooks";
-import {buildPath} from "../../../utils";
+import {useAdaptedColor} from "hooks";
+import {buildPath} from "utils";
 
 export interface IAbsence {
     id: string;

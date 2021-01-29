@@ -3,7 +3,7 @@ import {ExamIcon, FocusedPage, HomeworkIcon, RoomIcon} from "components";
 import {Box, Divider, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
 import {buildPath} from "utils";
 import {useTranslation} from "react-i18next";
-import {FaPenNib} from "react-icons/all";
+import {FaFile, FaPenNib} from "react-icons/all";
 
 const ITEM_SIZE = "1.5rem";
 
@@ -23,6 +23,18 @@ const AgendaPage = () => {
                     </ListItemIcon>
                     <ListItemText
                         primary={t("Entschuldigungsliste")}
+                    />
+                </ListItem>
+                <ListItem
+                    button
+                    href={buildPath("/agenda/files/")}
+                    component="a"
+                >
+                    <ListItemIcon>
+                        <FaFile size={ITEM_SIZE} />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary={t("Dateien")}
                     />
                 </ListItem>
             </List>

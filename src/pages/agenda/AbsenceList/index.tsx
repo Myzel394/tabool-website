@@ -3,9 +3,9 @@ import {IFetchAbsenceListData, IFetchAbsenceListResult, useFetchAbsenceListAPI} 
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {useQueryOptions} from "hooks";
-import {DefaultPage, ErrorPage, LoadingPage} from "components";
+import {DefaultPage, ErrorPage, LoadingPage, stickyHeaderStyles} from "components";
 import {useTranslation} from "react-i18next";
-import {Box, CircularProgress, FormControlLabel, List, makeStyles, Paper, Switch} from "@material-ui/core";
+import {Box, CircularProgress, FormControlLabel, List, ListSubheader, Paper, Switch} from "@material-ui/core";
 import {getPerDate} from "utils";
 import dayjs, {Dayjs} from "dayjs";
 import {Absence as AbsenceType} from "types";
@@ -13,14 +13,7 @@ import update from "immutability-helper";
 import {Alert} from "@material-ui/lab";
 
 import Calendar from "./Calendar";
-import DateList from "./DateList";
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: "100%",
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
+import Absence from "./Absence";
 
 const style = {
     width: "100%",
@@ -30,7 +23,7 @@ const AbsenceList = () => {
     const fetchAbsences = useFetchAbsenceListAPI();
     const queryOptions = useQueryOptions();
     const {t} = useTranslation();
-    const classes = useStyles();
+    const classes = stickyHeaderStyles();
 
     const [absences, setAbsences] = useState<AbsenceType[]>();
     const [excludeSigned, setExcludeSigned] = useState<boolean>(false);
@@ -54,15 +47,17 @@ const AbsenceList = () => {
         },
     );
 
-    const absencesPerDate: Record<string, AbsenceType[]> = useMemo(() => {
+    const absencesPerDate: [string, AbsenceType[]][] = useMemo(() => {
         if (!absences) {
-            return {};
+            return [];
         }
 
-        return getPerDate(absences, {
-            getIsoDate: absence => absence.lesson.date.toISOString(),
+        const perDate = getPerDate(absences, {
+            getValue: absence => absence.lesson.date.toISOString(),
         });
+        const filtered = Object.entries(perDate).filter(([x, value]) => Boolean(value.length));
 
+        return filtered;
     }, [absences]);
 
     if (isLoading && !absences) {
@@ -125,16 +120,20 @@ const AbsenceList = () => {
                         </Alert>}
                     </Box>
                     <List subheader={<li />} className={classes.root}>
-                        {Object.entries(absencesPerDate).map(([date, absences], index) =>
-                            (absences.length ? (
-                                <DateList
-                                    key={date}
-                                    absences={absences}
-                                    isFirst={!index}
-                                    date={dayjs(date)}
-                                    onUpdate={updateAbsence}
-                                />
-                            ) : null))}
+                        {absencesPerDate.map(([date, absences], index) =>
+                            <Box key={date} component="li" mt={5 * Number(!index)}>
+                                <ul>
+                                    <ListSubheader>
+                                        {dayjs(date).format("ll")}
+                                    </ListSubheader>
+                                    {absences.map(absence =>
+                                        <Absence
+                                            {...absence}
+                                            key={absence.id}
+                                            onUpdate={newAbsence => updateAbsence(absence.id, newAbsence)}
+                                        />)}
+                                </ul>
+                            </Box>)}
                     </List>
                 </>}
             </Paper>
