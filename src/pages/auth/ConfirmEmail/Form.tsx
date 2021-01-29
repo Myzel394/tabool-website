@@ -34,9 +34,6 @@ const Form = ({onSubmit}: IForm) => {
             .max(40, t("Der Code ist 40 Zeichen lang.")),
     });
 
-    // eslint-disable-next-line no-console
-    console.log(code);
-
     return (
         <Formik<IConfirmEmailData & ErrorFieldsInjection>
             initialValues={{
@@ -67,9 +64,9 @@ const Form = ({onSubmit}: IForm) => {
                                 variant="outlined"
                             />
                             {errors.nonFieldErrors &&
-                                <Alert severity="error">
-                                    {errors.nonFieldErrors}
-                                </Alert>}
+                            <Alert severity="error">
+                                {errors.nonFieldErrors}
+                            </Alert>}
                         </Box>
                         <PrimaryButton type="submit">
                             {t("E-Mail bestätigen")}

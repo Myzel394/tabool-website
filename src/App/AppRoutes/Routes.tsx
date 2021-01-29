@@ -88,6 +88,11 @@ export default function Routes() {
                     path={buildPath("/agenda/absence/")}
                     component={lazy(() => import("pages/agenda/AbsenceList/index"))}
                 />
+                <Route
+                    exact
+                    path={buildPath("/agenda/files/")}
+                    component={lazy(() => import("pages/agenda/FileList/index"))}
+                />
                 {/* Settings page */}
                 <Route
                     exact

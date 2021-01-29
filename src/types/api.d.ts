@@ -16,6 +16,7 @@ export interface Choice {
 
 export interface FetchListData {
     search?: string;
+    pageSize?: number;
 }
 
 export type PageType = number;
