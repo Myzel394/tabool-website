@@ -1,5 +1,5 @@
-import React, {memo, useState} from "react";
-import {Box, Dialog, DialogContent, DialogTitle, Link, Paper, Typography} from "@material-ui/core";
+import React, {useState} from "react";
+import {Box, Link, Paper, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
 import GetDownloadLink from "./GetDownloadLink";
@@ -42,19 +42,13 @@ const ScoosoMaterial = ({
                     </Box>
                 </Box>
             </Link>
-            <Dialog open={downloadFile} onBackdropClick={() => setDownloadFile(false)}>
-                <DialogTitle>
-                    {t("Datei downloaden")}
-                </DialogTitle>
-                <DialogContent>
-                    <GetDownloadLink
-                        materialId={id}
-                        onClose={() => setDownloadFile(false)}
-                    />
-                </DialogContent>
-            </Dialog>
+            <GetDownloadLink
+                materialId={id}
+                isOpen={downloadFile}
+                onClose={() => setDownloadFile(false)}
+            />
         </>
     );
 };
 
-export default memo(ScoosoMaterial);
+export default ScoosoMaterial;

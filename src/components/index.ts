@@ -15,4 +15,6 @@ export * from "./calendarStyles";
 export {default as Poll} from "./Poll";
 export {default as renderDayWithLessonWeekdays} from "./renderDayWithLessonWeekdays";
 export {default as calendarStyles} from "./calendarStyles";
+export {default as stickyHeaderStyles} from "./stickyHeaderStyles";
+export {default as extensionIconMap} from "./extensionIconMap";
 

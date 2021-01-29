@@ -1,32 +1,31 @@
-import React, {memo, useLayoutEffect} from "react";
-import {useQueryOptions} from "hooks";
+import React, {useEffect, useLayoutEffect} from "react";
+import {useQueryOptions, useUserPreferences} from "hooks";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
-import {CircularProgress, Grid} from "@material-ui/core";
+import {Box, CircularProgress} from "@material-ui/core";
 import {IFetchMaterialDownloadLinkResponse, useFetchMaterialDownloadLinkAPI} from "hooks/apis";
 
-import {PrimaryButton} from "../../buttons";
+import {SimpleDialog} from "../../components";
 
 export interface IGetDownloadLink {
     materialId: string;
+    isOpen: boolean;
     onClose: () => any;
 
     onDownload?: () => any;
 }
 
-const GetDownloadLink = ({materialId, onClose, onDownload}: IGetDownloadLink) => {
+const GetDownloadLink = ({materialId, onClose, onDownload, isOpen}: IGetDownloadLink) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchDownloadLink = useFetchMaterialDownloadLinkAPI();
+    const {update} = useUserPreferences();
 
     const {
-        data: materialDownloadLink,
-        isSuccess,
-        isError,
+        data,
         isLoading,
-        refetch,
     } = useQuery<IFetchMaterialDownloadLinkResponse, AxiosError>(
         `fetch_material_download_link_${materialId}`,
         () => fetchDownloadLink(materialId),
@@ -37,50 +36,39 @@ const GetDownloadLink = ({materialId, onClose, onDownload}: IGetDownloadLink) =>
                 onClose();
                 onDownload?.();
             },
+            enabled: isOpen,
         },
     );
 
-    const downloadLink = materialDownloadLink?.file;
+    const downloadLink = data?.file;
 
     // If download link available, download file
     useLayoutEffect(() => {
         if (downloadLink) {
-            window.open(downloadLink, "download");
             onClose();
+            window.open(downloadLink, "download");
         }
     }, [downloadLink, onClose]);
 
-    if (isLoading) {
-        return (
-            <Grid container spacing={1} direction="column">
-                <Grid item>
-                    <CircularProgress />
-                </Grid>
-                <Grid item>
-                    <Alert severity="info">
-                        {t("Download-Link wird geladen")}
-                    </Alert>
-                </Grid>
-            </Grid>
-        );
-    }
-
-    if (isError || !isSuccess) {
-        return (
-            <>
-                <Alert severity="error">
-                    {t("Download-Link konnte nicht geladen werden.")}
-                </Alert>
-                <PrimaryButton onClick={() => refetch}>
-                    {t("Erneut versuchen")}
-                </PrimaryButton>
-            </>
-        );
-    }
+    useEffect(() => {
+        if (downloadLink && isOpen) {
+            update.detailPage.addDownloadedMaterialsDate(materialId);
+            onClose();
+        }
+    }, [downloadLink, isOpen, update.detailPage, onClose, materialId]);
 
     return (
-        <CircularProgress />
+        <SimpleDialog isOpen={isOpen} primaryButton={null} title={t("Datei runterladen")} onClose={onClose}>
+            <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column">
+                {isLoading && <CircularProgress />}
+                {(!downloadLink && isLoading) && (
+                    <Alert severity="error">
+                        {t("Download-Link konnte nicht geladen werden.")}
+                    </Alert>
+                )}
+            </Box>
+        </SimpleDialog>
     );
 };
 
-export default memo(GetDownloadLink);
+export default GetDownloadLink;
