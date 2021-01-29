@@ -24,7 +24,10 @@
       "jest"
     ],
     "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "typeRoots": [
+      "custom_typings"
+    ]
   },
   "include": [
     "src"

@@ -24,6 +24,7 @@ export * from "./getISOTime";
 export * from "./lazyDatetime";
 export * from "./buildPath";
 export * from "./createShort";
+export * from "./combineNonPrimitives";
 
 export {default as isAllDay} from "./isAllDay";
 export {default as snakeCaseKeys} from "./snakeCaseKeys";
@@ -50,4 +51,5 @@ export {default as lazyDatetime} from "./lazyDatetime";
 export {default as buildPath} from "./buildPath";
 export {default as createShort} from "./createShort";
 export {default as combineAutocompletions} from "./combineAutocompletions";
-export {default as getPerDate} from "./getPerDate";
+export {default as getPerDate} from "./getPerUniqueValue";
+export {default as combineNonPrimitives} from "./combineNonPrimitives";

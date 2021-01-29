@@ -14,6 +14,7 @@ export interface IFetchMaterialListData extends FetchListData {
     lessonDateMax?: string;
     lessonId?: string;
     courseId?: string;
+    subjectId?: string;
     ordering?: "added_at" | "-added_at" | "name" | "-name";
 }
 
@@ -29,6 +30,7 @@ const useFetchMaterialListAPI = () => {
         addedAtMin,
         courseId,
         lessonId,
+        subjectId,
         lessonDateMax,
         lessonDateMin,
         search,
@@ -39,6 +41,7 @@ const useFetchMaterialListAPI = () => {
                 ordering,
                 search,
                 course: courseId,
+                subject: subjectId,
                 lesson: lessonId,
                 lesson_date_filter_gte: lessonDateMin,
                 lesson_date_filter_lte: lessonDateMax,
