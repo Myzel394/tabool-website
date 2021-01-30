@@ -3,9 +3,9 @@ import {Homework} from "components";
 import {Event as CalendarEvent} from "react-big-calendar";
 import {HomeworkDetail} from "types";
 import update from "immutability-helper";
+import {ErrorContext} from "contexts";
 
 import {ICalendarContext} from "../../../CalendarContext";
-import {ErrorContext} from "../../../../../contexts";
 
 export interface IEvent {
     event: CalendarEvent;
@@ -29,7 +29,7 @@ const Event = ({event, style}: IEvent) => {
     return (
         <div style={style}>
             <Homework
-                subject={homework.lesson.lessonData.course.subject}
+                subject={homework.lesson.course.subject}
                 information={homework.information}
                 creationDate={homework.createdAt}
                 dueDate={homework.dueDate}

@@ -81,7 +81,7 @@ const Form = ({
                                     <Field
                                         disablePast
                                         innerRef={(reference: LessonFieldRef) => {
-                                            const referenceCourse = reference.lesson.lessonData.course;
+                                            const referenceCourse = reference.lesson.course;
 
                                             if (reference && referenceCourse.id === course?.id) {
                                                 setCourse(referenceCourse);
@@ -146,11 +146,11 @@ const Form = ({
                                     </FormGroup>
                                 </Grid>
                                 {errors.nonFieldErrors &&
-                                        <Grid item xs={12}>
-                                            <Alert severity="error">
-                                                {errors.nonFieldErrors}
-                                            </Alert>
-                                        </Grid>
+                                <Grid item xs={12}>
+                                    <Alert severity="error">
+                                        {errors.nonFieldErrors}
+                                    </Alert>
+                                </Grid>
                                 }
                             </Grid>
                         </Box>

@@ -5,10 +5,10 @@ import {parseCourse} from "../course";
 
 const parseLessonRelatedDetail = async (data: LessonRelatedDetail): Promise<void> => {
     convertToDate(data, [
-        "date", "lessonData.startTime", "lessonData.endTime",
+        "date", "startTime", "endTime",
     ]);
 
-    await parseCourse(data.lessonData.course);
+    await parseCourse(data.course);
 };
 
 export default parseLessonRelatedDetail;

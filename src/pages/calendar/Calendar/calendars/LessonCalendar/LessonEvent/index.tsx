@@ -37,9 +37,9 @@ const LessonEvent = ({
     const isFreePeriod = modification?.modificationType === ModificationType.FreePeriod ||
         modification?.modificationType === ModificationType.SelfLearn;
 
-    const courseName = modification?.newSubject?.name ?? lesson.lessonData.course.name;
-    const roomName = modification?.newRoom?.place ?? lesson.lessonData.room.place;
-    const teacherName = modification?.newTeacher?.lastName ?? lesson.lessonData.course.teacher.lastName;
+    const courseName = modification?.newSubject?.name ?? lesson.course.name;
+    const roomName = modification?.newRoom?.place ?? lesson.room.place;
+    const teacherName = modification?.newTeacher?.lastName ?? lesson.course.teacher.lastName;
 
     const hasHomeworkBadge = homeworkCount > 0;
     const hasMaterialBadge = materialCount > 0;
@@ -64,9 +64,9 @@ const LessonEvent = ({
         >
             <Lesson
                 isDisabled={isFreePeriod}
-                color={lesson.lessonData.course.subject.userRelation.color}
-                startTime={lesson.lessonData.startTime}
-                endTime={lesson.lessonData.endTime}
+                color={lesson.course.subject.userRelation.color}
+                startTime={lesson.startTime}
+                endTime={lesson.endTime}
             >
                 <Badges
                     badges={badges}

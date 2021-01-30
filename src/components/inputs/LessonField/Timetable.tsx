@@ -72,9 +72,9 @@ const Timetable = ({
     })();
     const lessons: CalendarEvent[] = timetable.lessons.map(lesson => ({
         allDay: false,
-        title: lesson.lessonData.course.name,
-        start: combineDatetime(lesson.date, lesson.lessonData.startTime).toDate(),
-        end: combineDatetime(lesson.date, lesson.lessonData.endTime).toDate(),
+        title: lesson.course.name,
+        start: combineDatetime(lesson.date, lesson.startTime).toDate(),
+        end: combineDatetime(lesson.date, lesson.endTime).toDate(),
         resource: {
             ...lesson,
             type: "lesson",

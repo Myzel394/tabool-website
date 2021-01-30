@@ -9,11 +9,11 @@ import {parseSubmission} from "../submission";
 
 const parseLesson = async (data: LessonDetail): Promise<void> => {
     convertToDate(data, [
-        "date", "lessonData.startTime", "lessonData.endTime",
+        "date", "startTime", "endTime",
     ]);
 
     await Promise.allSettled([
-        data.lessonData && parseCourse(data.lessonData.course),
+        data && parseCourse(data.course),
         ...(data.homeworks ?? []).map(parseHomework),
         ...(data.submissions ?? []).map(parseSubmission),
         ...(data.materials ?? []).map(parseMaterial),

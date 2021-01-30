@@ -30,7 +30,7 @@ const ConferenceList = ({lessons, date}: IConferenceList) => {
             <Grid item style={style}>
                 <Description
                     date={date}
-                    secondaryText={lessons.map(lesson => lesson.lessonData.course.subject.name).join(" | ")}
+                    secondaryText={lessons.map(lesson => lesson.course.subject.name).join(" | ")}
                 />
             </Grid>
         </Grid>

@@ -136,14 +136,14 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
     }
 
     const renderDueDateDay = renderDayWithLessonWeekdays(
-        homework.lesson.lessonData.course.weekdays,
-        homework.lesson.lessonData.course.subject.userRelation.color,
+        homework.lesson.course.weekdays,
+        homework.lesson.course.subject.userRelation.color,
     );
 
     return (
         <DetailPage<HomeworkKeys, "completed" | "ignore", IUpdateHomeworkDataData, IUpdateHomeworkDataResponse>
             isRefreshing={isFetching}
-            title={homework.lesson.lessonData.course.subject.name}
+            title={homework.lesson.course.subject.name}
             validationSchema={schema}
             defaultOrdering={[
                 "information", "dueDate", "type", "isPrivate", "createdAt", "lesson",
@@ -173,7 +173,7 @@ const HomeworkDetailPage = ({match: {params: {id}}}) => {
             }}
             refetch={refetch}
             updatedAt={dayjs(dataUpdatedAt)}
-            color={homework.lesson.lessonData.course.subject.userRelation.color}
+            color={homework.lesson.course.subject.userRelation.color}
             orderingStorageName="detail:ordering:homework"
             addPath={buildPath("/add/homework/", undefined, {
                 lesson: homework.lesson.id,

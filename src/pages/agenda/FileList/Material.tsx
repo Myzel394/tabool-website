@@ -36,7 +36,7 @@ const Material = ({
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const extension = filename.split(".").pop();
+    const extension = filename?.split?.(".")?.pop?.();
     const Icon = extension ? extensionIconMap[extension] : FaFile;
     const downloadDate = state?.detailPage?.downloadedMaterials?.[id];
 

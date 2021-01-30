@@ -29,18 +29,18 @@ const SingleLesson = ({lesson, homeworks, materials}: ILessonEvent) => {
             underline="none"
         >
             <Lesson
-                color={lesson.lessonData.course.subject.userRelation.color}
-                startTime={lesson.lessonData.startTime}
-                endTime={lesson.lessonData.endTime}
+                color={lesson.course.subject.userRelation.color}
+                startTime={lesson.startTime}
+                endTime={lesson.endTime}
             >
                 <Badges badges={badges} />
                 <LessonContent
                     showDetails
-                    courseName={lesson.lessonData.course.name}
-                    roomName={lesson.lessonData.room.place}
-                    teacherName={lesson.lessonData.course.teacher.lastName}
+                    courseName={lesson.course.name}
+                    roomName={lesson.room.place}
+                    teacherName={lesson.course.teacher.lastName}
                     style={{
-                        boxShadow: createShadow(lesson.lessonData.course.subject.userRelation.color),
+                        boxShadow: createShadow(lesson.course.subject.userRelation.color),
                     }}
                 />
             </Lesson>

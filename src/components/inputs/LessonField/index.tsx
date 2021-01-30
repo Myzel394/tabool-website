@@ -146,7 +146,7 @@ const LessonField = ({
                         return null;
                     } else if (lesson) {
                         return t("{{courseName}}: {{date}}", {
-                            courseName: lesson.lessonData.course.name,
+                            courseName: lesson.course.name,
                             date: lesson.date.format("ll"),
                         });
                     } else {

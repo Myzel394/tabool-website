@@ -16,8 +16,8 @@ const ModificationsNode = ({lesson}: IModificationsNode) => {
 
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
-    const startDatetime = combineDatetime(lesson.date, lesson.lessonData.startTime);
-    const endDatetime = combineDatetime(lesson.date, lesson.lessonData.endTime);
+    const startDatetime = combineDatetime(lesson.date, lesson.startTime);
+    const endDatetime = combineDatetime(lesson.date, lesson.endTime);
 
     return (
         <Accordion expanded={isExpanded} onClick={() => setIsExpanded(prevState => !prevState)}>

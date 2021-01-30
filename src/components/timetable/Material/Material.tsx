@@ -33,7 +33,7 @@ const Material = ({name, addedAt, id, size, isDeleted}: IMaterial) => {
         opacity: isDeleted ? theme.palette.action.disabledOpacity : 1,
     }), [isDeleted, theme.palette.action.disabledOpacity]);
 
-    const extension = name.split(".").pop();
+    const extension = name?.split?.(".")?.pop?.() ?? "";
     const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
     const downloadDate = state?.detailPage?.downloadedMaterials?.[id];
 

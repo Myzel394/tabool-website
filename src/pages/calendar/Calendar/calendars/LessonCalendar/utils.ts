@@ -19,9 +19,9 @@ export const buildCalendarEvents = ({
 }: IBuildCalendarEvents): CalendarEvent[] => {
     const calendarLessons = (lessons ?? []).map(
         (lesson): CalendarEvent => ({
-            start: combineDatetime(lesson.date, lesson.lessonData.startTime).toDate(),
-            end: combineDatetime(lesson.date, lesson.lessonData.endTime).toDate(),
-            title: lesson.lessonData.course.name,
+            start: combineDatetime(lesson.date, lesson.startTime).toDate(),
+            end: combineDatetime(lesson.date, lesson.endTime).toDate(),
+            title: lesson.course.name,
             allDay: false,
             resource: {
                 ...lesson,
@@ -44,13 +44,13 @@ export const buildCalendarEvents = ({
     const calendarModifications = (modifications ?? [])
         .filter(modification =>
             !(
-                modification.startDatetime.isSame(combineDatetime(modification.lesson.date, modification.lesson.lessonData.startTime)) &&
-                modification.endDatetime.isSame(combineDatetime(modification.lesson.date, modification.lesson.lessonData.endTime))
+                modification.startDatetime.isSame(combineDatetime(modification.lesson.date, modification.lesson.startTime)) &&
+                modification.endDatetime.isSame(combineDatetime(modification.lesson.date, modification.lesson.endTime))
             ))
         .map(modification => ({
             start: modification.startDatetime.toDate(),
             end: modification.endDatetime.toDate(),
-            title: modification.lesson.lessonData.course.subject.name,
+            title: modification.lesson.course.subject.name,
             resource: {
                 ...modification,
                 type: "modification",

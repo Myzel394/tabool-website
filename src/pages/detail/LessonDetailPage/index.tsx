@@ -74,16 +74,16 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
 
     // Subtitle
     const lessonDateFormat = lesson.date.format("ll");
-    const startTimeFormat = combineDatetime(lesson.date, lesson.lessonData.startTime).format("LT");
-    const endTimeFormat = combineDatetime(lesson.date, lesson.lessonData.endTime).format("LT");
+    const startTimeFormat = combineDatetime(lesson.date, lesson.startTime).format("LT");
+    const endTimeFormat = combineDatetime(lesson.date, lesson.endTime).format("LT");
     const subTitle = `${lessonDateFormat}, ${startTimeFormat} - ${endTimeFormat}`;
     const {videoConferenceLink} = lesson;
 
     return (
         <DetailPage<LessonKeys, "attendance", IFetchLessonsResponse>
-            title={lesson.lessonData.course.name}
+            title={lesson.course.name}
             subTitle={subTitle}
-            color={lesson.lessonData.course.subject.userRelation.color}
+            color={lesson.course.subject.userRelation.color}
             defaultOrdering={[
                 "presenceContent", "distanceContent", "room", "teacher", "course",
             ]}
@@ -105,20 +105,20 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 course: {
                     icon: <CourseIcon />,
                     title: t("Kurs"),
-                    information: lesson.lessonData.course.name,
+                    information: lesson.course.name,
                     disableShowMore: true,
                 },
                 teacher: {
                     icon: <TeacherIcon />,
                     title: t("Lehrer"),
-                    information: `${lesson.lessonData.course.teacher.firstName} ${lesson.lessonData.course.teacher.lastName}`,
+                    information: `${lesson.course.teacher.firstName} ${lesson.course.teacher.lastName}`,
                     disableShowMore: true,
                     helperText: (
                         <Link
                             component={Button}
                             underline="none"
                             href={buildPath("/agenda/teacher/detail/:id/", {
-                                id: lesson.lessonData.course.teacher.id,
+                                id: lesson.course.teacher.id,
                             })}
                         >
                             {t("Zum Lehrer")}
@@ -128,7 +128,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                 room: {
                     icon: <MdPlace />,
                     title: t("Raum"),
-                    information: lesson.lessonData.room.place,
+                    information: lesson.room.place,
                     disableShowMore: true,
                 },
             }}
@@ -236,7 +236,7 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                                 {lesson.homeworks.map(homework =>
                                     <Grid key={homework.id} item style={gridItemStyle}>
                                         <Homework
-                                            subject={lesson.lessonData.course.subject}
+                                            subject={lesson.course.subject}
                                             information={homework.truncatedInformation}
                                             id={homework.id}
                                             creationDate={homework.createdAt}
@@ -284,8 +284,8 @@ const LessonDetailPage = ({match: {params: {id}}}) => {
                                 component={Button}
                                 startIcon={<ExamIcon />}
                                 href={buildPath("/add/exam/", undefined, {
-                                    course: lesson.lessonData.course.id,
-                                    place: lesson.lessonData.room.id,
+                                    course: lesson.course.id,
+                                    place: lesson.room.id,
                                 })}
                             >
                                 {t("Klassenarbeit hinzufügen")}

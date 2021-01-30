@@ -34,9 +34,9 @@ const LessonEvent = ({
 
     const lesson: LessonDetail = event.resource;
     const isSelected = selectedLesson === lesson.id;
-    const backgroundColor = lesson.lessonData.course.subject.userRelation.color;
+    const backgroundColor = lesson.course.subject.userRelation.color;
     const isDisabled = useMemo(() => {
-        const isLessonDisabled = !(allowedCourses?.includes?.(lesson.lessonData.course.id) ?? true);
+        const isLessonDisabled = !(allowedCourses?.includes?.(lesson.course.id) ?? true);
         const isCourseDisabled = !(allowedLessons?.includes?.(lesson.id) ?? true);
         const isWeekdayDisabled = !(allowedWeekdays?.includes?.(dayjs(event.start).day()) ?? true);
         const isMinTimeDisabled = minTime
@@ -48,7 +48,7 @@ const LessonEvent = ({
 
         return isLessonDisabled || isCourseDisabled || isMinTimeDisabled || isMaxTimeDisabled || isWeekdayDisabled;
     }, [
-        allowedCourses, allowedLessons, allowedWeekdays, event.end, event.start, lesson.id, lesson.lessonData.course.id,
+        allowedCourses, allowedLessons, allowedWeekdays, event.end, event.start, lesson.id, lesson.course.id,
         maxTime, minTime,
     ]);
 
@@ -68,7 +68,7 @@ const LessonEvent = ({
             }
         })(),
     }), [theme.shape.borderRadius, style, event, isSelected, backgroundColor, isDisabled]);
-    const courseName = lesson.lessonData.course.name;
+    const courseName = lesson.course.name;
 
     return (
         <ButtonBase

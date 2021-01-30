@@ -10,30 +10,20 @@ import {HomeworkDetail} from "./homework";
 import {SubmissionDetail} from "./submission";
 import {Absence} from "./absence";
 
-export interface LessonDataApprox {
+
+export interface LessonApprox {
     course: string;
     startTime: Dayjs;
     endTime: Dayjs;
     weekday: number;
+    date: Dayjs;
+    hasVideoConference: boolean;
     id: string;
 }
 
-export interface LessonDataDetail extends Omit<LessonDataApprox, "course" | "room"> {
+export interface LessonRelatedDetail extends Omit<LessonApprox, "hasVideoConference"> {
     course: CourseDetail;
     room: Room;
-    hasConference: boolean;
-}
-
-
-export interface LessonApprox {
-    lessonData: LessonDataApprox;
-    date: Dayjs;
-    hasConference: boolean;
-    id: string;
-}
-
-export interface LessonRelatedDetail extends Omit<LessonApprox, "lessonData" | "hasConference"> {
-    lessonData: LessonDataDetail;
     classbook: Classbook | null;
     videoConferenceLink?: string;
 }

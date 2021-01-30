@@ -20,7 +20,7 @@ const Avatar = ({lesson, subject}: IAvatar) => {
     const theme = useTheme();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: One of lesson or subject is set
-    const color: string = lesson?.lessonData?.course?.subject?.userRelation?.color ?? subject?.userRelation?.color;
+    const color: string = lesson?.course?.subject?.userRelation?.color ?? subject?.userRelation?.color;
     const [textColor, backgroundColor] = useAdaptedColor(color, tinycolor(color).setAlpha(theme.palette.action.focusOpacity).toString());
 
     if (lesson) {
@@ -37,7 +37,7 @@ const Avatar = ({lesson, subject}: IAvatar) => {
                         color: textColor,
                     }}
                 >
-                    {lesson.lessonData.course.subject.name.charAt(0).toUpperCase()}
+                    {lesson.course.subject.name.charAt(0).toUpperCase()}
                 </MUIAvatar>
             </Link>
         );

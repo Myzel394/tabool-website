@@ -35,8 +35,8 @@ const Form = ({onSubmit}: IForm) => {
             .required(t("Die E-Mail wird benötigt.")),
         token: yup
             .string()
-            .min(127, t("Der Token ist zu kurz."))
-            .max(127, t("Der Token ist zu lang.")),
+            .min(63, t("Der Token ist zu kurz."))
+            .max(63, t("Der Token ist zu lang.")),
         password: yup
             .string()
             .min(8, t("Das Passwort muss mindestens 8 Zeichen lang sein."))
@@ -166,7 +166,7 @@ const Form = ({onSubmit}: IForm) => {
                                 <Trans>
                                     Mit der Registrierung stimmst du den
                                     {" "}
-                                    <Link href="/static/datenschutz-nutzungsbedingungen.pdf">
+                                    <Link href="/static/datenschutz-nutzungsbedingungen.pdf" target="_blank">
                                         Datenschutzrichtlinien und Nutzungsbedingungen
                                     </Link>
                                     {" "}

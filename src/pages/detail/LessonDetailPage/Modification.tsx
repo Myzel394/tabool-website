@@ -39,19 +39,19 @@ const Modification = ({lesson, modification}: IModification) => {
         modification.newSubject && {
             key: "subject",
             icon: <SubjectIcon />,
-            oldValue: formatSubject(lesson.lessonData.course.subject),
+            oldValue: formatSubject(lesson.course.subject),
             newValue: formatSubject(modification.newSubject),
         },
         modification.newTeacher && {
             key: "teacher",
             icon: <TeacherIcon />,
-            oldValue: formatTeacher(lesson.lessonData.course.teacher),
+            oldValue: formatTeacher(lesson.course.teacher),
             newValue: formatTeacher(modification.newTeacher),
         },
         modification.newRoom && {
             key: "room",
             icon: <MdPlace />,
-            oldValue: formatRoom(lesson.lessonData.room),
+            oldValue: formatRoom(lesson.room),
             newValue: formatRoom(modification.newRoom),
         },
     ].filter(Boolean);

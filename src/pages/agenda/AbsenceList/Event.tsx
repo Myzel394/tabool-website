@@ -12,7 +12,7 @@ const Event = ({
     return (
         <div
             style={{
-                backgroundColor: absence.lesson.lessonData.course.subject.userRelation.color,
+                backgroundColor: absence.lesson.course.subject.userRelation.color,
                 width: 8,
                 height: 8,
                 borderRadius: theme.shape.borderRadius,

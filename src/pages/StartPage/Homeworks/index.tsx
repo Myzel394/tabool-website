@@ -49,9 +49,9 @@ const Homeworks = ({
                     <Homework
                         style={{
                             width: width || "100%",
-                            boxShadow: createShadow(homework.lesson.lessonData.course.subject.userRelation.color),
+                            boxShadow: createShadow(homework.lesson.course.subject.userRelation.color),
                         }}
-                        subject={homework.lesson.lessonData.course.subject}
+                        subject={homework.lesson.course.subject}
                         information={homework.truncatedInformation}
                         id={homework.id}
                         creationDate={homework.createdAt}

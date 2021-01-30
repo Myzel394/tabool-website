@@ -40,8 +40,8 @@ const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFe
     const {events, lessons} = data;
 
     const constrainedLessons = lessons.filter(lesson =>
-        combineDatetime(lesson.date, lesson.lessonData.startTime).isAfter(startDatetime) &&
-        combineDatetime(lesson.date, lesson.lessonData.endTime).isBefore(endDatetime));
+        combineDatetime(lesson.date, lesson.startTime).isAfter(startDatetime) &&
+        combineDatetime(lesson.date, lesson.endTime).isBefore(endDatetime));
     const constrainedEvents = events.filter(event =>
         event.startDatetime.isAfter(startDatetime) && event.endDatetime.isBefore(endDatetime));
 

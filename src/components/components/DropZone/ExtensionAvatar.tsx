@@ -34,7 +34,7 @@ const EXTENSION_COLOR_MAPPING = {
 const getColor = value => EXTENSION_COLOR_MAPPING[value] ?? "#888";
 
 const ExtensionAvatar = ({name}: IExtensionAvatar) => {
-    const extension = name.split(".").pop() ?? "";
+    const extension = name?.split?.(".")?.pop?.() ?? "";
 
     return (
         <Avatar

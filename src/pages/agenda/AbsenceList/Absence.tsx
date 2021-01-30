@@ -40,7 +40,7 @@ const Absence = ({
     const {t} = useTranslation();
     const theme = useTheme();
     const updateAbsence = useUpdateAbsenceAPI();
-    const subjectColor = lesson.lessonData.course.subject.userRelation.color;
+    const subjectColor = lesson.course.subject.userRelation.color;
     const [textColor, backgroundColor] = useAdaptedColor(subjectColor, theme.palette.background.paper);
 
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -54,11 +54,11 @@ const Absence = ({
         },
     );
 
-    const subject = lesson.lessonData.course.subject.name;
+    const subject = lesson.course.subject.name;
     const subjectText = t("{{subject}}: {{startTime}} - {{endTime}}", {
         subject,
-        startTime: lesson.lessonData.startTime.format("LT"),
-        endTime: lesson.lessonData.endTime.format("LT"),
+        startTime: lesson.startTime.format("LT"),
+        endTime: lesson.endTime.format("LT"),
     });
 
     return (
@@ -90,7 +90,7 @@ const Absence = ({
                                         color: textColor,
                                     }}
                                 >
-                                    {lesson.lessonData.course.subject.shortName.substring(0, 3)}
+                                    {lesson.course.subject.shortName.substring(0, 3)}
                                 </Avatar>
                             </Link>
                         </ListItemAvatar>
