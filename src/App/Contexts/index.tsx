@@ -17,15 +17,15 @@ const queryClient = new QueryClient();
 const Contexts = ({children, bottomSheetHeight}: IContexts) => {
     return (
         <QueryClientProvider client={queryClient}>
-            <UserContextHandler>
-                <AxiosContextHandler>
+            <AxiosContextHandler>
+                <UserContextHandler>
                     <UtilsContextHandler
                         bottomSheetHeight={bottomSheetHeight}
                     >
                         {children}
                     </UtilsContextHandler>
-                </AxiosContextHandler>
-            </UserContextHandler>
+                </UserContextHandler>
+            </AxiosContextHandler>
         </QueryClientProvider>
     );
 };

@@ -1,8 +1,6 @@
-import React, {ReactNode, useContext, useMemo} from "react";
-import AxiosContext, {IAxios} from "contexts/AxiosContext";
-import axios, {AxiosError} from "axios";
-import {UserContext} from "contexts";
-import {useLocation} from "react-router";
+import React, {ReactNode, useState} from "react";
+import {AxiosContext} from "contexts";
+import axios, {AxiosError, AxiosInstance} from "axios";
 import camelcaseKeys from "camelcase-keys";
 import {buildPath, parseErrors, snakeCaseKeys} from "utils";
 
@@ -12,53 +10,62 @@ export interface IAxiosContextHandler {
 
 const baseURL = process.env.NODE_ENV === "production" ? "" : "http://127.0.0.1:8000/";
 
-const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
-    const {dispatch} = useContext(UserContext);
-    const location = useLocation();
-    const client: IAxios = useMemo(() => {
-        const instance = axios.create({
-            baseURL,
-        });
+export const createInstance = (userDispatch) => {
+    const instance = axios.create({
+        baseURL,
+    });
 
-        // Camelcase response
-        instance.interceptors.response.use(response => {
-            response.data = camelcaseKeys(response.data ?? {}, {deep: true});
+    // Camelcase response
+    instance.interceptors.response.use(response => {
+        response.data = camelcaseKeys(response.data ?? {}, {deep: true});
 
-            return response;
-        }, error => {
-            error.response.data = camelcaseKeys(error.response.data ?? {}, {deep: true});
+        return response;
+    }, error => {
+        error.response.data = camelcaseKeys(error.response.data ?? {}, {deep: true});
 
-            return Promise.reject(error);
-        });
+        return Promise.reject(error);
+    });
 
-        // Snakecase request
-        instance.interceptors.request.use(config => {
-            config.data = snakeCaseKeys(config.data ?? {});
-            config.params = snakeCaseKeys(config.params ?? {});
+    // Snakecase request
+    instance.interceptors.request.use(config => {
+        config.data = snakeCaseKeys(config.data ?? {});
+        config.params = snakeCaseKeys(config.params ?? {});
 
-            return config;
-        });
+        return config;
+    });
 
-        instance.interceptors.response.use(response => response, (error: AxiosError) => {
-            if (error.response) {
-                // Logout user on authentication error
-                if (error.response.status === 401 && location.pathname !== buildPath("/auth/login/")) {
-                    dispatch({type: "logout",
-                        payload: {}});
-                }
-                if (error.response.status >= 300 || error.response.status < 200) {
-                    error.response.data = parseErrors(error.response.data);
-                }
+    instance.interceptors.response.use(response => response, (error: AxiosError) => {
+        if (error.response) {
+            // Logout user on authentication error
+            if (error.response.status === 401 && location.pathname !== buildPath("/auth/login/")) {
+                userDispatch({
+                    type: "logout",
+                    payload: {},
+                });
             }
+            if (error.response.status >= 300 || error.response.status < 200) {
+                error.response.data = parseErrors(error.response.data);
+            }
+        }
 
-            return Promise.reject(error);
-        });
+        return Promise.reject(error);
+    });
 
-        return {instance};
-    }, [dispatch, location]);
+    return instance;
+};
+
+const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
+    const [instance, setInstance] = useState<AxiosInstance>(() => axios.create({
+        baseURL,
+    }));
 
     return (
-        <AxiosContext.Provider value={client}>
+        <AxiosContext.Provider
+            value={{
+                instance,
+                setInstance,
+            }}
+        >
             {children}
         </AxiosContext.Provider>
     );

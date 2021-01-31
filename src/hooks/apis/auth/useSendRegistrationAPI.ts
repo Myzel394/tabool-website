@@ -1,5 +1,8 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
+import {Preference} from "types";
+
+import {parsePreference} from "../preference";
 
 export interface IRegistrationData {
     email: string;
@@ -8,9 +11,13 @@ export interface IRegistrationData {
 }
 
 export interface IRegistrationResponse {
-    email: string;
+    hasFilledOutData: boolean;
+    isConfirmed: boolean;
     firstName: string;
     lastName: string;
+    email: string;
+    loadScoosoData: boolean;
+    preference: Preference;
     id: string;
 }
 
@@ -27,6 +34,7 @@ const useSendRegistrationAPI = () => {
             password,
             token,
         });
+        await parsePreference(data.preference);
         return data;
     }, [instance]);
 };

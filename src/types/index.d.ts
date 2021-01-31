@@ -22,3 +22,4 @@ export * from "./session";
 export * from "./notification";
 export * from "./poll";
 export * from "./user";
+export * from "./preference";

@@ -21,6 +21,7 @@ export * from "./scoosoCredentials";
 export * from "./forgotPassword";
 export * from "./poll";
 export * from "./user";
+export * from "./preference";
 
 export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
 export {default as useSendFCMTokenAPI} from "./useSendFCMTokenAPI";

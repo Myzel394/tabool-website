@@ -3,20 +3,23 @@ import {ReducerType} from "types";
 import {Dayjs} from "dayjs";
 
 export interface UserPreferences {
-    global?: {
-        theme?: "light" | "dark" | "blue" | "midnight";
-        allowStatistics?: boolean;
-        updatedAtTimeView?: string;
-        startPageMaxFutureDays?: number;
+    data: {
+        global?: {
+            theme?: "light" | "dark" | "blue" | "midnight";
+            allowStatistics?: boolean;
+            updatedAtTimeView?: string;
+            startPageMaxFutureDays?: number;
+        };
+        detailPage?: {
+            ordering?: Record<string, string[]>;
+            downloadedMaterials?: Record<string, Dayjs>;
+        };
+        timetable?: {
+            showFreePeriods?: boolean;
+            showDetails?: boolean;
+        };
     };
-    detailPage?: {
-        ordering?: Record<string, string[]>;
-        downloadedMaterials?: Record<string, Dayjs>;
-    };
-    timetable?: {
-        showFreePeriods?: boolean;
-        showDetails?: boolean;
-    };
+    id: string;
 }
 
 export interface IUser {
@@ -31,7 +34,7 @@ export interface IUser {
         lastName?: string;
         loadScoosoData: boolean;
     };
-    preferences: null | UserPreferences;
+    preference: null | UserPreferences;
 }
 
 export const initialUserState: IUser = {
@@ -40,7 +43,7 @@ export const initialUserState: IUser = {
     isEmailVerified: false,
     isAdmin: false,
     data: null,
-    preferences: null,
+    preference: null,
 };
 
 

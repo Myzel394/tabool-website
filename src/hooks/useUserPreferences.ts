@@ -1,6 +1,6 @@
 import {useCallback, useContext, useMemo} from "react";
 import update from "immutability-helper";
-import {IUser} from "contexts/UserContext";
+import {UserPreferences} from "contexts/UserContext";
 import {UserContext} from "contexts";
 import dayjs from "dayjs";
 import _ from "lodash";
@@ -25,18 +25,19 @@ export interface IUseUserPreferences {
             setShowDetails: (showDetails: boolean) => void;
         };
     };
-    state: IUser["preferences"];
+    state: UserPreferences["data"];
 }
 
 
 const useUserPreferences = (): IUseUserPreferences => {
     const {
         dispatch,
-        state: {preferences},
+        state,
     } = useContext(UserContext);
 
+    const preference: UserPreferences["data"] = useMemo(() => state?.preference?.data ?? {}, [state?.preference?.data]);
 
-    const updatePreferences = useCallback((newPreferences: IUser["preferences"]) =>
+    const updatePreferences = useCallback((newPreferences: UserPreferences["data"]) =>
         dispatch({
             type: "setPreferences",
             payload: {
@@ -47,7 +48,7 @@ const useUserPreferences = (): IUseUserPreferences => {
 
     // global
     const setTheme = useCallback((theme: "light" | "dark" | "blue" | "midnight") =>
-        updatePreferences(update(preferences ?? {}, {
+        updatePreferences(update(preference, {
             global: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -55,9 +56,9 @@ const useUserPreferences = (): IUseUserPreferences => {
                 }),
             },
         }))
-    , [updatePreferences, preferences]);
+    , [updatePreferences, preference]);
     const setAllowStatistics = useCallback((allowStatistics: boolean) =>
-        updatePreferences(update(preferences ?? {}, {
+        updatePreferences(update(preference, {
             global: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -65,9 +66,9 @@ const useUserPreferences = (): IUseUserPreferences => {
                 }),
             },
         }))
-    , [updatePreferences, preferences]);
+    , [updatePreferences, preference]);
     const setUpdatedAtTimeView = useCallback((view: "static" | "dynamic") =>
-        updatePreferences(update(preferences ?? {}, {
+        updatePreferences(update(preference, {
             global: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -75,9 +76,9 @@ const useUserPreferences = (): IUseUserPreferences => {
                 }),
             },
         }))
-    , [updatePreferences, preferences]);
+    , [updatePreferences, preference]);
     const setStartPageMaxFutureDays = useCallback((date: number) =>
-        updatePreferences(update(preferences ?? {}, {
+        updatePreferences(update(preference, {
             global: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -85,11 +86,11 @@ const useUserPreferences = (): IUseUserPreferences => {
                 }),
             },
         }))
-    , [updatePreferences, preferences]);
+    , [updatePreferences, preference]);
 
     // detail page
     const addOrdering = useCallback((identifier: string, ordering: string[]) =>
-        updatePreferences(update(preferences ?? {}, {
+        updatePreferences(update(preference, {
             detailPage: {
                 $apply: (value = {}) => update(value, {
                     ordering: {
@@ -101,9 +102,9 @@ const useUserPreferences = (): IUseUserPreferences => {
                 }),
             },
         }))
-    , [updatePreferences, preferences]);
+    , [updatePreferences, preference]);
     const addDownloadedMaterialsDate = useCallback((materialId: string) =>
-        updatePreferences(update(preferences ?? {}, {
+        updatePreferences(update(preference, {
             detailPage: {
                 $apply: (value = {}) => update(value, {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -117,11 +118,11 @@ const useUserPreferences = (): IUseUserPreferences => {
                 }),
             },
         }))
-    , [updatePreferences, preferences]);
+    , [updatePreferences, preference]);
 
     // timetable
     const setShowFreePeriod = useCallback((showFreePeriods: boolean) =>
-        updatePreferences(update(preferences ?? {}, {
+        updatePreferences(update(preference, {
             timetable: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -129,9 +130,9 @@ const useUserPreferences = (): IUseUserPreferences => {
                 }),
             },
         }))
-    , [updatePreferences, preferences]);
+    , [updatePreferences, preference]);
     const setShowDetails = useCallback((showDetails: boolean) =>
-        updatePreferences(update(preferences ?? {}, {
+        updatePreferences(update(preference, {
             timetable: {
                 $apply: (value = {}) => ({
                     ...value,
@@ -139,10 +140,10 @@ const useUserPreferences = (): IUseUserPreferences => {
                 }),
             },
         }))
-    , [updatePreferences, preferences]);
+    , [updatePreferences, preference]);
 
-    const state = useMemo(() => {
-        const preferencesCopy = _.cloneDeep(preferences);
+    const preferenceState = useMemo(() => {
+        const preferencesCopy = _.cloneDeep(preference);
 
         if (preferencesCopy?.detailPage?.downloadedMaterials) {
             preferencesCopy.detailPage.downloadedMaterials = Object
@@ -154,7 +155,7 @@ const useUserPreferences = (): IUseUserPreferences => {
         }
 
         return preferencesCopy;
-    }, [preferences]);
+    }, [preference]);
 
 
     return {
@@ -174,7 +175,7 @@ const useUserPreferences = (): IUseUserPreferences => {
                 setShowDetails,
             },
         },
-        state,
+        state: preferenceState,
     };
 };
 

@@ -1,5 +1,8 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
+import {Preference} from "types";
+
+import {parsePreference} from "../preference";
 
 export interface ILoginData {
     email: string;
@@ -14,6 +17,8 @@ export interface ILoginResponse {
     firstName: string;
     lastName: string;
     email: string;
+    loadScoosoData: boolean;
+    preference: Preference;
     id: string;
 }
 
@@ -30,6 +35,7 @@ const useSendLoginAPI = () => {
             password,
             otpKey,
         });
+        await parsePreference(data.preference);
         return data;
     }, [instance]);
 };

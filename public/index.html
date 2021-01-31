@@ -1,106 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="theme-color" content="#FFA723">
-        <meta name="description" content="tabool - Die sichere & schnelle App für uns Schüler.">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover, uc-fitscreen=yes">
-        <meta name="mobile-web-app-capable" content="yes">
+<head>
+    <meta charset="utf-8">
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="#FFA723" name="theme-color">
+    <meta content="tabool - Die sichere & schnelle App für uns Schüler." name="description">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover, uc-fitscreen=yes"
+          name="viewport">
+    <meta content="yes" name="mobile-web-app-capable">
 
-        <!-- iOS -->
-        <meta name="apple-mobile-web-app-title" content="tabool">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
-        <link rel="apple-touch-icon" href="logo192.png">
+    <!-- iOS -->
+    <meta content="tabool" name="apple-mobile-web-app-title">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="default" name="apple-mobile-web-app-status-bar-style">
+    <link href="logo192.png" rel="apple-touch-icon">
 
-        <!-- Tap highlighting  -->
-        <meta name="msapplication-tap-highlight" content="no">
-        <!-- Orientation  -->
-        <meta name="screen-orientation" content="portrait">
+    <!-- Tap highlighting  -->
+    <meta content="no" name="msapplication-tap-highlight">
+    <!-- Orientation  -->
+    <meta content="portrait" name="screen-orientation">
 
-        <link href="/icons/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
-        <link href="/icons/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32">
-        <link href="/icons/favicon-48x48.png" rel="icon" type="image/png" sizes="48x48">
-        <link href="/icons/favicon-96x96.png" rel="icon" type="image/png" sizes="96x96">
+    <link href="/icons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="/icons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="/icons/favicon-48x48.png" rel="icon" sizes="48x48" type="image/png">
+    <link href="/icons/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png">
 
-        <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon">
-        <link href="/icons/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
-        <link href="/icons/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
-        <link href="/icons/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
-        <link href="/icons/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
-        <link href="/icons/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
-        <link href="/icons/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
-        <link href="/icons/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
-        <link href="/icons/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
-        <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
-        <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon">
-        <link href="/icons/apple-icon-480x480.png" rel="apple-touch-startup-image">
+    <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon">
+    <link href="/icons/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
+    <link href="/icons/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
+    <link href="/icons/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+    <link href="/icons/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
+    <link href="/icons/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+    <link href="/icons/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
+    <link href="/icons/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
+    <link href="/icons/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+    <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="/icons/apple-icon-180x180.png" rel="apple-touch-icon">
+    <link href="/icons/apple-icon-480x480.png" rel="apple-touch-startup-image">
 
-        <link href="/icons/logo.svg" rel="mask-icon" size="any" color="#ffa723">
+    <link color="#ffa723" href="/icons/logo.svg" rel="mask-icon" size="any">
 
-        <link href="/icons/android-icon-192x192.png" rel="icon" sizes="192x192">
-        <link href="/icons/android-icon-128x128.png" rel="icon" sizes="128x128">
+    <link href="/icons/android-icon-192x192.png" rel="icon" sizes="192x192">
+    <link href="/icons/android-icon-128x128.png" rel="icon" sizes="128x128">
 
-        <link rel="manifest" href="/manifest.json">
+    <link href="/manifest.json" rel="manifest">
 
-        <title>tabool</title>
-    </head>
-    <body style="margin: 0; padding: 0;">
-        <noscript>
-            <h1>Aktiviere Javascript um tabool nutzen zu können</h1>
-            <a href="https://www.enable-javascript.com/de/" rel="noopener noreferrer" target="_blank">Wie aktiviere ich Javascript?</a>
-            <style>
-                #root {
-                    display: none;
-                }
-            </style>
-        </noscript>
-        <div id="root">
-            <div id="loading_content" style="background: #fff; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100vh;">
-                <img src="/logo512.png" alt="tabool logo" style="width: 50%; max-width: 10rem" />
-                <h1 style="color: #ffa723; font-family: 'Roboto', Roboto, Google Sans, Helvetica Neue, Helvetica, Arial, sans-serif;">
-                    Wird geladen...
-                </h1>
-                <script async>
-                    // Loading content improving
+    <title>tabool</title>
+</head>
+<body style="margin: 0; padding: 0;">
+<noscript>
+    <h1>Aktiviere Javascript um tabool nutzen zu können</h1>
+    <a href="https://www.enable-javascript.com/de/" rel="noopener noreferrer" target="_blank">Wie aktiviere ich
+        Javascript?</a>
+    <style>
+        #root {
+            display: none;
+        }
+    </style>
+</noscript>
+<div id="root">
+    <div id="loading_content"
+         style="background: #fff; display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100vh;">
+        <img alt="tabool logo" src="/logo512.png" style="width: 50%; max-width: 10rem"/>
+        <h1 style="color: #ffa723; font-family: 'Roboto', Roboto, Google Sans, Helvetica Neue, Helvetica, Arial, sans-serif;">
+            Wird geladen...
+        </h1>
+        <script async>
+            // Loading content improving
+            var _user$preference, _user$preference$data, _user$preference$data2;
 
-                    var _user$preferences, _user$preferences$glo;
+            // Loading content improving
+            var user = JSON.parse(localStorage.getItem("user"));
+            var theme = user === null || user === void 0 ? void 0 : (_user$preference = user.preference) === null || _user$preference === void 0 ? void 0 : (_user$preference$data = _user$preference.data) === null || _user$preference$data === void 0 ? void 0 : (_user$preference$data2 = _user$preference$data.global) === null || _user$preference$data2 === void 0 ? void 0 : _user$preference$data2.theme;
+            var $element = document.getElementById("loading_content");
 
-                    var user = JSON.parse(localStorage.getItem("user"));
-                    var theme = user === null || user === void 0 || (_user$preferences = user.preferences) === null || _user$preferences === void 0 || (_user$preferences$glo = _user$preferences.global) === null || _user$preferences$glo === void 0 ? void 0 : _user$preferences$glo.theme;
-                    var $element = document.getElementById("loading_content");
-                    theme === "dark" ? $element.style.backgroundColor = "#1e1e1e" : theme === "blue" ? $element.style.backgroundColor = "#091740" : theme === "midnight" ? $element.style.backgroundColor = "#090909" : void 0;
+            switch (theme) {
+                case "dark":
+                    $element.style.backgroundColor = "#1e1e1e";
+                    break;
 
-                    /*
-                    const user = JSON.parse(localStorage.getItem("user"));
-                    const theme = user?.preferences?.global?.theme;
-                    const $element = document.getElementById("loading_content");
+                case "blue":
+                    $element.style.backgroundColor = "#091740";
+                    break;
 
-                    switch (theme) {
-                        case "dark":
-                            $element.style.backgroundColor = "#1e1e1e";
-                            break;
-                        case "blue":
-                            $element.style.backgroundColor = "#091740";
-                            break;
-                        case "midnight":
-                            $element.style.backgroundColor = "#090909";
-                            break;
-                    }
-                    */
-                </script>
-            </div>
-        </div>
-        <script async defer>
-            if ("serviceWorker" in navigator){
-                window.addEventListener("load", () => {
-                    if ("%NODE_ENV%" === "production") {
-                        navigator.serviceWorker.register("/sw.js");
-                    }
-                })
+                case "midnight":
+                    $element.style.backgroundColor = "#090909";
+                    break;
             }
+
+            /*
+            const user = JSON.parse(localStorage.getItem("user"));
+            const theme = user?.preference?.data?.global?.theme;
+            const $element = document.getElementById("loading_content");
+
+            switch (theme) {
+                case "dark":
+                    $element.style.backgroundColor = "#1e1e1e";
+                    break;
+                case "blue":
+                    $element.style.backgroundColor = "#091740";
+                    break;
+                case "midnight":
+                    $element.style.backgroundColor = "#090909";
+                    break;
+            }*/
         </script>
-    </body>
+    </div>
+</div>
+<script async defer>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            if ("%NODE_ENV%" === "production") {
+                navigator.serviceWorker.register("/sw.js");
+            }
+        })
+    }
+</script>
+</body>
 </html>

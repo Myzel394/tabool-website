@@ -1,10 +1,15 @@
-import React, {ReactNode} from "react";
-import {UserContext} from "contexts";
+import React, {ReactNode, useContext, useEffect} from "react";
+import {AxiosContext, UserContext} from "contexts";
 import {initialUserState, IUser} from "contexts/UserContext";
-import {ActionType} from "types";
+import {ActionType, Preference} from "types";
 import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
 import update from "immutability-helper";
+import {useMutation} from "react-query";
+import {AxiosError} from "axios";
+import {IUpdatePreferenceData, useUpdatePreferenceAPI} from "hooks/apis";
+
+import {createInstance} from "./AxiosContextHandler";
 
 const usePersistedReducer = createPersistedReducer("user");
 
@@ -39,6 +44,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                 email,
                 id,
                 loadScoosoData,
+                preference,
             } = action.payload;
 
             return {
@@ -46,6 +52,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                 isAuthenticated: true,
                 isFullyRegistered: hasFilledOutData,
                 isEmailVerified: isConfirmed,
+                preference,
                 data: {
                     firstName,
                     lastName,
@@ -72,6 +79,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 
         case "registration": {
             const {
+                preferences: preference,
                 email,
                 firstName,
                 lastName,
@@ -81,6 +89,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
             return {
                 ...state,
                 isAuthenticated: true,
+                preference,
                 data: {
                     firstName,
                     email,
@@ -94,10 +103,13 @@ const reducer = (state: IUser, action: ActionType): IUser => {
         case "setPreferences": {
             const {newPreferences} = action.payload;
 
-            return {
-                ...state,
-                preferences: newPreferences,
-            };
+            return update(state, {
+                preference: {
+                    data: {
+                        $set: newPreferences,
+                    },
+                },
+            });
         }
 
         default: {
@@ -107,7 +119,41 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 };
 
 const UserContextHandler = ({children}: IUserContextHandler) => {
-    const [state, dispatch] = usePersistedReducer(reducer, initialUserState);
+    const {setInstance} = useContext(AxiosContext);
+    const updatePreferences = useUpdatePreferenceAPI();
+
+    const [state, dispatch]: [IUser, any] = usePersistedReducer(reducer, initialUserState);
+
+    // Update preference
+    const {
+        mutate,
+    } = useMutation<Preference, AxiosError, IUpdatePreferenceData>(
+        values => {
+            if (state.preference) {
+                return updatePreferences(state.preference.id, values);
+            }
+            return new Promise((resolve, reject) => reject());
+        },
+        {
+            retry: 3,
+        },
+    );
+
+    useEffect(() => {
+        if (state.preference) {
+            mutate({
+                data: state.preference.data,
+            });
+        }
+    }, [mutate, state.data, state.preference]);
+
+
+    // Create Axios instance
+    useEffect(() => {
+        const newInstance = createInstance(dispatch);
+
+        setInstance(() => newInstance);
+    }, [setInstance, dispatch]);
 
     return (
         <UserContext.Provider
