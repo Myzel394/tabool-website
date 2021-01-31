@@ -109,7 +109,7 @@ const Calendar = () => {
         {
             ...queryOptions,
             onError: error => {
-                if (error.response?.status === 501) {
+                if (error.response?.status === 503) {
                     dispatchError({
                         type: "setError",
                         payload: {
