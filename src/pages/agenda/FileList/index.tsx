@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import {useQuery} from "react-query";
 import {IFetchCourseListData, IFetchCourseListResponse, useFetchCourseListAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -6,16 +6,20 @@ import {useQueryOptions} from "hooks";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {DefaultPage, LoadingPage, stickyHeaderStyles} from "components";
-import {Box, CircularProgress, Divider, List, Paper, Typography} from "@material-ui/core";
+import {Box, CircularProgress, Divider, List, Typography, useTheme} from "@material-ui/core";
 
 import CourseMaterials from "./CourseMaterials";
 
 
 const FileList = () => {
+    const theme = useTheme();
     const classes = stickyHeaderStyles();
     const {t} = useTranslation();
     const fetchCourses = useFetchCourseListAPI();
     const queryOptions = useQueryOptions();
+    const style = useMemo(() => ({
+        backgroundColor: theme.palette.background.default,
+    }), [theme.palette.background.default]);
 
     const {
         data,
@@ -43,7 +47,7 @@ const FileList = () => {
 
     return (
         <DefaultPage>
-            <Box component={Paper} p={2}>
+            <Box p={2}>
                 <Typography variant="h4">
                     {t("Materialien in deinen Fächern")}
                 </Typography>
@@ -59,7 +63,7 @@ const FileList = () => {
                         </Alert>
                     )}
                 </Box>
-                <List className={classes.root} subheader={<li />}>
+                <List className={classes.root} style={style} subheader={<li />}>
                     {data.results.map((course, index) =>
                         <>
                             <Box key={course.id} component="li">
