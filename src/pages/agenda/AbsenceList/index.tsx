@@ -39,7 +39,7 @@ const AbsenceList = () => {
             lessonDateMin: currentMonth.date(1),
             lessonDateMax: currentMonth.date(currentMonth.daysInMonth()),
             isSigned: excludeSigned ? false : undefined,
-            reasonIsNull: excludeWithReason ? true : undefined,
+            containsReason: excludeWithReason ? false : undefined,
         }),
         {
             ...queryOptions,

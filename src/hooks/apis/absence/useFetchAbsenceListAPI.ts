@@ -10,7 +10,7 @@ import {parseLessonRelatedDetail} from "../lesson";
 
 export interface IFetchAbsenceListData {
     isSigned?: boolean;
-    reasonIsNull?: boolean;
+    containsReason?: boolean;
     lessonDateMin?: Dayjs;
     lessonDateMax?: Dayjs;
 }
@@ -24,7 +24,7 @@ const useFetchAbsenceListAPI = () => {
         isSigned,
         lessonDateMax,
         lessonDateMin,
-        reasonIsNull,
+        containsReason,
     }: IFetchAbsenceListData = {}): Promise<IFetchAbsenceListResult> => {
         const {data} = await instance.get("/api/data/lesson-absence/", {
             ...await getLoginConfig(),
@@ -32,7 +32,7 @@ const useFetchAbsenceListAPI = () => {
                 isSigned,
                 lesson__date__gte: lazyDatetime(lessonDateMin, "date"),
                 lesson__date__lte: lazyDatetime(lessonDateMax, "date"),
-                reason__is_null: reasonIsNull,
+                contains_reason: containsReason,
             },
         });
         await Promise.allSettled(data.results.map(absence => parseLessonRelatedDetail(absence.lesson)));
