@@ -66,10 +66,10 @@ const Exam = ({
                     <Grid item>
                         <Box display="flex" flexDirection="column">
                             {room &&
-                                <Information
-                                    getIcon={props => <RoomIcon {...props} />}
-                                    text={room.place}
-                                />}
+                            <Information
+                                getIcon={props => <RoomIcon {...props} />}
+                                text={room.place}
+                            />}
                             <Information
                                 getIcon={props => <HiClock {...props} />}
                                 text={(

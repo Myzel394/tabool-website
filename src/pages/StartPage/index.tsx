@@ -87,7 +87,11 @@ const StartPage = () => {
             targetedDate={targetedDate}
             isLoading={isFetching}
             onDailyDataChange={setDailyData}
-            onMaxFutureDaysChange={setMaxFutureDays}
+            onMaxFutureDaysChange={value => {
+                if (value !== state.global?.startPageMaxFutureDays) {
+                    setMaxFutureDays(value);
+                }
+            }}
             onTargetedDateChange={setTargetedDate}
         />
     );

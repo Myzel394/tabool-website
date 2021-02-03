@@ -19,6 +19,9 @@ export interface IForm {
     latestDateAvailable: Dayjs;
 }
 
+const WORK_DAYS = [
+    1, 2, 3, 4, 5,
+];
 
 const Form = ({
     isLoading,
@@ -37,13 +40,6 @@ const Form = ({
     const [formMaxFutureDays, setFormMaxFutureDays] = useInheritedState<number>(maxFutureDays);
 
     const dayLabel = t("Tage");
-
-    const updateParentForm = () => {
-        onChange({
-            targetedDate: formTargetedDate,
-            maxFutureDays: formMaxFutureDays,
-        });
-    };
 
     return (
         <>
@@ -65,10 +61,18 @@ const Form = ({
                                         </InputAdornment>
                                     ),
                                 }}
+                                shouldDisableDate={date => Boolean(date && !WORK_DAYS.includes(date.day()))}
                                 minDate={earliestDateAvailable}
                                 maxDate={latestDateAvailable}
-                                onChange={date => date && setFormTargetedDate(date)}
-                                onBlur={updateParentForm}
+                                onChange={date => {
+                                    if (date) {
+                                        setFormTargetedDate(date);
+                                        onChange({
+                                            targetedDate: date,
+                                            maxFutureDays: formMaxFutureDays,
+                                        });
+                                    }
+                                }}
                             />
                         </Grid>
                         <Grid item md={6} xs={12}>
@@ -84,8 +88,11 @@ const Form = ({
                                     onChange={event => {
                                         const value = event.target.value as number;
                                         setFormMaxFutureDays(value);
+                                        onChange({
+                                            targetedDate: formTargetedDate,
+                                            maxFutureDays: value,
+                                        });
                                     }}
-                                    onBlur={updateParentForm}
                                 >
                                     <MenuItem value={5}>
                                         {t("5 Tage")}
