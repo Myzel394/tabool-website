@@ -4,6 +4,8 @@ import axios, {AxiosError, AxiosInstance} from "axios";
 import camelcaseKeys from "camelcase-keys";
 import {buildPath, parseErrors, snakeCaseKeys} from "utils";
 
+import {BuildUrlFunction} from "../../contexts/AxiosContext";
+
 export interface IAxiosContextHandler {
     children: ReactNode;
 }
@@ -58,12 +60,20 @@ const AxiosContextHandler = ({children}: IAxiosContextHandler) => {
     const [instance, setInstance] = useState<AxiosInstance>(() => axios.create({
         baseURL,
     }));
+    const [buildUrl, setBuildUrl] = useState<BuildUrlFunction>(() => url => url);
 
     return (
         <AxiosContext.Provider
             value={{
                 instance,
-                setInstance,
+                buildUrl,
+                _initialize: ({
+                    buildUrl,
+                    instance,
+                }) => {
+                    setInstance(instance);
+                    setBuildUrl(buildUrl);
+                },
             }}
         >
             {children}

@@ -1,6 +1,8 @@
 import {createContext} from "react";
-import {ReducerType} from "types";
 import {Dayjs} from "dayjs";
+
+// eslint-disable-next-line import/no-cycle
+import {ReducerType, UserInformation} from "../types";
 
 export interface UserPreferences {
     data: {
@@ -24,23 +26,13 @@ export interface UserPreferences {
 
 export interface IUser {
     isAuthenticated: boolean;
-    isFullyRegistered: boolean;
-    isEmailVerified: boolean;
     isAdmin: boolean;
-    data: null | {
-        email: string;
-        id: string;
-        firstName?: string;
-        lastName?: string;
-        loadScoosoData: boolean;
-    };
+    data: null | Omit<UserInformation, "preference">;
     preference: null | UserPreferences;
 }
 
 export const initialUserState: IUser = {
     isAuthenticated: false,
-    isFullyRegistered: false,
-    isEmailVerified: false,
     isAdmin: false,
     data: null,
     preference: null,

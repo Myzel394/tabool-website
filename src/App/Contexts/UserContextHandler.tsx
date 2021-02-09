@@ -1,13 +1,14 @@
 import React, {ReactNode, useContext, useEffect} from "react";
 import {AxiosContext, UserContext} from "contexts";
 import {initialUserState, IUser} from "contexts/UserContext";
-import {ActionType, Preference} from "types";
-import {ContextDevTool} from "react-context-devtool";
 import createPersistedReducer from "use-persisted-reducer";
 import update from "immutability-helper";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {IUpdatePreferenceData, useUpdatePreferenceAPI} from "hooks/apis";
+
+import {ActionType, Preference} from "../../types";
+import {UserType} from "../../api";
 
 import {createInstance} from "./AxiosContextHandler";
 
@@ -23,67 +24,15 @@ const reducer = (state: IUser, action: ActionType): IUser => {
             return initialUserState;
         }
 
-        case "change_load_scooso_data": {
-            const {loadScoosoData} = action.payload;
-
-            return update(state, {
-                data: {
-                    loadScoosoData: {
-                        $set: loadScoosoData,
-                    },
-                },
-            });
-        }
-
         case "login": {
             const {
-                hasFilledOutData,
-                isConfirmed,
                 firstName,
                 lastName,
                 email,
+                gender,
+                userType,
                 id,
-                loadScoosoData,
                 preference,
-            } = action.payload;
-
-            return {
-                ...state,
-                isAuthenticated: true,
-                isFullyRegistered: hasFilledOutData,
-                isEmailVerified: isConfirmed,
-                preference,
-                data: {
-                    firstName,
-                    lastName,
-                    email,
-                    id,
-                    loadScoosoData,
-                },
-            };
-        }
-
-        case "verify-email": {
-            return {
-                ...state,
-                isEmailVerified: true,
-            };
-        }
-
-        case "fill-out-data": {
-            return {
-                ...state,
-                isFullyRegistered: true,
-            };
-        }
-
-        case "registration": {
-            const {
-                preferences: preference,
-                email,
-                firstName,
-                lastName,
-                id,
             } = action.payload;
 
             return {
@@ -92,10 +41,11 @@ const reducer = (state: IUser, action: ActionType): IUser => {
                 preference,
                 data: {
                     firstName,
-                    email,
-                    id,
                     lastName,
-                    loadScoosoData: true,
+                    email,
+                    gender,
+                    userType,
+                    id,
                 },
             };
         }
@@ -119,7 +69,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 };
 
 const UserContextHandler = ({children}: IUserContextHandler) => {
-    const {setInstance} = useContext(AxiosContext);
+    const {_initialize} = useContext(AxiosContext);
     const updatePreferences = useUpdatePreferenceAPI();
 
     const [state, dispatch]: [IUser, any] = usePersistedReducer(reducer, initialUserState);
@@ -152,8 +102,17 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
     useEffect(() => {
         const newInstance = createInstance(dispatch);
 
-        setInstance(() => newInstance);
-    }, [setInstance, dispatch]);
+        _initialize({
+            instance: newInstance,
+            buildUrl: (url: string) => {
+                if (state.data?.userType === UserType.STUDENT) {
+                    return `/api/student${url}`;
+                } else {
+                    return `/api/teacher${url}`;
+                }
+            },
+        });
+    }, [_initialize, dispatch, state.data?.userType]);
 
     return (
         <UserContext.Provider
@@ -162,23 +121,6 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
             }}
         >
             {children}
-            <ContextDevTool context={UserContext} id="userContextId" displayName="UserContext" />
-            <UserContext.Consumer>
-                {
-                    values => {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        if (window._REACT_CONTEXT_DEVTOOL) {
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            window._REACT_CONTEXT_DEVTOOL({
-                                id: "uniqContextId", displayName: "Context Display Name", values,
-                            });
-                        }
-                        return null;
-                    }
-                }
-            </UserContext.Consumer>
         </UserContext.Provider>
     );
 };
