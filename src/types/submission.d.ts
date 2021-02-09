@@ -1,19 +1,20 @@
 import {Dayjs} from "dayjs";
 
-// eslint-disable-next-line import/no-cycle
-import {LessonRelatedDetail} from "./lesson";
+import {StudentDetail} from "./student";
 
-export interface SubmissionApprox {
-    lesson: string;
-    filename: string;
-    size: number;
+export interface StudentSubmissionDetail extends LessonDateMixin {
+    publishDatetime: Dayjs | null;
+    name: string;
+    file: string;
+    createdAt: Dayjs;
     id: string;
 }
 
-export interface SubmissionDetail extends Omit<SubmissionApprox, "lesson"> {
-    lesson: LessonRelatedDetail;
-    isUploaded: boolean;
-    uploadDate: Dayjs | null;
-    createdAt: Dayjs;
+export interface TeacherSubmissionDetail extends LessonDateMixin {
     file: string;
+    name: string;
+    student: StudentDetail;
+    id: string;
 }
+
+

@@ -1,19 +1,24 @@
 import {Dayjs} from "dayjs";
 
-import {CourseDetail} from "./course";
-import {Room} from "./room";
+import {StudentCourseDetail, TeacherCourseDetail} from "./course";
 
-export interface ExamApprox {
-    course: string;
-    targetedDate: Dayjs;
-    id: string;
-
-    truncatedInformation: string;
+export interface StudentExamApprox {
+    course: StudentCourseDetail;
+    date: Dayjs;
+    title: string;
 }
 
-export interface ExamDetail extends Omit<ExamApprox, "truncatedInformation" | "course"> {
-    course: CourseDetail;
-    room?: Room;
+export interface TeacherExamApprox {
+    course: TeacherCourseDetail;
+    date: Dayjs;
+    title: string;
+}
+
+export interface StudentExamDetail extends StudentExamApprox {
+    information: string | null;
+}
+
+export interface TeacherExamDetail extends TeacherExamApprox {
     information: string | null;
     createdAt: Dayjs;
 }

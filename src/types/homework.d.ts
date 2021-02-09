@@ -1,42 +1,34 @@
 import {Dayjs} from "dayjs";
 
-// eslint-disable-next-line import/no-cycle
-import {LessonRelatedDetail} from "./lesson";
-import {Subject} from "./subject";
+import {StudentDetail} from "./student";
 
-export interface HomeworkApprox {
-    lesson: string;
-    dueDate: Dayjs;
-    createdAt: Dayjs;
-    subject: Subject;
+export interface StudentHomeworkApprox extends LessonDateMixin {
+    dueDate: Dayjs | null;
+    truncatedInformation: string | null;
     id: string;
-
-    truncatedInformation: string;
 }
 
-export interface HomeworkDetail extends Omit<HomeworkApprox, "lesson" | "subject"> {
-    lesson: LessonRelatedDetail;
-    isPrivate: boolean;
-    information: string;
+export interface StudentHomeworkDetail extends Omit<StudentHomeworkApprox, "truncatedInformation"> {
+    createdAt: Dayjs;
     type: string | null;
+    information: string | null;
+    isPrivate: boolean;
     userRelation: {
         completed: boolean;
-        ignore: boolean;
+        ignored: boolean;
     };
 }
 
-export interface EditableHomeworkData {
-    isPrivate: boolean;
-    information: string;
-    type: string;
-    dueDate: Dayjs;
+export interface TeacherHomeworkApprox extends LessonDateMixin {
+    dueDate: Dayjs | null;
+    truncatedInformation: string | null;
+    id: string;
 }
 
-export interface HomeworkInformation {
-    dueDateMin: Dayjs;
-    dueDateMax: Dayjs;
-    privateCount: number;
-    types: string[];
-    completedCount: number;
-    ignoreCount: number;
+export interface TeacherHomeworkDetail extends Omit<TeacherHomeworkApprox, "truncatedInformation"> {
+    createdAt: Dayjs;
+    type: string | null;
+    information: string | null;
+    privateToStudent: StudentDetail | null;
 }
+

@@ -1,38 +1,30 @@
-/* eslint-disable import/no-cycle */
 import {Dayjs} from "dayjs";
-import {ModificationDetail} from "api";
 
-import {Room} from "./room";
-import {CourseDetail} from "./course";
-import {Classbook} from "./classbook";
-import {MaterialDetail} from "./material";
-import {HomeworkDetail} from "./homework";
-import {SubmissionDetail} from "./submission";
-import {Absence} from "./absence";
+import {StudentCourseDetail, TeacherCourseDetail} from "./course";
 
-
-export interface LessonApprox {
-    course: string;
-    startTime: Dayjs;
-    endTime: Dayjs;
+export interface StudentLessonDetail extends LessonRelatedDetail {
+    course: StudentCourseDetail;
+    startHour: number;
+    endHour: number;
     weekday: number;
-    date: Dayjs;
-    hasVideoConference: boolean;
     id: string;
 }
 
-export interface LessonRelatedDetail extends Omit<LessonApprox, "hasVideoConference"> {
-    course: CourseDetail;
-    room: Room;
-    classbook: Classbook | null;
-    videoConferenceLink?: string;
+export interface TeacherLessonDetail extends LessonRelatedDetail {
+    course: TeacherCourseDetail;
+    startHour: number;
+    endHour: number;
+    weekday: number;
+    id: string;
 }
 
-export interface LessonDetail extends LessonRelatedDetail {
-    materials: MaterialDetail[];
-    homeworks: HomeworkDetail[];
-    modifications: ModificationDetail[];
-    submissions: SubmissionDetail[];
-    absence?: Absence;
+export interface LessonDateMixin {
+    lesson: StudentLessonDetail;
+    lessonDate: Dayjs;
 }
 
+export interface StudentLessonDateMixin extends LessonDateMixin {
+}
+
+export interface TeacherLessonDateMixin extends LessonDateMixin {
+}

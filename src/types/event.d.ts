@@ -2,18 +2,11 @@ import {Dayjs} from "dayjs";
 
 import {Room} from "./room";
 
-export interface EventApprox {
+export interface EventDetail {
+    room?: Room;
     title: string;
     startDatetime: Dayjs;
     endDatetime: Dayjs;
-    isAllDay: boolean;
     id: string;
-}
-
-export interface EventDetail extends EventApprox {
-    room: Room;
-    userRelation: {
-        ignore: boolean;
-    };
 }
 
