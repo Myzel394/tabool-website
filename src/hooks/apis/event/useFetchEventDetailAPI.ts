@@ -3,18 +3,18 @@ import {AxiosContext} from "contexts";
 import {EventDetail} from "types";
 import {getLoginConfig} from "api";
 
-import parseEvent from "./parseEvent";
-
+import parseEventDetail from "./parseEventDetail";
 
 const useFetchEventDetailAPI = () => {
-    const {instance} = useContext(AxiosContext);
+    const {instance, buildUrl} = useContext(AxiosContext);
 
     return useCallback(async (id: string): Promise<EventDetail> => {
-        const {data} = await instance.get(`/api/data/event/${id}/`, await getLoginConfig());
-        await parseEvent(data);
+        const {data} = await instance.get(buildUrl(`/event/${id}/`), await getLoginConfig());
+
+        await parseEventDetail(data);
 
         return data;
-    }, [instance]);
+    }, [instance, buildUrl]);
 };
 
 export default useFetchEventDetailAPI;

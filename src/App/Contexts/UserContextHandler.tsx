@@ -105,7 +105,7 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
         _initialize({
             instance: newInstance,
             buildUrl: (url: string) => {
-                if (state.data?.userType === UserType.STUDENT) {
+                if (state.data?.userType === UserType.Student) {
                     return `/api/student${url}`;
                 } else {
                     return `/api/teacher${url}`;

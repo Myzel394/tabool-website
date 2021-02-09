@@ -1,54 +1,57 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {EventApprox, FetchListData, PaginatedResponse} from "types";
-import {getLoginConfig} from "api";
+import {EventDetail, FetchListData, PaginatedResponse} from "types";
+import getLoginConfig from "api/getLoginConfig";
+import {Dayjs} from "dayjs";
 
-import parseEventApprox from "./parseEventApprox";
+import {lazyDatetime} from "../../../utils";
 
-export interface IFetchEventListData extends FetchListData {
-    ordering?: "start_datetime" | "-start_datetime" | "end_datetime" | "-end_datetime";
+import parseEventDetail from "./parseEventDetail";
+
+export interface IFetchEventData extends FetchListData {
+    ordering?: "title" | "-title" | "start_datetime" | "-start_datetime" | "end_datetime" | "-end_datetime";
     roomId?: string;
-    ignore?: boolean;
-    startDateMin?: string;
-    startDateMax?: string;
-    endDateMin?: string;
-    endDateMax?: string;
+    startDatetimeMin?: Dayjs;
+    startDatetimeMax?: Dayjs;
+    endDatetimeMin?: Dayjs;
+    endDatetimeMax?: Dayjs;
 }
 
-export type IFetchEventListResponse = PaginatedResponse<EventApprox[]>;
+export type IFetchEventResponse = PaginatedResponse<EventDetail[]>;
 
 const useFetchEventListAPI = () => {
-    const {instance} = useContext(AxiosContext);
+    const {instance, buildUrl} = useContext(AxiosContext);
 
     return useCallback(async ({
-        ordering = "start_datetime",
-        ignore,
-        roomId,
-        startDateMin,
-        startDateMax,
-        endDateMin,
-        endDateMax,
+        ordering = "-start_datetime",
         search,
-    }: IFetchEventListData = {}, page = 1): Promise<IFetchEventListResponse> => {
-        const {data} = await instance.get("/api/data/event/", {
+        pageSize,
+        endDatetimeMax,
+        endDatetimeMin,
+        roomId,
+        startDatetimeMax,
+        startDatetimeMin,
+    }: IFetchEventData = {}, page = 1): Promise<IFetchEventResponse> => {
+        const {data} = await instance.get(buildUrl("/event/"), {
             params: {
+                search,
                 ordering,
                 page,
-                search,
-                ignore,
+                pageSize,
                 room: roomId,
-                start_datetime__gte: startDateMin,
-                start_datetime__lte: startDateMax,
-                end_datetime__gte: endDateMin,
-                end_datetime__lte: endDateMax,
+                start_datetime__gte: lazyDatetime(startDatetimeMin),
+                start_datetime__lte: lazyDatetime(startDatetimeMax),
+                end_datetime__gte: lazyDatetime(endDatetimeMin),
+                end_datetime__lte: lazyDatetime(startDatetimeMax),
             },
             ...await getLoginConfig(),
         });
-        await Promise.allSettled(data.results.map(parseEventApprox));
+
+        await Promise.allSettled(data.results.map(parseEventDetail));
 
         return data;
-    }, [instance]);
+    }, [instance, buildUrl]);
 };
 
 export default useFetchEventListAPI;

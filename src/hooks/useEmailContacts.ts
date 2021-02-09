@@ -3,7 +3,7 @@ import {AxiosError} from "axios";
 
 import useQueryOptions from "./useQueryOptions";
 import {IFetchContactsResponse} from "./apis";
-import useFetchContactsAPI from "./apis/useFetchContactsAPI";
+import useFetchContactsAPI from "./apis.backup/useFetchContactsAPI";
 
 const useEmailContacts = (): IFetchContactsResponse | null => {
     const queryOptions = useQueryOptions();

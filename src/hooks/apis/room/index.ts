@@ -1,7 +1,7 @@
-export * from "./useFetchRoomListAPI";
-export * from "./useSendRoomAPI";
-export * from "./useFetchRoomDetailAPI";
+export * from "./useFetchSubjectListAPI";
+export * from "./useFetchSubjectDetailAPI";
+export * from "./useSendSubjectRelation";
 
-export {default as useFetchRoomListAPI} from "./useFetchRoomListAPI";
-export {default as useSendRoomAPI} from "./useSendRoomAPI";
-export {default as useFetchRoomDetailAPI} from "./useFetchRoomDetailAPI";
+export {default as useFetchSubjectListAPI} from "./useFetchSubjectListAPI";
+export {default as useFetchSubjectDetailAPI} from "./useFetchSubjectDetailAPI";
+export {default as useSendSubjectRelation} from "./useSendSubjectRelation";

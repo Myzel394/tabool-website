@@ -1,33 +1,36 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {getLoginConfig} from "api";
 import {CourseApprox, FetchListData, PaginatedResponse} from "types";
+import getLoginConfig from "api/getLoginConfig";
 
 import parseCourseApprox from "./parseCourseApprox";
 
-export interface IFetchCourseListData extends FetchListData {
+export interface IFetchCourseData extends FetchListData {
 }
 
-export type IFetchCourseListResponse = PaginatedResponse<CourseApprox[]>;
+export type IFetchCourseResponse = PaginatedResponse<CourseApprox[]>;
+
 
 const useFetchCourseListAPI = () => {
-    const {instance} = useContext(AxiosContext);
+    const {instance, buildUrl} = useContext(AxiosContext);
 
     return useCallback(async ({
         search,
-    }: IFetchCourseListData = {}, page = 1): Promise<IFetchCourseListResponse> => {
-        const {data} = await instance.get("/api/data/course/", {
-            ...await getLoginConfig(),
+        pageSize,
+    }: IFetchCourseData = {}, page = 1): Promise<IFetchCourseResponse> => {
+        const {data} = await instance.get(buildUrl("/course/"), {
             params: {
                 search,
                 page,
+                pageSize,
             },
+            ...await getLoginConfig(),
         });
 
         await Promise.allSettled(data.results.map(parseCourseApprox));
 
         return data;
-    }, [instance]);
+    }, [instance, buildUrl]);
 };
 
 export default useFetchCourseListAPI;

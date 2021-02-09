@@ -1,3 +1,3 @@
 export * from "./modification";
-export * from "./teacher";
+export * from "./user";
 export * from "./submission";

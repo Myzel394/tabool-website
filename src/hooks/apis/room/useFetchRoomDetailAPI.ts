@@ -1,16 +1,15 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {getLoginConfig} from "api";
 import {Room} from "types";
+import {getLoginConfig} from "api";
 
 const useFetchRoomDetailAPI = () => {
-    const {instance} = useContext(AxiosContext);
+    const {instance, buildUrl} = useContext(AxiosContext);
 
     return useCallback(async (id: string): Promise<Room> => {
-        const {data} = await instance.get(`/api/data/room/${id}/`, await getLoginConfig());
-
+        const {data} = await instance.get(buildUrl(`/room/${id}/`), await getLoginConfig());
         return data;
-    }, [instance]);
+    }, [instance, buildUrl]);
 };
 
 export default useFetchRoomDetailAPI;

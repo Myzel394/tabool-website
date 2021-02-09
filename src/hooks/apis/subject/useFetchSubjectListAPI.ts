@@ -11,22 +11,24 @@ export interface IFetchSubjectData extends FetchListData {
 export type IFetchSubjectResponse = PaginatedResponse<Subject[]>;
 
 const useFetchSubjectListAPI = () => {
-    const {instance} = useContext(AxiosContext);
+    const {instance, buildUrl} = useContext(AxiosContext);
 
     return useCallback(async ({
         ordering = "name",
         search,
+        pageSize,
     }: IFetchSubjectData = {}, page = 1): Promise<IFetchSubjectResponse> => {
-        const {data} = await instance.get("/api/data/subject/", {
+        const {data} = await instance.get(buildUrl("/subject/"), {
             params: {
                 search,
                 ordering,
                 page,
+                pageSize,
             },
             ...await getLoginConfig(),
         });
         return data;
-    }, [instance]);
+    }, [instance, buildUrl]);
 };
 
 export default useFetchSubjectListAPI;

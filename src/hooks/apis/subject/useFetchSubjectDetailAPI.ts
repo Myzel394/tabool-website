@@ -4,12 +4,12 @@ import {Subject} from "types";
 import {getLoginConfig} from "api";
 
 const useFetchSubjectDetailAPI = () => {
-    const {instance} = useContext(AxiosContext);
+    const {instance, buildUrl} = useContext(AxiosContext);
 
     return useCallback(async (id: string): Promise<Subject> => {
-        const {data} = await instance.get(`/api/data/subject/${id}/`, await getLoginConfig());
+        const {data} = await instance.get(buildUrl(`/subject/${id}/`), await getLoginConfig());
         return data;
-    }, [instance]);
+    }, [instance, buildUrl]);
 };
 
 export default useFetchSubjectDetailAPI;
