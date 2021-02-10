@@ -36,8 +36,8 @@ const useFetchTeacherExamListAPI = () => {
                 page,
                 pageSize,
                 course: courseId,
-                date__gte: lazyDatetime(dateMin, "date"),
-                date__lte: lazyDatetime(dateMax, "date"),
+                date__gte: dateMin ? lazyDatetime(dateMin, "date") : undefined,
+                date__lte: dateMax ? lazyDatetime(dateMax, "date") : undefined,
             },
             ...await getLoginConfig(),
         });

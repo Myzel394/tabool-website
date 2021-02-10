@@ -5,6 +5,8 @@ import {FetchListData, PaginatedResponse, TeacherHomeworkApprox} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
 
+import {lazyDatetime} from "../../../../utils";
+
 import parseTeacherHomeworkApprox from "./parseTeacherHomeworkApprox";
 
 export interface IFetchTeacherHomeworkData extends FetchListData {
@@ -34,8 +36,8 @@ const useFetchTeacherHomeworkListAPI = () => {
                 search,
                 type,
                 course: courseId,
-                due_date__gte: dueDateMin,
-                due_date__lte: dueDateMax,
+                due_date__gte: dueDateMin ? lazyDatetime(dueDateMin) : undefined,
+                due_date__lte: dueDateMax ? lazyDatetime(dueDateMax) : undefined,
             },
             ...await getLoginConfig(),
         });

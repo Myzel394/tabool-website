@@ -4,6 +4,8 @@ import {TeacherModificationDetail} from "types";
 import {getLoginConfig} from "api";
 import {Dayjs} from "dayjs";
 
+import {lazyDatetime} from "../../../../utils";
+
 import parseTeacherModificationDetail from "./parseTeacherModificationDetail";
 
 export interface ICreateTeacherModificationData {
@@ -31,8 +33,8 @@ const useCreateTeacherModificationAPI = () => {
     }: ICreateTeacherModificationData): Promise<TeacherModificationDetail> => {
         const {data} = await instance.post(buildUrl("/modification/"), {
             information,
-            lessonDate,
             modificationType,
+            lessonDate: lazyDatetime(lessonDate, "date"),
             newRoom: newRoomId,
             newSubject: newSubjectId,
             newTeacher: newTeacherId,

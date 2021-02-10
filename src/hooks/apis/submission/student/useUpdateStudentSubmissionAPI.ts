@@ -8,7 +8,7 @@ import {lazyDatetime} from "utils";
 import parseStudentSubmissionDetail from "./parseStudentSubmissionDetail";
 
 export interface IUpdateStudentSubmissionData {
-    publishDatetime?: Dayjs;
+    publishDatetime?: Dayjs | null;
 }
 
 const useUpdateStudentSubmissionAPI = () => {

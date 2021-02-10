@@ -4,6 +4,7 @@ import {AxiosContext} from "contexts";
 import {FetchListData, PaginatedResponse, StudentHomeworkApprox} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
+import {lazyDatetime} from "utils";
 
 import parseStudentHomeworkApprox from "./parseStudentHomeworkApprox";
 
@@ -34,8 +35,8 @@ const useFetchStudentHomeworkListAPI = () => {
                 search,
                 type,
                 course: courseId,
-                due_date__gte: dueDateMin,
-                due_date__lte: dueDateMax,
+                due_date__gte: dueDateMin ? lazyDatetime(dueDateMin) : undefined,
+                due_date__lte: dueDateMax ? lazyDatetime(dueDateMax) : undefined,
             },
             ...await getLoginConfig(),
         });

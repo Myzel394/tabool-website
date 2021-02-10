@@ -18,7 +18,7 @@ const useFetchTeacherClassbookListAPI = () => {
     return useCallback(async ({
         pageSize,
     }: IFetchTeacherClassbookData = {}, page = 1): Promise<IFetchTeacherClassbookResponse> => {
-        const {data} = await instance.get(buildUrl("/exam/"), {
+        const {data} = await instance.get(buildUrl("/classbook/"), {
             params: {
                 page,
                 pageSize,

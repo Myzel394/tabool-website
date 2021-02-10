@@ -32,7 +32,7 @@ const useCreateTeacherHomeworkAPI = () => {
             lessonDate,
             information,
             type,
-            dueDate: dueDate ? lazyDatetime(dueDate, "date") : undefined,
+            dueDate: dueDate === undefined ? undefined : lazyDatetime(dueDate, "date"),
             lesson: lessonId,
             privateToStudent: privateToStudentId,
         }, await getLoginConfig());

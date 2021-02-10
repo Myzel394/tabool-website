@@ -3,6 +3,7 @@ import {AxiosContext} from "contexts";
 import {TeacherExamDetail} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
+import {lazyDatetime} from "utils";
 
 import parseTeacherExamDetail from "./parseTeacherExamDetail";
 
@@ -23,7 +24,7 @@ const useUpdateTeacherExamAPI = () => {
         const {data} = await instance.patch(buildUrl(`/exam/${id}/`), {
             title,
             information,
-            date,
+            date: lazyDatetime(date, "date"),
         }, await getLoginConfig());
 
         await parseTeacherExamDetail(data);

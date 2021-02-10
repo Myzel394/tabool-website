@@ -4,6 +4,8 @@ import {TeacherExamDetail} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
 
+import {lazyDatetime} from "../../../../utils";
+
 import parseTeacherExamDetail from "./parseTeacherExamDetail";
 
 export interface ICreateTeacherExamData {
@@ -25,7 +27,7 @@ const useCreateTeacherExamAPI = () => {
         const {data} = await instance.post(buildUrl("/exam/"), {
             title,
             information,
-            date,
+            date: lazyDatetime(date, "date"),
             course: courseId,
         }, await getLoginConfig());
 

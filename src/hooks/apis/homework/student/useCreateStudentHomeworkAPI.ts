@@ -27,11 +27,11 @@ const useCreateStudentHomeworkAPI = () => {
         type,
     }: ICreateStudentHomeworkData): Promise<StudentHomeworkDetail> => {
         const {data} = await instance.post(buildUrl("/homework/"), {
-            lessonDate,
             information,
             type,
-            dueDate: dueDate ? lazyDatetime(dueDate, "date") : undefined,
+            lessonDate: lazyDatetime(lessonDate),
             lesson: lessonId,
+            dueDate: dueDate === undefined ? undefined : lazyDatetime(dueDate, "date"),
         }, await getLoginConfig());
 
         await parseStudentHomeworkDetail(data);

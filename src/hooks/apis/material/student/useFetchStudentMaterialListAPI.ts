@@ -5,6 +5,8 @@ import {FetchListData, PaginatedResponse, StudentMaterialDetail} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
 
+import {lazyDatetime} from "../../../../utils";
+
 import parseStudentMaterialDetail from "./parseStudentMaterialDetail";
 
 export interface IFetchStudentMaterialData extends FetchListData {
@@ -31,8 +33,8 @@ const useFetchStudentMaterialListAPI = () => {
                 pageSize,
                 search,
                 course: courseId,
-                publish_datetime__gte: publishDatetimeMin,
-                publish_datetime__lte: publishDatetimeMax,
+                publish_datetime__gte: publishDatetimeMin ? lazyDatetime(publishDatetimeMin) : undefined,
+                publish_datetime__lte: publishDatetimeMax ? lazyDatetime(publishDatetimeMax) : undefined,
             },
             ...await getLoginConfig(),
         });

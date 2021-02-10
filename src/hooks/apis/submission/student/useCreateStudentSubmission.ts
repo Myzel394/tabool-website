@@ -4,8 +4,7 @@ import {StudentSubmissionDetail} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
 import update from "immutability-helper";
-
-import {lazyDatetime} from "../../../../utils";
+import {lazyDatetime} from "utils";
 
 import parseStudentSubmissionDetail from "./parseStudentSubmissionDetail";
 
@@ -28,10 +27,10 @@ const useCreateStudentSubmission = () => {
         publishDatetime,
     }: ICreateStudentSubmissionData): Promise<StudentSubmissionDetail> => {
         const {data} = await instance.post(buildUrl("/submission/"), {
-            lessonDate,
             file,
             name,
-            publishDatetime: lazyDatetime(publishDatetime),
+            lessonDate: lazyDatetime(lessonDate, "date"),
+            publishDatetime: publishDatetime === undefined ? undefined : lazyDatetime(publishDatetime),
             lesson: lessonId,
         }, update(await getLoginConfig(), {
             headers: {

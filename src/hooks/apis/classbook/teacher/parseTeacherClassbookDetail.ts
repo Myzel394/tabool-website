@@ -1,7 +1,9 @@
 import {TeacherClassbook} from "types";
 
+import {parseTeacherLessonDateMixin} from "../../timetable";
+
 const parseTeacherClassbookDetail = async (classbook: TeacherClassbook) => {
-    await parseTeacherClassbookDetail(classbook);
+    await parseTeacherLessonDateMixin(classbook);
 };
 
 export default parseTeacherClassbookDetail;

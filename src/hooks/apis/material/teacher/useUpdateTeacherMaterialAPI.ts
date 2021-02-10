@@ -21,7 +21,7 @@ const useUpdateTeacherMaterialAPI = () => {
     }: IUpdateTeacherHomeworkData): Promise<TeacherMaterialDetail> => {
         const {data} = await instance.patch(buildUrl(`/material/${id}/`), {
             announce,
-            publishDatetime: publishDatetime === undefined ? undefined : lazyDatetime(publishDatetime, "date"),
+            publishDatetime: publishDatetime ? lazyDatetime(publishDatetime, "date") : undefined,
         }, await getLoginConfig());
 
         await parseTeacherMaterialDetail(data);
