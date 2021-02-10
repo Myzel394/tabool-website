@@ -1,5 +1,7 @@
 import {Dayjs} from "dayjs";
 
+import {LessonDateMixin} from "./lesson";
+
 export interface StudentMaterialDetail extends LessonDateMixin {
     publishDatetime: Dayjs | null;
     name: string;

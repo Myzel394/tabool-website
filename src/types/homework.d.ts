@@ -1,6 +1,7 @@
 import {Dayjs} from "dayjs";
 
 import {StudentDetail} from "./student";
+import {LessonDateMixin} from "./lesson";
 
 export interface StudentHomeworkApprox extends LessonDateMixin {
     dueDate: Dayjs | null;

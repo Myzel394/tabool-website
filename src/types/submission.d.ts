@@ -1,6 +1,7 @@
 import {Dayjs} from "dayjs";
 
 import {StudentDetail} from "./student";
+import {LessonDateMixin} from "./lesson";
 
 export interface StudentSubmissionDetail extends LessonDateMixin {
     publishDatetime: Dayjs | null;
