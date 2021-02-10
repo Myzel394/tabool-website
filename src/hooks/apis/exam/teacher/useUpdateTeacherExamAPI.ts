@@ -15,17 +15,15 @@ export interface IUpdateTeacherExamData {
 const useUpdateTeacherExamAPI = () => {
     const {instance, buildUrl} = useContext(AxiosContext);
 
-    return useCallback(async ({
+    return useCallback(async (id: string, {
         date,
         information,
         title,
     }: IUpdateTeacherExamData): Promise<TeacherExamDetail> => {
-        const {data} = await instance.patch(buildUrl("/exam/"), {
-            params: {
-                title,
-                information,
-                date,
-            },
+        const {data} = await instance.patch(buildUrl(`/exam/${id}/`), {
+            title,
+            information,
+            date,
         }, await getLoginConfig());
 
         await parseTeacherExamDetail(data);

@@ -23,12 +23,10 @@ const useCreateTeacherExamAPI = () => {
         title,
     }: ICreateTeacherExamData): Promise<TeacherExamDetail> => {
         const {data} = await instance.post(buildUrl("/exam/"), {
-            params: {
-                title,
-                information,
-                date,
-                course: courseId,
-            },
+            title,
+            information,
+            date,
+            course: courseId,
         }, await getLoginConfig());
 
         await parseTeacherExamDetail(data);
