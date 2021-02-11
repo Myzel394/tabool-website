@@ -7,7 +7,7 @@ import {lazyDatetime} from "utils";
 
 import parseTeacherMaterialDetail from "./parseTeacherMaterialDetail";
 
-export interface IUpdateTeacherHomeworkData {
+export interface IUpdateTeacherMaterialData {
     publishDatetime?: Dayjs;
     announce?: boolean;
 }
@@ -18,7 +18,7 @@ const useUpdateTeacherMaterialAPI = () => {
     return useCallback(async (id: string, {
         announce,
         publishDatetime,
-    }: IUpdateTeacherHomeworkData): Promise<TeacherMaterialDetail> => {
+    }: IUpdateTeacherMaterialData): Promise<TeacherMaterialDetail> => {
         const {data} = await instance.patch(buildUrl(`/material/${id}/`), {
             announce,
             publishDatetime: publishDatetime ? lazyDatetime(publishDatetime, "date") : undefined,
