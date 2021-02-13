@@ -2,15 +2,10 @@ import genderColor from "constants/genderColor";
 
 import React, {useContext} from "react";
 import dayjs from "dayjs";
-import {Grid, Link, Typography} from "@material-ui/core";
+import {Link} from "@material-ui/core";
 import {CgCompress, FaTransgenderAlt, MdEmail, MdTextFields} from "react-icons/all";
 import {DetailPage, GenderStatus, LoadingPage} from "components";
-import {
-    IFetchTeacherInformationResponse,
-    IFetchTeacherListResponse,
-    useFetchTeacherDetailAPI,
-    useFetchTeacherInformationAPI,
-} from "hooks/apis";
+import {useFetchTeacherDetailAPI} from "hooks/apis";
 import {buildPath} from "utils";
 import {useTranslation} from "react-i18next";
 import {ErrorContext} from "contexts";
@@ -26,7 +21,6 @@ type TeacherKeys = "name" | "shortName" | "email" | "gender";
 const TeacherDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
     const fetchTeacher = useFetchTeacherDetailAPI();
-    const fetchTeacherInformation = useFetchTeacherInformationAPI();
     const queryOptions = useQueryOptions();
     const {onFetchError} = useDetailPageError();
     const {dispatch: dispatchError} = useContext(ErrorContext);
@@ -46,14 +40,6 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
         },
     );
 
-    const {
-        data: teacherInformation,
-    } = useQuery<IFetchTeacherInformationResponse, AxiosError>(
-        "fetch_teacher_information",
-        () => fetchTeacherInformation(id),
-        queryOptions,
-    );
-
     // Rendering
     if (isLoading) {
         return <LoadingPage title={t("Lehrer wird geladen...")} />;
@@ -68,7 +54,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
     }
 
     return (
-        <DetailPage<TeacherKeys, "", IFetchTeacherListResponse>
+        <DetailPage<TeacherKeys, "">
             title={`${teacher.firstName} ${teacher.lastName}`}
             color={genderColor[teacher.gender]}
             orderingStorageName="detail:ordering:teacher"
@@ -79,63 +65,6 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
             defaultOrdering={[
                 "name", "shortName", "email", "gender",
             ]}
-            bottomNode={teacherInformation && (() => {
-                const {
-                    courseCount,
-                    teacherCourseCount,
-                    teacherParticipantsCount,
-                    missingRatio,
-                    teacherMissingRatio,
-                } = teacherInformation;
-                const texts = [
-                    {
-                        title: t("Du hast {{count}} Kurse mit diesem Lehrer.", {
-                            count: courseCount,
-                        }),
-                        key: "courseCount",
-                    },
-                    {
-                        title: t("Dieser Lehrer unterrichtet insgesamt {{count}} Kurse.", {
-                            count: teacherCourseCount,
-                        }),
-                        key: "teacherCourseCount",
-                    },
-                    {
-                        title: t("{{count}} Schüler werden alleine von diesem Lehrer unterrichtet.", {
-                            count: teacherParticipantsCount,
-                        }),
-                        key: "teacherParticipantsCount",
-                    },
-                    {
-                        title: t("Der Lehrer fehlt in deinen Stunden durchschnittlich zu {{missingRatio}}%.", {
-                            missingRatio: Math.round(missingRatio * 100),
-                        }),
-                        key: "missingRatio",
-                    },
-                    {
-                        title: t("Insgesamt hat der Lehrer {{teacherMissingRatio}}% seiner Zeit gefehlt.", {
-                            teacherMissingRatio: Math.round(teacherMissingRatio * 100),
-                        }),
-                        key: "teacherMissingRatio",
-                    },
-                ];
-
-                return (
-                    <article>
-                        <Typography variant="h2">
-                            {t("Informationen")}
-                        </Typography>
-                        <Grid container component="ul" spacing={1}>
-                            {texts.map(text =>
-                                <Grid key={text.key} item component="li">
-                                    <Typography key={text.key} color="textSecondary">
-                                        {text.title}
-                                    </Typography>
-                                </Grid>)}
-                        </Grid>
-                    </article>
-                );
-            })()}
             data={{
                 name: {
                     disableShowMore: true,

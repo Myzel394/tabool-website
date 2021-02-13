@@ -25,7 +25,7 @@ const HorizontalScroll = <DataType extends any>({
             alignItems="center"
         >
             {elements.map(element =>
-                <Grid key={getKey(element)} item>
+                <Grid key={getKey(element)} item xs={12}>
                     {renderElement(element)}
                 </Grid>)}
         </Grid>

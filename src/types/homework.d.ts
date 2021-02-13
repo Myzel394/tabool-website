@@ -1,9 +1,9 @@
 import {Dayjs} from "dayjs";
 
 import {StudentDetail} from "./student";
-import {LessonDateMixin} from "./lesson";
+import {StudentLessonDateMixin, TeacherLessonDateMixin} from "./lesson";
 
-export interface StudentHomeworkApprox extends LessonDateMixin {
+export interface StudentHomeworkApprox extends StudentLessonDateMixin {
     dueDate: Dayjs | null;
     truncatedInformation: string | null;
     id: string;
@@ -20,7 +20,7 @@ export interface StudentHomeworkDetail extends Omit<StudentHomeworkApprox, "trun
     };
 }
 
-export interface TeacherHomeworkApprox extends LessonDateMixin {
+export interface TeacherHomeworkApprox extends TeacherLessonDateMixin {
     dueDate: Dayjs | null;
     truncatedInformation: string | null;
     id: string;

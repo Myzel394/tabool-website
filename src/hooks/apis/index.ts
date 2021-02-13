@@ -6,12 +6,17 @@ export * from "./event";
 export * from "./exam";
 export * from "./homework";
 export * from "./material";
-export * from "./modification";
+export * from "./poll";
+export * from "./preference";
 export * from "./preference";
 export * from "./room";
 export * from "./subject";
 export * from "./subject";
+export * from "./teacher";
 export * from "./timetable";
+
+export * from "./useFetchContactsAPI";
+export * from "./useSendFCMTokenAPI";
 
 export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
 export {default as useSendFCMTokenAPI} from "./useSendFCMTokenAPI";

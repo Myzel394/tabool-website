@@ -1,17 +1,14 @@
 import React, {memo, useState} from "react";
 import {FieldProps} from "formik";
 import {AutocompleteProps} from "@material-ui/lab";
-import {
-    IFetchHomeworkTypeAutocompletionData,
-    IFetchHomeworkTypeAutocompletionResponse,
-    useFetchHomeworkTypeAutocompletionAPI,
-} from "hooks/apis";
+import {useFetchHomeworkAutocompletionsAPI} from "hooks/apis";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {AiFillTool} from "react-icons/all";
 import {FormGroup, FormHelperText} from "@material-ui/core";
+import {combineAutocompletions} from "utils";
 
-import {combineAutocompletions} from "../../utils";
+import {AutocompleteResponse} from "../../types";
 
 import AutocompleteField from "./AutocompleteField";
 
@@ -41,7 +38,7 @@ const HomeworkTypeField = ({
     helperText,
     ...other
 }: IHomeworkTypeField) => {
-    const fetchHomework = useFetchHomeworkTypeAutocompletionAPI();
+    const fetchHomework = useFetchHomeworkAutocompletionsAPI();
 
     const [search, setSearch] = useState<string | null>(null);
 
@@ -50,7 +47,7 @@ const HomeworkTypeField = ({
     const {
         data,
         isLoading,
-    } = useQuery<IFetchHomeworkTypeAutocompletionResponse, AxiosError, IFetchHomeworkTypeAutocompletionData>(
+    } = useQuery<AutocompleteResponse, AxiosError, any>(
         ["fetch_homework_type", search],
         () => fetchHomework({
             query: search ?? undefined,

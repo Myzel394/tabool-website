@@ -1,15 +1,15 @@
 import {Dayjs} from "dayjs";
 
-import {LessonDateMixin} from "./lesson";
+import {StudentLessonDateMixin, TeacherLessonDateMixin} from "./lesson";
 
-export interface StudentMaterialDetail extends LessonDateMixin {
+export interface StudentMaterialDetail extends StudentLessonDateMixin {
     publishDatetime: Dayjs | null;
     name: string;
     file: string;
     id: string;
 }
 
-export interface TeacherMaterialDetail extends LessonDateMixin {
+export interface TeacherMaterialDetail extends TeacherLessonDateMixin {
     publishDatetime: Dayjs | null;
     announce: boolean;
     name: string;

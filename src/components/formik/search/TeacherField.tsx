@@ -1,12 +1,7 @@
 import genderColor from "constants/genderColor";
 
 import React, {memo, useState} from "react";
-import {
-    IFetchTeacherListData,
-    IFetchTeacherListResponse,
-    useFetchTeacherDetailAPI,
-    useFetchTeacherListAPI,
-} from "hooks/apis";
+import {IFetchTeacherData, IFetchTeacherResponse, useFetchTeacherDetailAPI, useFetchTeacherListAPI} from "hooks/apis";
 import {useInfiniteQuery} from "react-query";
 import {AxiosError} from "axios";
 import {useQueryOptions} from "hooks";
@@ -36,10 +31,11 @@ const TeacherField = (props) => {
         hasNextPage,
         fetchNextPage,
         isFetchingNextPage,
-    } = useInfiniteQuery<IFetchTeacherListResponse, AxiosError, IFetchTeacherListData>(
+    } = useInfiniteQuery<IFetchTeacherResponse, AxiosError, IFetchTeacherData>(
         ["fetch_teachers", search],
-        () => fetchTeachers({
+        context => fetchTeachers({
             search,
+            pageSize: context.pageParam,
         }),
         {
             ...queryOptions,
@@ -91,7 +87,6 @@ const TeacherField = (props) => {
                                         [Gender.Male]: <FaMale />,
                                         [Gender.Female]: <FaFemale />,
                                         [Gender.Diverse]: <FaGenderless />,
-                                        [Gender.Unknown]: null,
                                     }[teacher.gender]}
                                 </Avatar>
                             </ListItemAvatar>

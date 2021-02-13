@@ -27,12 +27,7 @@
     "noFallthroughCasesInSwitch": true,
     "typeRoots": [
       "custom_typings"
-    ],
-    "paths": {
-      "*/*": [
-        "src"
-      ]
-    }
+    ]
   },
   "include": [
     "src"

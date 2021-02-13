@@ -1,10 +1,10 @@
-import {StudentModificationDetail} from "types";
+import {TeacherModificationDetail} from "types";
 import {convertToDate} from "api";
 
-import {parseStudentLessonDateMixin} from "../../timetable";
+import {parseTeacherLessonDateMixin} from "../../timetable";
 
-const parseTeacherModificationDetail = async (modification: StudentModificationDetail) => {
-    await parseStudentLessonDateMixin(modification);
+const parseTeacherModificationDetail = async (modification: TeacherModificationDetail) => {
+    await parseTeacherLessonDateMixin(modification);
     convertToDate(modification, ["createdAt"]);
 };
 

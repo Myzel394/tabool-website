@@ -1,11 +1,13 @@
-import React, {memo, useContext, useState} from "react";
-import {UserContext, UtilsContext} from "contexts";
+import React, {useContext, useState} from "react";
+import {UtilsContext} from "contexts";
 import {BottomNavigation as MuiBottomNavigation, BottomNavigationAction, Box, makeStyles} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {FaFile, FaPenNib, FaTable, MdEventNote, MdHome, MdMoreVert, MdSettings} from "react-icons/all";
 import {useLocation} from "react-router";
 import {buildPath} from "utils";
 import {BottomSheet} from "components";
+
+import {useUser} from "../../hooks";
 
 import MoreElement from "./MoreElement";
 
@@ -30,14 +32,14 @@ const useStyles = makeStyles(theme => ({
 const BottomNavigation = ({innerRef}) => {
     const classes = useStyles();
     const {t} = useTranslation();
-    const {state} = useContext(UserContext);
+    const user = useUser();
     const {bottomSheetHeight} = useContext(UtilsContext);
     const location = useLocation();
     const baseLocation = `/${location.pathname.split("/")[2]}`;
 
     const [isOptionsOpened, setIsOptionsOpened] = useState<boolean>(false);
 
-    if (state.isFullyRegistered) {
+    if (user.isAuthenticated) {
         return (
             <>
                 <MuiBottomNavigation
@@ -48,31 +50,36 @@ const BottomNavigation = ({innerRef}) => {
                     className={classes.appBar}
                 >
                     <BottomNavigationAction
-                        label={t("Start").toString()}
+                        label={t("Start")
+                            .toString()}
                         icon={<MdHome />}
                         value="/"
                         href={buildPath("/")}
                     />
                     <BottomNavigationAction
-                        label={t("Stundenplan").toString()}
+                        label={t("Stundenplan")
+                            .toString()}
                         icon={<FaTable />}
                         value="/timetable"
                         href={buildPath("/timetable/")}
                     />
                     <BottomNavigationAction
-                        label={t("Agenda").toString()}
+                        label={t("Agenda")
+                            .toString()}
                         icon={<MdEventNote />}
                         value="/agenda"
                         href={buildPath("/agenda/")}
                     />
                     <BottomNavigationAction
-                        label={t("Einstellungen").toString()}
+                        label={t("Einstellungen")
+                            .toString()}
                         icon={<MdSettings />}
                         value="/settings"
                         href={buildPath("/settings/")}
                     />
                     <BottomNavigationAction
-                        label={t("Mehr").toString()}
+                        label={t("Mehr")
+                            .toString()}
                         icon={<MdMoreVert />}
                         onClick={() => setIsOptionsOpened(prevState => !prevState)}
                     />
@@ -113,4 +120,4 @@ const BottomNavigation = ({innerRef}) => {
     return null;
 };
 
-export default memo(BottomNavigation);
+export default BottomNavigation;

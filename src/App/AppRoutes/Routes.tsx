@@ -1,12 +1,8 @@
 import React, {lazy, Suspense} from "react";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import {useUser} from "hooks";
-import {buildPath} from "utils";
 import {LoadingPage} from "components";
 import {useTranslation} from "react-i18next";
-
-import addRoutes from "./addRoutes";
-import agendaRoutes from "./agendaRoutes";
 
 
 // TODO: Add formik search page!
@@ -17,103 +13,92 @@ export default function Routes() {
     return (
         <Suspense fallback={<LoadingPage title={t("Seite wird geladen...")} />}>
             <Switch>
-                {/* Landing page */}
+                <Route
+                    key="agenda_teacher_route"
+                    exact
+                    path="/app/agenda/teacher/detail/:id/"
+                    component={lazy(() => import("pages/detail/TeacherDetailPage"))}
+                />
+                {/* Landing page }
                 {!user.isAuthenticated &&
                 <Route
                     exact
                     path={buildPath("/")}
-                    component={lazy(() => import("pages/LandingPage"))}
+                    component={lazy(() => import("pages.backup/LandingPage"))}
                 />}
-                {/* Forgot password */}
+                {/* Forgot password }
                 <Route
                     exact
                     path={buildPath("/auth/forgot-password/")}
-                    component={lazy(() => import("pages/forgotPassword/RequestPasswordToken"))}
+                    component={lazy(() => import("pages.backup/forgotPassword/RequestPasswordToken"))}
                 />
                 <Route
                     exact
                     path={buildPath("/auth/forgot-password/confirm/")}
-                    component={lazy(() => import("pages/forgotPassword/ConfirmPasswordReset"))}
+                    component={lazy(() => import("pages.backup/forgotPassword/ConfirmPasswordReset"))}
                 />
-                {/* Authentication routes */}
-                <Route
-                    exact
-                    path={buildPath("/auth/registration/")}
-                    component={lazy(() => import("pages/auth/Register"))}
-                />
+                {/* Authentication routes }
                 <Route
                     exact
                     path={buildPath("/auth/login/")}
-                    component={lazy(() => import("pages/auth/Login"))}
+                    component={lazy(() => import("pages.backup/auth/Login"))}
                 />
                 <Route
                     exact
                     path={buildPath("/auth/logout/")}
-                    component={lazy(() => import("pages/auth/Logout"))}
+                    component={lazy(() => import("pages.backup/auth/Logout"))}
                 />
                 {!user.isAuthenticated && <Redirect to={buildPath("/")} />}
-                {/* Registration routes */}
-                <Route
-                    exact
-                    path="/app/auth/registration/email/:code?"
-                    component={lazy(() => import("pages/auth/ConfirmEmail"))}
-                />
-                <Route
-                    exact
-                    path="/app/auth/registration/fill"
-                    component={lazy(() => import("pages/auth/FillOutData"))}
-                />
-                {!user.isEmailVerified && <Redirect to={buildPath("/auth/registration/email/")} />}
-                {!user.isFullyRegistered && <Redirect to={buildPath("/auth/registration/fill/")} />}
-                {/* App routes */}
+                {/* App routes }
                 {agendaRoutes}
                 {addRoutes}
                 <Route
                     exact
                     path={buildPath("/")}
-                    component={lazy(() => import("pages/StartPage"))}
+                    component={lazy(() => import("pages.backup/StartPage"))}
                 />
                 <Route
                     exact
                     path={buildPath("/timetable/")}
-                    component={lazy(() => import("pages/calendar"))}
+                    component={lazy(() => import("pages.backup/calendar"))}
                 />
                 <Route
                     exact
                     path={buildPath("/agenda/")}
-                    component={lazy(() => import("pages/agenda/AgendaPage"))}
+                    component={lazy(() => import("pages.backup/agenda/AgendaPage"))}
                 />
                 <Route
                     exact
                     path={buildPath("/agenda/absence/")}
-                    component={lazy(() => import("pages/agenda/AbsenceList/index"))}
+                    component={lazy(() => import("pages.backup/agenda/AbsenceList/index"))}
                 />
                 <Route
                     exact
                     path={buildPath("/agenda/files/")}
-                    component={lazy(() => import("pages/agenda/FileList/index"))}
+                    component={lazy(() => import("pages.backup/agenda/FileList/index"))}
                 />
-                {/* Settings page */}
+                {/* Settings page }
                 <Route
                     exact
                     path={buildPath("/settings/")}
-                    component={lazy(() => import("pages/settingsPage/MainPage"))}
+                    component={lazy(() => import("pages.backup/settingsPage/MainPage"))}
                 />
                 <Route
                     exact
                     path={buildPath("/settings/logged-in-devices/")}
-                    component={lazy(() => import("pages/settingsPage/LoggedInDevicesPage"))}
+                    component={lazy(() => import("pages.backup/settingsPage/LoggedInDevicesPage"))}
                 />
                 <Route
                     exact
                     path={buildPath("/settings/change-password/")}
-                    component={lazy(() => import("pages/settingsPage/ChangePasswordPage"))}
+                    component={lazy(() => import("pages.backup/settingsPage/ChangePasswordPage"))}
                 />
                 <Route
                     exact
                     path={buildPath("/settings/change-scooso-credentials/")}
-                    component={lazy(() => import("pages/settingsPage/ChangeScoosoCredentialsPage"))}
+                    component={lazy(() => import("pages.backup/settingsPage/ChangeScoosoCredentialsPage"))}
                 />
+                {*/}
             </Switch>
         </Suspense>
     );

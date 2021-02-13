@@ -11,7 +11,6 @@ import {PredefinedMessageType} from "hooks/useSnackbar";
 import {RoomIcon} from "components/icons";
 
 import {IAutocompleteField} from "./AutocompleteField";
-import AddPlaceDialog from "./AddPlaceDialog";
 
 
 export type IPlaceField = Omit<IAutocompleteField,
@@ -19,8 +18,7 @@ export type IPlaceField = Omit<IAutocompleteField,
     "autocompletionList" |
     "startIcon" |
     "onSearchChange" |
-    "onChange"
-    > & FieldProps & {
+    "onChange"> & FieldProps & {
     helperText?: string;
     label?: string;
     onChange?: (place: Room) => any;
@@ -46,26 +44,27 @@ const PlaceField = ({
     const {value} = field;
 
     const [search, setSearch] = useState<string | null>(null);
-    const [dialog, setDialog] = useState<boolean>(false);
-    const [placeName, setPlaceName] = useState<string | null>(null);
 
     const {
         data,
         isLoading,
     } = useQuery<IFetchRoomResponse, AxiosError, string>(
         ["fetch_rooms", search],
-        () => (search ? fetchRoomList(search) : fetchRoomList()),
+        () => (search ? fetchRoomList({
+            search,
+        }) : fetchRoomList()),
         {
             ...queryOptions,
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorLoading),
         },
     );
-    useQuery<Room, AxiosError, string>(
+    const {
+        data: placeName,
+    } = useQuery<Room, AxiosError, string>(
         ["fetch_room", value],
         () => fetchRoom(value),
         {
             ...queryOptions,
-            onSuccess: place => setPlaceName(place.place),
             enabled: Boolean(value),
         },
     );
@@ -90,10 +89,6 @@ const PlaceField = ({
             searchValue = place.place;
         } else {
             searchValue = placeName;
-
-            // Dialog
-            setDialog(true);
-            setPlaceName(placeName);
         }
 
         // Update fields
@@ -108,90 +103,77 @@ const PlaceField = ({
     const placeNames = (data?.results ?? []).map(place => place.place.toLowerCase());
 
     return (
-        <>
-            <Autocomplete<Room, false, false, true>
-                {...field}
-                multiple={false}
-                {...other}
-                selectOnFocus
-                clearOnBlur
-                handleHomeEndKeys
-                freeSolo
-                value={placeName ?? null}
-                loading={isLoading}
-                filterOptions={(options, params) => {
-                    const filtered = filter(options, params);
+        <Autocomplete<Room, false, false, true>
+            {...field}
+            multiple={false}
+            {...other}
+            selectOnFocus
+            clearOnBlur
+            handleHomeEndKeys
+            freeSolo
+            value={placeName ?? null}
+            loading={isLoading}
+            filterOptions={(options, params) => {
+                const filtered = filter(options, params);
 
-                    if (params.inputValue !== "" && !placeNames.includes(params.inputValue.toLowerCase())) {
-                        filtered.push({
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            inputValue: params.inputValue,
-                            title: `"${params.inputValue}" hinzufügen`,
-                        });
-                    }
-
-                    setSearch(params.inputValue);
-
-                    return filtered;
-                }}
-                id="free-solo-dialog-demo"
-                options={data?.results ?? []}
-                getOptionLabel={(option) => {
-                    if (typeof option === "string") {
-                        return option;
-                    }
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    return option?.inputValue ?? option.place;
-                }}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                renderOption={(option) => option.place ?? option.title}
-                style={{width: 300}}
-                renderInput={params =>
-                    <TextField
-                        {...params}
-                        fullWidth
-                        label={label}
-                        InputProps={{
-                            ...params.InputProps,
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <RoomIcon color={inputIconColor} />
-                                </InputAdornment>
-                            ),
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    {isLoading && <CircularProgress color="inherit" size="1rem" />}
-                                </InputAdornment>
-                            ),
-                        }}
-                        variant="outlined"
-                        error={Boolean(error)}
-                        helperText={error ?? helperText}
-                    />
-                }
-                onChange={(event, value) =>
-                    setNewName(
+                if (params.inputValue !== "" && !placeNames.includes(params.inputValue.toLowerCase())) {
+                    filtered.push({
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
-                        value?.inputValue ?? value?.text ?? value?.place ?? value,
-                    )
+                        inputValue: params.inputValue,
+                        title: `"${params.inputValue}" hinzufügen`,
+                    });
                 }
-            />
-            <AddPlaceDialog
-                isOpen={dialog}
-                initialValue={search ?? ""}
-                onClose={() => setDialog(false)}
-                onCreated={place => {
-                    setSearch(place.place);
-                    setDialog(false);
 
-                    form.setFieldValue(field.name, place.id);
-                }}
-            />
-        </>
+                setSearch(params.inputValue);
+
+                return filtered;
+            }}
+            id="free-solo-dialog-demo"
+            options={data?.results ?? []}
+            getOptionLabel={(option) => {
+                if (typeof option === "string") {
+                    return option;
+                }
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                return option?.inputValue ?? option.place;
+            }}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            renderOption={(option) => option.place ?? option.title}
+            style={{width: 300}}
+            renderInput={params =>
+                <TextField
+                    {...params}
+                    fullWidth
+                    label={label}
+                    InputProps={{
+                        ...params.InputProps,
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <RoomIcon color={inputIconColor} />
+                            </InputAdornment>
+                        ),
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                {isLoading && <CircularProgress color="inherit" size="1rem" />}
+                            </InputAdornment>
+                        ),
+                    }}
+                    variant="outlined"
+                    error={Boolean(error)}
+                    helperText={error ?? helperText}
+                />
+            }
+            onChange={(event, value) =>
+                setNewName(
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    value?.inputValue ?? value?.text ?? value?.place ?? value,
+                )
+            }
+        />
     );
 };
 

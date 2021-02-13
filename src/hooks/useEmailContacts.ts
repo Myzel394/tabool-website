@@ -2,8 +2,7 @@ import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 
 import useQueryOptions from "./useQueryOptions";
-import {IFetchContactsResponse} from "./apis";
-import useFetchContactsAPI from "./apis.backup/useFetchContactsAPI";
+import {IFetchContactsResponse, useFetchContactsAPI} from "./apis";
 
 const useEmailContacts = (): IFetchContactsResponse | null => {
     const queryOptions = useQueryOptions();

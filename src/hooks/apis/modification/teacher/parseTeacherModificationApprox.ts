@@ -1,9 +1,9 @@
 import {TeacherModificationApprox} from "types";
 
-import {parseStudentLessonDateMixin} from "../../timetable";
+import {parseTeacherLessonDateMixin} from "../../timetable";
 
 const parseTeacherModificationApprox = async (modification: TeacherModificationApprox) => {
-    await parseStudentLessonDateMixin(modification);
+    await parseTeacherLessonDateMixin(modification);
 };
 
 export default parseTeacherModificationApprox;

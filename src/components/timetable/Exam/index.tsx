@@ -1,5 +1,5 @@
 import React, {CSSProperties, memo, useMemo} from "react";
-import {CourseDetail, Room} from "types";
+import {Room, StudentCourseDetail, TeacherCourseDetail} from "types";
 import {Dayjs} from "dayjs";
 import {Box, Grid, Typography, useTheme} from "@material-ui/core";
 import {HiClock} from "react-icons/all";
@@ -10,7 +10,7 @@ import {ColoredBox, Information} from "../../components";
 
 
 export interface IExam {
-    course: CourseDetail;
+    course: StudentCourseDetail | TeacherCourseDetail;
     targetedDate: Dayjs;
     information: string | null;
 

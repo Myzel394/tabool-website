@@ -2,19 +2,20 @@ import {Subject} from "./subject";
 import {TeacherDetail} from "./teacher";
 import {StudentDetail} from "./student";
 
-export interface CourseApprox {
+export interface StudentCourseDetail {
     courseNumber: number;
     name: string;
     subject: Subject;
     participantsCount: number;
     id: string;
-}
-
-export interface StudentCourseDetail extends CourseApprox {
     teacher: TeacherDetail;
 }
 
-export interface TeacherCourseDetail extends Omit<CourseApprox, "participantsCount"> {
+export interface TeacherCourseDetail {
+    courseNumber: number;
+    name: string;
+    subject: Subject;
+    id: string;
     participants: StudentDetail[];
     participantsCount: number;
 }

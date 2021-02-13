@@ -2,7 +2,7 @@ import {Dayjs} from "dayjs";
 
 import {StudentCourseDetail, TeacherCourseDetail} from "./course";
 
-export interface StudentLessonDetail extends LessonRelatedDetail {
+export interface StudentLessonDetail {
     course: StudentCourseDetail;
     startHour: number;
     endHour: number;
@@ -10,7 +10,7 @@ export interface StudentLessonDetail extends LessonRelatedDetail {
     id: string;
 }
 
-export interface TeacherLessonDetail extends LessonRelatedDetail {
+export interface TeacherLessonDetail {
     course: TeacherCourseDetail;
     startHour: number;
     endHour: number;
@@ -18,13 +18,12 @@ export interface TeacherLessonDetail extends LessonRelatedDetail {
     id: string;
 }
 
-export interface LessonDateMixin {
+export interface StudentLessonDateMixin {
     lesson: StudentLessonDetail;
     lessonDate: Dayjs;
 }
 
-export interface StudentLessonDateMixin extends LessonDateMixin {
-}
-
-export interface TeacherLessonDateMixin extends LessonDateMixin {
+export interface TeacherLessonDateMixin {
+    lesson: TeacherLessonDetail;
+    lessonDate: Dayjs;
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
-import {IFetchPollsResponse, useFetchPollsAPI} from "hooks/apis";
+import {IFetchPollResponse, useFetchPollListAPI} from "hooks/apis";
 import {AxiosError} from "axios";
 import {Poll} from "components";
 
@@ -13,11 +13,11 @@ export interface IPollHandler {
 
 const PollHandler = ({children}: IPollHandler) => {
     const queryOptions = useQueryOptions();
-    const fetchPolls = useFetchPollsAPI();
+    const fetchPolls = useFetchPollListAPI();
 
     const {
         data,
-    } = useQuery <IFetchPollsResponse, AxiosError, void>(
+    } = useQuery<IFetchPollResponse, AxiosError, void>(
         "fetch_polls",
         fetchPolls,
         queryOptions,
@@ -29,15 +29,15 @@ const PollHandler = ({children}: IPollHandler) => {
         <>
             {children}
             {poll &&
-                <Poll
-                    key={poll.id}
-                    id={poll.id}
-                    minVoteChoices={poll.minVoteChoices}
-                    maxVoteChoices={poll.maxVoteChoices}
-                    maxVoteDate={poll.maxVoteDate}
-                    choices={poll.choices}
-                    title={poll.title}
-                />
+            <Poll
+                key={poll.id}
+                id={poll.id}
+                minVoteChoices={poll.minVoteChoices}
+                maxVoteChoices={poll.maxVoteChoices}
+                maxVoteDate={poll.maxVoteDate}
+                choices={poll.choices}
+                title={poll.title}
+            />
             }
         </>
     );

@@ -1,6 +1,6 @@
 import React, {CSSProperties, useMemo} from "react";
 import {Dayjs} from "dayjs";
-import {HomeworkDetail, Subject} from "types";
+import {StudentHomeworkDetail, Subject} from "types";
 import {Box, CircularProgress, Grid, Link, Typography, useTheme} from "@material-ui/core";
 import DayJSEl from "react-dayjs";
 import {FaCheck, FaCheckCircle, FaExclamationTriangle, HiBan, HiClock} from "react-icons/all";
@@ -14,8 +14,7 @@ import {
     IUpdateHomeworkUserRelationResponse,
     useUpdateHomeworkUserRelationAPI,
 } from "hooks/apis";
-
-import {buildPath} from "../../../utils";
+import {buildPath} from "utils";
 
 import styles from "./Homework.module.scss";
 import Action from "./Action";
@@ -32,7 +31,7 @@ export interface IHomework {
     onCompletedChange: () => boolean;
     onIgnoreChange: () => boolean;
 
-    onServerUpdate?: (homeworkRelation: HomeworkDetail["userRelation"]) => any;
+    onServerUpdate?: (homeworkRelation: StudentHomeworkDetail["userRelation"]) => any;
     dueDate?: Dayjs;
     completed?: boolean;
     ignore?: boolean;
@@ -132,7 +131,10 @@ const Homework = ({
                                     </Grid>
                                 </Grid>
                                 <Grid item>
-                                    <Box flexDirection="row" display="flex" alignItems="flex-end" justifyContent="space-between">
+                                    <Box
+                                        flexDirection="row" display="flex" alignItems="flex-end"
+                                        justifyContent="space-between"
+                                    >
                                         <Box display="flex" flexDirection="column">
                                             {dueDate && (
                                                 <Information
