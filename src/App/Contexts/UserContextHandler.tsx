@@ -1,16 +1,14 @@
-import React, {ReactNode, useContext, useEffect} from "react";
+import React, {ReactNode, useCallback, useEffect, useMemo} from "react";
 import {AxiosContext, UserContext} from "contexts";
 import {initialUserState, IUser} from "contexts/UserContext";
 import createPersistedReducer from "use-persisted-reducer";
-import update from "immutability-helper";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {IUpdatePreferenceData, useUpdatePreferenceAPI} from "hooks/apis";
-
-import {ActionType, Preference} from "../../types";
-import {UserType} from "../../api";
-
-import {createInstance} from "./AxiosContextHandler";
+import {Preference} from "types";
+import {UserType} from "api";
+import {buildPath, parseErrors} from "utils";
+import {createInstance, reducer} from "contexts/AxiosContext";
 
 const usePersistedReducer = createPersistedReducer("user");
 
@@ -18,61 +16,41 @@ export interface IUserContextHandler {
     children: ReactNode;
 }
 
-const reducer = (state: IUser, action: ActionType): IUser => {
-    switch (action.type) {
-        case "logout": {
-            return initialUserState;
-        }
-
-        case "login": {
-            const {
-                firstName,
-                lastName,
-                email,
-                gender,
-                userType,
-                id,
-                preference,
-            } = action.payload;
-
-            return {
-                ...state,
-                isAuthenticated: true,
-                preference,
-                data: {
-                    firstName,
-                    lastName,
-                    email,
-                    gender,
-                    userType,
-                    id,
-                },
-            };
-        }
-
-        case "setPreferences": {
-            const {newPreferences} = action.payload;
-
-            return update(state, {
-                preference: {
-                    data: {
-                        $set: newPreferences,
-                    },
-                },
-            });
-        }
-
-        default: {
-            throw new Error();
-        }
-    }
-};
-
 const UserContextHandler = ({children}: IUserContextHandler) => {
-    const {_initialize} = useContext(AxiosContext);
     const updatePreferences = useUpdatePreferenceAPI();
 
     const [state, dispatch]: [IUser, any] = usePersistedReducer(reducer, initialUserState);
+
+    const instance = useMemo(() => {
+        const instance = createInstance();
+
+        instance.interceptors.response.use(response => response, (error: AxiosError) => {
+            if (error.response) {
+                // Logout user on authentication error
+                if (error.response.status === 401 && location.pathname !== buildPath("/auth/login/")) {
+                    dispatch({
+                        type: "logout",
+                        payload: {},
+                    });
+                }
+                // Parse errors
+                if (error.response.status >= 300 || error.response.status < 200) {
+                    error.response.data = parseErrors(error.response.data);
+                }
+            }
+
+            return Promise.reject(error);
+        });
+
+        return instance;
+    }, [dispatch]);
+    const buildUrl = useCallback((url: string) => {
+        if (state.data?.userType === UserType.Student) {
+            return `/api/student${url}`;
+        } else {
+            return `/api/teacher${url}`;
+        }
+    }, [state.data?.userType]);
 
     // Update preference
     const {
@@ -97,31 +75,21 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
         }
     }, [mutate, state.data, state.preference]);
 
-
-    // Create Axios instance
-    useEffect(() => {
-        const newInstance = createInstance(dispatch);
-
-        _initialize({
-            instance: newInstance,
-            buildUrl: (url: string) => {
-                if (state.data?.userType === UserType.Student) {
-                    return `/api/student${url}`;
-                } else {
-                    return `/api/teacher${url}`;
-                }
-            },
-        });
-    }, [_initialize, dispatch, state.data?.userType]);
-
     return (
-        <UserContext.Provider
+        <AxiosContext.Provider
             value={{
-                state, dispatch,
+                buildUrl,
+                instance,
             }}
         >
-            {children}
-        </UserContext.Provider>
+            <UserContext.Provider
+                value={{
+                    state, dispatch,
+                }}
+            >
+                {children}
+            </UserContext.Provider>
+        </AxiosContext.Provider>
     );
 };
 

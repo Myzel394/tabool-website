@@ -3,6 +3,7 @@ import {Route, Switch} from "react-router-dom";
 import {useUser} from "hooks";
 import {LoadingPage} from "components";
 import {useTranslation} from "react-i18next";
+import {buildPath} from "utils";
 
 
 // TODO: Add formik search page!
@@ -18,6 +19,11 @@ export default function Routes() {
                     exact
                     path="/app/agenda/teacher/detail/:id/"
                     component={lazy(() => import("pages/detail/TeacherDetailPage"))}
+                />
+                <Route
+                    exact
+                    path={buildPath("/auth/login/")}
+                    component={lazy(() => import("pages/auth/Login"))}
                 />
                 {/* Landing page }
                 {!user.isAuthenticated &&

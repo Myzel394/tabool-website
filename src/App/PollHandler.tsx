@@ -1,5 +1,5 @@
 import React from "react";
-import {useQueryOptions} from "hooks";
+import {useQueryOptions, useUser} from "hooks";
 import {useQuery} from "react-query";
 import {IFetchPollResponse, useFetchPollListAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -12,6 +12,7 @@ export interface IPollHandler {
 
 
 const PollHandler = ({children}: IPollHandler) => {
+    const user = useUser();
     const queryOptions = useQueryOptions();
     const fetchPolls = useFetchPollListAPI();
 
@@ -20,7 +21,10 @@ const PollHandler = ({children}: IPollHandler) => {
     } = useQuery<IFetchPollResponse, AxiosError, void>(
         "fetch_polls",
         fetchPolls,
-        queryOptions,
+        {
+            ...queryOptions,
+            enabled: user.isAuthenticated,
+        },
     );
     const notVoted = data?.results?.filter?.(poll => !poll.hasVoted);
     const poll = notVoted?.[0];
