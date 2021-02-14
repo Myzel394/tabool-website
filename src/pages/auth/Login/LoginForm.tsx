@@ -46,8 +46,8 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                         if (error.response?.status === 400) {
                             setErrors(error.response?.data ?? {});
                         }
+                        setSubmitting(false);
                     })
-                    .finally(() => setSubmitting(false))
             }
         >
             {({isSubmitting, touched, errors}) => (
