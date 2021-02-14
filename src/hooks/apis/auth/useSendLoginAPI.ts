@@ -1,6 +1,6 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {Preference} from "types";
+import {Gender, UserType} from "api";
 
 import {parsePreference} from "../preference";
 
@@ -12,14 +12,13 @@ export interface ILoginData {
 }
 
 export interface ILoginResponse {
-    hasFilledOutData: boolean;
-    isConfirmed: boolean;
     firstName: string;
     lastName: string;
     email: string;
-    loadScoosoData: boolean;
-    preference: Preference;
     id: string;
+    userType: UserType;
+    gender: Gender;
+    preference: string;
 }
 
 const useSendLoginAPI = () => {
