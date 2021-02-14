@@ -1,12 +1,8 @@
 import {createContext} from "react";
 import axios, {AxiosInstance} from "axios";
-import update from "immutability-helper";
 import camelcaseKeys from "camelcase-keys";
 
-import {ActionType} from "../types";
 import {snakeCaseKeys} from "../utils";
-
-import {initialUserState, IUser} from "./UserContext";
 
 export type BuildUrlFunction = (value: string) => string;
 
@@ -51,56 +47,6 @@ export const createInstance = () => {
     });
 
     return instance;
-};
-
-export const reducer = (state: IUser, action: ActionType): IUser => {
-    switch (action.type) {
-        case "logout": {
-            return initialUserState;
-        }
-
-        case "login": {
-            const {
-                firstName,
-                lastName,
-                email,
-                gender,
-                userType,
-                id,
-                preference,
-            } = action.payload;
-
-            return {
-                ...state,
-                isAuthenticated: true,
-                preference,
-                data: {
-                    firstName,
-                    lastName,
-                    email,
-                    gender,
-                    userType,
-                    id,
-                },
-            };
-        }
-
-        case "setPreferences": {
-            const {newPreferences} = action.payload;
-
-            return update(state, {
-                preference: {
-                    data: {
-                        $set: newPreferences,
-                    },
-                },
-            });
-        }
-
-        default: {
-            throw new Error();
-        }
-    }
 };
 
 export default AxiosContext;

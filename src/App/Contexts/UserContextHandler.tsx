@@ -1,6 +1,6 @@
 import React, {ReactNode, useCallback, useEffect, useMemo} from "react";
 import {AxiosContext, UserContext} from "contexts";
-import {initialUserState, IUser} from "contexts/UserContext";
+import {initialUserState, IUser, reducer} from "contexts/UserContext";
 import createPersistedReducer from "use-persisted-reducer";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
@@ -8,7 +8,7 @@ import {IUpdatePreferenceData, useUpdatePreferenceAPI} from "hooks/apis";
 import {Preference} from "types";
 import {UserType} from "api";
 import {buildPath, parseErrors} from "utils";
-import {createInstance, reducer} from "contexts/AxiosContext";
+import {createInstance} from "contexts/AxiosContext";
 
 const usePersistedReducer = createPersistedReducer("user");
 

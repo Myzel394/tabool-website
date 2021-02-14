@@ -1,8 +1,9 @@
 import {createContext} from "react";
 import {Dayjs} from "dayjs";
+import update from "immutability-helper";
 
 // eslint-disable-next-line import/no-cycle
-import {ReducerType, UserInformation} from "../types";
+import {ActionType, ReducerType, UserInformation} from "../types";
 
 export interface UserPreferences {
     data: {
@@ -45,5 +46,55 @@ const UserContext = createContext<ReducerType<IUser>>({
         throw new Error("Dispatch method not implemented!");
     },
 });
+
+export const reducer = (state: IUser, action: ActionType): IUser => {
+    switch (action.type) {
+        case "logout": {
+            return initialUserState;
+        }
+
+        case "login": {
+            const {
+                firstName,
+                lastName,
+                email,
+                gender,
+                userType,
+                id,
+                preference,
+            } = action.payload;
+
+            return {
+                ...state,
+                isAuthenticated: true,
+                preference,
+                data: {
+                    firstName,
+                    lastName,
+                    email,
+                    gender,
+                    userType,
+                    id,
+                },
+            };
+        }
+
+        case "setPreferences": {
+            const {newPreferences} = action.payload;
+
+            return update(state, {
+                preference: {
+                    data: {
+                        $set: newPreferences,
+                    },
+                },
+            });
+        }
+
+        default: {
+            throw new Error();
+        }
+    }
+};
 
 export default UserContext;

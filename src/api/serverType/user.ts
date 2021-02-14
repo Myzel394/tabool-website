@@ -1,10 +1,10 @@
 export enum Gender {
-    Male = "NALE",
+    Male = "MALE",
     Female = "FEMALE",
     Diverse = "DIVERSE",
 }
 
 export enum UserType {
-    Student = "Student",
-    Teacher = "Teacher"
+    Student = "STUDENT",
+    Teacher = "TEACHER"
 }
