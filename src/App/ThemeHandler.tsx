@@ -4,7 +4,7 @@ import light from "themes/light";
 import dark from "themes/dark";
 import blue from "themes/blue";
 import midnight from "themes/midnight";
-import {useUserPreferences} from "hooks";
+import {usePreferences} from "hooks";
 
 
 const THEME_MAP = {
@@ -15,7 +15,7 @@ const THEME_MAP = {
 };
 
 const ThemeHandler = ({children}) => {
-    const {state} = useUserPreferences();
+    const {state} = usePreferences();
 
     return (
         <ThemeProvider theme={THEME_MAP[state?.global?.theme ?? "light"]}>

@@ -4,7 +4,7 @@ import {Box, Grid, IconButton, Paper, Typography, useTheme} from "@material-ui/c
 import {FaFile, MdFileDownload} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import prettyBytes from "pretty-bytes";
-import {useUserPreferences} from "hooks";
+import {usePreferences} from "hooks";
 
 import {Information} from "../components";
 import {TimeRelative} from "../statuses";
@@ -22,7 +22,7 @@ export interface IMaterial {
 
 const Material = ({name, addedAt, id, size, isDeleted, file}: IMaterial) => {
     const theme = useTheme();
-    const {state} = useUserPreferences();
+    const {state} = usePreferences();
     const {t} = useTranslation();
 
     const informationStyle = useMemo(() => ({

@@ -2,7 +2,7 @@ import React, {memo, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {Box, ButtonBase, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {useUserPreferences} from "hooks";
+import {usePreferences} from "hooks";
 
 export interface IUpdatedAt {
     value: Dayjs;
@@ -14,7 +14,7 @@ const UpdatedAt = ({value, frequency}: IUpdatedAt) => {
     const {
         state,
         update,
-    } = useUserPreferences();
+    } = usePreferences();
 
     const [now, setNow] = useState<Dayjs>(() => dayjs());
 
