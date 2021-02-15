@@ -57,8 +57,8 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
         mutate,
     } = useMutation<Preference, AxiosError, IUpdatePreferenceData>(
         values => {
-            if (state.preference) {
-                return updatePreferences(state.preference.id, values);
+            if (state) {
+                return updatePreferences(values);
             }
             return new Promise((resolve, reject) => reject());
         },
@@ -68,12 +68,12 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
     );
 
     useEffect(() => {
-        if (state.preference) {
+        if (state) {
             mutate({
-                data: state.preference.data,
+                data: state,
             });
         }
-    }, [mutate, state.data, state.preference]);
+    }, [mutate, state.data, state]);
 
     return (
         <AxiosContext.Provider

@@ -3,17 +3,24 @@ import {AxiosContext} from "contexts";
 import {getLoginConfig} from "api";
 import {Preference} from "types";
 
+import useUser from "../../useUser";
+
 import parsePreference from "./parsePreference";
 
 const useFetchPreferenceAPI = () => {
+    const user = useUser();
     const {instance, buildUrl} = useContext(AxiosContext);
 
     return useCallback(async (id: string): Promise<Preference> => {
+        if (!user.data?.id) {
+            throw new Error("User has no id.");
+        }
+
         const {data} = await instance.get(buildUrl(`/preference/${id}/`), await getLoginConfig());
         await parsePreference(data);
 
         return data;
-    }, [instance, buildUrl]);
+    }, [instance, buildUrl, user.data?.id]);
 };
 
 export default useFetchPreferenceAPI;

@@ -1,42 +1,36 @@
 import {createContext} from "react";
 import {Dayjs} from "dayjs";
-import update from "immutability-helper";
 
 // eslint-disable-next-line import/no-cycle
 import {ActionType, ReducerType, UserInformation} from "../types";
 
-export interface UserPreferences {
-    data: {
-        global?: {
-            theme?: "light" | "dark" | "blue" | "midnight";
-            allowStatistics?: boolean;
-            updatedAtTimeView?: string;
-            startPageMaxFutureDays?: number;
-        };
-        detailPage?: {
-            ordering?: Record<string, string[]>;
-            downloadedMaterials?: Record<string, Dayjs>;
-        };
-        timetable?: {
-            showFreePeriods?: boolean;
-            showDetails?: boolean;
-        };
+export interface Preferences {
+    global?: {
+        theme?: "light" | "dark" | "blue" | "midnight";
+        allowStatistics?: boolean;
+        updatedAtTimeView?: string;
+        startPageMaxFutureDays?: number;
     };
-    id: string;
+    detailPage?: {
+        ordering?: Record<string, string[]>;
+        downloadedMaterials?: Record<string, Dayjs>;
+    };
+    timetable?: {
+        showFreePeriods?: boolean;
+        showDetails?: boolean;
+    };
 }
 
 export interface IUser {
     isAuthenticated: boolean;
     isAdmin: boolean;
     data: null | Omit<UserInformation, "preference">;
-    preference: null | UserPreferences;
 }
 
 export const initialUserState: IUser = {
     isAuthenticated: false,
     isAdmin: false,
     data: null,
-    preference: null,
 };
 
 
@@ -61,13 +55,11 @@ export const reducer = (state: IUser, action: ActionType): IUser => {
                 gender,
                 userType,
                 id,
-                preference,
             } = action.payload;
 
             return {
                 ...state,
                 isAuthenticated: true,
-                preference,
                 data: {
                     firstName,
                     lastName,
@@ -77,18 +69,6 @@ export const reducer = (state: IUser, action: ActionType): IUser => {
                     id,
                 },
             };
-        }
-
-        case "setPreferences": {
-            const {newPreferences} = action.payload;
-
-            return update(state, {
-                preference: {
-                    data: {
-                        $set: newPreferences,
-                    },
-                },
-            });
         }
 
         default: {
