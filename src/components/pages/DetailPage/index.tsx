@@ -12,23 +12,23 @@ import {
     Typography,
 } from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {useUserPreferences} from "hooks";
 import {Dayjs} from "dayjs";
 import {PullToRefresh, UpdatedAt} from "components";
-import _ from "lodash";
 import {MdAdd, MdSearch} from "react-icons/all";
+import _ from "lodash";
+
+import usePreferences from "../../../hooks/usePreferences";
 
 import Title, {ITitle} from "./Title";
 import Form, {IForm} from "./Form";
 import ToggleButtonsForm, {IToggleButtonsForm} from "./ToggleButtonsForm";
 
-export interface IDetailPage<
-    AvailableKeys extends string,
+export interface IDetailPage<AvailableKeys extends string,
     FormikForm extends Record<string, any> = Record<AvailableKeys, any>,
     QueryType = any,
     RelationKeys extends string = string,
     RelationForm extends Record<string, any> = Record<RelationKeys, any>,
-> {
+    > {
     title: ITitle["title"];
     color: ITitle["color"];
 
@@ -36,7 +36,7 @@ export interface IDetailPage<
     data: IForm<AvailableKeys, FormikForm>["data"];
 
     orderingStorageName: string;
-    refetch: () => Promise<any>;
+    onRefetch: () => Promise<any>;
     isRefreshing: boolean;
 
     renderTopField: (reorderLabel: JSX.Element) => JSX.Element;
@@ -65,19 +65,18 @@ const fullWidth = {
 
 const emptyArray = [];
 
-const DetailPage = <
-    AvailableKeys extends string,
+const DetailPage = <AvailableKeys extends string,
     RelationKeys extends string = string,
     QueryType = any,
     FormikForm extends Record<string, any> = Record<AvailableKeys, any>,
->({
+    >({
         title,
         color,
         data,
         defaultOrdering,
         orderingStorageName,
         updatedAt,
-        refetch,
+        onRefetch,
         isRefreshing,
         bottomNode,
         footerNode,
@@ -95,8 +94,9 @@ const DetailPage = <
     const {
         state,
         update,
-    } = useUserPreferences();
+    } = usePreferences();
 
+    const [disableAnimation, setDisableAnimation] = useState<boolean>(false);
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
     const [elevatedKey, setElevatedKey] = useState<AvailableKeys | null>(null);
 
@@ -107,13 +107,17 @@ const DetailPage = <
             // @ts-ignore
             [key]: value.nativeValue ?? value.information,
         }), {});
-
     const ordering = (state?.detailPage?.ordering?.[orderingStorageName] ?? emptyArray) as AvailableKeys[];
+
     const setOrdering = useCallback(ordering => {
+        if (!disableAnimation) {
+            setDisableAnimation(true);
+        }
+
         const change = update.detailPage.addOrdering;
         change(orderingStorageName, ordering);
     },
-    [update.detailPage.addOrdering, orderingStorageName]);
+    [update.detailPage.addOrdering, orderingStorageName, disableAnimation]);
 
     // If `defaultOrdering's elements !== savedOrdering's elements`, reset it.
     useEffect(() => {
@@ -123,7 +127,7 @@ const DetailPage = <
     }, [defaultOrdering, ordering, setOrdering]);
 
     return (
-        <PullToRefresh isRefreshing={isRefreshing} onRefresh={refetch}>
+        <PullToRefresh isRefreshing={isRefreshing} onRefresh={onRefetch}>
             <Title title={title} color={color} subTitle={subTitle} />
             <Container maxWidth="md" onTouchStart={event => event.stopPropagation()}>
                 {headerNode}
@@ -152,6 +156,7 @@ const DetailPage = <
                             elevatedKey={elevatedKey}
                             reorder={enableReordering}
                             validationSchema={validationSchema}
+                            disableAnimation={disableAnimation}
                             onSubmit={onSubmit}
                             onOrderingChange={setOrdering}
                             onElevatedKeyChange={setElevatedKey}
@@ -159,12 +164,12 @@ const DetailPage = <
                         />
                     </Grid>
                     {relationButtons &&
-                        <Grid item>
-                            <ToggleButtonsForm<RelationKeys>
-                                values={relationButtons.values}
-                                onSubmit={relationButtons.onSubmit}
-                            />
-                        </Grid>
+                    <Grid item>
+                        <ToggleButtonsForm<RelationKeys>
+                            values={relationButtons.values}
+                            onSubmit={relationButtons.onSubmit}
+                        />
+                    </Grid>
                     }
                     {(() => {
                         if (Array.isArray(bottomNode)) {
@@ -208,9 +213,9 @@ const DetailPage = <
                         </Grid>
                     )}
                     {footerNode &&
-                        <Grid item>
-                            {footerNode}
-                        </Grid>
+                    <Grid item>
+                        {footerNode}
+                    </Grid>
                     }
                 </Grid>
             </Container>
@@ -227,5 +232,7 @@ DetailPage.defaultProps = {
         );
     },
 };
+
+DetailPage.whyDidYouRender = true;
 
 export default DetailPage;

@@ -23,8 +23,8 @@ type RecordField = Omit<IField,
     "hasChanged" |
     "formik" |
     "isEditModeActive" |
-    "onChangeEditModeActive"
->;
+    "disableAnimation" |
+    "onChangeEditModeActive">;
 
 const renderValue = (value: any, information: any): JSX.Element | string => {
     if (typeof value === "boolean") {
@@ -37,10 +37,9 @@ const renderValue = (value: any, information: any): JSX.Element | string => {
 };
 
 
-export interface IForm <
-    AvailableKeys extends string,
+export interface IForm<AvailableKeys extends string,
     FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
->{
+    > {
     initialValues: FormikConfig<FormikForm>["initialValues"];
     data: Record<AvailableKeys, RecordField & {
         nativeValue?: FormikForm[AvailableKeys];
@@ -56,15 +55,16 @@ export interface IForm <
     onOrderingChange: (ordering: AvailableKeys[]) => any;
     onElevatedKeyChange: (key: AvailableKeys | null) => any;
 
+    disableAnimation: boolean;
+
     validationSchema?: FormikConfig<FormikForm>["validationSchema"];
     onSubmit?: (values: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => Promise<any>;
 }
 
 
-const Form = <
-    AvailableKeys extends string,
+const Form = <AvailableKeys extends string,
     FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
->({
+    >({
         onSubmit,
         initialValues,
         data,
@@ -74,6 +74,7 @@ const Form = <
         ordering,
         reorder,
         validationSchema,
+        disableAnimation,
     }: IForm<AvailableKeys, FormikForm>) => {
     const [editModeActive, setEditModeActive] = useState<AvailableKeys[]>([]);
 
@@ -191,6 +192,7 @@ const Form = <
                                                             >
                                                                 <Field
                                                                     {...fieldData}
+                                                                    disableAnimation={disableAnimation}
                                                                     information={renderValue(nativeValue, singleData.information)}
                                                                     containsErrors={errors[key] !== undefined}
                                                                     fieldPropsExtra={getFieldProps(key)}

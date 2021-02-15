@@ -13,6 +13,7 @@ export interface IField extends Omit<IContent, "forceEditMode"> {
     isElevated: boolean;
     reorder: boolean;
     containsErrors: boolean;
+    disableAnimation: boolean;
 
     dragHandleProps?: DraggableProvidedDragHandleProps;
 }
@@ -24,6 +25,7 @@ const Field = ({
     dragHandleProps,
     containsErrors,
     isUpdating,
+    disableAnimation,
     ...contentProps
 }: IField) => {
     const theme = useTheme();
@@ -42,33 +44,41 @@ const Field = ({
     }), [theme.shape.borderRadius]);
     const elevation = isElevated ? 5 : 1;
 
+    const content = (
+        <Paper
+            elevation={elevation}
+            style={paperStyle}
+        >
+            <TransitionWrapper active={reorder} offsetAmount={buttonWidth}>
+                {style => (
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        p={2}
+                        style={style}
+                    >
+                        <div style={buttonStyle}>
+                            <IconButton ref={$button} {...dragHandleProps}>
+                                <GoThreeBars />
+                            </IconButton>
+                        </div>
+                        <Content
+                            {...contentProps}
+                            isUpdating={isUpdating}
+                        />
+                    </Box>
+                )}
+            </TransitionWrapper>
+        </Paper>
+    );
+
+    if (disableAnimation) {
+        return content;
+    }
+
     return (
         <Zoom duration={theme.transitions.duration.enteringScreen}>
-            <Paper
-                elevation={elevation}
-                style={paperStyle}
-            >
-                <TransitionWrapper active={reorder} offsetAmount={buttonWidth}>
-                    {style => (
-                        <Box
-                            display="flex"
-                            alignItems="center"
-                            p={2}
-                            style={style}
-                        >
-                            <div style={buttonStyle}>
-                                <IconButton ref={$button} {...dragHandleProps}>
-                                    <GoThreeBars />
-                                </IconButton>
-                            </div>
-                            <Content
-                                {...contentProps}
-                                isUpdating={isUpdating}
-                            />
-                        </Box>
-                    )}
-                </TransitionWrapper>
-            </Paper>
+            {content}
         </Zoom>
     );
 };
