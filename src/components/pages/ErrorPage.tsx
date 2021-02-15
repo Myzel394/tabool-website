@@ -19,7 +19,7 @@ const SimpleText = ({text, icon: Icon}) => (
         style={{height: "100vh"}}
     >
         <Icon size="3rem" />
-        <Box pt={2} maxWidth={200}>
+        <Box pt={2} maxWidth={300}>
             <Typography variant="h5" align="center">
                 {text}
             </Typography>
