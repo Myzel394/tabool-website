@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {useQueryString, useUser} from "hooks";
+import {usePreferences, useQueryString, useUser} from "hooks";
 import {useMutation} from "react-query";
 import {ILoginData, ILoginResponse, useSendLoginAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -20,6 +20,21 @@ const Login = () => {
     const {dispatch} = useContext(UserContext);
     const history = useHistory();
     const user = useUser();
+    const {
+        _writePreferences,
+    } = usePreferences();
+
+    const updatePreferences = (data: string) => {
+        let content = {};
+
+        try {
+            content = JSON.parse(data);
+            // eslint-disable-next-line no-empty
+        } catch {
+        }
+
+        _writePreferences(content);
+    };
 
     const [isSuspicious, setIsSuspicious] = useState<boolean>(false);
     const [loginData, setLoginData] = useState<ILoginData>();
@@ -40,6 +55,7 @@ const Login = () => {
                     type: "login",
                     payload: data,
                 });
+                updatePreferences(data.preference);
                 history.push(typeof next === "string" ? next : buildPath("/"));
             },
         },

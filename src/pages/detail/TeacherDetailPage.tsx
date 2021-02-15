@@ -1,15 +1,13 @@
 import genderColor from "constants/genderColor";
 
-import React, {useContext} from "react";
+import React from "react";
 import dayjs from "dayjs";
 import {Link} from "@material-ui/core";
 import {CgCompress, FaTransgenderAlt, MdEmail, MdTextFields} from "react-icons/all";
-import {DetailPage, GenderStatus, LoadingPage} from "components";
+import {DetailPage, ErrorPage, GenderStatus, LoadingPage} from "components";
 import {useFetchTeacherDetailAPI} from "hooks/apis";
-import {buildPath} from "utils";
 import {useTranslation} from "react-i18next";
-import {ErrorContext} from "contexts";
-import {useDetailPageError, useQueryOptions} from "hooks";
+import {useQueryOptions} from "hooks";
 import {TeacherDetail} from "types";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
@@ -22,8 +20,6 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
     const fetchTeacher = useFetchTeacherDetailAPI();
     const queryOptions = useQueryOptions();
-    const {onFetchError} = useDetailPageError();
-    const {dispatch: dispatchError} = useContext(ErrorContext);
 
     const {
         data: teacher,
@@ -31,12 +27,13 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
         refetch,
         isFetching,
         dataUpdatedAt,
+        error,
     } = useQuery<TeacherDetail, AxiosError>(
         "fetch_teacher",
         () => fetchTeacher(id),
         {
             ...queryOptions,
-            onError: error => onFetchError(error, Boolean(teacher)),
+            retry: (failureCount, error) => error.response?.status !== 404,
         },
     );
 
@@ -45,23 +42,22 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
         return <LoadingPage title={t("Lehrer wird geladen...")} />;
     }
 
-    if (!teacher) {
-        dispatchError({
-            type: "setError",
-            payload: {},
-        });
-        return null;
+    if (error || !teacher) {
+        return (
+            <ErrorPage
+                status={error?.response?.status}
+                notFound={t("Dieser Lehrer wurde nicht gefunden.")}
+            />
+        );
     }
 
     return (
         <DetailPage<TeacherKeys, "">
             title={`${teacher.firstName} ${teacher.lastName}`}
             color={genderColor[teacher.gender]}
-            orderingStorageName="detail:ordering:teacher"
-            refetch={refetch}
+            orderingStorageName="teacher"
             isRefreshing={isFetching}
             updatedAt={dayjs(dataUpdatedAt)}
-            searchAllPath={buildPath("/agenda/teacher/")}
             defaultOrdering={[
                 "name", "shortName", "email", "gender",
             ]}
@@ -99,6 +95,7 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
                         <GenderStatus value={teacher.gender} />,
                 },
             }}
+            onRefetch={refetch}
         />
     );
 };
