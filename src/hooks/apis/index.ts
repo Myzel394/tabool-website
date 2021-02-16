@@ -10,7 +10,7 @@ export * from "./poll";
 export * from "./preference";
 export * from "./preference";
 export * from "./room";
-export * from "./subject";
+export * from "./session";
 export * from "./subject";
 export * from "./teacher";
 export * from "./timetable";

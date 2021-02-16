@@ -25,6 +25,22 @@ export default function Routes() {
                     path={buildPath("/auth/login/")}
                     component={lazy(() => import("pages/auth/Login"))}
                 />
+                {/* Settings page */}
+                <Route
+                    exact
+                    path={buildPath("/settings/")}
+                    component={lazy(() => import("pages/settingsPage/MainPage"))}
+                />
+                <Route
+                    exact
+                    path={buildPath("/settings/logged-in-devices/")}
+                    component={lazy(() => import("pages/settingsPage/LoggedInDevicesPage"))}
+                />
+                <Route
+                    exact
+                    path={buildPath("/settings/change-password/")}
+                    component={lazy(() => import("pages/settingsPage/ChangePasswordPage"))}
+                />
                 {/* Landing page }
                 {!user.isAuthenticated &&
                 <Route
