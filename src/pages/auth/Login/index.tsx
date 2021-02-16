@@ -21,7 +21,7 @@ const Login = () => {
     const history = useHistory();
     const user = useUser();
     const {
-        _writePreferences,
+        _rawUpdate,
     } = usePreferences();
 
     const [isSuspicious, setIsSuspicious] = useState<boolean>(false);
@@ -43,7 +43,7 @@ const Login = () => {
                     type: "login",
                     payload: data,
                 });
-                _writePreferences(data.preference);
+                _rawUpdate(data.preference);
                 history.push(typeof next === "string" ? next : buildPath("/"));
             },
         },

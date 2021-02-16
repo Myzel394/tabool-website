@@ -163,6 +163,7 @@ const PreferencesContextHandler = ({
             value={{
                 _writePreferences: writePreferences,
                 _readPreferences: readPreferences,
+                _rawUpdate: (preferences: Preferences) => updatePreferences(preferences),
                 update: {
                     global: {
                         setTheme,

@@ -6,6 +6,7 @@ import {Preferences} from "../types";
 export interface IPreferences {
     _writePreferences: (preferences: Preferences) => void;
     _readPreferences: () => Preferences;
+    _rawUpdate: (preferences: Preferences) => void;
     update: {
         global: {
             setTheme: (theme: "light" | "dark" | "blue" | "midnight") => void;
