@@ -166,8 +166,7 @@ const Session = ({
                 onClose={() => setConfirmDelete(false)}
             >
                 <DialogContentText>
-                    {t("Möchtest du dieses Gerät entfernen? " +
-                        "Du musst dich dann auf diesem Gerät dann wieder anmelden, um Zugriff zu erhalten.")}
+                    {t("Möchtest du dieses Gerät entfernen? Du musst deine Anmeldedaten erneut eingeben, um von diesem Gerät wieder zuzugreifen.")}
                 </DialogContentText>
                 <Alert severity="info">
                     {t("Wenn dir dieses Gerät nicht bekannt ist, solltest du es dringend entfernen.")}

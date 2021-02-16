@@ -1,7 +1,7 @@
 import React, {memo} from "react";
 import {Avatar, Link, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Paper} from "@material-ui/core";
 import {useUser} from "hooks";
-import {FiLogOut, MdAccountCircle, MdDevices, MdEnhancedEncryption, MdLock} from "react-icons/all";
+import {FiLogOut, MdAccountCircle, MdDevices, MdLock} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {buildPath} from "utils";
 
@@ -39,17 +39,6 @@ const Account = () => {
                         <MdLock />
                     </ListItemIcon>
                     <ListItemText primary={t("Passwort ändern")} />
-                </ListItem>
-                <ListItem
-                    button
-                    color="textPrimary"
-                    href={buildPath("/settings/change-scooso-credentials/")}
-                    component={Link}
-                >
-                    <ListItemIcon>
-                        <MdEnhancedEncryption />
-                    </ListItemIcon>
-                    <ListItemText primary={t("Scooso-Daten ändern")} />
                 </ListItem>
                 <ListItem
                     button
