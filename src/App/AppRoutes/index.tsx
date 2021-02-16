@@ -12,11 +12,11 @@ const AppRoutes = () => {
     return (
         <OhNoChecks>
             <RequiredPermissions>
-                <FCMHandler>
-                    <PollHandler>
+                <PollHandler>
+                    <FCMHandler>
                         <Routes />
-                    </PollHandler>
-                </FCMHandler>
+                    </FCMHandler>
+                </PollHandler>
             </RequiredPermissions>
         </OhNoChecks>
     );

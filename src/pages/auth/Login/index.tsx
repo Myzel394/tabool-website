@@ -24,18 +24,6 @@ const Login = () => {
         _writePreferences,
     } = usePreferences();
 
-    const updatePreferences = (data: string) => {
-        let content = {};
-
-        try {
-            content = JSON.parse(data);
-            // eslint-disable-next-line no-empty
-        } catch {
-        }
-
-        _writePreferences(content);
-    };
-
     const [isSuspicious, setIsSuspicious] = useState<boolean>(false);
     const [loginData, setLoginData] = useState<ILoginData>();
 
@@ -55,7 +43,7 @@ const Login = () => {
                     type: "login",
                     payload: data,
                 });
-                updatePreferences(data.preference);
+                _writePreferences(data.preference);
                 history.push(typeof next === "string" ? next : buildPath("/"));
             },
         },

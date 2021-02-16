@@ -9,6 +9,8 @@ import {Preference} from "types";
 import {UserType} from "api";
 import {buildPath, parseErrors} from "utils";
 import {createInstance} from "contexts/AxiosContext";
+import {usePreferences} from "hooks";
+import _ from "lodash";
 
 const usePersistedReducer = createPersistedReducer("user");
 
@@ -17,6 +19,7 @@ export interface IUserContextHandler {
 }
 
 const UserContextHandler = ({children}: IUserContextHandler) => {
+    const preferences = usePreferences();
     const updatePreferences = useUpdatePreferenceAPI();
 
     const [state, dispatch]: [IUser, any] = usePersistedReducer(reducer, initialUserState);
@@ -57,8 +60,8 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
         mutate,
     } = useMutation<Preference, AxiosError, IUpdatePreferenceData>(
         values => {
-            if (state) {
-                return updatePreferences(values);
+            if (state.data?.id) {
+                return updatePreferences(state.data.id, values);
             }
             return new Promise((resolve, reject) => reject());
         },
@@ -68,12 +71,12 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
     );
 
     useEffect(() => {
-        if (state) {
+        if (_.isEqual(preferences.state, state)) {
             mutate({
                 data: state,
             });
         }
-    }, [mutate, state.data, state]);
+    }, [mutate, state, preferences.state]);
 
     return (
         <AxiosContext.Provider

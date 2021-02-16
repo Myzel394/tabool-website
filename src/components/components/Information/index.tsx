@@ -21,7 +21,7 @@ const Information = ({getIcon, text, tooltip, ...other}: IInformation) => {
             className={styles.text}
             variant="body1"
             component="dd"
-            color="textSecondary"
+            color="textPrimary"
             {...other}
         >
             {text}
