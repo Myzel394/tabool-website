@@ -3,6 +3,7 @@ import {QueryClient, QueryClientProvider} from "react-query";
 
 import UserContextHandler from "./UserContextHandler";
 import UtilsContextHandler from "./UtilsContextHandler";
+import PreferencesContextHandler from "./PreferencesContextHandler";
 
 
 export interface IContexts {
@@ -16,13 +17,15 @@ const queryClient = new QueryClient();
 const Contexts = ({children, bottomSheetHeight}: IContexts) => {
     return (
         <QueryClientProvider client={queryClient}>
-            <UserContextHandler>
-                <UtilsContextHandler
-                    bottomSheetHeight={bottomSheetHeight}
-                >
-                    {children}
-                </UtilsContextHandler>
-            </UserContextHandler>
+            <UtilsContextHandler
+                bottomSheetHeight={bottomSheetHeight}
+            >
+                <UserContextHandler>
+                    <PreferencesContextHandler>
+                        {children}
+                    </PreferencesContextHandler>
+                </UserContextHandler>
+            </UtilsContextHandler>
         </QueryClientProvider>
     );
 };

@@ -1,25 +1,7 @@
 import {createContext} from "react";
-import {Dayjs} from "dayjs";
 
 // eslint-disable-next-line import/no-cycle
 import {ActionType, ReducerType, UserInformation} from "../types";
-
-export interface Preferences {
-    global?: {
-        theme?: "light" | "dark" | "blue" | "midnight";
-        allowStatistics?: boolean;
-        updatedAtTimeView?: string;
-        startPageMaxFutureDays?: number;
-    };
-    detailPage?: {
-        ordering?: Record<string, string[]>;
-        downloadedMaterials?: Record<string, Dayjs>;
-    };
-    timetable?: {
-        showFreePeriods?: boolean;
-        showDetails?: boolean;
-    };
-}
 
 export interface IUser {
     isAuthenticated: boolean;

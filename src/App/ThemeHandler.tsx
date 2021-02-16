@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {ThemeProvider} from "@material-ui/core";
 import light from "themes/light";
 import dark from "themes/dark";
@@ -24,4 +24,4 @@ const ThemeHandler = ({children}) => {
     );
 };
 
-export default memo(ThemeHandler);
+export default ThemeHandler;

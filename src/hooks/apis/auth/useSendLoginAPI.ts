@@ -3,7 +3,7 @@ import {AxiosContext} from "contexts";
 import {Gender, UserType} from "api";
 
 import {parsePreference} from "../preference";
-import {Preferences} from "../../../contexts/UserContext";
+import {Preferences} from "../../../types";
 
 export interface ILoginData {
     email: string;

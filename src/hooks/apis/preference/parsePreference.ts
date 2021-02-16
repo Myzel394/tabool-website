@@ -1,6 +1,6 @@
-import {Preference} from "types";
+import {ServerPreference} from "types";
 
-const parsePreference = async (preference: Preference): Promise<void> => {
+const parsePreference = async (preference: ServerPreference): Promise<void> => {
     preference.data = {};
 
     try {

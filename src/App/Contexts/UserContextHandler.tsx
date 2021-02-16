@@ -5,7 +5,7 @@ import createPersistedReducer from "use-persisted-reducer";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {IUpdatePreferenceData, useUpdatePreferenceAPI} from "hooks/apis";
-import {Preference} from "types";
+import {ServerPreference} from "types";
 import {UserType} from "api";
 import {buildPath, parseErrors} from "utils";
 import {createInstance} from "contexts/AxiosContext";
@@ -58,7 +58,7 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
     // Update preference
     const {
         mutate,
-    } = useMutation<Preference, AxiosError, IUpdatePreferenceData>(
+    } = useMutation<ServerPreference, AxiosError, IUpdatePreferenceData>(
         values => {
             if (state.data?.id) {
                 return updatePreferences(state.data.id, values);

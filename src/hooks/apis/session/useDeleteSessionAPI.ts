@@ -6,7 +6,7 @@ const useDeleteSessionAPI = () => {
     const {instance} = useContext(AxiosContext);
 
     return useCallback(async (id: string): Promise<void> => {
-        const {data} = await instance.delete(`/api/data/session/${id}/`, await getLoginConfig());
+        const {data} = await instance.delete(`/api/auth/session/${id}/`, await getLoginConfig());
 
         return data;
     }, [instance]);

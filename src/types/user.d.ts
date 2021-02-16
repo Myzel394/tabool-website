@@ -1,9 +1,10 @@
 import {Gender, UserType} from "../api";
 
-import {Preference} from "./preference";
+// eslint-disable-next-line import/no-cycle
+import {ServerPreference} from "./preference";
 
 export interface UserInformation {
-    preference: Preference;
+    preference: ServerPreference;
     firstName: string;
     lastName: string;
     email: string;

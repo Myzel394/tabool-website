@@ -1,7 +1,7 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {getLoginConfig} from "api";
-import {Preference} from "types";
+import {ServerPreference} from "types";
 
 import useUser from "../../useUser";
 
@@ -11,7 +11,7 @@ const useFetchPreferenceAPI = () => {
     const user = useUser();
     const {instance, buildUrl} = useContext(AxiosContext);
 
-    return useCallback(async (id: string): Promise<Preference> => {
+    return useCallback(async (id: string): Promise<ServerPreference> => {
         if (!user.data?.id) {
             throw new Error("User has no id.");
         }

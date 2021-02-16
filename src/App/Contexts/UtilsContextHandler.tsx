@@ -1,4 +1,4 @@
-import React, {memo, ReactNode} from "react";
+import React, {ReactNode} from "react";
 import {UtilsContext} from "contexts";
 
 export interface IUtilsContextHandler {
@@ -19,4 +19,4 @@ const UtilsContextHandler = ({bottomSheetHeight, children}: IUtilsContextHandler
     );
 };
 
-export default memo(UtilsContextHandler);
+export default UtilsContextHandler;
