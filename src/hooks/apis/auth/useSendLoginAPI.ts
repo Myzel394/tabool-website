@@ -3,6 +3,7 @@ import {AxiosContext} from "contexts";
 import {Gender, UserType} from "api";
 
 import {parsePreference} from "../preference";
+import {Preferences} from "../../../contexts/UserContext";
 
 export interface ILoginData {
     email: string;
@@ -18,7 +19,7 @@ export interface ILoginResponse {
     id: string;
     userType: UserType;
     gender: Gender;
-    preference: string;
+    preference: Preferences;
 }
 
 const useSendLoginAPI = () => {
