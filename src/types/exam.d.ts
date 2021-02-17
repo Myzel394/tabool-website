@@ -6,6 +6,7 @@ export interface StudentExamApprox {
     course: StudentCourseDetail;
     date: Dayjs;
     title: string;
+    id: string;
 }
 
 export interface TeacherExamApprox {

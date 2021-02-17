@@ -46,5 +46,5 @@ export interface StudentDailyDataView {
     exams: StudentExamDetail[];
     events: EventDetail[];
     homeworks: StudentHomeworkDetail[];
-    lessonWithVideoConferences: StudentLessonDetail[];
+    classbookWithVideoConferences: StudentClassbook[];
 }
