@@ -1,9 +1,9 @@
-export * from "./parseTeacherDay";
+export * from "./parseTeacherWeek";
 export * from "./parseTeacherLesson";
-export * from "./useFetchTeacherDayAPI";
+export * from "./useFetchTeacherWeekAPI";
 export * from "./useFetchTeacherLessonAPI";
 
-export {default as parseTeacherDay} from "./parseTeacherDay";
+export {default as parseTeacherWeek} from "./parseTeacherWeek";
 export {default as parseTeacherLesson} from "./parseTeacherLesson";
-export {default as useFetchTeacherDayAPI} from "./useFetchTeacherDayAPI";
+export {default as useFetchTeacherWeekAPI} from "./useFetchTeacherWeekAPI";
 export {default as useFetchTeacherLessonAPI} from "./useFetchTeacherLessonAPI";

@@ -3,23 +3,23 @@ import {AxiosContext} from "contexts";
 import {getLoginConfig} from "api";
 import {Dayjs} from "dayjs";
 import {lazyDatetime} from "utils";
-import {TeacherDayView} from "types";
+import {TeacherWeekView} from "types";
 
-import parseTeacherDay from "./parseTeacherDay";
+import parseTeacherWeek from "./parseTeacherWeek";
 
 export interface IFetchTeacherDayData {
     startDate?: Dayjs;
     endDate?: Dayjs;
 }
 
-const useFetchTeacherDayAPI = () => {
+const useFetchTeacherWeekAPI = () => {
     const {instance, buildUrl} = useContext(AxiosContext);
 
     return useCallback(async ({
         endDate,
         startDate,
-    }: IFetchTeacherDayData): Promise<TeacherDayView> => {
-        const {data} = await instance.get(buildUrl("/lesson/"), {
+    }: IFetchTeacherDayData): Promise<TeacherWeekView> => {
+        const {data} = await instance.get(buildUrl("/week/"), {
             params: {
                 startDate: startDate === undefined ? undefined : lazyDatetime(startDate, "date"),
                 endDate: endDate === undefined ? undefined : lazyDatetime(endDate, "date"),
@@ -27,10 +27,10 @@ const useFetchTeacherDayAPI = () => {
             ...await getLoginConfig(),
         });
 
-        await parseTeacherDay(data);
+        await parseTeacherWeek(data);
 
         return data;
     }, [instance, buildUrl]);
 };
 
-export default useFetchTeacherDayAPI;
+export default useFetchTeacherWeekAPI;

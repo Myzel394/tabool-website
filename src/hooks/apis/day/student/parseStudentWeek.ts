@@ -1,4 +1,4 @@
-import {StudentDayView} from "types";
+import {StudentWeekView} from "types";
 
 import {parseEventDetail} from "../../event";
 import {parseStudentExamDetail} from "../../exam";
@@ -6,7 +6,7 @@ import {parseStudentLessonDetail} from "../../timetable";
 import {parseStudentMaterialDetail} from "../../material";
 import {parseStudentModificationDetail} from "../../modification";
 
-const parseStudentDay = async (day: StudentDayView) => {
+const parseStudentWeek = async (day: StudentWeekView) => {
     await Promise.allSettled([
         ...day.events.map(parseEventDetail),
         ...day.exams.map(parseStudentExamDetail),
@@ -16,4 +16,4 @@ const parseStudentDay = async (day: StudentDayView) => {
     ]);
 };
 
-export default parseStudentDay;
+export default parseStudentWeek;

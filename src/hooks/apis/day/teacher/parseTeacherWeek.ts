@@ -1,4 +1,4 @@
-import {TeacherDayView} from "types";
+import {TeacherWeekView} from "types";
 
 import {parseEventDetail} from "../../event";
 import {parseTeacherExamDetail} from "../../exam";
@@ -6,7 +6,7 @@ import {parseTeacherLessonDetail} from "../../timetable";
 import {parseTeacherMaterialDetail} from "../../material";
 import {parseTeacherModificationDetail} from "../../modification";
 
-const parseTeacherDay = async (day: TeacherDayView) => {
+const parseTeacherWeek = async (day: TeacherWeekView) => {
     await Promise.allSettled([
         ...day.events.map(parseEventDetail),
         ...day.exams.map(parseTeacherExamDetail),
@@ -16,4 +16,4 @@ const parseTeacherDay = async (day: TeacherDayView) => {
     ]);
 };
 
-export default parseTeacherDay;
+export default parseTeacherWeek;
