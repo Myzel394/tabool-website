@@ -1,26 +1,28 @@
 interface Options<T> {
     doesExist?: (array: T[], element: T) => boolean;
-    getValue?: (element: T) => string;
+    getKey?: (element: T) => string;
+    getValue?: (element: T) => any;
 }
 
 const defaults = {
     doesExist: (array, element) =>
         array.some(arrayElement => arrayElement.id === element.id),
-    getValue: element => element.date.toIsoString(),
+    getKey: element => element.date.toIsoString(),
+    getValue: element => element,
 };
 
 const getPerUniqueValue = <T = any>(
     array: T[],
     options: Options<T> = {},
 ): Record<string, T[]> => {
-    const {doesExist, getValue} = Object.assign(defaults, options);
+    const {doesExist, getKey, getValue} = Object.assign(defaults, options);
 
     return array.reduce((obj, element) => {
-        const isoDate = getValue(element);
+        const isoDate = getKey(element);
         const elements = obj[isoDate] ?? [];
 
         if (!doesExist(elements, element)) {
-            elements.push(element);
+            elements.push(getValue(element));
         }
 
         return {
