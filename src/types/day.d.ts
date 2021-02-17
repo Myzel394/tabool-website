@@ -7,7 +7,7 @@ import {StudentClassbook, TeacherClassbook} from "./classbook";
 import {StudentSubmissionDetail, TeacherSubmissionDetail} from "./submission";
 import {StudentHomeworkDetail, TeacherHomeworkDetail} from "./homework";
 
-export interface StudentDayView {
+export interface StudentWeekView {
     lessons: StudentLessonDetail[];
     modifications: StudentModificationDetail[];
     materials: StudentMaterialDetail[];
@@ -15,7 +15,7 @@ export interface StudentDayView {
     events: EventDetail[];
 }
 
-export interface TeacherDayView {
+export interface TeacherWeekView {
     lessons: TeacherLessonDetail[];
     modifications: TeacherModificationDetail[];
     materials: TeacherMaterialDetail[];
@@ -37,4 +37,14 @@ export interface TeacherLessonView {
     submissions: TeacherSubmissionDetail[];
     modifications: TeacherModificationDetail[];
     homeworks: TeacherHomeworkDetail[];
+}
+
+export interface StudentDailyDataView {
+    lessons: StudentLessonDetail[];
+    modifications: StudentModificationDetail[];
+    materials: StudentMaterialDetail[];
+    exams: StudentExamDetail[];
+    events: EventDetail[];
+    homeworks: StudentHomeworkDetail[];
+    lessonWithVideoConferences: StudentLessonDetail[];
 }
