@@ -11,10 +11,10 @@ const defaults = {
     getValue: element => element,
 };
 
-const getPerUniqueValue = <T = any>(
+const getPerUniqueValue = <T = any, ReturnType = T>(
     array: T[],
     options: Options<T> = {},
-): Record<string, T[]> => {
+): Record<string, ReturnType[]> => {
     const {doesExist, getKey, getValue} = Object.assign(defaults, options);
 
     return array.reduce((obj, element) => {
