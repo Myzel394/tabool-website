@@ -10,6 +10,7 @@ const SkeletonContent = ({children, amount, spacing = 1}) => {
                 <Skeleton variant="text" width="40%" />
             </Typography>
             <Box ml={4} mt={1}>
+                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                 {/* @ts-ignore */}
                 <Grid container spacing={spacing} alignItems="flex-end" justify="flex-end">
                     {Array(amount).fill(children).map((child, index) =>
