@@ -32,7 +32,7 @@ export interface IHomework {
     onIgnoreChange: () => boolean;
 
     onServerUpdate?: (homeworkRelation: StudentHomeworkDetail["userRelation"]) => any;
-    dueDate?: Dayjs;
+    dueDate?: Dayjs | null;
     completed?: boolean;
     ignore?: boolean;
     style?: CSSProperties;

@@ -1,39 +1,37 @@
-import React, {CSSProperties, memo, useMemo} from "react";
-import {Room, StudentCourseDetail, TeacherCourseDetail} from "types";
+import React, {CSSProperties, memo} from "react";
+import {StudentCourseDetail} from "types";
 import {Dayjs} from "dayjs";
-import {Box, Grid, Typography, useTheme} from "@material-ui/core";
+import {Box, Grid, makeStyles, Typography} from "@material-ui/core";
 import {HiClock} from "react-icons/all";
 import DayJSEl from "react-dayjs";
 
-import {RoomIcon} from "../../icons";
-import {ColoredBox, Information} from "../../components";
+import {ColoredBox, Information} from "../components";
 
 
 export interface IExam {
-    course: StudentCourseDetail | TeacherCourseDetail;
+    course: StudentCourseDetail;
     targetedDate: Dayjs;
     information: string | null;
 
-    room?: Room;
     style?: CSSProperties;
 }
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        borderRadius: theme.shape.borderRadius,
+    },
+}));
 
 const Exam = ({
     course,
     information,
-    room,
     targetedDate,
-    style,
 }: IExam) => {
-    const theme = useTheme();
-    const wrapperStyle = useMemo(() => ({
-        ...style,
-        borderRadius: theme.shape.borderRadius,
-    }), [theme.shape.borderRadius, style]);
+    const classes = useStyles();
 
     return (
         <ColoredBox
-            style={wrapperStyle}
+            className={classes.root}
             color={course.subject.userRelation.color}
         >
             <Box m={2}>
@@ -65,11 +63,6 @@ const Exam = ({
                     </Grid>
                     <Grid item>
                         <Box display="flex" flexDirection="column">
-                            {room &&
-                            <Information
-                                getIcon={props => <RoomIcon {...props} />}
-                                text={room.place}
-                            />}
                             <Information
                                 getIcon={props => <HiClock {...props} />}
                                 text={(
