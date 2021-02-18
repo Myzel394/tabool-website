@@ -15,7 +15,11 @@ export default function Routes() {
         <Suspense fallback={<LoadingPage title={t("Seite wird geladen...")} />}>
             <Switch>
                 <Route
-                    key="agenda_teacher_route"
+                    exact
+                    path={buildPath("/")}
+                    component={lazy(() => import("pages/StartPage"))}
+                />
+                <Route
                     exact
                     path="/app/agenda/teacher/detail/:id/"
                     component={lazy(() => import("pages/detail/TeacherDetailPage"))}
