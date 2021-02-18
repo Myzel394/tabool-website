@@ -1,6 +1,6 @@
 export enum ModificationType {
-    Replacement,
-    FreePeriod,
-    SelfLearn,
-    RoomChange,
+    Replacement = "REPLACEMENT",
+    FreePeriod = "FREE_PERIOD",
+    SelfLearn = "SELF_LEARN",
+    RoomChange = "ROOM_CHANGE",
 }

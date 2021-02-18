@@ -8,6 +8,7 @@ export * from "./user";
 export * from "./event";
 export * from "./course";
 export * from "./lesson";
+export * from "./schema";
 export * from "./session";
 export * from "./student";
 export * from "./subject";
