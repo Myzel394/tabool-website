@@ -51,7 +51,7 @@ export {default as lazyDatetime} from "./lazyDatetime";
 export {default as buildPath} from "./buildPath";
 export {default as createShort} from "./createShort";
 export {default as combineAutocompletions} from "./combineAutocompletions";
-export {default as getPerDate} from "./getPerUniqueValue";
+export {default as getPerUniqueValue} from "./getPerUniqueValue";
 export {default as combineNonPrimitives} from "./combineNonPrimitives";
 export {default as truncate} from "./truncate";
 export {default as getStartTime} from "./getStartTime";
