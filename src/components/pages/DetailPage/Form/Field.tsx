@@ -1,4 +1,4 @@
-import React, {memo, useMemo, useRef} from "react";
+import React, {useMemo, useRef} from "react";
 import {Box, IconButton, Paper, useTheme} from "@material-ui/core";
 import {GoThreeBars} from "react-icons/all";
 import {useElementSize} from "hooks";
@@ -9,25 +9,23 @@ import TransitionWrapper from "./TransitionWrapper";
 import Content, {IContent} from "./Content";
 
 
-export interface IField extends Omit<IContent, "forceEditMode"> {
+export interface IField<FormikForm> extends Omit<IContent<FormikForm>, "forceEditMode"> {
     isElevated: boolean;
     reorder: boolean;
-    containsErrors: boolean;
     disableAnimation: boolean;
 
     dragHandleProps?: DraggableProvidedDragHandleProps;
 }
 
 
-const Field = ({
+const Field = <T extends any>({
     isElevated,
     reorder,
     dragHandleProps,
-    containsErrors,
     isUpdating,
     disableAnimation,
     ...contentProps
-}: IField) => {
+}: IField<T>) => {
     const theme = useTheme();
     const $button = useRef<any>();
     const [buttonWidth] = useElementSize($button);
@@ -62,7 +60,7 @@ const Field = ({
                                 <GoThreeBars />
                             </IconButton>
                         </div>
-                        <Content
+                        <Content<T>
                             {...contentProps}
                             isUpdating={isUpdating}
                         />
@@ -83,4 +81,4 @@ const Field = ({
     );
 };
 
-export default memo(Field);
+export default Field;

@@ -5,7 +5,7 @@ import {AxiosError} from "axios";
 import {ListItem, ListItemText, useTheme} from "@material-ui/core";
 import tinycolor from "tinycolor2";
 import {Subject} from "types";
-import {IFetchSubjectData, IFetchSubjectResponse, useFetchSubjectDetailAPI, useFetchSubjectListAPI} from "hooks/apis";
+import {IFetchSubjectResponse, useFetchSubjectDetailAPI, useFetchSubjectListAPI} from "hooks/apis";
 import {useQueryOptions} from "hooks";
 
 import BaseSearchField, {ActiveCheckIcon, WindowedList} from "./BaseSearchField";
@@ -26,7 +26,7 @@ const SubjectField = (props) => {
         hasNextPage,
         fetchNextPage,
         isFetchingNextPage,
-    } = useInfiniteQuery<IFetchSubjectResponse, AxiosError, IFetchSubjectData>(
+    } = useInfiniteQuery<IFetchSubjectResponse, AxiosError>(
         ["fetch_subjects", search],
         () => fetchSubjects({
             search,

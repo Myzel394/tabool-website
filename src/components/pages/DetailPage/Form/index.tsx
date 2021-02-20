@@ -10,7 +10,7 @@ import {BooleanStatus} from "../../../statuses";
 import Field, {IField} from "./Field";
 
 
-type RecordField = Omit<IField,
+type RecordField<FormikForm> = Omit<IField<FormikForm>,
     "isUpdating" |
     "onReset" |
     "name" |
@@ -41,7 +41,7 @@ export interface IForm<AvailableKeys extends string,
     FormikForm extends Record<AvailableKeys, any> = Record<AvailableKeys, any>,
     > {
     initialValues: FormikConfig<FormikForm>["initialValues"];
-    data: Record<AvailableKeys, RecordField & {
+    data: Record<AvailableKeys, RecordField<FormikForm> & {
         nativeValue?: FormikForm[AvailableKeys];
         isEqual?: (oldValue: any, newValue: any) => boolean;
         onSubmit?: (value: unknown) => void | Promise<void>;
@@ -190,11 +190,10 @@ const Form = <AvailableKeys extends string,
                                                                 xs={12}
                                                                 {...provided.draggableProps}
                                                             >
-                                                                <Field
+                                                                <Field<FormikForm>
                                                                     {...fieldData}
                                                                     disableAnimation={disableAnimation}
                                                                     information={renderValue(nativeValue, singleData.information)}
-                                                                    containsErrors={errors[key] !== undefined}
                                                                     fieldPropsExtra={getFieldProps(key)}
                                                                     isUpdating={isUpdating}
                                                                     reorder={reorder}
@@ -204,7 +203,7 @@ const Form = <AvailableKeys extends string,
                                                                     formik={formik}
                                                                     hasChanged={hasChanged}
                                                                     name={key}
-                                                                    isEditModeActive={isEditModeActive}
+                                                                    isEditModeActive={isEditModeActive || Boolean(errors[key])}
                                                                     onChangeEditModeActive={async value => {
                                                                         if (value) {
                                                                             toggleEditMode(key, value);

@@ -16,12 +16,12 @@ import {FormikProps} from "formik/dist/types";
 import Truncate from "react-truncate";
 import {SimpleDialog, Tooltip} from "components";
 
-interface RenderFieldProps extends FormikProps<any> {
+interface RenderFieldProps<T> extends FormikProps<T> {
     helperText?: string | JSX.Element;
 }
 
 
-export interface IContent {
+export interface IContent<FormikForm> {
     title: string;
     icon: JSX.Element | null | ((value: any) => JSX.Element | null);
     information?: string | JSX.Element | null;
@@ -29,18 +29,18 @@ export interface IContent {
     isUpdating: boolean;
     onReset: () => any;
     hasChanged: boolean;
-    formik: FormikProps<any>;
+    formik: FormikProps<FormikForm>;
     name: string;
     isEditModeActive: boolean;
     onChangeEditModeActive: (isActive: boolean) => any;
 
     helperText?: string | JSX.Element;
     disableShowMore?: boolean;
-    renderField?: ((formik: RenderFieldProps) => JSX.Element) | false;
+    renderField?: ((formik: RenderFieldProps<FormikForm>) => JSX.Element) | false;
 }
 
 
-const Content = ({
+const Content = <T extends any>({
     icon,
     title,
     disableShowMore,
@@ -55,7 +55,7 @@ const Content = ({
     name,
     isEditModeActive,
     onChangeEditModeActive,
-}: IContent) => {
+}: IContent<T>) => {
     const forceEditMode = Boolean(formik.errors[name]);
     const {t} = useTranslation();
 
@@ -104,14 +104,17 @@ const Content = ({
                                                 variant="body1"
                                             >
                                                 {(disableShowMore ||
-                                                    !(typeof information === "string") ||
-                                                    (information.length < 20) ? information : (
+                                                !(typeof information === "string") ||
+                                                (information.length < 20) ? information : (
                                                         <Truncate
-                                                            lines={softTruncateActive ? 8 : 40}
+                                                            lines={softTruncateActive ? 5 : 15}
                                                             ellipsis={(
                                                                 <>
                                                                     <span>...</span>
-                                                                    <Button color="default" onClick={() => setSoftTruncateActive(prevState => !prevState)}>
+                                                                    <Button
+                                                                        color="default"
+                                                                        onClick={() => setSoftTruncateActive(prevState => !prevState)}
+                                                                    >
                                                                         {softTruncateActive ? t("Mehr anzeigen") : t("Weniger anzeigen")}
                                                                     </Button>
                                                                     {!softTruncateActive && (
@@ -152,7 +155,9 @@ const Content = ({
                                 <Grid item>
                                     <Grid container spacing={1} alignItems="center">
                                         <Grid item>
-                                            <Tooltip title={isEditModeActive ? t("Änderungen speichern").toString() : t("Dieses Feld editieren").toString()}>
+                                            <Tooltip
+                                                title={isEditModeActive ? t("Änderungen speichern").toString() : t("Dieses Feld editieren").toString()}
+                                            >
                                                 <ToggleButton
                                                     selected={isEditModeActive}
                                                     disabled={forceEditMode}
@@ -201,16 +206,16 @@ const Content = ({
                 </Grid>
             </Box>
             {!disableShowMore &&
-                <SimpleDialog
-                    isOpen={showFullText}
-                    primaryButton={null}
-                    title={title}
-                    onClose={() => setShowFullText(false)}
-                >
-                    <DialogContentText>
-                        {information}
-                    </DialogContentText>
-                </SimpleDialog>}
+            <SimpleDialog
+                isOpen={showFullText}
+                primaryButton={null}
+                title={title}
+                onClose={() => setShowFullText(false)}
+            >
+                <DialogContentText>
+                    {information}
+                </DialogContentText>
+            </SimpleDialog>}
         </>
     );
 };

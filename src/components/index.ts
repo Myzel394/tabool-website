@@ -11,10 +11,12 @@ export * from "./renderDayWithLessonWeekdays";
 export * from "./statuses";
 export * from "./timetable";
 export * from "./calendarStyles";
+export * from "./ResponseWrapper";
 
 export {default as Poll} from "./Poll";
 export {default as renderDayWithLessonWeekdays} from "./renderDayWithLessonWeekdays";
 export {default as calendarStyles} from "./calendarStyles";
 export {default as stickyHeaderStyles} from "./stickyHeaderStyles";
 export {default as extensionIconMap} from "./extensionIconMap";
+export {default as ResponseWrapper} from "./ResponseWrapper";
 

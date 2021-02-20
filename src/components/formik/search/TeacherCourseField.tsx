@@ -4,7 +4,7 @@ import {useInfiniteQuery} from "react-query";
 import {AxiosError} from "axios";
 import {ListItem, ListItemText, useTheme} from "@material-ui/core";
 import {TeacherCourseDetail} from "types";
-import {IFetchTeacherCourseData, IFetchTeacherCourseResponse, useFetchTeacherCourseListAPI} from "hooks/apis";
+import {IFetchTeacherCourseResponse, useFetchTeacherCourseListAPI} from "hooks/apis";
 import tinycolor from "tinycolor2";
 import {useQueryOptions} from "hooks";
 
@@ -25,7 +25,7 @@ const StudentCourseField = (props) => {
         hasNextPage,
         fetchNextPage,
         isFetchingNextPage,
-    } = useInfiniteQuery<IFetchTeacherCourseResponse, AxiosError, IFetchTeacherCourseData>(
+    } = useInfiniteQuery<IFetchTeacherCourseResponse, AxiosError>(
         ["fetch_teacher_courses", search],
         context => fetchCourses({
             search,

@@ -1,7 +1,7 @@
 import genderColor from "constants/genderColor";
 
 import React, {memo, useState} from "react";
-import {IFetchTeacherData, IFetchTeacherResponse, useFetchTeacherDetailAPI, useFetchTeacherListAPI} from "hooks/apis";
+import {IFetchTeacherResponse, useFetchTeacherDetailAPI, useFetchTeacherListAPI} from "hooks/apis";
 import {useInfiniteQuery} from "react-query";
 import {AxiosError} from "axios";
 import {useQueryOptions} from "hooks";
@@ -31,7 +31,7 @@ const TeacherField = (props) => {
         hasNextPage,
         fetchNextPage,
         isFetchingNextPage,
-    } = useInfiniteQuery<IFetchTeacherResponse, AxiosError, IFetchTeacherData>(
+    } = useInfiniteQuery<IFetchTeacherResponse, AxiosError>(
         ["fetch_teachers", search],
         context => fetchTeachers({
             search,

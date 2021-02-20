@@ -34,7 +34,7 @@ export interface IHomework {
     onServerUpdate?: (homeworkRelation: StudentHomeworkDetail["userRelation"]) => any;
     dueDate?: Dayjs | null;
     completed?: boolean;
-    ignore?: boolean;
+    ignored?: boolean;
     style?: CSSProperties;
 }
 
@@ -45,7 +45,7 @@ const Homework = ({
     completed,
     creationDate,
     dueDate,
-    ignore,
+    ignored,
     information,
     subject,
     onCompletedChange,
@@ -68,10 +68,10 @@ const Homework = ({
     const style = useMemo(() => ({
         ...givenStyle,
         borderRadius: theme.shape.borderRadius,
-        filter: ignore ? "grayscale(.5)" : "",
-        opacity: ignore ? 0.8 : 1,
-    }), [ignore, theme.shape.borderRadius, givenStyle]);
-    const isCompleted = !ignore && completed;
+        filter: ignored ? "grayscale(.5)" : "",
+        opacity: ignored ? 0.8 : 1,
+    }), [ignored, theme.shape.borderRadius, givenStyle]);
+    const isCompleted = !ignored && completed;
 
     return (
         <ColoredBox
@@ -86,7 +86,7 @@ const Homework = ({
             >
                 <Box m={2}>
                     <CSSTransition
-                        in={ignore}
+                        in={ignored}
                         timeout={{
                             enter: 100,
                             exit: 100,
@@ -101,7 +101,7 @@ const Homework = ({
                         <div
                             className={clsx(
                                 ignoreAnimation.container,
-                                ignore ? ignoreAnimation.animateOn : ignoreAnimation.animateOff,
+                                ignored ? ignoreAnimation.animateOn : ignoreAnimation.animateOff,
                             )}
                         >
                             <Grid
@@ -162,7 +162,7 @@ const Homework = ({
                                                     <Action
                                                         icon={<FaCheckCircle />}
                                                         isActive={isCompleted}
-                                                        disabled={ignore}
+                                                        disabled={ignored}
                                                         onClick={event => {
                                                             event.preventDefault();
                                                             if (onCompletedChange()) {
@@ -173,15 +173,15 @@ const Homework = ({
                                                         }}
                                                     />
                                                 )}
-                                                {ignore === undefined ? null : (
+                                                {ignored === undefined ? null : (
                                                     <Action
                                                         icon={<HiBan />}
-                                                        isActive={ignore}
+                                                        isActive={ignored}
                                                         onClick={event => {
                                                             event.preventDefault();
                                                             if (onIgnoreChange()) {
                                                                 updateRelation({
-                                                                    ignore: !ignore,
+                                                                    ignored: !ignored,
                                                                 });
                                                             }
                                                         }}

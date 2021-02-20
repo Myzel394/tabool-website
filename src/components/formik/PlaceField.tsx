@@ -48,7 +48,7 @@ const PlaceField = ({
     const {
         data,
         isLoading,
-    } = useQuery<IFetchRoomResponse, AxiosError, string>(
+    } = useQuery<IFetchRoomResponse, AxiosError>(
         ["fetch_rooms", search],
         () => (search ? fetchRoomList({
             search,
@@ -60,7 +60,7 @@ const PlaceField = ({
     );
     const {
         data: placeName,
-    } = useQuery<Room, AxiosError, string>(
+    } = useQuery<Room, AxiosError>(
         ["fetch_room", value],
         () => fetchRoom(value),
         {
