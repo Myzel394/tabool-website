@@ -7,6 +7,7 @@ export interface StudentCourseDetail {
     courseNumber: number;
     name: string;
     participantsCount: number;
+    weekdays: number[];
     subject: Subject;
     teacher: TeacherDetail;
     room: Room;
@@ -16,10 +17,12 @@ export interface StudentCourseDetail {
 export interface TeacherCourseDetail {
     courseNumber: number;
     name: string;
-    id: string;
+    weekdays: number[];
     participants: StudentDetail[];
     participantsCount: number;
     subject: Subject;
+    teacher: TeacherDetail;
     room: Room;
+    id: string;
 }
 
