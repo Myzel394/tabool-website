@@ -18,9 +18,9 @@ const PollHandler = ({children}: IPollHandler) => {
 
     const {
         data,
-    } = useQuery<IFetchPollResponse, AxiosError, void>(
+    } = useQuery<IFetchPollResponse, AxiosError>(
         "fetch_polls",
-        fetchPolls,
+        () => fetchPolls(),
         {
             ...queryOptions,
             enabled: user.isAuthenticated,

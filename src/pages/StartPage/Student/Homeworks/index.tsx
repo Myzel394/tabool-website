@@ -63,7 +63,7 @@ const Homeworks = ({
                         creationDate={homework.createdAt}
                         dueDate={homework.dueDate}
                         completed={homework.userRelation.completed}
-                        ignore={homework.userRelation.ignored}
+                        ignored={homework.userRelation.ignored}
                         onServerUpdate={newHomeworkRelation => {
                             const index = homeworks.findIndex(element => element.id === homework.id);
                             const newHomeworks = update(homeworks, {

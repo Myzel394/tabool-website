@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {usePreferences, useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
-import {IFetchStudentDailyDataData, useFetchStudentDailyDataAPI} from "hooks/apis";
+import {useFetchStudentDailyDataAPI} from "hooks/apis";
 import {AxiosError} from "axios";
 import dayjs, {Dayjs} from "dayjs";
 import {StudentDailyDataView} from "types";
@@ -42,7 +42,7 @@ const StartPage = () => {
         isLoading,
         isFetching,
         error,
-    } = useQuery<StudentDailyDataView, AxiosError, IFetchStudentDailyDataData>(
+    } = useQuery<StudentDailyDataView, AxiosError>(
         ["fetch_daily_data", maxFutureDays, targetedDate],
         () => fetchDailyData({
             maxFutureDays,
