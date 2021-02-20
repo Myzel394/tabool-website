@@ -45,6 +45,12 @@ export default function Routes() {
                     path={buildPath("/settings/change-password/")}
                     component={lazy(() => import("pages/settingsPage/ChangePasswordPage"))}
                 />
+                {/* Agenda pages */}
+                <Route
+                    exact
+                    path="/app/agenda/homework/detail/:id/"
+                    component={lazy(() => import("pages/detail/HomeworkDetailPage/Student"))}
+                />
                 {/* Landing page }
                 {!user.isAuthenticated &&
                 <Route
