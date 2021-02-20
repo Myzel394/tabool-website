@@ -11,8 +11,7 @@ export type IFetchPollResponse = PaginatedResponse<Poll[]>;
 const useFetchPollListAPI = () => {
     const {instance, buildUrl} = useContext(AxiosContext);
 
-    // eslint-disable-next-line no-empty-pattern
-    return useCallback(async ({}, page = 1): Promise<IFetchPollResponse> => {
+    return useCallback(async (page = 1): Promise<IFetchPollResponse> => {
         const {data} = await instance.get(buildUrl("/poll/"), {
             params: {
                 page,

@@ -24,7 +24,7 @@ const useUpdateStudentHomeworkAPI = () => {
         const {data} = await instance.patch(buildUrl(`/homework/${id}/`), {
             information,
             type,
-            dueDate: dueDate === undefined ? undefined : lazyDatetime(dueDate, "date"),
+            dueDate: dueDate === undefined ? undefined : lazyDatetime(dueDate),
         }, await getLoginConfig());
 
         await parseStudentHomeworkDetail(data);

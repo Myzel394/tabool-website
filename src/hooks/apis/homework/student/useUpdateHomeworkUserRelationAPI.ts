@@ -5,7 +5,7 @@ import {StudentHomeworkDetail} from "types";
 
 export interface IUpdateHomeworkUserRelationData {
     completed?: boolean;
-    ignore?: boolean;
+    ignored?: boolean;
 }
 
 export type IUpdateHomeworkUserRelationResponse = StudentHomeworkDetail["userRelation"];
@@ -15,11 +15,11 @@ const useUpdateHomeworkUserRelationAPI = () => {
 
     return useCallback(async (id: string, {
         completed,
-        ignore,
+        ignored,
     }: IUpdateHomeworkUserRelationData): Promise<IUpdateHomeworkUserRelationResponse> => {
         const {data} = await instance.put(`/api/user-relation/homework/${id}/`, {
             completed,
-            ignore,
+            ignored,
         }, await getLoginConfig());
         return data;
     }, [instance]);
