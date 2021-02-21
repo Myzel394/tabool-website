@@ -19,4 +19,6 @@ export {default as calendarStyles} from "./calendarStyles";
 export {default as stickyHeaderStyles} from "./stickyHeaderStyles";
 export {default as extensionIconMap} from "./extensionIconMap";
 export {default as ResponseWrapper} from "./ResponseWrapper";
+export {default as ShowMoreArray} from "./ShowMoreArray";
+export {default as ShowMoreButton} from "./ShowMoreButton";
 
