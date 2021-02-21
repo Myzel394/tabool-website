@@ -29,6 +29,7 @@ export interface StudentLessonView {
     submissions: StudentSubmissionDetail[];
     modifications: StudentModificationDetail[];
     homeworks: StudentHomeworkDetail[];
+    lessonInformation: StudentLessonDetail;
 }
 
 export interface TeacherLessonView {
@@ -37,6 +38,7 @@ export interface TeacherLessonView {
     submissions: TeacherSubmissionDetail[];
     modifications: TeacherModificationDetail[];
     homeworks: TeacherHomeworkDetail[];
+    teacherLessonInformation: TeacherLessonDetail;
 }
 
 export interface StudentDailyDataView {
