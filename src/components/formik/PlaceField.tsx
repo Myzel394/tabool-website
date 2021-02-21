@@ -129,7 +129,6 @@ const PlaceField = ({
 
                 return filtered;
             }}
-            id="free-solo-dialog-demo"
             options={data?.results ?? []}
             getOptionLabel={(option) => {
                 if (typeof option === "string") {
