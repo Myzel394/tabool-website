@@ -2,7 +2,7 @@ import React, {memo} from "react";
 import {StudentHomeworkDetail, StudentLessonDetail, StudentMaterialDetail} from "types";
 import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components";
 import {Link} from "@material-ui/core";
-import {buildPath, getEndTime, getStartTime} from "utils";
+import {buildPath, findNextDate, getEndTime, getStartTime, lazyDatetime} from "utils";
 import dayjs from "dayjs";
 
 import createShadow from "../createShadow";
@@ -24,8 +24,9 @@ const SingleLesson = ({lesson, homeworks, materials}: ILessonEvent) => {
 
     return (
         <Link
-            href={buildPath("/agenda/lesson/detail/:id/", {
+            href={buildPath("/agenda/lesson/detail/:id/:date/", {
                 id: lesson.id,
+                date: lazyDatetime(findNextDate(dayjs(), lesson.weekday), "date") ?? "",
             })}
             underline="none"
         >

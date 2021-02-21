@@ -3,7 +3,8 @@ import {StudentLessonDetail, Subject} from "types";
 import {useAdaptedColor} from "hooks";
 import {Avatar as MUIAvatar, Link, useTheme} from "@material-ui/core";
 import tinycolor from "tinycolor2";
-import {buildPath} from "utils";
+import {buildPath, findNextDate, lazyDatetime} from "utils";
+import dayjs from "dayjs";
 
 
 export interface IAvatar {
@@ -26,8 +27,9 @@ const Avatar = ({lesson, subject}: IAvatar) => {
     if (lesson) {
         return (
             <Link
-                href={buildPath("/agenda/lesson/detail/:id/", {
+                href={buildPath("/agenda/lesson/detail/:id/:date/", {
                     id: lesson.id,
+                    date: lazyDatetime(findNextDate(dayjs(), lesson.weekday), "date") ?? "",
                 })}
                 underline="none"
             >
