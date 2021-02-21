@@ -51,6 +51,11 @@ export default function Routes() {
                     path="/app/agenda/homework/detail/:id/"
                     component={lazy(() => import("pages/detail/HomeworkDetailPage"))}
                 />
+                <Route
+                    exact
+                    path="/app/agenda/exam/detail/:id/"
+                    component={lazy(() => import("pages/detail/ExamDetailPage"))}
+                />
                 {/* Landing page }
                 {!user.isAuthenticated &&
                 <Route
