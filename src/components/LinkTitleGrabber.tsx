@@ -58,7 +58,11 @@ const LinkTitleGrabber = ({
         },
     );
 
-    return title;
+    return (
+        <>
+            {title}
+        </>
+    );
 };
 
 export default LinkTitleGrabber;
