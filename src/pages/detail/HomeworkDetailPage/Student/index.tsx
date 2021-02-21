@@ -45,6 +45,7 @@ import {LessonIcon} from "components/icons";
 import {buildPath, lazyDatetime} from "utils";
 import {DateTimePicker} from "formik-material-ui-pickers";
 import {Alert} from "@material-ui/lab";
+import {useParams} from "react-router";
 
 import ExtraActions from "./ExtraActions";
 
@@ -78,7 +79,8 @@ const useClasses = makeStyles(theme => ({
     },
 }));
 
-const HomeworkDetailPage = ({match: {params: {id}}}) => {
+const HomeworkDetailPage = () => {
+    const {id} = useParams<{ id: string; }>();
     const {t} = useTranslation();
     const schema = yup.object({
         information: yup.string().max(1023).nullable(),
