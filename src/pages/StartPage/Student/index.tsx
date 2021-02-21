@@ -1,11 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {usePreferences, useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {useFetchStudentDailyDataAPI} from "hooks/apis";
 import {AxiosError} from "axios";
 import dayjs, {Dayjs} from "dayjs";
 import {StudentDailyDataView} from "types";
-import {ErrorPage} from "components";
+import {ErrorPage, ResponseWrapper} from "components";
+import {useTranslation} from "react-i18next";
 
 import StartPageView from "./StartPageView";
 import SkeletonView from "./SkeletonView";
@@ -25,6 +26,7 @@ const getTargetedDate = (): Dayjs => {
 };
 
 const StartPage = () => {
+    const {t} = useTranslation();
     const fetchDailyData = useFetchStudentDailyDataAPI();
     const queryOptions = useQueryOptions();
     const {
@@ -56,40 +58,37 @@ const StartPage = () => {
         },
     );
 
-    if (isLoading) {
-        return (
-            <SkeletonView />
-        );
-    }
-
-    if (error && !dailyData) {
-        return (
-            <ErrorPage
-                status={error?.response?.status}
-            />
-        );
-    }
-
-    if (!dailyData) {
-        return (
-            <SkeletonView />
-        );
-    }
+    useEffect(() => {
+        if (isLoading) {
+            document.title = t("Startseite wird geladen...");
+        }
+    }, [isLoading, t]);
 
     return (
-        <StartPageView
-            dailyData={dailyData}
-            maxFutureDays={maxFutureDays}
-            targetedDate={targetedDate}
-            isLoading={isFetching}
-            onDailyDataChange={setDailyData}
-            onMaxFutureDaysChange={async value => {
-                if (value !== state.global?.startPageMaxFutureDays) {
-                    setMaxFutureDays(value);
-                }
-            }}
-            onTargetedDateChange={async value => setTargetedDate(value)}
-        />
+        <ResponseWrapper<StudentDailyDataView>
+            isLoading={isLoading}
+            renderLoading={() => <SkeletonView />}
+            renderError={error => <ErrorPage status={error.response?.status} />}
+            getDocumentTitle={() => t("Startseite")}
+            error={error}
+            data={dailyData}
+        >
+            {dailyData =>
+                <StartPageView
+                    dailyData={dailyData}
+                    maxFutureDays={maxFutureDays}
+                    targetedDate={targetedDate}
+                    isLoading={isFetching}
+                    onDailyDataChange={setDailyData}
+                    onMaxFutureDaysChange={async value => {
+                        if (value !== state.global?.startPageMaxFutureDays) {
+                            setMaxFutureDays(value);
+                        }
+                    }}
+                    onTargetedDateChange={async value => setTargetedDate(value)}
+                />
+            }
+        </ResponseWrapper>
     );
 };
 

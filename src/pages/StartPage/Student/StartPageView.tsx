@@ -6,8 +6,7 @@ import {Fade, Zoom} from "react-reveal";
 import {StudentDailyDataView} from "types";
 import {Dayjs} from "dayjs";
 import update from "immutability-helper";
-
-import {LoadingOverlay} from "../../../components";
+import {LoadingOverlay} from "components";
 
 import Title from "./Title";
 import Content from "./Content";

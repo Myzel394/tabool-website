@@ -19,6 +19,12 @@ const Content = ({
 }: IContent) => {
     const [show, setShow] = useState<boolean>(true);
 
+    const childrenWrapper = (
+        <Box display="flex" flexDirection="column">
+            {children}
+        </Box>
+    );
+
     return (
         <>
             <Box my={2} ml={disableMargin ? 2 : 0}>
@@ -29,10 +35,10 @@ const Content = ({
             </Box>
             <Collapse in={show}>
                 {disableMargin
-                    ? children
+                    ? childrenWrapper
                     : (
                         <Box ml={4} mr={2}>
-                            {children}
+                            {childrenWrapper}
                         </Box>
                     )
                 }

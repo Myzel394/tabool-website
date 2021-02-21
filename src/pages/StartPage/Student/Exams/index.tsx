@@ -1,11 +1,11 @@
 import React, {memo} from "react";
 import {StudentExamDetail} from "types";
-import {Exam} from "components";
+import {Exam, ShowMoreArray, ShowMoreButton} from "components";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Box, Link, useTheme} from "@material-ui/core";
 import {Zoom} from "react-reveal";
-import {buildPath} from "utils";
+import {buildPath, truncate} from "utils";
 
 import createShadow from "../createShadow";
 
@@ -32,8 +32,14 @@ const Exams = ({
     }
 
     return (
-        <>
-            {exams.map(exam =>
+        <ShowMoreArray<StudentExamDetail>
+            maxElements={2}
+            elements={exams}
+            renderButton={(isShown, update) =>
+                <ShowMoreButton showMore={isShown} onClick={update} />
+            }
+        >
+            {exam =>
                 <Zoom key={exam.id} mountOnEnter duration={theme.transitions.duration.enteringScreen}>
                     <Link
                         underline="none"
@@ -47,11 +53,11 @@ const Exams = ({
                             }}
                             targetedDate={exam.date}
                             course={exam.course}
-                            information={exam.information}
+                            information={truncate(exam.information ?? "")}
                         />
                     </Link>
-                </Zoom>)}
-        </>
+                </Zoom>}
+        </ShowMoreArray>
     );
 };
 
