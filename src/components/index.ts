@@ -21,4 +21,5 @@ export {default as extensionIconMap} from "./extensionIconMap";
 export {default as ResponseWrapper} from "./ResponseWrapper";
 export {default as ShowMoreArray} from "./ShowMoreArray";
 export {default as ShowMoreButton} from "./ShowMoreButton";
+export {default as LinkTitleGrabber} from "./LinkTitleGrabber";
 
