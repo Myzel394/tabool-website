@@ -46,6 +46,10 @@ const TeacherDetailPage = ({match: {params: {id}}}) => {
             }
             data={data}
             error={error}
+            getDocumentTitle={teacher => t("{{firstName}} {{lastName}} (Lehrer)", {
+                firstName: teacher.firstName,
+                lastName: teacher.lastName,
+            })}
         >
             {teacher =>
                 <DetailPage<TeacherKeys, "">

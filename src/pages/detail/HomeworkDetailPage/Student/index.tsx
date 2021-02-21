@@ -150,6 +150,10 @@ const HomeworkDetailPage = () => {
             }
             data={homework}
             error={error}
+            getDocumentTitle={homework => t("Hausaufgabe in {{course}} bis zum {{dueDate}}", {
+                course: homework.lesson.course.name,
+                dueDate: homework.dueDate.format("LL"),
+            })}
         >
             {homework => {
                 const canEditHomework = homework?.isPrivate;
@@ -268,7 +272,6 @@ const HomeworkDetailPage = () => {
                                             ampm={false}
                                             onChange={date => setFieldValue("dueDate", date)}
                                         />
-
                                     ),
                                 },
                                 createdAt: {
