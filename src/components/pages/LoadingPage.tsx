@@ -1,13 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Box, CircularProgress, Typography} from "@material-ui/core";
 
 export interface ILoadingPage {
     title: string;
+    setDocumentTitle?: boolean;
 }
 
 const LoadingPage = ({
     title,
+    setDocumentTitle,
 }: ILoadingPage) => {
+    useEffect(() => {
+        if (setDocumentTitle) {
+            document.title = title;
+        }
+    }, [setDocumentTitle, title]);
+
     return (
         <Box
             display="flex"
@@ -24,6 +32,10 @@ const LoadingPage = ({
             </Box>
         </Box>
     );
+};
+
+LoadingPage.defaultProps = {
+    setDocumentTitle: true,
 };
 
 export default LoadingPage;

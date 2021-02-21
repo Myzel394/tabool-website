@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {AxiosError} from "axios";
 
 import {ErrorPage} from "./pages";
@@ -16,6 +16,8 @@ export interface IResponseWrapper<Data, Error = AxiosError> {
 
     data?: Data | null;
     children: (data: Data) => JSX.Element;
+
+    getDocumentTitle?: (data: Data) => string;
 }
 
 const ResponseWrapper = <Data extends any, Error = AxiosError>({
@@ -27,7 +29,15 @@ const ResponseWrapper = <Data extends any, Error = AxiosError>({
     renderCriticalError,
     renderNoDataAvailable,
     renderLoading,
+    getDocumentTitle,
 }: IResponseWrapper<Data, Error>): JSX.Element => {
+    // Update title
+    useEffect(() => {
+        if (getDocumentTitle && !isLoading && !error && data) {
+            document.title = getDocumentTitle(data);
+        }
+    }, [getDocumentTitle, isLoading, error, data]);
+
     if (isLoading) {
         return renderLoading();
     }

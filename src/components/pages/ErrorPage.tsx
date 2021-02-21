@@ -1,13 +1,15 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Box, Typography} from "@material-ui/core";
 import {AiOutlineStop, FaDizzy, FaExclamationTriangle, FaQuestionCircle, FaRunning, GiStack} from "react-icons/all";
 import {useTranslation} from "react-i18next";
+import {IconType} from "react-icons";
 
 export interface ILoadingPage {
     status?: number;
     notFound?: string;
     accessDenied?: string;
     tooFast?: string;
+    setDocumentTitle?: boolean;
 }
 
 const SimpleText = ({text, icon: Icon}) => (
@@ -32,50 +34,62 @@ const ErrorPage = ({
     notFound,
     accessDenied,
     tooFast,
+    setDocumentTitle,
 }: ILoadingPage) => {
     const {t} = useTranslation();
 
+    let text: string;
+    let icon: IconType;
+
     switch (status) {
         case 404:
-            return (
-                <SimpleText text={notFound ?? t("Nicht gefunden.")} icon={FaQuestionCircle} />
-            );
+            text = notFound ?? t("Nicht gefunden.");
+            icon = FaQuestionCircle;
+            break;
         case 403:
-            return (
-                <SimpleText
-                    text={accessDenied ?? t("Du hast auf diesen Bereich keinen Zugriff.")}
-                    icon={AiOutlineStop}
-                />
-            );
+            text = accessDenied ?? t("Du hast auf diesen Bereich keinen Zugriff.");
+            icon = AiOutlineStop;
+            break;
         case 429:
-            return (
-                <SimpleText
-                    text={tooFast ?? t("Du stellst zu viele Anfragen. Warte etwas.")}
-                    icon={FaRunning}
-                />
-            );
+            text = tooFast ?? t("Du stellst zu viele Anfragen. Warte etwas.");
+            icon = FaRunning;
+            break;
         case 500:
-            return (
-                <SimpleText
-                    text={t("Es gab einen Fehler beim Server. Du kannst dagegen leider nichts machen. Tut uns Leid.")}
-                    icon={FaDizzy}
-                />
-            );
+            text = t("Es gab einen Fehler beim Server. Du kannst dagegen leider nichts machen. Tut uns Leid.");
+            icon = FaDizzy;
+            break;
         case 503:
-            return (
-                <SimpleText
-                    text={t("Das scheint dem Server zuviel auf einmal zu sein. Du solltest gleich wieder zugreifen können. Warte jedoch etwas.")}
-                    icon={GiStack}
-                />
-            );
+            text = t("Das scheint dem Server zuviel auf einmal zu sein. Du solltest gleich wieder zugreifen können. Warte jedoch etwas.");
+            icon = GiStack;
+            break;
         default:
-            return (
-                <SimpleText
-                    text={t("Es gab einen Fehler.")}
-                    icon={FaExclamationTriangle}
-                />
-            );
+            text = t("Es gab einen Fehler.");
+            icon = FaExclamationTriangle;
+            break;
     }
+
+    useEffect(() => {
+        if (setDocumentTitle) {
+            if (status) {
+                document.title = t("Fehler ({{status}})", {
+                    status,
+                });
+            } else {
+                document.title = t("Fehler");
+            }
+        }
+    }, [setDocumentTitle, status, t]);
+
+    return (
+        <SimpleText
+            text={text}
+            icon={icon}
+        />
+    );
+};
+
+ErrorPage.defaultProps = {
+    setDocumentTitle: true,
 };
 
 export default ErrorPage;
