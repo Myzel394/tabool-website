@@ -9,10 +9,10 @@ import {buildPath, lazyDatetime} from "utils";
 import {useQueryOptions} from "hooks";
 import {CourseIcon, DetailPage, ErrorPage, LinkTitleGrabber, LoadingPage, ResponseWrapper} from "components";
 import {useTranslation} from "react-i18next";
-import {FaChalkboardTeacher, IoIosVideocam, MdDateRange, MdLaptop, MdWatch} from "react-icons/all";
+import {FaChalkboardTeacher, IoIosVideocam, MdLaptop, MdWatch} from "react-icons/all";
 import {Button, Link} from "@material-ui/core";
 
-type LessonKeys = "presenceContent" | "onlineContent" | "videoConferenceLink" | "hours" | "weekday" | "course";
+type LessonKeys = "presenceContent" | "onlineContent" | "videoConferenceLink" | "time" | "course";
 
 const LessonDetailPage = () => {
     const {t} = useTranslation();
@@ -59,7 +59,7 @@ const LessonDetailPage = () => {
                     color={lesson.lessonInformation.course.subject.userRelation.color}
                     orderingStorageName="lesson"
                     defaultOrdering={
-                        ["presenceContent", "onlineContent", "videoConferenceLink", "hours", "weekday", "course"]
+                        ["presenceContent", "onlineContent", "videoConferenceLink", "time", "course"]
                     }
                     updatedAt={dayjs(dataUpdatedAt)}
                     isRefreshing={isFetching}
@@ -78,6 +78,7 @@ const LessonDetailPage = () => {
                             information: lesson.classbook.videoConferenceLink && (
                                 <Link
                                     underline="none"
+                                    target="_blank"
                                     href={lesson.classbook.videoConferenceLink}
                                 >
                                     <LinkTitleGrabber>
@@ -88,22 +89,25 @@ const LessonDetailPage = () => {
                             title: t("Video-Konferenz"),
                             icon: <IoIosVideocam />,
                         },
-                        hours: {
+                        time: {
                             information: (() => {
+                                const weekday = date.format("dddd");
                                 const {startHour, endHour} = lesson.lessonInformation;
+                                const hourString = startHour === endHour
+                                    ? t("{{hour}}. Stunde", {
+                                        hour: startHour.toString(),
+                                    }) : t("{{startHour}}. - {{endHour}}. Stunde", {
+                                        startHour,
+                                        endHour,
+                                    });
 
-                                if (startHour === endHour) {
-                                    return startHour.toString();
-                                }
-                                return `${startHour} - ${endHour}`;
+                                return t("{{weekday}}, {{hour}}", {
+                                    weekday,
+                                    hour: hourString,
+                                });
                             })(),
                             title: t("Zeit"),
                             icon: <MdWatch />,
-                        },
-                        weekday: {
-                            information: date.format("dddd"),
-                            title: t("Wochentag"),
-                            icon: <MdDateRange />,
                         },
                         course: {
                             icon: <CourseIcon />,

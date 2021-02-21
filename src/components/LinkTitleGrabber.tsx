@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import {IFetchPageTitleResponse, useFetchPageTitleAPI, useFetchPageTitleLocally} from "hooks/apis";
+import {IFetchPageTitleResponse, useFetchPageTitleAPI} from "hooks/apis";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
-
-import {useQueryOptions} from "../hooks";
+import {Box, CircularProgress} from "@material-ui/core";
+import {useQueryOptions} from "hooks";
+import {truncate} from "utils";
 
 export interface ILinkTitleGrabber {
     url?: string;
@@ -25,23 +26,16 @@ const LinkTitleGrabber = ({
 
     const url = givenUrl ?? children as string;
     const fetchPageTitle = useFetchPageTitleAPI();
-    const fetchPageTitleLocally = useFetchPageTitleLocally();
     const [title, setTitle] = useState<string>(children ?? "");
 
     const {
         error,
+        isLoading,
     } = useQuery<IFetchPageTitleResponse, AxiosError>(
         ["fetch_title", url],
-        () => {
-            const payload = {
-                url,
-            };
-
-            if (error?.response?.data?.blocked) {
-                return fetchPageTitleLocally(payload);
-            }
-            return fetchPageTitle(payload);
-        },
+        () => fetchPageTitle({
+            url,
+        }),
         {
             ...queryOptions,
             onSuccess: data => {
@@ -50,7 +44,9 @@ const LinkTitleGrabber = ({
                 if (parseTitle) {
                     setTitle(parseTitle(title));
                 } else {
-                    setTitle(title);
+                    const truncatedUrl = truncate(url, 30);
+
+                    setTitle(`${title} (${truncatedUrl})`);
                 }
             },
             // Title changes rarely
@@ -59,9 +55,12 @@ const LinkTitleGrabber = ({
     );
 
     return (
-        <>
-            {title}
-        </>
+        <Box display="flex" alignItems="center">
+            <Box mr={1}>
+                {title}
+            </Box>
+            {isLoading && <CircularProgress size="1rem" />}
+        </Box>
     );
 };
 
