@@ -48,6 +48,11 @@ export default function Routes() {
                 {/* Agenda pages */}
                 <Route
                     exact
+                    path="/app/agenda/lesson/detail/:id/:date/"
+                    component={lazy(() => import("pages/detail/LessonDetailPage"))}
+                />
+                <Route
+                    exact
                     path="/app/agenda/homework/detail/:id/"
                     component={lazy(() => import("pages/detail/HomeworkDetailPage"))}
                 />
