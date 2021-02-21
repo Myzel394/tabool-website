@@ -1,6 +1,6 @@
-const truncate = (text: string): string => {
-    if (text.length > 80) {
-        return `${text.substring(0, 80)}...`;
+const truncate = (text: string, maxLength = 80): string => {
+    if (text.length > maxLength) {
+        return `${text.substring(0, maxLength)}...`;
     }
     return text;
 };
