@@ -4,7 +4,7 @@ import {StudentDetail} from "./student";
 import {StudentLessonDateMixin, TeacherLessonDateMixin} from "./lesson";
 
 export interface StudentHomeworkApprox extends StudentLessonDateMixin {
-    dueDate: Dayjs | null;
+    dueDate: Dayjs;
     truncatedInformation: string | null;
     id: string;
 }
