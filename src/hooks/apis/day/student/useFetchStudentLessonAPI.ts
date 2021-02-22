@@ -19,12 +19,18 @@ const useFetchStudentLessonAPI = () => {
         lessonDate,
         lessonId,
     }: IFetchStudentLessonData): Promise<StudentLessonView> => {
+        const config = await getLoginConfig();
+
+        if (process.env.NODE_ENV === "production") {
+            config.headers["no-cache"] = true;
+        }
+
         const {data} = await instance.get(buildUrl("/lesson/"), {
             params: {
                 lesson: lessonId,
                 lessonDate: lazyDatetime(lessonDate, "date"),
             },
-            ...await getLoginConfig(),
+            ...config,
         });
 
         await parseStudentLesson(data);
