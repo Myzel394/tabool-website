@@ -3,6 +3,8 @@ import {Avatar} from "@material-ui/core";
 
 export interface IExtensionAvatar {
     name: string;
+
+    color?: string;
 }
 
 const EXTENSION_COLOR_MAPPING = {
@@ -33,16 +35,21 @@ const EXTENSION_COLOR_MAPPING = {
 
 const getColor = value => EXTENSION_COLOR_MAPPING[value] ?? "#888";
 
-const ExtensionAvatar = ({name}: IExtensionAvatar) => {
-    const extension = name?.split?.(".")?.pop?.() ?? "";
+const ExtensionAvatar = ({
+    name,
+    color,
+}: IExtensionAvatar) => {
+    const extension = name.split(".")
+        .pop() ?? "";
 
     return (
         <Avatar
             style={{
-                backgroundColor: getColor(extension.toLowerCase()),
+                backgroundColor: color ?? getColor(extension.toLowerCase()),
             }}
         >
-            {extension.toUpperCase().substr(0, 3)}
+            {extension.toUpperCase()
+                .substr(0, 3)}
         </Avatar>
     );
 };

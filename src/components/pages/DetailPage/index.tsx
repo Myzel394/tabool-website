@@ -184,7 +184,7 @@ const DetailPage = <AvailableKeys extends string,
                             );
                         }
                         return (
-                            <Grid item>
+                            <Grid item style={fullWidth}>
                                 {bottomNode}
                             </Grid>
                         );

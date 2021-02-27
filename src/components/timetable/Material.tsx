@@ -1,34 +1,28 @@
-import React, {memo, useMemo} from "react";
-import {Dayjs} from "dayjs";
-import {Box, Grid, IconButton, Paper, Typography, useTheme} from "@material-ui/core";
+import React, {memo} from "react";
+import {Box, Grid, IconButton, Paper, Typography} from "@material-ui/core";
 import {FaFile, MdFileDownload} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import prettyBytes from "pretty-bytes";
 import {usePreferences} from "hooks";
+import dayjs, {Dayjs} from "dayjs";
 
 import {Information} from "../components";
 import {TimeRelative} from "../statuses";
 import extensionIconMap from "../extensionIconMap";
+import {lazyDatetime} from "../../utils";
 
 export interface IMaterial {
     name: string;
-    addedAt: Dayjs;
     size: number;
-    id: string;
     file: string;
-    isDeleted?: boolean;
+    id: string;
+    publishDatetime?: Dayjs | null;
 }
 
 
-const Material = ({name, addedAt, id, size, isDeleted, file}: IMaterial) => {
-    const theme = useTheme();
+const Material = ({name, id, size, file, publishDatetime}: IMaterial) => {
     const {state} = usePreferences();
     const {t} = useTranslation();
-
-    const informationStyle = useMemo(() => ({
-        wordBreak: "break-all" as "break-all",
-        opacity: isDeleted ? theme.palette.action.disabledOpacity : 1,
-    }), [isDeleted, theme.palette.action.disabledOpacity]);
 
     const extension = name ? name
         .split(".")
@@ -36,6 +30,7 @@ const Material = ({name, addedAt, id, size, isDeleted, file}: IMaterial) => {
         : "";
     const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
     const downloadDate = state?.detailPage?.downloadedMaterials?.[id];
+    const isAvailable = publishDatetime?.isBefore(dayjs());
 
     return (
         <Paper>
@@ -54,16 +49,24 @@ const Material = ({name, addedAt, id, size, isDeleted, file}: IMaterial) => {
                                 <Information
                                     getIcon={props => <FormatIcon {...props} />}
                                     text={name}
-                                    style={informationStyle}
                                     color="textPrimary"
                                 />
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body2" color="textSecondary">
-                                    {t("Hochgeladen: {{uploadDate}}", {
-                                        uploadDate: addedAt.format("lll"),
-                                    })}
-                                </Typography>
+                                {(() => {
+                                    if (!isAvailable && publishDatetime) {
+                                        const isToday = lazyDatetime(dayjs(), "date") === lazyDatetime(publishDatetime, "date");
+                                        const dateFormatted = isToday
+                                            ? t("{{time}} Uhr", {time: publishDatetime.format("LT")})
+                                            : publishDatetime.format("lll");
+
+                                        return (
+                                            <Typography variant="body2" color="textSecondary">
+                                                {t("Verfügbar ab {{date}}", {
+                                                    date: dateFormatted,
+                                                })}
+                                            </Typography>
+                                        );
+                                    }
+                                })()}
                                 <Typography variant="body2" color="textSecondary">
                                     {t("Größe: {{size}}", {
                                         size: prettyBytes(size, {
@@ -71,6 +74,8 @@ const Material = ({name, addedAt, id, size, isDeleted, file}: IMaterial) => {
                                         }),
                                     })}
                                 </Typography>
+                            </Grid>
+                            <Grid item>
                                 {downloadDate &&
                                 <TimeRelative>
                                     {now =>
@@ -80,18 +85,12 @@ const Material = ({name, addedAt, id, size, isDeleted, file}: IMaterial) => {
                                             })}
                                         </Typography>
                                     }
-                                </TimeRelative>
-                                }
-                                {isDeleted &&
-                                <Typography variant="body2" color="textSecondary">
-                                    {t("Auf Scooso gelöscht")}
-                                </Typography>
-                                }
+                                </TimeRelative>}
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <IconButton color="default" href={file}>
+                        <IconButton color="default" href={file} target="_blank" disabled={!isAvailable}>
                             <MdFileDownload />
                         </IconButton>
                     </Grid>
