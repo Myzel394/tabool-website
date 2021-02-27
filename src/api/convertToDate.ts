@@ -7,9 +7,11 @@ const convertToDate = <T extends Record<string, any>>(response: T, paths: ValueO
     for (const path of paths) {
         const value = _.get(response, path);
 
-        const valueAsDate = dayjs(value, ["YYYY-MM-DDTHH:mm:ss", "YYYY-MM-DD", "HH:mm:ss"]);
+        if (value) {
+            const valueAsDate = dayjs(value, ["YYYY-MM-DDTHH:mm:ss", "YYYY-MM-DD", "HH:mm:ss"]);
 
-        _.set(response, path, valueAsDate);
+            _.set(response, path, valueAsDate);
+        }
     }
 };
 
