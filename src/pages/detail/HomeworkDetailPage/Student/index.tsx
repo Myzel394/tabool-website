@@ -289,8 +289,9 @@ const HomeworkDetailPage = () => {
                                         <Link
                                             underline="none"
                                             component={Button}
-                                            href={buildPath("/agenda/lesson/detail/:id/", {
+                                            href={buildPath("/agenda/lesson/detail/:id/:date/", {
                                                 id: homework.lesson.id,
+                                                date: lazyDatetime(homework.lessonDate, "date") ?? "",
                                             })}
                                         >
                                             {t("Zur Stunde")}
