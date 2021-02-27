@@ -8,10 +8,10 @@ export * from "./homework";
 export * from "./material";
 export * from "./poll";
 export * from "./preference";
-export * from "./preference";
 export * from "./room";
 export * from "./session";
 export * from "./subject";
+export * from "./submission";
 export * from "./teacher";
 export * from "./timetable";
 
