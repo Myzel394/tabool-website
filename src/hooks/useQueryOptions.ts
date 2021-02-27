@@ -14,9 +14,10 @@ const NO_RETRY_CODES = [
 
 const useQueryOptions = (): ConfigType => {
     const saveData = useSaveData();
+    // noinspection UnnecessaryLocalVariableJS
     const options = useMemo<ConfigType>(() => {
         let defaultData: ConfigType = {
-            retry: (failureCount, error) => !NO_RETRY_CODES.includes(error.response?.status),
+            retry: (failureCount, error) => failureCount <= 3 && !NO_RETRY_CODES.includes(error.response?.status),
         };
 
         if (saveData) {
