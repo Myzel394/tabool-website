@@ -4,37 +4,75 @@
         "plugin:@shopify/react"
     ],
     "rules": {
-        "quotes": ["error", "double", "avoid-escape"],
-        "jsx-quotes": ["error", "prefer-double"],
-        "indent": ["error", 4, {"SwitchCase": 1}],
-        "indent-legacy": ["error", 4, {"SwitchCase": 1}],
-        "@typescript-eslint/quotes": ["error", "double"],
+        "quotes": [
+            "error",
+            "double",
+            "avoid-escape"
+        ],
+        "jsx-quotes": [
+            "error",
+            "prefer-double"
+        ],
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "indent-legacy": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "@typescript-eslint/quotes": [
+            "error",
+            "double"
+        ],
         "no-trailing-spaces": "off",
         "one-var": "off",
-        "react/jsx-indent-props": ["error", 4],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
         "arrow-parens": "off",
         "no-return-assign": "off",
         "eslint-comments/no-unlimited-disable": "off",
         "no-warning-comments": "off",
         "@shopify/jsx-no-complex-expressions": "off",
-        "react/jsx-sort-props": ["error", {
-            "callbacksLast": true,
-            "shorthandFirst": true,
-            "shorthandLast": false,
-            "ignoreCase": false,
-            "noSortAlphabetically": true,
-            "reservedFirst": true
-        }],
+        "react/jsx-sort-props": [
+            "error",
+            {
+                "callbacksLast": true,
+                "shorthandFirst": true,
+                "shorthandLast": false,
+                "ignoreCase": false,
+                "noSortAlphabetically": true,
+                "reservedFirst": true
+            }
+        ],
         "@shopify/binary-assignment-parens": "off",
         "no-mixed-operators": "off",
         "@typescript-eslint/no-extra-parens": "off",
-        "switch-colon-spacing": ["error", {"after": true, "before": false}],
-        "@typescript-eslint/array-type": ["error", {
-            "default": "array"
-        }],
+        "switch-colon-spacing": [
+            "error",
+            {
+                "after": true,
+                "before": false
+            }
+        ],
+        "@typescript-eslint/array-type": [
+            "error",
+            {
+                "default": "array"
+            }
+        ],
         "jsx-a11y/no-autofocus": "off",
         "promise/catch-or-return": 1,
-        "no-process-env": "off"
+        "no-process-env": "off",
+        "no-console": "warn"
     },
     "env": {
         "browser": true,

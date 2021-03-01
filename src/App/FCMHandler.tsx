@@ -6,6 +6,7 @@ import {useOnFCMMessageHandler, usePermissions, usePersistentStorage} from "hook
 import {PermissionType} from "hooks/usePermissions";
 
 import {message} from "../firebase";
+import {fcmKey} from "../constants/firebase";
 
 
 export interface IFCMHandler {
@@ -35,7 +36,7 @@ const FCMHandler = ({children}: IFCMHandler) => {
         if (!isLoading && state.notification === PermissionType.Granted && !hasSent) {
             message
                 .getToken({
-                    vapidKey: process.env.REACT_APP_FCM_VAPID_KEY,
+                    vapidKey: fcmKey,
                 })
                 .then(registrationId => {
                     if (registrationId) {

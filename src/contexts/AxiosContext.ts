@@ -3,6 +3,7 @@ import axios, {AxiosInstance} from "axios";
 import camelcaseKeys from "camelcase-keys";
 
 import {snakeCaseKeys} from "../utils";
+import {isDev} from "../constants/dev";
 
 export type BuildUrlFunction = (value: string) => string;
 
@@ -20,7 +21,7 @@ export const initialAxiosState: IAxios = {
 
 const AxiosContext = createContext<IAxios>(initialAxiosState);
 
-export const baseURL = process.env.NODE_ENV === "production" ? "" : "http://127.0.0.1:8000/";
+export const baseURL = isDev ? "http://127.0.0.1:8000/" : "";
 
 export const createInstance = () => {
     const instance = axios.create({

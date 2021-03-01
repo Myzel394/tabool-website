@@ -1,0 +1,1 @@
+export const fcmKey = "BLqncq-WaTxtLVA1LzGKu4EpUYzTlDZSstNEUruUGwdaF2_1ZQp_AeUcoVAlOk0A6pQDoc3lhw1k4eIb_Jg-aJc";

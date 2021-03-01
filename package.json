@@ -142,6 +142,7 @@
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "dotenv": "^8.2.0",
+    "lodash-webpack-plugin": "^0.11.6",
     "prettier": "^2.1.2",
     "react-app-rewire-alias": "^0.1.6",
     "react-app-rewired": "^2.1.6",
