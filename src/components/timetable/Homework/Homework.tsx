@@ -2,7 +2,6 @@ import React, {CSSProperties, useMemo} from "react";
 import {Dayjs} from "dayjs";
 import {StudentHomeworkDetail, Subject} from "types";
 import {Box, CircularProgress, Grid, Link, Typography, useTheme} from "@material-ui/core";
-import DayJSEl from "react-dayjs";
 import {FaCheck, FaCheckCircle, FaExclamationTriangle, HiBan, HiClock} from "react-icons/all";
 import {CSSTransition} from "react-transition-group";
 import clsx from "clsx";
@@ -139,20 +138,12 @@ const Homework = ({
                                             {dueDate && (
                                                 <Information
                                                     getIcon={props => <FaExclamationTriangle {...props} />}
-                                                    text={(
-                                                        <DayJSEl format={TIME_FORMAT}>
-                                                            {dueDate}
-                                                        </DayJSEl>
-                                                    )}
+                                                    text={dueDate.format(TIME_FORMAT)}
                                                 />
                                             )}
                                             <Information
                                                 getIcon={props => <HiClock {...props} />}
-                                                text={(
-                                                    <DayJSEl format={TIME_FORMAT}>
-                                                        {creationDate}
-                                                    </DayJSEl>
-                                                )}
+                                                text={creationDate.format(TIME_FORMAT)}
                                             />
                                         </Box>
                                         <Box display="flex" flexDirection="column" alignItems="flex-end">

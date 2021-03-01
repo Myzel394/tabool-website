@@ -3,7 +3,6 @@ import {StudentCourseDetail} from "types";
 import {Dayjs} from "dayjs";
 import {Box, Grid, makeStyles, Typography} from "@material-ui/core";
 import {HiClock} from "react-icons/all";
-import DayJSEl from "react-dayjs";
 
 import {ColoredBox, Information} from "../components";
 
@@ -65,11 +64,7 @@ const Exam = ({
                         <Box display="flex" flexDirection="column">
                             <Information
                                 getIcon={props => <HiClock {...props} />}
-                                text={(
-                                    <DayJSEl format="LL">
-                                        {targetedDate}
-                                    </DayJSEl>
-                                )}
+                                text={targetedDate.format("LL")}
                             />
                         </Box>
                     </Grid>
