@@ -1,5 +1,6 @@
 {
     "plugins": [
+        "transform-class-properties",
         "lodash",
         [
             "babel-plugin-import",

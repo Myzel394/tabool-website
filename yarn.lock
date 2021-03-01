@@ -14028,6 +14028,11 @@ tr46@^2.0.2:
   dependencies:
     punycode "^2.1.1"
 
+transform-class-properties@^1.0.0-beta:
+  version "1.0.0-beta"
+  resolved "https://registry.yarnpkg.com/transform-class-properties/-/transform-class-properties-1.0.0-beta.tgz#027966a99940dbfffbf406699128f54e24b33d9e"
+  integrity sha512-oAVpS2SpCxDk4Q/VmVdwwwt4YAIip96meKj/wNCvQIHyjHJH3pqNpyOY+rvbOlN2WN63qn2v5XnU4CunPVzlnw==
+
 trim-newlines@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-1.0.0.tgz#5887966bb582a4503a41eb524f7d35011815a613"
