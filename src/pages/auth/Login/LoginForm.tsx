@@ -74,6 +74,7 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                                         }}
                                         variant="outlined"
                                         helperText={touched.email && errors.email}
+                                        autoComplete="email"
                                     />
                                 </Grid>
                                 <Grid item md={6} xs={12}>
@@ -93,6 +94,7 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                                         }}
                                         variant="outlined"
                                         helperText={touched.password && errors.password}
+                                        autoComplete="current-password"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>

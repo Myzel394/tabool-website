@@ -16,10 +16,13 @@ export const initialUserState: IUser = {
 };
 
 
-const UserContext = createContext<ReducerType<IUser>>({
+const UserContext = createContext<ReducerType<IUser> & { logout: () => null; }>({
     state: initialUserState,
     dispatch: () => {
         throw new Error("Dispatch method not implemented!");
+    },
+    logout: () => {
+        throw new Error("Logout method not implemented!");
     },
 });
 

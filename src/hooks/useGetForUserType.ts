@@ -1,11 +1,13 @@
 import {UserType} from "api";
+import {useContext} from "react";
 
-import useUser from "./useUser";
+import {UserContext} from "../contexts";
 
 const useGetForUserType = <S, T>(student: S, teacher: T): S | T => {
-    const user = useUser();
+    const {state: user, logout} = useContext(UserContext);
 
     if (!user.data?.userType) {
+        logout();
         throw new Error("User has no userType");
     }
 

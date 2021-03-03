@@ -1,13 +1,14 @@
-import React, {FC} from "react";
+import React, {FC, useContext} from "react";
 
-import {useUser} from "../hooks";
 import {UserType} from "../api";
+import {UserContext} from "../contexts";
 
 const withUserType = (studentComponent: FC, teacherComponent: FC) => props => {
-    const user = useUser();
+    const {state: user, logout} = useContext(UserContext);
 
     if (!user.data?.userType) {
-        throw new Error("User has no userType.");
+        logout();
+        throw new Error("User has no userType");
     }
 
     const Component = {

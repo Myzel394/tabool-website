@@ -11,6 +11,7 @@ import {buildPath, parseErrors} from "utils";
 import {createInstance} from "contexts/AxiosContext";
 import {usePreferences} from "hooks";
 import _ from "lodash";
+import {useHistory} from "react-router-dom";
 
 const usePersistedReducer = createPersistedReducer("user");
 
@@ -19,10 +20,20 @@ export interface IUserContextHandler {
 }
 
 const UserContextHandler = ({children}: IUserContextHandler) => {
+    const history = useHistory();
     const preferences = usePreferences();
     const updatePreferences = useUpdatePreferenceAPI();
 
     const [state, dispatch]: [IUser, any] = usePersistedReducer(reducer, initialUserState);
+    const logout = useCallback(() => {
+        dispatch({
+            type: "logout",
+            payload: {},
+        });
+        history.push(buildPath("/auth/login/"));
+
+        return null;
+    }, [dispatch, history]);
 
     const instance = useMemo(() => {
         const instance = createInstance();
@@ -31,10 +42,7 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
             if (error.response) {
                 // Logout user on authentication error
                 if (error.response.status === 401 && location.pathname !== buildPath("/auth/login/")) {
-                    dispatch({
-                        type: "logout",
-                        payload: {},
-                    });
+                    logout();
                 }
                 // Parse errors
                 if (error.response.status >= 300 || error.response.status < 200) {
@@ -46,7 +54,7 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
         });
 
         return instance;
-    }, [dispatch]);
+    }, [logout]);
     const buildUrl = useCallback((url: string) => {
         if (state.data?.userType === UserType.Student) {
             return `/api/student${url}`;
@@ -87,7 +95,9 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
         >
             <UserContext.Provider
                 value={{
-                    state, dispatch,
+                    state,
+                    dispatch,
+                    logout,
                 }}
             >
                 {children}
