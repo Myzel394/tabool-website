@@ -13,7 +13,6 @@ export * from "./replaceDatetime";
 export * from "./fetchIdsToObject";
 export * from "./getNextLessonDate";
 export * from "./getKeysByTrueValues";
-export * from "./randomNumbersWithGap";
 export * from "./locale";
 export * from "./getEventWrapperStyles";
 export * from "./createSmallTheme";
