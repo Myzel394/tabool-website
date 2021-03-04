@@ -1,7 +1,6 @@
 {
     "plugins": [
-        "transform-class-properties",
-        "lodash",
+        "babel-plugin-lodash",
         [
             "babel-plugin-import",
             {
@@ -20,5 +19,8 @@
             },
             "icons"
         ]
+    ],
+    "presets": [
+        "@babel/preset-react"
     ]
 }
