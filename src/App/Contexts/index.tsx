@@ -3,7 +3,6 @@ import {QueryClient, QueryClientProvider} from "react-query";
 
 import UserContextHandler from "./UserContextHandler";
 import UtilsContextHandler from "./UtilsContextHandler";
-import PreferencesContextHandler from "./PreferencesContextHandler";
 
 
 export interface IContexts {
@@ -21,9 +20,7 @@ const Contexts = ({children, bottomSheetHeight}: IContexts) => {
                 bottomSheetHeight={bottomSheetHeight}
             >
                 <UserContextHandler>
-                    <PreferencesContextHandler>
-                        {children}
-                    </PreferencesContextHandler>
+                    {children}
                 </UserContextHandler>
             </UtilsContextHandler>
         </QueryClientProvider>
