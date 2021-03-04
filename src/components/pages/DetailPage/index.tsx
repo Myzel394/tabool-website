@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, {ReactNode, useCallback, useEffect, useState} from "react";
+import React, {ReactNode, useCallback, useEffect, useMemo, useState} from "react";
 import {
     Button,
     ButtonGroup,
@@ -16,8 +16,8 @@ import {Dayjs} from "dayjs";
 import {PullToRefresh, UpdatedAt} from "components";
 import {MdAdd, MdSearch} from "react-icons/all";
 import _ from "lodash";
-
-import usePreferences from "../../../hooks/usePreferences";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
+import {addDetailPageOrdering, RootState} from "state";
 
 import Title, {ITitle} from "./Title";
 import Form, {IForm} from "./Form";
@@ -63,8 +63,6 @@ const fullWidth = {
     width: "100%",
 };
 
-const emptyArray = [];
-
 const DetailPage = <AvailableKeys extends string,
     RelationKeys extends string = string,
     QueryType = any,
@@ -91,33 +89,36 @@ const DetailPage = <AvailableKeys extends string,
         onDelete,
     }: IDetailPage<AvailableKeys, FormikForm, QueryType, RelationKeys>) => {
     const {t} = useTranslation();
-    const {
-        state,
-        update,
-    } = usePreferences();
+    const ordering = useSelector<RootState>(
+        state => state.preferences?.detailPage?.ordering?.[orderingStorageName] ?? [],
+        shallowEqual,
+    ) as AvailableKeys[];
+    const dispatch = useDispatch();
 
     const [disableAnimation, setDisableAnimation] = useState<boolean>(false);
     const [enableReordering, setEnableReordering] = useState<boolean>(false);
     const [elevatedKey, setElevatedKey] = useState<AvailableKeys | null>(null);
 
-    const initialValues = Object
+    const initialValues = useMemo(() => Object
         .entries(data)
         .reduce((object, [key, value]) => ({
             ...object,
             // @ts-ignore
             [key]: value.nativeValue ?? value.information,
-        }), {});
-    const ordering = (state?.detailPage?.ordering?.[orderingStorageName] ?? emptyArray) as AvailableKeys[];
+        }), {})
+    , [data]);
 
     const setOrdering = useCallback(ordering => {
         if (!disableAnimation) {
             setDisableAnimation(true);
         }
 
-        const change = update.detailPage.addOrdering;
-        change(orderingStorageName, ordering);
+        dispatch(addDetailPageOrdering({
+            identifier: orderingStorageName,
+            ordering,
+        }));
     },
-    [update.detailPage.addOrdering, orderingStorageName, disableAnimation]);
+    [dispatch, orderingStorageName, disableAnimation]);
 
     // If `defaultOrdering's elements !== savedOrdering's elements`, reset it.
     useEffect(() => {

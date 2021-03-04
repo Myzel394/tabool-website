@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {usePreferences, useQueryString, useUser} from "hooks";
+import {useQueryString, useUser} from "hooks";
 import {useMutation} from "react-query";
 import {ILoginData, ILoginResponse, useSendLoginAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -8,6 +8,8 @@ import {useTranslation} from "react-i18next";
 import {UserContext} from "contexts";
 import {useHistory} from "react-router-dom";
 import {buildPath} from "utils";
+import {useDispatch} from "react-redux";
+import {setRaw} from "state";
 
 import LoginForm from "./LoginForm";
 import SuspiciousLoginForm from "./SuspiciousLoginForm";
@@ -20,9 +22,7 @@ const Login = () => {
     const {dispatch} = useContext(UserContext);
     const history = useHistory();
     const user = useUser();
-    const {
-        _rawUpdate,
-    } = usePreferences();
+    const reduxDispatch = useDispatch();
 
     const [isSuspicious, setIsSuspicious] = useState<boolean>(false);
     const [loginData, setLoginData] = useState<ILoginData>();
@@ -43,7 +43,7 @@ const Login = () => {
                     type: "login",
                     payload: data,
                 });
-                _rawUpdate(data.preference);
+                reduxDispatch(setRaw(data.preference));
                 history.push(typeof next === "string" ? next : buildPath("/"));
             },
         },

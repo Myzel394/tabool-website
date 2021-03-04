@@ -2,7 +2,8 @@ import React, {memo, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {Box, ButtonBase, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {usePreferences} from "hooks";
+import {useDispatch, useSelector} from "react-redux";
+import {AvailableUpdatedAtTimeViews, RootState, setUpdatedAtTimeView} from "state";
 
 export interface IUpdatedAt {
     value: Dayjs;
@@ -11,18 +12,14 @@ export interface IUpdatedAt {
 
 const UpdatedAt = ({value, frequency}: IUpdatedAt) => {
     const {t} = useTranslation();
-    const {
-        state,
-        update,
-    } = usePreferences();
+    const dispatch = useDispatch();
+
+    const preferredView = useSelector<RootState>(
+        state => state.preferences?.global?.updatedAtTimeView ?? "dynamic",
+    ) as AvailableUpdatedAtTimeViews;
+    const updatePreferredView = (value: AvailableUpdatedAtTimeViews) => dispatch(setUpdatedAtTimeView(value));
 
     const [now, setNow] = useState<Dayjs>(() => dayjs());
-
-    const preferredView = state?.global?.updatedAtTimeView ?? "dynamic";
-    const setPreferredView = view => {
-
-        update.global.setUpdatedAtTimeView(view);
-    };
 
     const format = (() => {
         switch (preferredView) {
@@ -38,16 +35,15 @@ const UpdatedAt = ({value, frequency}: IUpdatedAt) => {
     })();
 
     useEffect(() => {
-        const $interval = setInterval(() => {
-            setNow(dayjs());
-        }, frequency);
+        const $interval = setInterval(() =>
+            setNow(dayjs()), frequency);
 
         return () => clearInterval($interval);
     }, [frequency]);
 
     return (
         <ButtonBase
-            onClick={() => setPreferredView(preferredView === "static" ? "dynamic" : "static")}
+            onClick={() => updatePreferredView(preferredView === "static" ? "dynamic" : "static")}
         >
             <Box p={1}>
                 <Typography variant="body2" align="left">

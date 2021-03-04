@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {usePreferences, useQueryOptions} from "hooks";
+import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {useFetchStudentDailyDataAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -7,6 +7,8 @@ import dayjs, {Dayjs} from "dayjs";
 import {StudentDailyDataView} from "types";
 import {ErrorPage, ResponseWrapper} from "components";
 import {useTranslation} from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
+import {getMaxFutureDays, RootState, setStartPageMaxFutureDays} from "state";
 
 import StartPageView from "./StartPageView";
 import SkeletonView from "./SkeletonView";
@@ -29,16 +31,13 @@ const StartPage = () => {
     const {t} = useTranslation();
     const fetchDailyData = useFetchStudentDailyDataAPI();
     const queryOptions = useQueryOptions();
-    const {
-        state,
-        update,
-    } = usePreferences();
+    const dispatch = useDispatch();
+    const maxFutureDays = useSelector<RootState>(getMaxFutureDays) as number;
 
     const [dailyData, setDailyData] = useState<StudentDailyDataView>();
     const [targetedDate, setTargetedDate] = useState<Dayjs>(getTargetedDate);
 
-    const maxFutureDays = state?.global?.startPageMaxFutureDays ?? 7;
-    const setMaxFutureDays = update.global.setStartPageMaxFutureDays;
+    const setMaxFutureDays = (value: number) => dispatch(setStartPageMaxFutureDays(value));
 
     const {
         isLoading,
@@ -81,7 +80,7 @@ const StartPage = () => {
                     isLoading={isFetching}
                     onDailyDataChange={setDailyData}
                     onMaxFutureDaysChange={async value => {
-                        if (value !== state.global?.startPageMaxFutureDays) {
+                        if (value !== maxFutureDays) {
                             setMaxFutureDays(value);
                         }
                     }}

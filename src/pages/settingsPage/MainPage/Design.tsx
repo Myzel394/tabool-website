@@ -10,17 +10,18 @@ import {
     Radio,
     RadioGroup,
 } from "@material-ui/core";
-import {usePreferences} from "hooks";
 import {Information} from "components";
 import {FaMoon, FaSun, IoIosWater, WiMoonFull} from "react-icons/all";
+import {useDispatch, useSelector} from "react-redux";
+import {AvailableThemes, getTheme, RootState, setTheme} from "state";
 
 
 const Design = () => {
     const {t} = useTranslation();
-    const {
-        state,
-        update,
-    } = usePreferences();
+    const dispatch = useDispatch();
+
+    const theme = useSelector<RootState>(getTheme);
+    const updateTheme = (value: AvailableThemes) => dispatch(setTheme(value));
 
     return (
         <Paper>
@@ -30,8 +31,8 @@ const Design = () => {
                         <ListItemText primary={t("Thema")} />
                         <RadioGroup
                             name="_active_theme"
-                            value={state?.global?.theme ?? "light"}
-                            onChange={event => update.global.setTheme(event.target.value as "light" | "dark" | "blue" | "midnight")}
+                            value={theme}
+                            onChange={event => updateTheme(event.target.value as AvailableThemes)}
                         >
                             <FormControlLabel
                                 value="light"

@@ -3,13 +3,14 @@ import {Box, Grid, IconButton, Paper, Typography} from "@material-ui/core";
 import {FaFile, MdFileDownload} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import prettyBytes from "pretty-bytes";
-import {usePreferences} from "hooks";
 import dayjs, {Dayjs} from "dayjs";
+import {lazyDatetime} from "utils";
+import {useSelector} from "react-redux";
+import {RootState} from "state";
 
 import {Information} from "../components";
 import {TimeRelative} from "../statuses";
 import extensionIconMap from "../extensionIconMap";
-import {lazyDatetime} from "../../utils";
 
 export interface IMaterial {
     name: string;
@@ -21,7 +22,14 @@ export interface IMaterial {
 
 
 const Material = ({name, id, size, file, publishDatetime}: IMaterial) => {
-    const {state} = usePreferences();
+    const downloadDate = useSelector<RootState>(state => {
+        const value = state.preferences?.detailPage?.downloadedMaterials?.[id];
+
+        if (value) {
+            return dayjs(value);
+        }
+        return null;
+    }) as Dayjs | null;
     const {t} = useTranslation();
 
     const extension = name ? name
@@ -29,7 +37,6 @@ const Material = ({name, id, size, file, publishDatetime}: IMaterial) => {
         .pop()
         : "";
     const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
-    const downloadDate = state?.detailPage?.downloadedMaterials?.[id];
     const isAvailable = publishDatetime?.isBefore(dayjs());
 
     return (
