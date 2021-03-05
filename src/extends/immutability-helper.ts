@@ -1,11 +1,12 @@
-import {extend} from "immutability-helper";
-import _ from "lodash";
+import update, {extend} from "immutability-helper";
 
 // [keys, getIndexFromKey]
-type Value<KeyType = string> = [KeyType[], (key: KeyType, array: any[]) => [number, number]];
+type Value<KeyType = string> = [KeyType[], (key: KeyType, array) => [number, number]];
 
-extend<any[]>("$spliceDynamically", (value: Value, object: any[]) => {
-    const newArray = _.cloneDeep(object);
+extend("$spliceDynamically", (value: Value, object) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const newArray = [...object];
     const [keys, getIndex] = value;
 
     keys.forEach(key => {
@@ -24,3 +25,13 @@ extend<any[]>("$spliceDynamically", (value: Value, object: any[]) => {
 
     return newArray;
 });
+
+extend("$auto", (value, object) =>
+    (object
+        ? update(object, value)
+        : update({}, value)));
+
+extend("$autoArray", (value, object) =>
+    (object
+        ? update(object, value)
+        : update([], value)));

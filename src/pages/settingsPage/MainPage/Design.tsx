@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {
     FormControl,
@@ -78,4 +78,4 @@ const Design = () => {
     );
 };
 
-export default memo(Design);
+export default Design;

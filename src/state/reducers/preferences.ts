@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import persistConfig from "constants/persistConfig";
+
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {vivify} from "utils";
 import {Preferences} from "types";
 import update from "immutability-helper";
+import {persistReducer} from "redux-persist";
+
 
 // eslint-disable-next-line import/no-cycle
 import {RootState} from "../store";
@@ -23,36 +27,55 @@ export const preferenceSlice = createSlice({
     name: "preference",
     initialState: {} as Preferences,
     reducers: {
-        setRaw: (state: Preferences, {payload: data}: PayloadAction<Preferences>) => {
-            // eslint-disable-next-line no-param-reassign
-            state = data;
-        },
-        reset: (state: Preferences) => {
-            // eslint-disable-next-line no-param-reassign
-            state = {};
-        },
+        setRaw: (state: Preferences, {payload: data}: PayloadAction<Preferences>) =>
+            data,
+        reset: (state: Preferences) => ({}),
 
         // Global
-        setTheme: (state: Preferences, {payload: theme}: PayloadAction<AvailableThemes>) => {
-            const vivifiedState = vivify(state);
-
-            vivifiedState.global.theme = theme;
-        },
-        setAllowStatistics: (state: Preferences, {payload: allowStatistics}: PayloadAction<boolean>) => {
-            const vivifiedState = vivify(state);
-
-            vivifiedState.global.allowStatistics = allowStatistics;
-        },
-        setUpdatedAtTimeView: (state: Preferences, {payload: type}: PayloadAction<AvailableUpdatedAtTimeViews>) => {
-            const vivifiedState = vivify(state);
-
-            vivifiedState.global.updatedAtTimeView = type;
-        },
-        setStartPageMaxFutureDays: (state: Preferences, {payload: maxDays}: PayloadAction<number>) => {
-            const vivifiedState = vivify(state);
-
-            vivifiedState.global.startPageMaxFutureDays = maxDays;
-        },
+        setTheme: (state: Preferences, {payload: theme}: PayloadAction<AvailableThemes>) =>
+            update(state, {
+                global: {
+                    // @ts-ignore
+                    $auto: {
+                        theme: {
+                            $set: theme,
+                        },
+                    },
+                },
+            }),
+        setAllowStatistics: (state: Preferences, {payload: allowStatistics}: PayloadAction<boolean>) =>
+            update(state, {
+                global: {
+                    // @ts-ignore
+                    $auto: {
+                        allowStatistics: {
+                            $set: allowStatistics,
+                        },
+                    },
+                },
+            }),
+        setUpdatedAtTimeView: (state: Preferences, {payload: type}: PayloadAction<AvailableUpdatedAtTimeViews>) =>
+            update(state, {
+                global: {
+                    // @ts-ignore
+                    $auto: {
+                        updatedAtTimeView: {
+                            $set: type,
+                        },
+                    },
+                },
+            }),
+        setStartPageMaxFutureDays: (state: Preferences, {payload: maxDays}: PayloadAction<number>) =>
+            update(state, {
+                global: {
+                    // @ts-ignore
+                    $auto: {
+                        startPageMaxFutureDays: {
+                            $set: maxDays,
+                        },
+                    },
+                },
+            }),
 
         // DetailPage
         addDetailPageOrdering: (state: Preferences, {
@@ -60,41 +83,67 @@ export const preferenceSlice = createSlice({
                 identifier,
                 ordering,
             },
-        }: PayloadAction<IAddDetailPageOrdering>) => {
-            const vivifiedState = vivify(state);
-
-            vivifiedState.detailPage.ordering = update(vivifiedState.detailPage.ordering ?? {}, {
-                [identifier]: {
-                    $set: ordering,
+        }: PayloadAction<IAddDetailPageOrdering>) =>
+            update(state, {
+                detailPage: {
+                    // @ts-ignore
+                    $auto: {
+                        ordering: {
+                            // @ts-ignore
+                            $auto: {
+                                [identifier]: {
+                                    $set: ordering,
+                                },
+                            },
+                        },
+                    },
                 },
-            });
-        },
+            }),
         addDownloadedMaterialsDate: (state: Preferences, {
             payload: {
                 date,
                 materialId,
             },
-        }: PayloadAction<IAddDownloadedMaterialsDate>) => {
-            const vivifiedState = vivify(state);
-
-            vivifiedState.detailPage.downloadedMaterials = update(vivifiedState.detailPage.downloadedMaterials ?? {}, {
-                [materialId]: {
-                    $set: date ?? new Date(),
+        }: PayloadAction<IAddDownloadedMaterialsDate>) =>
+            update(state, {
+                detailPage: {
+                    // @ts-ignore
+                    $auto: {
+                        downloadedMaterials: {
+                            // @ts-ignore
+                            $auto: {
+                                [materialId]: {
+                                    $set: date ?? new Date(),
+                                },
+                            },
+                        },
+                    },
                 },
-            });
-        },
+            }),
 
         // Timetable
-        setShowFreePeriod: (state: Preferences, {type: showFreePeriod}: PayloadAction<boolean>) => {
-            const vivifiedState = vivify(state);
-
-            vivifiedState.timetable.showFreePeriods = showFreePeriod;
-        },
-        setShowDetails: (state: Preferences, {type: showDetails}: PayloadAction<boolean>) => {
-            const vivifiedState = vivify(state);
-
-            vivifiedState.timetable.showDetails = showDetails;
-        },
+        setShowFreePeriod: (state: Preferences, {type: showFreePeriod}: PayloadAction<boolean>) =>
+            update(state, {
+                global: {
+                    // @ts-ignore
+                    $auto: {
+                        showFreePeriods: {
+                            $set: showFreePeriod,
+                        },
+                    },
+                },
+            }),
+        setShowDetails: (state: Preferences, {type: showDetails}: PayloadAction<boolean>) =>
+            update(state, {
+                global: {
+                    // @ts-ignore
+                    $auto: {
+                        showDetails: {
+                            $set: showDetails,
+                        },
+                    },
+                },
+            }),
     },
 });
 
@@ -114,4 +163,7 @@ export const {
     setUpdatedAtTimeView,
 } = preferenceSlice.actions;
 
-export default preferenceSlice.reducer;
+const reducer = preferenceSlice.reducer;
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+export default persistedReducer;

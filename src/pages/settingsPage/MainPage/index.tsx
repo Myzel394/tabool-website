@@ -2,7 +2,7 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {DefaultPage} from "components";
 import {Box, Grid, Typography} from "@material-ui/core";
-import {useUser} from "hooks";
+import {useTitle, useUser} from "hooks";
 
 import Area from "../Area";
 
@@ -15,6 +15,8 @@ import DataShare from "./DataShare";
 const MainPage = () => {
     const {t} = useTranslation();
     const user = useUser();
+
+    useTitle(t("Einstellungen"));
 
     return (
         <DefaultPage>

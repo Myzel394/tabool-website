@@ -52,6 +52,7 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
 
         return instance;
     }, [logout]);
+
     const buildUrl = useCallback((url: string) => {
         if (state.data?.userType === UserType.Student) {
             return `/api/student${url}`;
