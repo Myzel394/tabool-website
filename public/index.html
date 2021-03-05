@@ -66,35 +66,35 @@
         <h1 style="color: #ffa723; font-family: 'Roboto', Roboto, Google Sans, Helvetica Neue, Helvetica, Arial, sans-serif;">
             Wird geladen...
         </h1>
-        <script async>
-            // Loading content improving
-            var _preferences$global;
-
-            var preferences = JSON.parse(localStorage.getItem("preferences"));
-            var theme = preferences === null || preferences === void 0 || (_preferences$global = preferences.global) === null || _preferences$global === void 0 ? void 0 : _preferences$global.theme;
-            var $element = document.getElementById("loading_content");
-            theme === "dark" ? $element.style.backgroundColor = "#1e1e1e" : theme === "blue" ? $element.style.backgroundColor = "#091740" : theme === "midnight" ? $element.style.backgroundColor = "#090909" : void 0;
-
-            /*
-            const preferences = JSON.parse(localStorage.getItem("preferences"));
-            const theme = preferences?.global?.theme;
-            const $element = document.getElementById("loading_content");
-
-            switch (theme) {
-                case "dark":
-                    $element.style.backgroundColor = "#1e1e1e";
-                    break;
-                case "blue":
-                    $element.style.backgroundColor = "#091740";
-                    break;
-                case "midnight":
-                    $element.style.backgroundColor = "#090909";
-                    break;
-            }
-            */
-        </script>
     </div>
 </div>
+<script>
+    // Set background color
+    var redux = JSON.parse(localStorage.getItem("persist:redux"));
+    var global = JSON.parse(redux.global);
+    var theme = global === null || global === void 0 ? void 0 : global.theme;
+    var $element = document.getElementById("loading_content");
+    theme === "dark" ? $element.style.backgroundColor = "#1e1e1e" : theme === "blue" ? $element.style.backgroundColor = "#091740" : theme === "midnight" ? $element.style.backgroundColor = "#090909" : void 0;
+
+    /*
+    const redux = JSON.parse(localStorage.getItem("persist:redux"));
+    const global = JSON.parse(redux.global);
+    const theme = global?.theme;
+    const $element = document.getElementById("loading_content");
+
+    switch (theme) {
+        case "dark":
+            $element.style.backgroundColor = "#1e1e1e";
+            break;
+        case "blue":
+            $element.style.backgroundColor = "#091740";
+            break;
+        case "midnight":
+            $element.style.backgroundColor = "#090909";
+            break;
+    }
+    */
+</script>
 <script async defer>
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
