@@ -8,7 +8,7 @@ const withUserType = (studentComponent: FC, teacherComponent: FC) => props => {
 
     if (!user.data?.userType) {
         logout();
-        throw new Error("User has no userType");
+        return null;
     }
 
     const Component = {

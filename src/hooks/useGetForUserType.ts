@@ -8,7 +8,9 @@ const useGetForUserType = <S, T>(student: S, teacher: T): S | T => {
 
     if (!user.data?.userType) {
         logout();
-        throw new Error("User has no userType");
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore: This won't be called, because logout redirects user
+        return null;
     }
 
     return {
