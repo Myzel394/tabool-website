@@ -4,9 +4,9 @@ import {FaFile, MdFileDownload} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import prettyBytes from "pretty-bytes";
 import dayjs, {Dayjs} from "dayjs";
-import {lazyDatetime} from "utils";
-import {useSelector} from "react-redux";
-import {RootState} from "state";
+import {getMaterialDownloadDateString} from "utils";
+import {useDispatch, useSelector} from "react-redux";
+import {addDownloadedMaterialsDate, getMaterialDownloadDate, RootState} from "state";
 
 import {Information} from "../components";
 import {TimeRelative} from "../statuses";
@@ -22,22 +22,14 @@ export interface IMaterial {
 
 
 const Material = ({name, id, size, file, publishDatetime}: IMaterial) => {
-    const downloadDate = useSelector<RootState>(state => {
-        const value = state.preferences?.detailPage?.downloadedMaterials?.[id];
-
-        if (value) {
-            return dayjs(value);
-        }
-        return null;
-    }) as Dayjs | null;
+    const dispatch = useDispatch();
+    const downloadDate = useSelector<RootState>(getMaterialDownloadDate(id)) as Dayjs | null;
     const {t} = useTranslation();
 
-    const extension = name ? name
-        .split(".")
-        .pop()
-        : "";
+    const extension = name ? name.split(".").pop() : "";
     const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
     const isAvailable = publishDatetime?.isBefore(dayjs());
+
 
     return (
         <Paper>
@@ -58,22 +50,7 @@ const Material = ({name, id, size, file, publishDatetime}: IMaterial) => {
                                     text={name}
                                     color="textPrimary"
                                 />
-                                {(() => {
-                                    if (!isAvailable && publishDatetime) {
-                                        const isToday = lazyDatetime(dayjs(), "date") === lazyDatetime(publishDatetime, "date");
-                                        const dateFormatted = isToday
-                                            ? t("{{time}} Uhr", {time: publishDatetime.format("LT")})
-                                            : publishDatetime.format("lll");
-
-                                        return (
-                                            <Typography variant="body2" color="textSecondary">
-                                                {t("Verfügbar ab {{date}}", {
-                                                    date: dateFormatted,
-                                                })}
-                                            </Typography>
-                                        );
-                                    }
-                                })()}
+                                {!isAvailable && getMaterialDownloadDateString(t, publishDatetime)}
                                 <Typography variant="body2" color="textSecondary">
                                     {t("Größe: {{size}}", {
                                         size: prettyBytes(size, {
@@ -97,7 +74,17 @@ const Material = ({name, id, size, file, publishDatetime}: IMaterial) => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <IconButton color="default" href={file} target="_blank" disabled={!isAvailable}>
+                        <IconButton
+                            color="default"
+                            href={file}
+                            target="_blank"
+                            disabled={!isAvailable}
+                            onClick={() => {
+                                dispatch(addDownloadedMaterialsDate({
+                                    materialId: id,
+                                }));
+                            }}
+                        >
                             <MdFileDownload />
                         </IconButton>
                     </Grid>

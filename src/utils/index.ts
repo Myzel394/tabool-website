@@ -51,3 +51,4 @@ export {default as getStartTime} from "./getStartTime";
 export {default as getEndTime} from "./getEndTime";
 export {default as convertToLocalWeekday} from "./convertToLocalWeekday";
 export {default as observeStore} from "./observeStore";
+export {default as getMaterialDownloadDateString} from "./getMaterialDownloadDateString";
