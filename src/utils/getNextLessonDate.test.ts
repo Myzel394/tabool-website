@@ -1,8 +1,7 @@
 import dayjs, {Dayjs} from "dayjs";
 
-import {LessonDate} from "./getNextLessonDate";
-
-import {combineDatetime, getNextLessonDate} from ".";
+import getNextLessonDate, {LessonDate} from "./getNextLessonDate";
+import combineDatetime from "./combineDatetime";
 
 const expectDatesSame = (firstDate: Dayjs, secondDate: Dayjs) => expect(firstDate.isSame(secondDate)).toBeTruthy();
 

@@ -14,7 +14,7 @@ describe("convertToLocalWeekday", () => {
             const actual = convertToLocalWeekday(value);
 
             // eslint-disable-next-line no-console
-            console.log(`Testnig ${value} -> ${expected}`);
+            console.log(`Testing ${value} -> ${expected}`);
             expect(actual).toEqual(expected);
         }
     });
