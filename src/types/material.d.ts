@@ -3,7 +3,7 @@ import {Dayjs} from "dayjs";
 import {StudentLessonDateMixin, TeacherLessonDateMixin} from "./lesson";
 
 export interface StudentMaterialDetail extends StudentLessonDateMixin {
-    publishDatetime: Dayjs | null;
+    publishDatetime: Dayjs;
     name: string;
     file: string;
     size: number;

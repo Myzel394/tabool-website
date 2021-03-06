@@ -5,7 +5,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Preferences} from "types";
 import update from "immutability-helper";
 import {persistReducer} from "redux-persist";
-
+import dayjs, {Dayjs} from "dayjs";
 
 // eslint-disable-next-line import/no-cycle
 import {RootState} from "../store";
@@ -20,19 +20,19 @@ interface IAddDetailPageOrdering {
 
 interface IAddDownloadedMaterialsDate {
     materialId: string;
-    date: Date;
+    date?: Date;
 }
 
 export const preferenceSlice = createSlice({
     name: "preference",
     initialState: {} as Preferences,
     reducers: {
-        setRaw: (state: Preferences, {payload: data}: PayloadAction<Preferences>) =>
+        setRaw: (state, {payload: data}: PayloadAction<Preferences>) =>
             data,
-        reset: (state: Preferences) => ({}),
+        reset: () => ({}),
 
         // Global
-        setTheme: (state: Preferences, {payload: theme}: PayloadAction<AvailableThemes>) =>
+        setTheme: (state, {payload: theme}: PayloadAction<AvailableThemes>) =>
             update(state, {
                 global: {
                     // @ts-ignore
@@ -43,7 +43,7 @@ export const preferenceSlice = createSlice({
                     },
                 },
             }),
-        setAllowStatistics: (state: Preferences, {payload: allowStatistics}: PayloadAction<boolean>) =>
+        setAllowStatistics: (state, {payload: allowStatistics}: PayloadAction<boolean>) =>
             update(state, {
                 global: {
                     // @ts-ignore
@@ -54,7 +54,7 @@ export const preferenceSlice = createSlice({
                     },
                 },
             }),
-        setUpdatedAtTimeView: (state: Preferences, {payload: type}: PayloadAction<AvailableUpdatedAtTimeViews>) =>
+        setUpdatedAtTimeView: (state, {payload: type}: PayloadAction<AvailableUpdatedAtTimeViews>) =>
             update(state, {
                 global: {
                     // @ts-ignore
@@ -65,7 +65,7 @@ export const preferenceSlice = createSlice({
                     },
                 },
             }),
-        setStartPageMaxFutureDays: (state: Preferences, {payload: maxDays}: PayloadAction<number>) =>
+        setStartPageMaxFutureDays: (state, {payload: maxDays}: PayloadAction<number>) =>
             update(state, {
                 global: {
                     // @ts-ignore
@@ -78,7 +78,7 @@ export const preferenceSlice = createSlice({
             }),
 
         // DetailPage
-        addDetailPageOrdering: (state: Preferences, {
+        addDetailPageOrdering: (state, {
             payload: {
                 identifier,
                 ordering,
@@ -99,10 +99,10 @@ export const preferenceSlice = createSlice({
                     },
                 },
             }),
-        addDownloadedMaterialsDate: (state: Preferences, {
+        addDownloadedMaterialsDate: (state, {
             payload: {
-                date,
                 materialId,
+                date,
             },
         }: PayloadAction<IAddDownloadedMaterialsDate>) =>
             update(state, {
@@ -113,7 +113,7 @@ export const preferenceSlice = createSlice({
                             // @ts-ignore
                             $auto: {
                                 [materialId]: {
-                                    $set: date ?? new Date(),
+                                    $set: (date ?? new Date()).toISOString(),
                                 },
                             },
                         },
@@ -122,7 +122,7 @@ export const preferenceSlice = createSlice({
             }),
 
         // Timetable
-        setShowFreePeriod: (state: Preferences, {type: showFreePeriod}: PayloadAction<boolean>) =>
+        setShowFreePeriod: (state, {type: showFreePeriod}: PayloadAction<boolean>) =>
             update(state, {
                 global: {
                     // @ts-ignore
@@ -133,7 +133,7 @@ export const preferenceSlice = createSlice({
                     },
                 },
             }),
-        setShowDetails: (state: Preferences, {type: showDetails}: PayloadAction<boolean>) =>
+        setShowDetails: (state, {type: showDetails}: PayloadAction<boolean>) =>
             update(state, {
                 global: {
                     // @ts-ignore
@@ -149,6 +149,12 @@ export const preferenceSlice = createSlice({
 
 export const getTheme = (state: RootState): AvailableThemes => state.preferences.global?.theme ?? "light";
 export const getMaxFutureDays = (state: RootState): number => state.preferences.global?.startPageMaxFutureDays ?? 7;
+export const getMaterialDownloadDate = (materialId: string): ((state: RootState) => Dayjs | null) =>
+    (state: RootState) => {
+        const value = state.preferences.detailPage?.downloadedMaterials?.[materialId];
+
+        return value ? dayjs(value) : null;
+    };
 
 export const {
     reset,
