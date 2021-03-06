@@ -4,12 +4,12 @@ import {AxiosContext} from "contexts";
 import {FetchListData, PaginatedResponse, StudentMaterialDetail} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
-
-import {lazyDatetime} from "../../../../utils";
+import {lazyDatetime} from "utils";
 
 import parseStudentMaterialDetail from "./parseStudentMaterialDetail";
 
 export interface IFetchStudentMaterialData extends FetchListData {
+    ordering?: "publish_datetime" | "-publish_datetime";
     publishDatetimeMin?: Dayjs;
     publishDatetimeMax?: Dayjs;
     courseId?: string;
@@ -26,12 +26,14 @@ const useFetchStudentMaterialListAPI = () => {
         search,
         publishDatetimeMax,
         publishDatetimeMin,
+        ordering,
     }: IFetchStudentMaterialData = {}, page = 1): Promise<IFetchStudentMaterialResponse> => {
         const {data} = await instance.get(buildUrl("/material/"), {
             params: {
                 page,
                 pageSize,
                 search,
+                ordering,
                 course: courseId,
                 publish_datetime__gte: publishDatetimeMin ? lazyDatetime(publishDatetimeMin) : undefined,
                 publish_datetime__lte: publishDatetimeMax ? lazyDatetime(publishDatetimeMax) : undefined,

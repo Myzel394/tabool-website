@@ -9,6 +9,7 @@ import {lazyDatetime} from "utils";
 import parseStudentHomeworkApprox from "./parseStudentHomeworkApprox";
 
 export interface IFetchStudentHomeworkData extends FetchListData {
+    ordering?: "due_date" | "-due_date";
     dueDateMin?: Dayjs;
     dueDateMax?: Dayjs;
     courseId?: string;

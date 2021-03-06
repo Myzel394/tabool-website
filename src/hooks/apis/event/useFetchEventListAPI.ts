@@ -4,8 +4,7 @@ import {AxiosContext} from "contexts";
 import {EventDetail, FetchListData, PaginatedResponse} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
-
-import {lazyDatetime} from "../../../utils";
+import {lazyDatetime} from "utils";
 
 import parseEventDetail from "./parseEventDetail";
 
