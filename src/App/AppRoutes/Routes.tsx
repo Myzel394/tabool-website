@@ -61,6 +61,12 @@ export default function Routes() {
                     path="/app/agenda/exam/detail/:id/"
                     component={lazy(() => import("pages/detail/ExamDetailPage"))}
                 />
+
+                <Route
+                    exact
+                    path="/app/agenda/files/"
+                    component={lazy(() => import("pages/FileList"))}
+                />
                 {/* Landing page }
                 {!user.isAuthenticated &&
                 <Route
