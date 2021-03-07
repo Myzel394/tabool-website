@@ -1,6 +1,7 @@
 import {createContext} from "react";
+import {StudentMaterialDetail} from "types";
 
-interface IFileListContext {
+export interface IFileListContext {
     subtractDownloaded: boolean;
     subtractNotAvailable: boolean;
     rawSearch: string;
@@ -9,6 +10,15 @@ interface IFileListContext {
     setSubtractDownloaded: (value: boolean) => void;
     setSubtractNotAvailable: (value: boolean) => void;
     setSearch: (value: string) => void;
+
+    // Helps avoiding unnecessary queries
+    // When there is no initialData available, there is no need to search for a file.
+    $initialData: {
+        current: Record<string, {
+            materials: StudentMaterialDetail[];
+            hasNextPage: boolean;
+        }>;
+    };
 }
 
 const FileListContext = createContext<IFileListContext>({
@@ -20,6 +30,9 @@ const FileListContext = createContext<IFileListContext>({
     setSearch: () => null,
     setSubtractDownloaded: () => null,
     setSubtractNotAvailable: () => null,
+    $initialData: {
+        current: {},
+    },
 });
 
 export default FileListContext;

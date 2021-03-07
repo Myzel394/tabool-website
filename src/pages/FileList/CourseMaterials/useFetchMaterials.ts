@@ -30,12 +30,30 @@ const useFetchMaterials = (courseId: string): IUseFetchMaterials => {
         search,
         subtractNotAvailable,
         subtractDownloaded,
+        $initialData,
     } = useContext(FileListContext);
+    const thisInitialData = $initialData.current[courseId];
 
     const params = {
         courseId,
         search,
     };
+    const shouldRefetch = useMemo(() => {
+        if (thisInitialData === undefined) {
+            return true;
+        }
+
+        if (thisInitialData.hasNextPage) {
+            return true;
+        }
+
+        if (search) {
+            const lowercaseSearch = search.toLowerCase();
+            return thisInitialData.materials.some(material => material.name.toLowerCase().includes(lowercaseSearch));
+        } else {
+            return false;
+        }
+    }, [thisInitialData, search]);
 
     const queryData = useInfiniteQuery<IFetchStudentMaterialResponse, AxiosError>(
         ["fetch_materials_course", params],
@@ -47,6 +65,17 @@ const useFetchMaterials = (courseId: string): IUseFetchMaterials => {
         {
             ...queryOptions,
             getNextPageParam: page => page.next,
+            onSuccess: (data) => {
+                const parent = $initialData.current[courseId] ?? {materials: [], hasNextPage: true};
+                const materials = data.pages.flatMap(page => page.results);
+
+                $initialData.current[courseId] = {
+                    materials: [...parent.materials, ...materials],
+                    hasNextPage: Boolean(data.pages[data.pages.length - 1].next),
+                };
+            },
+            enabled: shouldRefetch,
+            refetchOnWindowFocus: false,
         },
     );
 
