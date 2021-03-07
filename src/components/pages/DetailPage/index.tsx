@@ -201,12 +201,22 @@ const DetailPage = <AvailableKeys extends string,
                         <Grid item>
                             <ButtonGroup orientation="vertical" color="primary">
                                 {searchAllPath && (
-                                    <Link component={Button} href={searchAllPath} endIcon={<MdSearch />}>
+                                    <Link
+                                        component={Button}
+                                        href={searchAllPath}
+                                        endIcon={<MdSearch />}
+                                        underline="none"
+                                    >
                                         {t("Suchen")}
                                     </Link>
                                 )}
                                 {addPath && (
-                                    <Link component={Button} href={addPath} endIcon={<MdAdd />}>
+                                    <Link
+                                        component={Button}
+                                        href={addPath}
+                                        endIcon={<MdAdd />}
+                                        underline="none"
+                                    >
                                         {t("Hinzufügen")}
                                     </Link>
                                 )}
