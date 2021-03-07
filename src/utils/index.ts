@@ -21,6 +21,7 @@ export * from "./getISOTime";
 export * from "./lazyDatetime";
 export * from "./buildPath";
 export * from "./createShort";
+export * from "./setTime";
 
 export {default as isAllDay} from "./isAllDay";
 export {default as snakeCaseKeys} from "./snakeCaseKeys";
@@ -52,3 +53,4 @@ export {default as getEndTime} from "./getEndTime";
 export {default as convertToLocalWeekday} from "./convertToLocalWeekday";
 export {default as observeStore} from "./observeStore";
 export {default as getMaterialDownloadDateString} from "./getMaterialDownloadDateString";
+export {default as getLessonMinMaxTime} from "./getLessonMinMaxTime";
