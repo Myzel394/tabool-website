@@ -13,6 +13,7 @@ import {
 import {useTranslation} from "react-i18next";
 import {MdMoreHoriz} from "react-icons/all";
 import tinycolor from "tinycolor2";
+import {Alert} from "@material-ui/lab";
 
 import FileListContext from "../FileListContext";
 
@@ -29,6 +30,7 @@ export interface ICourseMaterials {
 const useClasses = makeStyles(theme => ({
     wrapper: {
         width: "100%",
+        boxShadow: "none",
     },
     color: {
         width: ".8rem",
@@ -108,7 +110,7 @@ const CourseMaterials = ({
             onChange={() => setOpen(prevState => !prevState)}
         >
             <AccordionSummary>
-                <Box display="flex" alignItems="center">
+                <Box display="flex" alignItems="center" my={1}>
                     <div
                         style={{
                             backgroundColor: tinycolor(color).toString(),
@@ -121,7 +123,7 @@ const CourseMaterials = ({
                         variant={materials.length !== amount && amount === 0 ? "dot" : "standard"}
                         max={hasNextPage ? amount : 99}
                     >
-                        <Typography variant="h5">
+                        <Typography variant="h5" color={open ? "textPrimary" : "textSecondary"}>
                             {courseName}
                         </Typography>
                     </Badge>
@@ -129,7 +131,9 @@ const CourseMaterials = ({
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
                 <Box display="flex" flexDirection="column" alignItems="center">
-                    <Materials materials={materials} />
+                    {materials.length
+                        ? <Materials materials={materials} />
+                        : <Alert severity="info">{t("Keine Materialien verfügbar")}</Alert>}
                     {!isFetchingNextPage && hasNextPage && (
                         <Button startIcon={<MdMoreHoriz />} onClick={() => fetchNextPage()}>
                             {t("Weitere laden")}
