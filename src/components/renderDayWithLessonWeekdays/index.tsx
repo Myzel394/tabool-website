@@ -15,7 +15,7 @@ const renderDayWithLessonWeekdays = (
     (day, selectedDate, x, dayComponent) => {
         if (
             // Lesson
-            day && weekdays.includes(day.day() - 1) &&
+            day && weekdays.includes(day.day()) &&
             customCheck(day, selectedDate, x, dayComponent)
         ) {
             const isSelected = Boolean(selectedDate && replaceDatetime(day, "time").isSame(replaceDatetime(selectedDate, "time")));

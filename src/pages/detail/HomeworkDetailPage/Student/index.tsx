@@ -12,6 +12,7 @@ import {
     BooleanStatus,
     DetailPage,
     ErrorPage,
+    HomeworkDueDateField,
     HomeworkTypeField,
     LoadingPage,
     renderDayWithLessonWeekdays,
@@ -43,7 +44,6 @@ import * as yup from "yup";
 import {Field} from "formik";
 import {LessonIcon} from "components/icons";
 import {buildPath, lazyDatetime} from "utils";
-import {DateTimePicker} from "formik-material-ui-pickers";
 import {Alert} from "@material-ui/lab";
 import {useParams} from "react-router";
 
@@ -263,13 +263,9 @@ const HomeworkDetailPage = () => {
                                     isEqual: (oldValue: Dayjs, newValue: Dayjs) => oldValue?.isSame?.(newValue),
                                     disableShowMore: true,
                                     renderField: canEditHomework && (({getFieldProps, setFieldValue}) =>
-                                        <Field
+                                        <HomeworkDueDateField
                                             {...getFieldProps("dueDate")}
-                                            disablePast
-                                            component={DateTimePicker}
                                             renderDay={renderDueDateDay}
-                                            inputVariant="outlined"
-                                            ampm={false}
                                             onChange={date => setFieldValue("dueDate", date)}
                                         />
                                     ),
