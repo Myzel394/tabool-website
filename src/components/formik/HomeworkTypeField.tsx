@@ -7,8 +7,7 @@ import {AxiosError} from "axios";
 import {AiFillTool} from "react-icons/all";
 import {FormGroup, FormHelperText} from "@material-ui/core";
 import {combineAutocompletions} from "utils";
-
-import {AutocompleteResponse} from "../../types";
+import {AutocompleteResponse} from "types";
 
 import AutocompleteField from "./AutocompleteField";
 
