@@ -43,12 +43,12 @@ const File = ({
         : "";
     const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
     const secondaryItems = [
-        prettyBytes(size, {
-            locale: "de",
-        }),
         !isAvailable && getMaterialDownloadDateString(t, publishDatetime),
         isAvailable && date && t("Heruntergeladen am {{date}}", {
             date: dayjs(date).format("lll"),
+        }),
+        prettyBytes(size, {
+            locale: "de",
         }),
     ].filter(Boolean);
 

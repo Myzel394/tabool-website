@@ -41,7 +41,7 @@ const useFetchMaterials = (courseId: string): IUseFetchMaterials => {
         ["fetch_materials_course", params],
         ({pageParam}) => fetchMaterials({
             ...params,
-            pageSize: 2,
+            pageSize: 20,
             ordering: "publish_datetime",
         }, pageParam),
         {
