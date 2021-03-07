@@ -67,6 +67,12 @@ export default function Routes() {
                     path="/app/agenda/files/"
                     component={lazy(() => import("pages/FileList"))}
                 />
+                {/* Add pages */}
+                <Route
+                    exact
+                    path="/app/add/homework//"
+                    component={lazy(() => import("pages/add/HomeworkAddPage"))}
+                />
                 {/* Landing page }
                 {!user.isAuthenticated &&
                 <Route
