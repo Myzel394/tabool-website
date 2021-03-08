@@ -1,4 +1,5 @@
 import {Dispatch, SetStateAction} from "react";
+import {isIOS} from "react-device-detect";
 
 import usePersistentStorage from "./usePersistentStorage";
 
@@ -57,6 +58,10 @@ const hasLocationGranted = async (): Promise<PermissionType | undefined> => {
 };
 
 const askNotification = () => new Promise<PermissionType>((resolve) => {
+    if (isIOS) {
+        resolve(PermissionType.NotAvailable);
+    }
+
     const handleResult = result => {
         switch (result) {
             case "granted":
@@ -102,7 +107,7 @@ const askLocation = () =>
     });
 
 const defaultValue = {
-    notification: PermissionType.Default,
+    notification: isIOS ? PermissionType.NotAvailable : PermissionType.Default,
     location: PermissionType.Default,
 };
 

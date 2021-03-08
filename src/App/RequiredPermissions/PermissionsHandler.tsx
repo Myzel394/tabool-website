@@ -1,7 +1,6 @@
 import React from "react";
 import {usePermissions} from "hooks";
 import {PermissionType} from "hooks/usePermissions";
-import {isIOS} from "react-device-detect";
 
 import {LocationPermission, NotificationPermission} from "./permissions";
 
@@ -14,7 +13,7 @@ const PermissionsHandler = ({children}) => {
     const hasUndecidedPermissions = new Set(Object.values(permStates)).has(PermissionType.Default);
 
     if (hasUndecidedPermissions) {
-        if (permStates.notification === PermissionType.Default && !isIOS) {
+        if (permStates.notification === PermissionType.Default) {
             return (
                 <NotificationPermission
                     onDone={state =>
