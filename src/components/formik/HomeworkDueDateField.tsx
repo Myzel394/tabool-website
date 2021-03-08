@@ -22,6 +22,7 @@ const HomeworkDueDateField = ({InputProps, ...other}: any) => {
             shouldDisableDate={date => !VALID_WEEKDAYS.includes(date.day())}
             inputVariant="outlined"
             ampm={false}
+            format="LLL"
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">

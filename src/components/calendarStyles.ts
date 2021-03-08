@@ -17,6 +17,7 @@ const calendarStyles = (theme: Theme) => {
             },
             "& .rbc-events-container": {
                 borderColor: color,
+                margin: 0,
             },
             "& .rbc-time-header-content": {
                 borderColor: color,

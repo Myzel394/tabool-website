@@ -5,13 +5,14 @@ import {useFetchStudentCurrentTimetableAPI} from "hooks/apis";
 import {useInheritedState, useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
-import {Button, CircularProgress, FormGroup, FormHelperText} from "@material-ui/core";
+import {Box, Button, CircularProgress, FormGroup, FormHelperText, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import dayjs, {Dayjs} from "dayjs";
 import {findNextDate, replaceDatetime} from "utils";
 
 import {SimpleDialog} from "../../components";
 import {PrimaryButton} from "../../buttons";
+import {LessonIcon} from "../../icons";
 
 import Timetable from "./Timetable";
 import LessonFieldContext, {LessonIdentifier} from "./LessonFieldContext";
@@ -28,6 +29,8 @@ export interface ILessonField extends FieldProps {
     allowedMaxTime?: Dayjs;
     allowedMinDate?: Dayjs;
     allowedMaxDate?: Dayjs;
+    disablePast?: boolean;
+    disableFuture?: boolean;
 
     onChange?: (event) => any;
     helpText?: string;
@@ -62,6 +65,8 @@ const LessonField = ({
     allowedMaxTime,
     allowedMinDate,
     allowedMinTime,
+    disablePast,
+    disableFuture,
 
     helpText,
     onChange: customOnChange,
@@ -110,14 +115,12 @@ const LessonField = ({
         <>
             <FormGroup>
                 <Button
+                    size="large"
+                    startIcon={<LessonIcon size="1rem" />}
                     variant="outlined"
                     onClick={() => setIsOpen(true)}
                 >
                     {(() => {
-                        if (isLoading) {
-                            return <CircularProgress size="1rem" color="inherit" />;
-                        }
-
                         if (lesson && lessonDate) {
                             return t("{{courseName}} ({{date}})", {
                                 courseName: lesson.course.name,
@@ -125,7 +128,7 @@ const LessonField = ({
                             });
                         }
 
-                        return t("Fach auswählen");
+                        return t("Fach auswählen") + (required ? "*" : "");
                     })()}
                 </Button>
                 <FormHelperText error={Boolean(isError)}>
@@ -140,8 +143,24 @@ const LessonField = ({
 
                     allowedMinTime,
                     allowedMaxTime,
-                    allowedMinDate: allowedMinDate ? replaceDatetime(allowedMinDate, "time") : undefined,
-                    allowedMaxDate: allowedMaxDate ? replaceDatetime(allowedMaxDate, "time") : undefined,
+                    allowedMinDate: (() => {
+                        if (allowedMinDate) {
+                            return replaceDatetime(allowedMinDate, "time");
+                        } else if (disablePast) {
+                            return dayjs();
+                        }
+
+                        return undefined;
+                    })(),
+                    allowedMaxDate: (() => {
+                        if (allowedMaxDate) {
+                            return replaceDatetime(allowedMaxDate, "time");
+                        } else if (disableFuture) {
+                            return dayjs();
+                        }
+
+                        return undefined;
+                    })(),
 
                     required: Boolean(required),
                     disableNavigation: Boolean(disableNavigation),
@@ -161,7 +180,7 @@ const LessonField = ({
                     primaryButton={
                         <PrimaryButton
                             disabled={Boolean(
-                                (required && selectedLessonIdentifier && !selectedLessonIdentifier.id) ||
+                                (required && !selectedLessonIdentifier?.id) ||
                                 ((selectedLessonIdentifier && lessonId === selectedLessonIdentifier.id) &&
                                     (selectedLessonIdentifier && lessonDate && isDateSelected(lessonDate, selectedLessonIdentifier.date))),
                             )}
@@ -183,7 +202,20 @@ const LessonField = ({
                         setIsOpen(false);
                     }}
                 >
-                    <Timetable />
+                    {isLoading ? (
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            height="100%"
+                        >
+                            <CircularProgress />
+                            <Typography variant="h5">
+                                {t("Stundenplan wird geladen...")}
+                            </Typography>
+                        </Box>
+                    ) : <Timetable />}
                 </SimpleDialog>
             </LessonFieldContext.Provider>
         </>

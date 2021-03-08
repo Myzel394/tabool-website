@@ -33,6 +33,7 @@ const Timetable = ({classes}) => {
         lessons,
         activeDate,
         onActiveDateChange,
+        disableNavigation,
     } = useContext(LessonFieldContext);
 
     const [, height] = useWindowSize();
@@ -55,7 +56,7 @@ const Timetable = ({classes}) => {
     }
 
     const components = {
-        toolbar: Toolbar,
+        toolbar: disableNavigation ? () => null : Toolbar,
         eventWrapper: LessonEvent,
     };
     const [minTime, maxTime] = getLessonMinMaxTime(lessons);

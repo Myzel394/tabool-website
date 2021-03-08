@@ -50,7 +50,7 @@ const Toolbar = ({
             <Box p={2}>
                 <Box flexDirection="row" display="flex" justifyContent="center">
                     <IconButton
-                        disabled={disableNavigation || disablePrevious}
+                        disabled={disablePrevious}
                         onClick={() => onNavigate(navigationConstants.PREVIOUS)}
                     >
                         <FaAngleLeft />
