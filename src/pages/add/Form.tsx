@@ -96,7 +96,7 @@ const Form = ({
                                             setFieldValue("lesson", event.target.value);
                                             setLesson(lesson);
 
-                                            if (!values.dueDate) {
+                                            if (!values.dueDate && lesson) {
                                                 const {startHour, endHour, course: {weekdays}} = lesson;
                                                 const startTime = dayjs(getStartTime(startHour));
                                                 const endTime = dayjs(getEndTime(endHour));
@@ -167,9 +167,11 @@ const Form = ({
                                 }
                             </Grid>
                         </Box>
-                        <PrimaryButton type="submit" disabled={isSubmitting} startIcon={<MdAdd />}>
-                            {t("Hausaufgabe hinzufügen")}
-                        </PrimaryButton>
+                        <Box display="flex" justifyContent="center">
+                            <PrimaryButton size="large" type="submit" disabled={isSubmitting} startIcon={<MdAdd />}>
+                                {t("Hausaufgabe hinzufügen")}
+                            </PrimaryButton>
+                        </Box>
                     </IkForm>
                 </LoadingOverlay>
             )}

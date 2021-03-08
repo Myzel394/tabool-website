@@ -7,6 +7,7 @@ import {StudentHomeworkDetail} from "types";
 import {AxiosError} from "axios";
 import {useMutation} from "react-query";
 import {buildPath} from "utils";
+import {useTitle} from "hooks";
 
 import Form from "./Form";
 
@@ -26,6 +27,8 @@ const HomeworkAddPage = () => {
             })),
         },
     );
+
+    useTitle(t("Hausaufgabe hinzufügen"));
 
     return (
         <FocusedPage title={t("Hausaufgabe hinzufügen")}>

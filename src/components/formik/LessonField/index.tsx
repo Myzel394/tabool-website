@@ -2,7 +2,7 @@ import React, {forwardRef, useImperativeHandle, useMemo, useState} from "react";
 import {FieldProps} from "formik";
 import {StudentLessonDetail, StudentTimetableDetail} from "types";
 import {useFetchStudentCurrentTimetableAPI} from "hooks/apis";
-import {useInheritedState, useQueryOptions} from "hooks";
+import {useDeviceWidth, useInheritedState, useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {Box, Button, CircularProgress, FormGroup, FormHelperText, Typography} from "@material-ui/core";
@@ -74,6 +74,7 @@ const LessonField = ({
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchTimetable = useFetchStudentCurrentTimetableAPI();
+    const {isSM} = useDeviceWidth();
     const {id: lessonId, date: lessonDate} = value ?? {};
 
     const parentSelectedLessonValue = useMemo(() => (lessonId ? {
@@ -173,7 +174,13 @@ const LessonField = ({
                 }}
             >
                 <SimpleDialog
-                    fullScreen
+                    fullScreen={!isSM}
+                    PaperProps={{
+                        style: {
+                            width: "100%",
+                        },
+                    }}
+                    maxWidth="sm"
                     transition="slide"
                     title={t("Fach auswählen")}
                     isOpen={isOpen}
@@ -209,6 +216,7 @@ const LessonField = ({
                             alignItems="center"
                             justifyContent="center"
                             height="100%"
+                            width="100%"
                         >
                             <CircularProgress />
                             <Typography variant="h5">
