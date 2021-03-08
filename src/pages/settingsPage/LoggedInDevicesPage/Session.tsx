@@ -169,7 +169,7 @@ const Session = ({
                     {t("Möchtest du dieses Gerät entfernen? Du musst deine Anmeldedaten erneut eingeben, um von diesem Gerät wieder zuzugreifen.")}
                 </DialogContentText>
                 <Alert severity="info">
-                    {t("Wenn dir dieses Gerät nicht bekannt ist, solltest du es dringend entfernen.")}
+                    {t("Wenn dir dieses Gerät unbekannt ist, solltest du es dringend entfernen.")}
                 </Alert>
             </SimpleDialog>
         </>

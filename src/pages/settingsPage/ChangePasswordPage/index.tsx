@@ -4,11 +4,11 @@ import {IChangePasswordData, useChangePasswordAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {useHistory} from "react-router-dom";
-import {Box, Paper} from "@material-ui/core";
+import {Box} from "@material-ui/core";
 import {DefaultPage} from "components";
+import {buildPath} from "utils";
 
 import Area from "../Area";
-import {buildPath} from "../../../utils";
 
 import Form from "./Form";
 
@@ -29,20 +29,18 @@ const PasswordResetPage = () => {
     return (
         <DefaultPage>
             <Area title={t("Passwort zurücksetzen")}>
-                <Paper>
-                    <Box p={2}>
-                        <Form
-                            onSubmit={({oldPassword, newPassword}, {setErrors, setSubmitting}) =>
-                                mutateAsync({
-                                    oldPassword,
-                                    newPassword,
-                                })
-                                    .catch(error => setErrors(error.response?.data))
-                                    .finally(() => setSubmitting(false))
-                            }
-                        />
-                    </Box>
-                </Paper>
+                <Box p={2}>
+                    <Form
+                        onSubmit={({oldPassword, newPassword}, {setErrors, setSubmitting}) =>
+                            mutateAsync({
+                                oldPassword,
+                                newPassword,
+                            })
+                                .catch(error => setErrors(error.response?.data))
+                                .finally(() => setSubmitting(false))
+                        }
+                    />
+                </Box>
             </Area>
         </DefaultPage>
     );
