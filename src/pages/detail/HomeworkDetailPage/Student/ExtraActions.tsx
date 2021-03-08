@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, LinearProgress, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
+import {Button, CircularProgress, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {MdDeleteForever, MdMoreVert} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {BottomSheetAction} from "components";
@@ -53,7 +53,7 @@ const ExtraActions = ({
                     <ListItemText
                         primary={t("Löschen")}
                     />
-                    {isLoading && <LinearProgress />}
+                    {isLoading && <CircularProgress color="inherit" size="1rem" />}
                 </ListItem>
             </BottomSheetAction>
         </>
