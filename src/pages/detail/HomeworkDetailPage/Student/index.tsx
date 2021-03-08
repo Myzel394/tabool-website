@@ -201,7 +201,8 @@ const HomeworkDetailPage = () => {
                             color={homework.lesson.course.subject.userRelation.color}
                             orderingStorageName="homework"
                             addPath={buildPath("/add/homework/", undefined, {
-                                lesson: homework.lesson.id,
+                                lessonId: homework.lesson.id,
+                                lessonDate: lazyDatetime(homework.lessonDate, "date"),
                                 type: homework.type,
                                 dueDate: lazyDatetime(homework.dueDate),
                                 isPrivate: homework.isPrivate,

@@ -20,7 +20,7 @@ import {Box, FormGroup, FormHelperText, Grid} from "@material-ui/core";
 import {CheckboxWithLabel} from "formik-material-ui";
 import {Alert} from "@material-ui/lab";
 import {MdAdd} from "react-icons/all";
-import {getEndTime, getNextLessonDate, getStartTime, LessonDate} from "utils";
+import {getEndTime, getNextLessonDate, getStartTime, LessonDate, parseQueryDate} from "utils";
 import {LessonIdentifier} from "components/formik/LessonField/LessonFieldContext";
 
 type FormikForm = Omit<ICreateStudentHomeworkData, "lessonId" | "lessonDate"> & ErrorFieldsInjection & {
@@ -37,7 +37,8 @@ const Form = ({
     const {t} = useTranslation();
     const {addSnackbar} = useSnackbar();
     const {
-        lesson: lessonId,
+        lessonId: givenLessonId,
+        lessonDate: lessonDateString,
         type: givenType,
         dueDate: dueDateString,
         isPrivate: givenIsPrivate,
@@ -48,11 +49,16 @@ const Form = ({
 
     const [lesson, setLesson] = useState<StudentLessonDetail>();
 
+    const lessonId = typeof givenLessonId === "string" ? givenLessonId : null;
+    const lessonDate = parseQueryDate(lessonDateString);
     // noinspection SuspiciousTypeOfGuard: Type can in fact have bool type
     const initialValues = {
-        lesson: typeof lessonId === "string" ? lessonId : null,
+        lesson: (lessonId && lessonDate) ? {
+            date: lessonDate,
+            id: lessonId,
+        } : null,
         type: typeof givenType === "string" ? givenType : null,
-        dueDate: (typeof dueDateString === "string" && dayjs(dueDateString).isValid()) ? dayjs(dueDateString) : null,
+        dueDate: parseQueryDate(dueDateString),
         isPrivate: typeof givenIsPrivate === "boolean" ? givenIsPrivate : false,
     };
 

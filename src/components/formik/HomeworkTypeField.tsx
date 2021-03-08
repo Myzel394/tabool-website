@@ -9,6 +9,8 @@ import {FormGroup, FormHelperText} from "@material-ui/core";
 import {combineAutocompletions} from "utils";
 import {AutocompleteResponse} from "types";
 
+import {useColors} from "../../hooks";
+
 import AutocompleteField from "./AutocompleteField";
 
 
@@ -37,6 +39,9 @@ const HomeworkTypeField = ({
     helperText,
     ...other
 }: IHomeworkTypeField) => {
+    const {
+        inputIconColor,
+    } = useColors();
     const fetchHomework = useFetchHomeworkAutocompletionsAPI();
 
     const [search, setSearch] = useState<string | null>(null);
@@ -61,7 +66,7 @@ const HomeworkTypeField = ({
                 multiple={false}
                 isLoading={isLoading}
                 autocompletionList={combineAutocompletions(data?.results, DEFAULT_TYPES)}
-                startIcon={<AiFillTool />}
+                startIcon={<AiFillTool color={inputIconColor} />}
                 onSearchChange={setSearch}
                 onChange={value =>
                     field.onChange({

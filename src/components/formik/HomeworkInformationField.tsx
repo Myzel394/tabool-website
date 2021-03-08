@@ -3,6 +3,7 @@ import {InputAdornment, TextField, TextFieldProps} from "@material-ui/core";
 import {MdInfo} from "react-icons/all";
 import {FieldProps} from "formik";
 import {useTranslation} from "react-i18next";
+import {useColors} from "hooks";
 
 
 export type IHomeworkInformationField = Omit<TextFieldProps, "multiline" | "variant" | "label" | "error"> & FieldProps;
@@ -14,6 +15,9 @@ const HomeworkInformationField = ({
     InputProps,
     ...other
 }: IHomeworkInformationField) => {
+    const {
+        inputIconColor,
+    } = useColors();
     const {t} = useTranslation();
 
     const error = form.errors[field.name];
@@ -30,7 +34,7 @@ const HomeworkInformationField = ({
                 ...(InputProps ?? {}),
                 startAdornment: (
                     <InputAdornment position="start">
-                        <MdInfo />
+                        <MdInfo color={inputIconColor} />
                     </InputAdornment>
                 ),
             }}
