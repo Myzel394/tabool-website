@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {DatePicker} from "@material-ui/pickers";
 import {Dayjs} from "dayjs";
 import {useColors, useInheritedState} from "hooks";
-import {FaCalendarDay} from "react-icons/all";
+import {FaCalendarDay, FaCalendarWeek} from "react-icons/all";
 
 export interface IForm {
     onChange: (data: {
@@ -43,6 +43,7 @@ const Form = ({
                 <Grid container spacing={2} alignItems="center" justify="center">
                     <Grid item md={6} xs={12}>
                         <DatePicker
+                            label={t("Datum")}
                             value={formTargetedDate}
                             format="LL"
                             inputVariant="outlined"
@@ -72,6 +73,11 @@ const Form = ({
                             </InputLabel>
                             <Select
                                 fullWidth
+                                startAdornment={(
+                                    <InputAdornment position="start">
+                                        <FaCalendarWeek color={inputIconColor} />
+                                    </InputAdornment>
+                                )}
                                 label={dayLabel}
                                 type="number"
                                 value={formMaxFutureDays}

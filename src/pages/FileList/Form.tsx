@@ -2,10 +2,14 @@ import React, {useContext} from "react";
 import {Box, FormControlLabel, InputAdornment, Switch, TextField} from "@material-ui/core";
 import {MdSearch} from "react-icons/all";
 import {useTranslation} from "react-i18next";
+import {useColors} from "hooks";
 
 import FileListContext from "./FileListContext";
 
 const Form = () => {
+    const {
+        inputIconColor,
+    } = useColors();
     const {t} = useTranslation();
     const {
         setSubtractDownloaded,
@@ -18,20 +22,22 @@ const Form = () => {
 
     return (
         <Box my={5}>
-            <TextField
-                fullWidth
-                variant="outlined"
-                placeholder={t("Nach Dateien suchen")}
-                value={rawSearch}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <MdSearch />
-                        </InputAdornment>
-                    ),
-                }}
-                onChange={event => setSearch(event.target.value)}
-            />
+            <Box mb={3}>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    placeholder={t("Nach Dateien suchen")}
+                    value={rawSearch}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <MdSearch color={inputIconColor} />
+                            </InputAdornment>
+                        ),
+                    }}
+                    onChange={event => setSearch(event.target.value)}
+                />
+            </Box>
             <FormControlLabel
                 control={
                     <Switch

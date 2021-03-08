@@ -8,10 +8,9 @@ import {ErrorFieldsInjection} from "types";
 import {useTranslation} from "react-i18next";
 import {IChangePasswordData} from "hooks/apis";
 import {FormikHelpers} from "formik/dist/types";
-import {MdLock, MdLockOpen} from "react-icons/all";
+import {FaDizzy, MdLock, MdLockOpen, MdUpdate} from "react-icons/all";
 import {useColors} from "hooks";
-
-import {buildPath} from "../../../utils";
+import {buildPath} from "utils";
 
 
 type FormikForm = ErrorFieldsInjection & IChangePasswordData & {
@@ -124,14 +123,16 @@ const Form = ({onSubmit}: IForm) => {
                             </Grid>
                         </Grid>
                     </Box>
-                    <Grid container direction="row" spacing={1}>
-                        <Grid item xs={12} md={6}>
-                            <PrimaryButton type="submit">
+                    <Grid container direction="row" spacing={1} alignItems="center" justify="center">
+                        <Grid item xs={12} md={6} style={{display: "flex", justifyContent: "center"}}>
+                            <PrimaryButton fullWidth type="submit" startIcon={<MdUpdate />}>
                                 {t("Passwort ändern")}
                             </PrimaryButton>
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <Link
+                                startIcon={<FaDizzy />}
+                                style={{display: "flex", justifyContent: "center"}}
                                 component={SecondaryButton}
                                 underline="none"
                                 href={buildPath("/auth/forgot-password/")}
@@ -145,5 +146,4 @@ const Form = ({onSubmit}: IForm) => {
         </Formik>
     );
 };
-
 export default memo(Form);
