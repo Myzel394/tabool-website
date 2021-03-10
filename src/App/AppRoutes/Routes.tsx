@@ -24,10 +24,16 @@ export default function Routes() {
                     path="/app/agenda/teacher/detail/:id/"
                     component={lazy(() => import("pages/detail/TeacherDetailPage"))}
                 />
+                {/* Auth pages */}
                 <Route
                     exact
                     path={buildPath("/auth/login/")}
                     component={lazy(() => import("pages/auth/Login"))}
+                />
+                <Route
+                    exact
+                    path={buildPath("/auth/logout/")}
+                    component={lazy(() => import("pages/auth/Logout"))}
                 />
                 {/* Settings page */}
                 <Route
@@ -96,11 +102,6 @@ export default function Routes() {
                     exact
                     path={buildPath("/auth/login/")}
                     component={lazy(() => import("pages.backup/auth/Login"))}
-                />
-                <Route
-                    exact
-                    path={buildPath("/auth/logout/")}
-                    component={lazy(() => import("pages.backup/auth/Logout"))}
                 />
                 {!user.isAuthenticated && <Redirect to={buildPath("/")} />}
                 {/* App routes }
