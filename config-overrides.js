@@ -5,5 +5,7 @@ module.exports = function override(config) {
         "/": "src",
     })(config);
 
+    config.output.publicPath = "/static/";
+
     return config;
 };
