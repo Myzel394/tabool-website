@@ -67,7 +67,16 @@ export default function Routes() {
                     path="/app/agenda/exam/detail/:id/"
                     component={lazy(() => import("pages/detail/ExamDetailPage"))}
                 />
-
+                <Route
+                    exact
+                    path="/app/agenda/course/detail/:id/"
+                    component={lazy(() => import("pages/detail/CourseDetailPage"))}
+                />
+                <Route
+                    exact
+                    path="/app/agenda/subject/detail/:id/"
+                    component={lazy(() => import("pages/detail/SubjectDetailPage"))}
+                />
                 <Route
                     exact
                     path="/app/agenda/files/"
