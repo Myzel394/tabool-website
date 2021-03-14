@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router";
 import {IUpdateSubjectRelationData, useFetchSubjectDetailAPI, useUpdateSubjectRelationAPI} from "hooks/apis";
 import {useMutation, useQuery} from "react-query";
 import {Subject} from "types";
@@ -20,8 +19,7 @@ const PREDEFINED_COLORS = [
     "#7bc043", "#0dba3e", "#73c423", "#266150", "#4D774E",
 ];
 
-const SubjectDetailPage = () => {
-    const {id} = useParams<{ id: string; }>();
+const SubjectDetailPage = ({match: {params: {id}}}) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchSubject = useFetchSubjectDetailAPI();
