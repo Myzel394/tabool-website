@@ -3,8 +3,6 @@ import {Box, BoxProps} from "@material-ui/core";
 import {Container} from "components/containers";
 import {UtilsContext} from "contexts";
 
-import BasePage from "../BasePage";
-
 export interface IDefaultPage extends BoxProps {
     children: ReactNode;
 }
@@ -18,22 +16,19 @@ const DefaultPage = ({children, style, ...other}: IDefaultPage) => {
     };
 
     return (
-        <BasePage>
-            <Container>
-                <Box
-                    my={1}
-                    px={1}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={containerStyles}
-                    {...other}
-                >
-                    {children}
-                </Box>
-            </Container>
-        </BasePage>
+        <Container>
+            <Box
+                my={1}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                style={containerStyles}
+                {...other}
+            >
+                {children}
+            </Box>
+        </Container>
     );
 };
 

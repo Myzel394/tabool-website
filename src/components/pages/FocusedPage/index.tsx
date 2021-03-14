@@ -2,7 +2,6 @@ import React, {ReactNode} from "react";
 import {Box} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
-import BasePage from "../BasePage";
 import {Logo, Tooltip} from "../../components";
 import {BackButton} from "../../buttons";
 
@@ -30,31 +29,32 @@ export default function FocusedPage({
     const {t} = useTranslation();
 
     return (
-        <BasePage>
-            <Wrapper>
-                <Box marginY={1} marginX={2}>
-                    {!disableBackButton &&
-                        <Box display="flex" justifyContent="flex-end">
-                            <Tooltip title={t("Zurück gehen").toString()}>
-                                <>
-                                    {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
-                                    <span>
-                                        <BackButton confirm={important} onBack={onBackButtonClick} />
-                                    </span>
-                                </>
-                            </Tooltip>
-                        </Box>
-                    }
-                    {title &&
+        <Wrapper>
+            <Box marginY={1} marginX={2}>
+                {!disableBackButton &&
+                <Box display="flex" justifyContent="flex-end">
+                    <Tooltip
+                        title={t("Zurück gehen")
+                            .toString()}
+                    >
                         <>
-                            {showLogo && <Logo />}
-                            <Title title={title} />
+                            {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
+                            <span>
+                                <BackButton confirm={important} onBack={onBackButtonClick} />
+                            </span>
                         </>
-                    }
-                    {children}
+                    </Tooltip>
                 </Box>
-            </Wrapper>
-        </BasePage>
+                }
+                {title &&
+                <>
+                    {showLogo && <Logo />}
+                    <Title title={title} />
+                </>
+                }
+                {children}
+            </Box>
+        </Wrapper>
     );
 }
 

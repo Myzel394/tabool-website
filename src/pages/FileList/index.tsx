@@ -50,7 +50,7 @@ const FileList = () => {
         >
             {response => (
                 <DefaultPage>
-                    <Box my={5}>
+                    <Box my={5} width="100%" display="flex" flexDirection="column" alignItems="center">
                         <Box mb={2}>
                             <Typography variant="h2" align="center">
                                 {t("Materialien")}

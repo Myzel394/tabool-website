@@ -21,41 +21,43 @@ const Form = () => {
     } = useContext(FileListContext);
 
     return (
-        <Box my={5}>
-            <Box mb={3}>
-                <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder={t("Nach Dateien suchen")}
-                    value={rawSearch}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <MdSearch color={inputIconColor} />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={event => setSearch(event.target.value)}
+        <Box my={5} display="flex">
+            <Box maxWidth="20rem">
+                <Box mb={3}>
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        placeholder={t("Nach Dateien suchen")}
+                        value={rawSearch}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <MdSearch color={inputIconColor} />
+                                </InputAdornment>
+                            ),
+                        }}
+                        onChange={event => setSearch(event.target.value)}
+                    />
+                </Box>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={subtractDownloaded}
+                            onChange={event => setSubtractDownloaded(event.target.checked)}
+                        />
+                    }
+                    label={t("Bereits heruntergeladene abziehen")}
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={subtractNotAvailable}
+                            onChange={event => setSubtractNotAvailable(event.target.checked)}
+                        />
+                    }
+                    label={t("Noch nicht verfügbare abziehen")}
                 />
             </Box>
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={subtractDownloaded}
-                        onChange={event => setSubtractDownloaded(event.target.checked)}
-                    />
-                }
-                label={t("Bereits heruntergeladene abziehen")}
-            />
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={subtractNotAvailable}
-                        onChange={event => setSubtractNotAvailable(event.target.checked)}
-                    />
-                }
-                label={t("Noch nicht verfügbare abziehen")}
-            />
         </Box>
     );
 };
