@@ -17,6 +17,8 @@ export * from "./timetable";
 
 export * from "./useFetchContactsAPI";
 export * from "./useSendFCMTokenAPI";
+export * from "./useFetchColorAPI";
 
 export {default as useFetchContactsAPI} from "./useFetchContactsAPI";
 export {default as useSendFCMTokenAPI} from "./useSendFCMTokenAPI";
+export {default as useFetchColorAPI} from "./useFetchColorAPI";
