@@ -76,17 +76,6 @@ const CourseDetailPage = () => {
                             title: t("Raum"),
                             disableShowMore: true,
                             information: course.room.place,
-                            helperText: (
-                                <Link
-                                    underline="none"
-                                    component={Button}
-                                    href={buildPath("/agenda/room/detail/:id/", {
-                                        id: course.room.id,
-                                    })}
-                                >
-                                    {t("Zum Raum")}
-                                </Link>
-                            ),
                         },
                         subject: {
                             icon: <SubjectIcon />,
