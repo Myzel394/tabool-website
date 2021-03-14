@@ -80,7 +80,7 @@ const ExamDetailPage = () => {
                         course: {
                             icon: <CourseIcon />,
                             title: t("Kurs"),
-                            information: `${exam.course.name}`,
+                            information: exam.course.name,
                             disableShowMore: true,
                             helperText: (
                                 <Link
