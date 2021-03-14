@@ -10,6 +10,12 @@ export interface IFetchPageTitleResponse {
     title: string;
 }
 
+export interface IFetchPageTitle502Error {
+    detail: string;
+    statusCode: number;
+    code: "blocked" | "failed";
+}
+
 const useFetchPageTitleAPI = () => {
     const {instance} = useContext(AxiosContext);
 

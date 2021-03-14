@@ -12,6 +12,9 @@ export interface ILinkTitleGrabber {
     children?: string;
 }
 
+const NO_RETRY_CODES = [
+    404, 500, 401, 403, 501, 502,
+];
 
 const LinkTitleGrabber = ({
     children,
@@ -48,6 +51,14 @@ const LinkTitleGrabber = ({
 
                     setTitle(`${title} (${truncatedUrl})`);
                 }
+            },
+            retry: (count, error) => {
+                const serverCode = error.response?.data?.statusCode?.[0];
+
+                if (NO_RETRY_CODES.includes(serverCode)) {
+                    return false;
+                }
+                return count <= 5;
             },
             // Title changes rarely
             refetchOnWindowFocus: false,
