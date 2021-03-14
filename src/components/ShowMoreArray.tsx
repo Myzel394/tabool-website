@@ -23,17 +23,20 @@ const ShowMoreArray = <Element extends any>({
 
     const update = showMore ? () => setShowMore(false) : () => setShowMore(true);
 
+    const hasMore = elements.length > maxElements;
+
     return (
         <>
             {shownElements.map(render)}
-            <Collapse in={showMore}>
-                <>
-                    {hiddenElements.map(render)}
-                </>
-            </Collapse>
-            {renderButton(showMore, update)}
+            {hasMore && (
+                <Collapse in={showMore}>
+                    <>
+                        {hiddenElements.map(render)}
+                    </>
+                </Collapse>
+            )}
+            {hasMore && renderButton(showMore, update)}
         </>
     );
 };
-
 export default ShowMoreArray;

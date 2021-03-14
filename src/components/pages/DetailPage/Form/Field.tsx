@@ -56,7 +56,7 @@ const Field = <T extends any>({
                         style={style}
                     >
                         <div style={buttonStyle}>
-                            <IconButton ref={$button} {...dragHandleProps}>
+                            <IconButton ref={$button} disabled={!reorder} {...dragHandleProps}>
                                 <GoThreeBars />
                             </IconButton>
                         </div>

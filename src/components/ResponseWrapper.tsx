@@ -15,7 +15,7 @@ export interface IResponseWrapper<Data, Error = AxiosError> {
     renderError: (error: Error, data?: Data | null) => JSX.Element;
 
     data?: Data | null;
-    children: (data: Data) => JSX.Element;
+    children: (data: Data) => JSX.Element | null;
 
     getDocumentTitle?: (data: Data) => string;
 }
@@ -30,7 +30,7 @@ const ResponseWrapper = <Data extends any, Error = AxiosError>({
     renderNoDataAvailable,
     renderLoading,
     getDocumentTitle,
-}: IResponseWrapper<Data, Error>): JSX.Element => {
+}: IResponseWrapper<Data, Error>): JSX.Element | null => {
     // Update title
     useEffect(() => {
         if (getDocumentTitle && !isLoading && !error && data) {
