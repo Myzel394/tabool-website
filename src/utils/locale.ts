@@ -7,7 +7,8 @@ const dateRangeFormat = ({start, end}, culture, local) =>
     `${local.format(start, "L", culture)} – ${local.format(end, "L", culture)}`;
 
 const weekRangeFormat = ({start, end}, culture, local) => {
-    const startFormat = dayjs(start).isSame(end, "month") ? "DD." : "DD. MMMM";
+    const startFormat = dayjs(start)
+        .isSame(end, "month") ? "DD." : "DD. MMMM";
 
     return `${local.format(start, startFormat, culture)} - ${local.format(end, "DD. MMMM", culture)}`;
 };
@@ -17,11 +18,12 @@ const timeRangeFormat = ({start, end}, culture, local) =>
 
 // Localizer helper functions
 
-const firstOfWeek = () => 0;
+const firstOfWeek = () => 1;
 
 const localeInstance = (instance: Dayjs, culture?: Culture) => (culture ? instance.locale(culture) : instance);
 
-const format = (value, format, culture: Culture) => localeInstance(dayjs(value), culture).format(format);
+const format = (value, format, culture: Culture) => localeInstance(dayjs(value), culture)
+    .format(format);
 
 // Instances & objects
 

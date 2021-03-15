@@ -2,7 +2,9 @@ import {Theme} from "@material-ui/core";
 import tinycolor from "tinycolor2";
 
 const calendarStyles = (theme: Theme) => {
-    const color = tinycolor(theme.palette.text.primary).setAlpha(0.1).toString();
+    const color = tinycolor(theme.palette.text.primary)
+        .setAlpha(0.1)
+        .toString();
 
     return {
         root: {
@@ -49,6 +51,13 @@ const calendarStyles = (theme: Theme) => {
             },
             "& .rbc-show-more": {
                 display: "none",
+            },
+
+            "& .rbc-row-content": {
+                height: "100%",
+                "& .rbc-row": {
+                    height: "100%",
+                },
             },
         },
     };
