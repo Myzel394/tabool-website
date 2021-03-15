@@ -24,6 +24,7 @@ const PollHandler = ({children}: IPollHandler) => {
         {
             ...queryOptions,
             enabled: user.isAuthenticated,
+            refetchOnWindowFocus: false,
         },
     );
     const notVoted = data?.results?.filter?.(poll => !poll.hasVoted);
