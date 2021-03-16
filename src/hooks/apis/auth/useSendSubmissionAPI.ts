@@ -25,14 +25,19 @@ const useSendSubmissionAPI = () => {
         privatize,
         lessonId,
     }: ISendSubmissionData): Promise<ISendSubmissionResponse> => {
+        const formData = new FormData();
+        formData.append("file", file, "test.txt");
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        formData.append("uploadDate", uploadDate);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        formData.append("privatize", privatize);
+        formData.append("lesson", lessonId);
+
         const {data} = await instance.post(
             "/api/data/submission/",
-            {
-                file,
-                uploadDate,
-                privatize,
-                lesson: lessonId,
-            },
+            formData,
             update(await getLoginConfig(), {
                 headers: {
                     "Content-Type": {

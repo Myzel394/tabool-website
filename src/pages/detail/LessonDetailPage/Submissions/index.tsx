@@ -1,9 +1,8 @@
 import React, {memo} from "react";
 import {LessonDetail, SubmissionDetail} from "types";
 import {useInheritedState} from "hooks";
+import {useTranslation} from "react-i18next";
 
-import SubmitFiles from "./SubmitFiles";
-import UploadedSubmissions from "./UploadedSubmission";
 import SubmissionsContext from "./SubmissionsContext";
 
 export interface ISubmissions {
@@ -11,6 +10,7 @@ export interface ISubmissions {
 }
 
 const Submissions = ({lesson}: ISubmissions) => {
+    const {t} = useTranslation();
     const [submissions, setSubmissions] = useInheritedState<SubmissionDetail[]>(lesson.submissions);
 
     return (
@@ -21,10 +21,12 @@ const Submissions = ({lesson}: ISubmissions) => {
                 onSubmissionsChange: setSubmissions,
             }}
         >
+            {/*
             {submissions.length > 0 &&
                 <UploadedSubmissions />
             }
-            <SubmitFiles />
+            <SubmitFiles />*/}
+            <p>{t("Einsendungen sind momentan deaktiviert")}</p>
         </SubmissionsContext.Provider>
     );
 };

@@ -4,7 +4,6 @@ import {getLoginConfig} from "api";
 import {SubmissionDetail} from "types";
 import {Dayjs} from "dayjs";
 import {lazyDatetime} from "utils";
-import update from "immutability-helper";
 
 import parseSubmission from "./parseSubmission";
 
@@ -25,13 +24,7 @@ const useUpdateSubmissionAPI = () => {
         const {data} = await instance.patch(`/api/data/submission/${id}/`, {
             privatize,
             uploadDate: lazyDatetime(uploadDate),
-        }, update(await getLoginConfig(), {
-            headers: {
-                "Content-Type": {
-                    $set: "multipart/form-data",
-                },
-            },
-        }));
+        }, await getLoginConfig());
         await parseSubmission(data);
 
         return data;
