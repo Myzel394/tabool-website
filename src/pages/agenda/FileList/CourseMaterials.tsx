@@ -69,20 +69,22 @@ const CourseMaterials = ({
         ], [] as MaterialApprox[]);
 
         const materialsPerDate = getPerUniqueValue(results, {
-            getValue: material => replaceDatetime(material.addedAt, "time").toISOString(),
+            getValue: material => replaceDatetime(material.addedAt, "time")
+                .toISOString(),
         });
 
-        const orderedMaterials: [string, MaterialApprox[]][] = Object.entries(materialsPerDate).map(([subjectId, materials]) => [
-            subjectId,
-            sortArray(materials, {
-                by: "unix",
-                order: "desc",
-                undefinedRank: 1,
-                computed: {
-                    unix: material => material.addedAt?.unix?.(),
-                },
-            }),
-        ]);
+        const orderedMaterials: [string, MaterialApprox[]][] = Object.entries(materialsPerDate)
+            .map(([subjectId, materials]) => [
+                subjectId,
+                sortArray(materials, {
+                    by: "unix",
+                    order: "desc",
+                    undefinedRank: 1,
+                    computed: {
+                        unix: material => material.addedAt?.unix?.(),
+                    },
+                }),
+            ]);
 
         return orderedMaterials;
     }, [data]);
@@ -105,7 +107,8 @@ const CourseMaterials = ({
                     <Box key={date} component="li" mt={5 * Number(Boolean(index))}>
                         <ul className={classes.ul}>
                             <ListSubheader disableSticky>
-                                {dayjs(date).format("ll")}
+                                {dayjs(date)
+                                    .format("ll")}
                             </ListSubheader>
                             <FlipMove>
                                 {materials.map(material =>

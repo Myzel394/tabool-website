@@ -36,8 +36,9 @@ const Material = ({
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const extension = filename?.split?.(".")?.pop?.();
-    const Icon = extension ? extensionIconMap[extension] : FaFile;
+    const extension = filename && filename.split(".")
+        .pop();
+    const Icon = (extension ? extensionIconMap[extension] : undefined) ?? FaFile;
     const downloadDate = state?.detailPage?.downloadedMaterials?.[id];
 
     const style = {
@@ -71,8 +72,7 @@ const Material = ({
                                         })}
                                     </Typography>
                                 }
-                            </TimeRelative>
-                            }
+                            </TimeRelative>}
                         </>
                     }
                 />
