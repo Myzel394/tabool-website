@@ -10,7 +10,7 @@ const getEventWrapperStyles = (style: any, event?: CalendarEvent): any => {
         left: stringifyPercent(xOffset),
         width: stringifyPercent(width),
         height: stringifyPercent(height),
-        position: event?.allDay ? "" : "absolute" as "absolute",
+        position: event?.allDay ? "relative" : "absolute" as "absolute",
     };
 };
 
