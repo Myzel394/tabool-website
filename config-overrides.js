@@ -5,7 +5,10 @@ module.exports = function override(config) {
         "/": "src",
     })(config);
 
-    config.output.publicPath = "/static/";
+    if (process.env.NODE_EN === "production") {
+        config.output.publicPath = "/static/";
+    }
+
 
     return config;
 };

@@ -5,7 +5,6 @@ import "i18n";
 import App from "App";
 import "react-app-polyfill/stable";
 import "dayjs/locale/de";
-import "animate.css";
 import "./extends/dayjs";
 import "./extends/immutability-helper";
 import "./extends/yup";
