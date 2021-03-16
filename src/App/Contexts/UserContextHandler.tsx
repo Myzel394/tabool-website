@@ -88,6 +88,7 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 
             return {
                 ...state,
+                isEmailVerified: Boolean(process.env.IS_EXPERIMENTAL),
                 isAuthenticated: true,
                 preference,
                 data: {

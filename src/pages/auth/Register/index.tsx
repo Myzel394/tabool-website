@@ -5,14 +5,16 @@ import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {FocusedPage} from "components";
 import {UserContext} from "contexts";
+import {useHistory} from "react-router-dom";
+import {buildPath} from "utils";
 
 import Form from "./Form";
-import Completed from "./Completed";
 
 
 const Register = () => {
     const {t} = useTranslation();
     const sendRegistration = useSendRegistrationAPI();
+    const history = useHistory();
     const {dispatch, state: user} = useContext(UserContext);
 
     const {
@@ -20,28 +22,30 @@ const Register = () => {
     } = useMutation<IRegistrationResponse, AxiosError, IRegistrationData>(
         sendRegistration,
         {
-            onSuccess: (data) =>
+            onSuccess: (data) => {
                 dispatch({
                     type: "registration",
                     payload: data,
-                })
-            ,
+                });
+
+                if (process.env.IS_EXPERIMENTAL) {
+                    history.push(buildPath("/auth/registration/fill/"));
+                }
+            },
         },
     );
 
-    return user.isAuthenticated
-        ? <Completed />
-        : (
-            <FocusedPage showLogo title={t("Registrieren")}>
-                <Form
-                    onSubmit={(values, {setErrors, setSubmitting}) =>
-                        mutateAsync(values)
-                            .catch(error => setErrors(error.response?.data))
-                            .finally(() => setSubmitting(false))
-                    }
-                />
-            </FocusedPage>
-        );
+    return (
+        <FocusedPage showLogo title={t("Registrieren")}>
+            <Form
+                onSubmit={(values, {setErrors, setSubmitting}) =>
+                    mutateAsync(values)
+                        .catch(error => setErrors(error.response?.data))
+                        .finally(() => setSubmitting(false))
+                }
+            />
+        </FocusedPage>
+    );
 };
 
 export default Register;
