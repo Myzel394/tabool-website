@@ -101,9 +101,13 @@ const reducer = (state: IUser, action: ActionType): IUser => {
 
             return update(state, {
                 preference: {
-                    data: {
-                        $set: newPreferences,
-                    },
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    $apply: value => update(value ?? {}, {
+                        data: {
+                            $set: newPreferences,
+                        },
+                    }),
                 },
             });
         }
