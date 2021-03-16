@@ -17,11 +17,11 @@ export const createInstance = (userDispatch) => {
 
     // Camelcase response
     instance.interceptors.response.use(response => {
-        response.data = camelcaseKeys(response.data ?? {}, {deep: true});
+        response.data = camelcaseKeys(response?.data ?? {}, {deep: true});
 
         return response;
     }, error => {
-        error.response.data = camelcaseKeys(error.response.data ?? {}, {deep: true});
+        error.response.data = camelcaseKeys(error.response?.data ?? {}, {deep: true});
 
         return Promise.reject(error);
     });
