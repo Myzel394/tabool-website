@@ -1,6 +1,6 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {Preference} from "types";
+import {Preferences} from "types";
 
 import {parsePreference} from "../preference";
 
@@ -18,7 +18,7 @@ export interface ILoginResponse {
     lastName: string;
     email: string;
     loadScoosoData: boolean;
-    preference: Preference;
+    preference: Preferences;
     id: string;
 }
 

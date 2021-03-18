@@ -1,12 +1,13 @@
-import React, {ReactNode, useContext, useEffect} from "react";
+import React, {ReactNode, useCallback, useMemo} from "react";
 import {AxiosContext, UserContext} from "contexts";
-import {initialUserState, IUser} from "contexts/UserContext";
-import {ActionType} from "types";
-import {ContextDevTool} from "react-context-devtool";
+import {initialUserState, IUser, reducer} from "contexts/UserContext";
 import createPersistedReducer from "use-persisted-reducer";
-import update from "immutability-helper";
-
-import {createInstance} from "./AxiosContextHandler";
+import {AxiosError} from "axios";
+import {buildPath, parseErrors} from "utils";
+import {createInstance} from "contexts/AxiosContext";
+import {useHistory} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {reset} from "state";
 
 const usePersistedReducer = createPersistedReducer("user");
 
@@ -14,148 +15,59 @@ export interface IUserContextHandler {
     children: ReactNode;
 }
 
-const reducer = (state: IUser, action: ActionType): IUser => {
-    switch (action.type) {
-        case "logout": {
-            return initialUserState;
-        }
-
-        case "change_load_scooso_data": {
-            const {loadScoosoData} = action.payload;
-
-            return update(state, {
-                data: {
-                    loadScoosoData: {
-                        $set: loadScoosoData,
-                    },
-                },
-            });
-        }
-
-        case "login": {
-            const {
-                hasFilledOutData,
-                isConfirmed,
-                firstName,
-                lastName,
-                email,
-                id,
-                loadScoosoData,
-            } = action.payload;
-
-            return {
-                ...state,
-                isAuthenticated: true,
-                isFullyRegistered: hasFilledOutData,
-                isEmailVerified: isConfirmed,
-                data: {
-                    firstName,
-                    lastName,
-                    email,
-                    id,
-                    loadScoosoData,
-                },
-            };
-        }
-
-        case "verify-email": {
-            return {
-                ...state,
-                isEmailVerified: true,
-            };
-        }
-
-        case "fill-out-data": {
-            return {
-                ...state,
-                isFullyRegistered: true,
-            };
-        }
-
-        case "registration": {
-            const {
-                preferences: preference,
-                email,
-                firstName,
-                lastName,
-                id,
-            } = action.payload;
-
-            return {
-                ...state,
-                isEmailVerified: Boolean(process.env.IS_EXPERIMENTAL),
-                isAuthenticated: true,
-                preference,
-                data: {
-                    firstName,
-                    email,
-                    id,
-                    lastName,
-                    loadScoosoData: true,
-                },
-            };
-        }
-
-        case "setPreferences": {
-            const {newPreferences} = action.payload;
-
-            return update(state, {
-                preference: {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    $apply: value => update(value ?? {}, {
-                        data: {
-                            $set: newPreferences,
-                        },
-                    }),
-                },
-            });
-        }
-
-        default: {
-            throw new Error();
-        }
-    }
-};
-
 const UserContextHandler = ({children}: IUserContextHandler) => {
-    const {setInstance} = useContext(AxiosContext);
+    const history = useHistory();
+    const reduxDispatch = useDispatch();
 
     const [state, dispatch]: [IUser, any] = usePersistedReducer(reducer, initialUserState);
+    const logout = useCallback(() => {
+        dispatch({
+            type: "logout",
+            payload: {},
+        });
+        reduxDispatch(reset());
+        history.push(buildPath("/auth/login/"));
 
+        return null;
+    }, [dispatch, history, reduxDispatch]);
 
-    // Create Axios instance
-    useEffect(() => {
-        const newInstance = createInstance(dispatch);
+    const instance = useMemo(() => {
+        const instance = createInstance();
 
-        setInstance(() => newInstance);
-    }, [setInstance, dispatch]);
+        instance.interceptors.response.use(response => response, (error: AxiosError) => {
+            if (error.response) {
+                // Logout user on authentication error
+                if (error.response.status === 401 && location.pathname !== buildPath("/auth/login/")) {
+                    logout();
+                }
+                // Parse errors
+                if (error.response.status >= 300 || error.response.status < 200) {
+                    error.response.data = parseErrors(error.response.data);
+                }
+            }
+
+            return Promise.reject(error);
+        });
+
+        return instance;
+    }, [logout]);
 
     return (
-        <UserContext.Provider
+        <AxiosContext.Provider
             value={{
-                state, dispatch,
+                instance,
             }}
         >
-            {children}
-            <ContextDevTool context={UserContext} id="userContextId" displayName="UserContext" />
-            <UserContext.Consumer>
-                {
-                    values => {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        if (window._REACT_CONTEXT_DEVTOOL) {
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            window._REACT_CONTEXT_DEVTOOL({
-                                id: "uniqContextId", displayName: "Context Display Name", values,
-                            });
-                        }
-                        return null;
-                    }
-                }
-            </UserContext.Consumer>
-        </UserContext.Provider>
+            <UserContext.Provider
+                value={{
+                    state,
+                    dispatch,
+                    logout,
+                }}
+            >
+                {children}
+            </UserContext.Provider>
+        </AxiosContext.Provider>
     );
 };
 

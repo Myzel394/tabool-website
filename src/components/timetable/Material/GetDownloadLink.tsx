@@ -1,11 +1,13 @@
 import React from "react";
-import {useQueryOptions, useUserPreferences} from "hooks";
+import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Box, CircularProgress} from "@material-ui/core";
 import {IFetchMaterialDownloadLinkResponse, useFetchMaterialDownloadLinkAPI} from "hooks/apis";
+import {useDispatch} from "react-redux";
+import {addDownloadedMaterialsDate} from "state";
 
 import {SimpleDialog} from "../../components";
 
@@ -21,7 +23,7 @@ const GetDownloadLink = ({materialId, onClose, onDownload, isOpen}: IGetDownload
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchDownloadLink = useFetchMaterialDownloadLinkAPI();
-    const {update} = useUserPreferences();
+    const dispatch = useDispatch();
 
     const {
         isError,
@@ -35,8 +37,11 @@ const GetDownloadLink = ({materialId, onClose, onDownload, isOpen}: IGetDownload
                 onClose();
                 onDownload?.();
 
+                dispatch(addDownloadedMaterialsDate({
+                    materialId,
+                }));
+
                 window.open(materialDownloadLink.file, "download");
-                update.detailPage.addDownloadedMaterialsDate(materialId);
             },
             enabled: isOpen,
         },

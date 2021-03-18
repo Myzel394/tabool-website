@@ -1,57 +1,67 @@
 import {createContext} from "react";
-import {ReducerType} from "types";
-import {Dayjs} from "dayjs";
 
-export interface UserPreferences {
-    data: {
-        global?: {
-            theme?: "light" | "dark" | "blue" | "midnight";
-            allowStatistics?: boolean;
-            updatedAtTimeView?: string;
-            startPageMaxFutureDays?: number;
-        };
-        detailPage?: {
-            ordering?: Record<string, string[]>;
-            downloadedMaterials?: Record<string, Dayjs>;
-        };
-        timetable?: {
-            showFreePeriods?: boolean;
-            showDetails?: boolean;
-        };
-    };
-    id: string;
-}
+// eslint-disable-next-line import/no-cycle
+import {ActionType, ReducerType, UserInformation} from "../types";
 
 export interface IUser {
     isAuthenticated: boolean;
     isFullyRegistered: boolean;
     isEmailVerified: boolean;
     isAdmin: boolean;
-    data: null | {
-        email: string;
-        id: string;
-        firstName?: string;
-        lastName?: string;
-        loadScoosoData: boolean;
-    };
-    preference: null | UserPreferences;
+    data: null | Omit<UserInformation, "preference">;
 }
 
 export const initialUserState: IUser = {
     isAuthenticated: false,
+    isAdmin: false,
     isFullyRegistered: false,
     isEmailVerified: false,
-    isAdmin: false,
     data: null,
-    preference: null,
 };
 
 
-const UserContext = createContext<ReducerType<IUser>>({
+const UserContext = createContext<ReducerType<IUser> & { logout: () => null; }>({
     state: initialUserState,
     dispatch: () => {
         throw new Error("Dispatch method not implemented!");
     },
+    logout: () => {
+        throw new Error("Logout method not implemented!");
+    },
 });
+
+export const reducer = (state: IUser, action: ActionType): IUser => {
+    switch (action.type) {
+        case "logout": {
+            return initialUserState;
+        }
+
+        case "login": {
+            const {
+                firstName,
+                lastName,
+                email,
+                id,
+                loadScoosoData,
+            } = action.payload;
+
+            return {
+                ...state,
+                isAuthenticated: true,
+                data: {
+                    firstName,
+                    lastName,
+                    email,
+                    id,
+                    loadScoosoData,
+                },
+            };
+        }
+
+        default: {
+            throw new Error();
+        }
+    }
+};
 
 export default UserContext;

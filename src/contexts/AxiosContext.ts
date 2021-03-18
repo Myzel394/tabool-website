@@ -1,19 +1,49 @@
+import {isDev} from "constants/dev";
+
 import {createContext} from "react";
-import {AxiosInstance} from "axios";
+import axios, {AxiosInstance} from "axios";
+import camelcaseKeys from "camelcase-keys";
+import {snakeCaseKeys} from "utils";
 
 export interface IAxios {
     instance: AxiosInstance;
-    // Anonymous function is needed, because otherwise the Axios function is called immediately
-    setInstance: (newInstance: () => AxiosInstance) => void;
 }
 
 export const initialAxiosState: IAxios = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     instance: null,
-    setInstance: () => null,
 };
 
 const AxiosContext = createContext<IAxios>(initialAxiosState);
+
+export const baseURL = isDev ? "http://127.0.0.1:8000/" : "";
+
+export const createInstance = () => {
+    const instance = axios.create({
+        baseURL,
+    });
+
+    // Camelcase response
+    instance.interceptors.response.use(response => {
+        response.data = camelcaseKeys(response.data ?? {}, {deep: true});
+
+        return response;
+    }, error => {
+        error.response.data = camelcaseKeys(error.response.data ?? {}, {deep: true});
+
+        return Promise.reject(error);
+    });
+
+    // Snakecase request
+    instance.interceptors.request.use(config => {
+        config.data = snakeCaseKeys(config.data ?? {});
+        config.params = snakeCaseKeys(config.params ?? {});
+
+        return config;
+    });
+
+    return instance;
+};
 
 export default AxiosContext;

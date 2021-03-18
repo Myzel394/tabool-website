@@ -4,7 +4,8 @@ import {Box, Grid, IconButton, Paper, Typography, useTheme} from "@material-ui/c
 import {FaFile, MdFileDownload} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import prettyBytes from "pretty-bytes";
-import {useUserPreferences} from "hooks";
+import {useSelector} from "react-redux";
+import {getMaterialDownloadDate, RootState} from "state";
 
 import {Information} from "../../components";
 import {TimeRelative} from "../../statuses";
@@ -23,7 +24,7 @@ export interface IMaterial {
 
 const Material = ({name, addedAt, id, size, isDeleted}: IMaterial) => {
     const theme = useTheme();
-    const {state} = useUserPreferences();
+    const downloadDate = useSelector<RootState>(getMaterialDownloadDate(id)) as Dayjs | null;
     const {t} = useTranslation();
 
     const [downloadFile, setDownloadFile] = useState<boolean>(false);
@@ -33,9 +34,9 @@ const Material = ({name, addedAt, id, size, isDeleted}: IMaterial) => {
         opacity: isDeleted ? theme.palette.action.disabledOpacity : 1,
     }), [isDeleted, theme.palette.action.disabledOpacity]);
 
-    const extension = name?.split?.(".")?.pop?.() ?? "";
+    const extension = name ? name.split(".")
+        .pop() : "";
     const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
-    const downloadDate = state?.detailPage?.downloadedMaterials?.[id];
 
     return (
         <>

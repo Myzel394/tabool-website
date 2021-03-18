@@ -1,7 +1,7 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {getLoginConfig} from "api";
-import {Preference} from "types";
+import {Preferences} from "types";
 
 import parsePreference from "./parsePreference";
 
@@ -14,7 +14,7 @@ const useUpdatePreferenceAPI = () => {
 
     return useCallback(async (preferenceId: string, {
         data: jsonData,
-    }: IUpdatePreferenceData): Promise<Preference> => {
+    }: IUpdatePreferenceData): Promise<Preferences> => {
         const {data} = await instance.patch(`/api/data/preference/${preferenceId}/`, {
             data: JSON.stringify(jsonData),
         }, await getLoginConfig());

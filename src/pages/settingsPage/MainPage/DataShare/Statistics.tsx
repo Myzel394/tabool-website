@@ -1,21 +1,21 @@
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {DialogContentText, ListItem, ListItemSecondaryAction, ListItemText, Switch} from "@material-ui/core";
-import {useUserPreferences} from "hooks";
 import {PrimaryButton, SecondaryButton, SimpleDialog} from "components";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState, setAllowStatistics} from "state";
 
 
 const Statistics = () => {
     const {t} = useTranslation();
-    const {
-        state,
-        update,
-    } = useUserPreferences();
+    const allowStatistics = useSelector<RootState>(
+        state => state.preferences?.global?.allowStatistics ?? true,
+    ) as boolean;
+    const dispatch = useDispatch();
 
     const [confirm, setConfirm] = useState<boolean>(false);
 
-    const allow = state?.global?.allowStatistics ?? true;
-    const setAllow = update.global.setAllowStatistics;
+    const setAllow = value => dispatch(setAllowStatistics(value));
 
     return (
         <>
@@ -23,7 +23,7 @@ const Statistics = () => {
                 <ListItemText primary={t("Anonyme Statistiken senden")} />
                 <ListItemSecondaryAction>
                     <Switch
-                        checked={allow}
+                        checked={allowStatistics}
                         onChange={event => {
                             if (event.target.checked) {
                                 setAllow(true);

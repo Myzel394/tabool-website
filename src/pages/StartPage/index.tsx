@@ -1,11 +1,14 @@
 import React, {useContext, useState} from "react";
-import {useQueryOptions, useUserPreferences} from "hooks";
+import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {IFetchDailyDataData, IFetchDailyDataResponse, useFetchDailyDataAPI} from "hooks/apis";
 import {AxiosError} from "axios";
-import {ErrorContext} from "contexts";
 import dayjs, {Dayjs} from "dayjs";
+import {useDispatch, useSelector} from "react-redux";
+import {getMaxFutureDays, RootState, setStartPageMaxFutureDays} from "state";
 import {DailyData} from "types";
+
+import {ErrorContext} from "../../contexts";
 
 import StartPageView from "./StartPageView";
 import SkeletonView from "./SkeletonView";
@@ -28,17 +31,14 @@ const getTargetedDate = (): Dayjs => {
 const StartPage = () => {
     const fetchDailyData = useFetchDailyDataAPI();
     const queryOptions = useQueryOptions();
+    const dispatch = useDispatch();
+    const maxFutureDays = useSelector<RootState>(getMaxFutureDays) as number;
     const {dispatch: dispatchError} = useContext(ErrorContext);
-    const {
-        state,
-        update,
-    } = useUserPreferences();
 
     const [dailyData, setDailyData] = useState<DailyData>();
     const [targetedDate, setTargetedDate] = useState<Dayjs>(getTargetedDate);
 
-    const maxFutureDays = state?.global?.startPageMaxFutureDays ?? 7;
-    const setMaxFutureDays = update.global.setStartPageMaxFutureDays;
+    const setMaxFutureDays = (value: number) => dispatch(setStartPageMaxFutureDays(value));
 
     const {
         data,
@@ -87,11 +87,7 @@ const StartPage = () => {
             targetedDate={targetedDate}
             isLoading={isFetching}
             onDailyDataChange={setDailyData}
-            onMaxFutureDaysChange={value => {
-                if (value !== state.global?.startPageMaxFutureDays) {
-                    setMaxFutureDays(value);
-                }
-            }}
+            onMaxFutureDaysChange={setMaxFutureDays}
             onTargetedDateChange={setTargetedDate}
         />
     );

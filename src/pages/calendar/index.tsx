@@ -1,15 +1,17 @@
-import React, {ReactNode, useContext, useEffect, useState} from "react";
+import React, {ReactNode, useCallback, useContext, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {combineDatetime, findNextDate, getISODatetime} from "utils";
 import {setBeginTime, setEndTime} from "utils/setTime";
 import {View} from "react-big-calendar";
 import {isMobile} from "react-device-detect";
 import {useQuery} from "react-query";
-import {useDeviceWidth, useQueryOptions, useQueryString, useUserPreferences} from "hooks";
+import {useDeviceWidth, useQueryOptions, useQueryString} from "hooks";
 import {AxiosError} from "axios";
 import {IFetchTimetableData, IFetchTimetableResponse, useFetchTimetableAPI} from "hooks/apis";
 import {useTranslation} from "react-i18next";
 import {ErrorContext} from "contexts";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
+import {RootState, setShowDetails, setShowFreePeriod} from "state";
 
 import CalendarContext, {CalendarType} from "./CalendarContext";
 import {Skeleton} from "./Calendar/states";
@@ -34,14 +36,18 @@ const getEndDate = (startDate: Dayjs): Dayjs =>
     );
 
 const constrainWeekToDayData = (data: IFetchTimetableResponse, date: Dayjs): IFetchTimetableResponse => {
-    const startDatetime = setBeginTime(date).subtract(1, "millisecond");
-    const endDatetime = setEndTime(date).add(1, "millisecond");
+    const startDatetime = setBeginTime(date)
+        .subtract(1, "millisecond");
+    const endDatetime = setEndTime(date)
+        .add(1, "millisecond");
 
     const {events, lessons} = data;
 
     const constrainedLessons = lessons.filter(lesson =>
-        combineDatetime(lesson.date, lesson.startTime).isAfter(startDatetime) &&
-        combineDatetime(lesson.date, lesson.endTime).isBefore(endDatetime));
+        combineDatetime(lesson.date, lesson.startTime)
+            .isAfter(startDatetime) &&
+        combineDatetime(lesson.date, lesson.endTime)
+            .isBefore(endDatetime));
     const constrainedEvents = events.filter(event =>
         event.startDatetime.isAfter(startDatetime) && event.endDatetime.isBefore(endDatetime));
 
@@ -63,9 +69,20 @@ const Calendar = () => {
     const {isMD} = useDeviceWidth();
     const {dispatch: dispatchError} = useContext(ErrorContext);
     const {
-        state,
-        update,
-    } = useUserPreferences();
+        showFreePeriods,
+        showDetails,
+    } = useSelector<RootState>(state => ({
+        showDetails: state.preferences.timetable?.showDetails ?? true,
+        showFreePeriods: state.preferences.timetable?.showFreePeriods ?? !isMobile,
+    }), shallowEqual) as {
+        showFreePeriods: boolean;
+        showDetails: boolean;
+    };
+    const dispatch = useDispatch();
+    const updateShowFreePeriods = useCallback((showFreePeriods: boolean) =>
+        dispatch(setShowFreePeriod(showFreePeriods)), [dispatch]);
+    const updateShowDetails = useCallback((showDetails: boolean) =>
+        dispatch(setShowDetails(showDetails)), [dispatch]);
 
     // States
     const [activeView, setActiveView] = useState<View>(() => (isMobile ? "day" : "work_week"));
@@ -87,9 +104,6 @@ const Calendar = () => {
 
         return dayjs();
     });
-
-    const showFreePeriods = state?.timetable?.showFreePeriods ?? true;
-    const showDetails = state?.timetable?.showDetails ?? !isMobile;
 
     // Data
     const startDate = getStartDate(activeDate);
@@ -191,8 +205,8 @@ const Calendar = () => {
                 onCalendarTypeChange: setActiveType,
                 onDateChange: changeDate,
                 onViewChange: setActiveView,
-                onShowFreePeriodsChange: update.timetable.setShowFreePeriod,
-                onShowDetailsChange: update.timetable.setShowDetails,
+                onShowFreePeriodsChange: updateShowFreePeriods,
+                onShowDetailsChange: updateShowDetails,
             }}
         >
             {children}

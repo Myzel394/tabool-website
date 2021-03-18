@@ -13,8 +13,10 @@ import {FaFile} from "react-icons/all";
 import {buildPath} from "utils";
 import prettyBytes from "pretty-bytes";
 import {LessonIcon} from "components/icons";
-import {useUserPreferences} from "hooks";
 import {useTranslation} from "react-i18next";
+import {useSelector} from "react-redux";
+import {getMaterialDownloadDate} from "state";
+import {Dayjs} from "dayjs";
 
 
 export interface IMaterial {
@@ -24,6 +26,21 @@ export interface IMaterial {
     size?: number;
 }
 
+const getIcon = (filename: string) => {
+    if (!filename) {
+        return FaFile;
+    }
+
+    const extension = filename.split(".")
+        .pop();
+
+    if (!extension) {
+        return FaFile;
+    }
+
+    return extensionIconMap[extension] ?? FaFile;
+};
+
 const Material = ({
     filename,
     id,
@@ -31,15 +48,12 @@ const Material = ({
     size,
 }: IMaterial) => {
     const {t} = useTranslation();
-    const {state} = useUserPreferences();
+    const downloadDate = useSelector(getMaterialDownloadDate(id)) as Dayjs | undefined;
     const theme = useTheme();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const extension = filename && filename.split(".")
-        .pop();
-    const Icon = (extension ? extensionIconMap[extension] : undefined) ?? FaFile;
-    const downloadDate = state?.detailPage?.downloadedMaterials?.[id];
+    const Icon = getIcon(filename);
 
     const style = {
         opacity: downloadDate ? 1 - theme.palette.action.activatedOpacity : 1,

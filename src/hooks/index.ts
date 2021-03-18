@@ -22,4 +22,3 @@ export {default as useColors} from "./useColors";
 export {default as usePermissions} from "./usePermissions";
 export {default as useAsync} from "./useAsync";
 export {default as useOnFCMMessageHandler} from "./useOnFCMMessageHandler";
-export {default as useUserPreferences} from "./useUserPreferences";

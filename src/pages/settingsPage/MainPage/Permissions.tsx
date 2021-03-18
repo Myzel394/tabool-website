@@ -11,7 +11,7 @@ import {
     Paper,
     Switch,
 } from "@material-ui/core";
-import {usePermissions} from "hooks";
+import {usePermissions, useSnackbar} from "hooks";
 import {useTranslation} from "react-i18next";
 import {PermissionType} from "hooks/usePermissions";
 import {MdLocationOff, MdLocationOn, MdNotifications, MdNotificationsOff} from "react-icons/all";
@@ -35,6 +35,7 @@ const Permissions = () => {
         state,
         isLoading,
     } = usePermissions();
+    const {addSnackbar, addError} = useSnackbar();
 
     const updatePerms = async (name: keyof Permissions, value: boolean) => {
         let state;
@@ -78,7 +79,20 @@ const Permissions = () => {
                         <AccordionDetails>
                             <SecondaryButton
                                 startIcon={<MdNotifications />}
-                                onClick={() => new Notification(t("So wirst du benachrichtigt"))}
+                                onClick={() => {
+                                    navigator.serviceWorker.ready
+                                        .then(registration => {
+                                            addSnackbar(t("Benachrichtigung wird geschickt..."), {
+                                                variant: "info",
+                                            });
+                                            registration.showNotification(t("So wirst du benachrichtigt!"));
+                                        })
+                                        .catch(error => {
+                                            // eslint-disable-next-line no-console
+                                            console.error(error);
+                                            addError(t("Benachrichtigung konnte nicht gesendet werden"));
+                                        });
+                                }}
                             >
                                 {t("Test senden")}
                             </SecondaryButton>
@@ -103,14 +117,17 @@ const Permissions = () => {
                     </ListItem>
                 </List>
                 {(isNotificationDisabled || isLocationDisabled) &&
-                    <Alert severity="warning">
-                        {t("Du hast Berechtigungen verboten, diese können daher nicht mehr angefragt werden. " +
-                            "Wenn du sie dennoch wieder erlauben möchtest, musst du sie in den Einstellungen ändern.")}
-                        <br />
-                        <Link href="https://support.google.com/chromebook/answer/114662?hl=de" rel="noopener noreferrer" component="a">
-                            {t("Wie ändere ich Website-Berechtigungen?")}
-                        </Link>
-                    </Alert>}
+                <Alert severity="warning">
+                    {t("Du hast Berechtigungen verboten, diese können daher nicht mehr angefragt werden. " +
+                        "Wenn du sie dennoch wieder erlauben möchtest, musst du sie in den Einstellungen ändern.")}
+                    <br />
+                    <Link
+                        href="https://support.google.com/chromebook/answer/114662?hl=de" rel="noopener noreferrer"
+                        component="a"
+                    >
+                        {t("Wie ändere ich Website-Berechtigungen?")}
+                    </Link>
+                </Alert>}
             </LoadingOverlay>
         </Paper>
     );

@@ -1,8 +1,9 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {Preference} from "types";
+import {Preferences} from "types";
 
 import {parsePreference} from "../preference";
+
 
 export interface IRegistrationData {
     email: string;
@@ -17,7 +18,7 @@ export interface IRegistrationResponse {
     lastName: string;
     email: string;
     loadScoosoData: boolean;
-    preference: Preference;
+    preference: Preferences;
     id: string;
 }
 

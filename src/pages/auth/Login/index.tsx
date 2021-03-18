@@ -8,6 +8,8 @@ import {useTranslation} from "react-i18next";
 import {UserContext} from "contexts";
 import {useHistory} from "react-router-dom";
 import {buildPath} from "utils";
+import {useDispatch} from "react-redux";
+import {setRaw} from "state";
 
 import LoginForm from "./LoginForm";
 import SuspiciousLoginForm from "./SuspiciousLoginForm";
@@ -20,6 +22,7 @@ const Login = () => {
     const {dispatch} = useContext(UserContext);
     const history = useHistory();
     const user = useUser();
+    const reduxDispatch = useDispatch();
 
     const [isSuspicious, setIsSuspicious] = useState<boolean>(false);
     const [loginData, setLoginData] = useState<ILoginData>();
@@ -40,6 +43,7 @@ const Login = () => {
                     type: "login",
                     payload: data,
                 });
+                reduxDispatch(setRaw(data.preference));
                 history.push(typeof next === "string" ? next : buildPath("/"));
             },
         },

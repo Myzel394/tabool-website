@@ -4,7 +4,9 @@ import light from "themes/light";
 import dark from "themes/dark";
 import blue from "themes/blue";
 import midnight from "themes/midnight";
-import {useUserPreferences} from "hooks";
+import {useSelector} from "react-redux";
+
+import {AvailableThemes, getTheme, RootState} from "../state";
 
 
 const THEME_MAP = {
@@ -15,10 +17,10 @@ const THEME_MAP = {
 };
 
 const ThemeHandler = ({children}) => {
-    const {state} = useUserPreferences();
+    const theme = useSelector<RootState>(getTheme) as AvailableThemes;
 
     return (
-        <ThemeProvider theme={THEME_MAP[state?.global?.theme ?? "light"]}>
+        <ThemeProvider theme={THEME_MAP[theme]}>
             {children}
         </ThemeProvider>
     );
