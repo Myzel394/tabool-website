@@ -22,9 +22,13 @@ const HiddenTextField = ({
 
     const fieldType = (() => {
         if (disableCustomImplementation) {
-            return undefined;
+            return "password";
         }
-        return visible ? type : "password";
+        if (visible) {
+            return type;
+        }
+
+        return "password";
     })();
 
     return (
