@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {useQueryString, useUser} from "hooks";
+import {useQueryString, useTitle, useUser} from "hooks";
 import {useMutation} from "react-query";
 import {ILoginData, ILoginResponse, useSendLoginAPI} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -48,6 +48,8 @@ const Login = () => {
             },
         },
     );
+
+    useTitle(t("Anmelden"));
 
     return (
         <FocusedPage title={isSuspicious ? undefined : t("Anmelden")} disableBackButton={!user.isAuthenticated}>

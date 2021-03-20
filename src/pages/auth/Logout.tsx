@@ -7,6 +7,8 @@ import {UserContext} from "contexts";
 import {useHistory} from "react-router-dom";
 import {buildPath} from "utils";
 
+import {useTitle} from "../../hooks";
+
 
 const Logout = () => {
     const {t} = useTranslation();
@@ -31,6 +33,8 @@ const Logout = () => {
     useEffect(() => {
         mutate();
     }, [mutate]);
+
+    useTitle(t("Abmelden..."));
 
     return (
         <LoadingPage title={t("Du wirst abgemeldet")} />
