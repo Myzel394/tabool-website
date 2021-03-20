@@ -13,6 +13,7 @@ export interface StudentWeekView {
     materials: StudentMaterialDetail[];
     exams: StudentExamDetail[];
     events: EventDetail[];
+    homeworks: StudentHomeworkDetail[];
 }
 
 export interface TeacherWeekView {

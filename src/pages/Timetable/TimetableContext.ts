@@ -1,6 +1,6 @@
 import {StudentWeekView} from "types";
 import {Dayjs} from "dayjs";
-import {createContext} from "react";
+import {createContext, Dispatch, SetStateAction} from "react";
 
 export interface ITimetableContext extends StudentWeekView {
     date: Dayjs;
@@ -13,6 +13,9 @@ export interface ITimetableContext extends StudentWeekView {
     onSelectedDateChange: (newDate: Dayjs | null) => any;
 
     selectedColor: string;
+
+    timetable: StudentWeekView;
+    onTimetableChange: Dispatch<SetStateAction<StudentWeekView>>;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

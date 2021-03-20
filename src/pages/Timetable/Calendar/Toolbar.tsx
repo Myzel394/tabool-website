@@ -20,6 +20,7 @@ const Toolbar = ({
         onViewChange,
         date,
         onDateChange,
+        onSelectedDateChange,
     } = useContext(TimetableContext);
 
     const label = t("Ansicht");
@@ -72,6 +73,7 @@ const Toolbar = ({
                                     onChange={date => {
                                         if (date) {
                                             onDateChange(date);
+                                            onSelectedDateChange(date);
                                         }
                                     }}
                                 />

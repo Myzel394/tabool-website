@@ -1,27 +1,31 @@
 import React from "react";
-import {StudentModificationDetail} from "types";
+import {StudentLessonDetail, Subject} from "types";
 import {Box, Grid, Typography} from "@material-ui/core";
 import {ModificationType} from "api";
 import {useTranslation} from "react-i18next";
 import {FaLongArrowAltRight} from "react-icons/all";
 
-import Avatar from "../Avatar";
+import Avatar from "./Avatar";
 
 
 export interface ISingleModification {
-    modification: StudentModificationDetail;
+    lesson: StudentLessonDetail;
+    modificationType: ModificationType;
+    newSubject?: Subject | null;
 }
 
 const SingleModification = ({
-    modification,
+    lesson,
+    modificationType,
+    newSubject,
 }: ISingleModification) => {
     const {t} = useTranslation();
 
-    if (!modification.lesson) {
+    if (!lesson) {
         return null;
     }
 
-    const avatar = <Avatar lesson={modification.lesson} />;
+    const avatar = <Avatar lesson={lesson} />;
     const typeMap = {
         [ModificationType.RoomChange]: t("Raumänderung"),
         [ModificationType.SelfLearn]: t("Selbstorganisiertes Lernen"),
@@ -29,7 +33,7 @@ const SingleModification = ({
         [ModificationType.Replacement]: t("Veränderung"),
     };
     const icon = (() => {
-        switch (modification.modificationType) {
+        switch (modificationType) {
             case ModificationType.FreePeriod:
                 return (
                     <div
@@ -40,8 +44,8 @@ const SingleModification = ({
                         {avatar}
                     </div>);
             case ModificationType.Replacement:
-                if (modification.newSubject) {
-                    return <Avatar subject={modification.newSubject} />;
+                if (newSubject) {
+                    return <Avatar subject={newSubject} />;
                 }
 
                 return avatar;
@@ -74,7 +78,7 @@ const SingleModification = ({
                             fontWeight: 900,
                         }}
                     >
-                        {typeMap[modification.modificationType]}
+                        {typeMap[modificationType]}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                         <FaLongArrowAltRight size="2rem" />

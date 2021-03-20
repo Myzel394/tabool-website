@@ -2,8 +2,9 @@ import React, {memo} from "react";
 import {Fade} from "react-reveal";
 import {Grid, useTheme} from "@material-ui/core";
 import {StudentHomeworkDetail, StudentLessonDetail, StudentMaterialDetail} from "types";
+import {SingleLesson} from "components";
 
-import SingleLesson from "./SingleLesson";
+import createShadow from "../createShadow";
 
 export interface ITimetable {
     lessons: StudentLessonDetail[];
@@ -32,7 +33,14 @@ const Timetable = ({
                         duration={theme.transitions.duration.enteringScreen}
                         delay={index * 100}
                     >
-                        <SingleLesson lesson={lesson} homeworks={homeworks} materials={materials} />
+                        <SingleLesson
+                            lesson={lesson}
+                            homeworkCount={homeworks.filter(homework => homework.lesson.id === lesson.id).length}
+                            materialCount={materials.filter(material => material.lesson.id === lesson.id).length}
+                            style={{
+                                boxShadow: createShadow(lesson.course.subject.userRelation.color),
+                            }}
+                        />
                     </Fade>
                 </Grid>)}
         </Grid>

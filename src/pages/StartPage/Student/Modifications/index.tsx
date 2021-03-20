@@ -3,8 +3,7 @@ import {Box, Typography} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {StudentModificationDetail} from "types";
-
-import SingleModification from "./SingleModification";
+import {SingleModification} from "components";
 
 export interface IModifications {
     modifications: StudentModificationDetail[];
@@ -33,7 +32,11 @@ const Modifications = ({
                             {modification.lessonDate.format("lll")}
                         </Typography>
                     </Box>
-                    <SingleModification modification={modification} />
+                    <SingleModification
+                        lesson={modification.lesson}
+                        modificationType={modification.modificationType}
+                        newSubject={modification.newSubject}
+                    />
                 </div>)}
         </>
     );

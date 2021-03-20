@@ -1,8 +1,8 @@
 import {Dayjs} from "dayjs";
 
-import replaceDatetime from "./replaceDatetime";
+import lazyDatetime from "./lazyDatetime";
 
 const isDateEqual = (first: Dayjs, second: Dayjs): boolean =>
-    replaceDatetime(first, "time").isSame(replaceDatetime(second, "time"));
+    lazyDatetime(first, "date") === lazyDatetime(second, "date");
 
 export default isDateEqual;

@@ -29,6 +29,7 @@ const BottomSheet = ({
     onClose,
     PaperProps,
     style: givenStyle,
+    variant,
     ...other
 }: IBottomSheet) => {
     const theme = useTheme();
@@ -36,11 +37,13 @@ const BottomSheet = ({
         ...givenStyle,
         borderRadius: theme.shape.borderRadius,
     }), [theme.shape.borderRadius, givenStyle]);
+    const isTemporary = variant === "temporary";
 
     return (
         <SwipeableDrawer
             {...other}
             disableSwipeToOpen
+            variant={variant}
             anchor="bottom"
             open={isOpen}
             disableBackdropTransition={!isIOS}
@@ -54,17 +57,19 @@ const BottomSheet = ({
             onOpen={() => null}
         >
             <Container maxWidth={maxWidth}>
-                <Box pt={1} display="flex" alignItems="center" justifyContent="center">
-                    <div
-                        style={{
-                            width: 100,
-                            height: 8,
-                            borderRadius: theme.shape.borderRadius,
-                            backgroundColor: theme.palette.background.default,
-                        }}
-                    />
-                </Box>
-                <Box p={2} style={style}>
+                {isTemporary && (
+                    <Box pt={1} display="flex" alignItems="center" justifyContent="center">
+                        <div
+                            style={{
+                                width: 100,
+                                height: 8,
+                                borderRadius: theme.shape.borderRadius,
+                                backgroundColor: theme.palette.background.default,
+                            }}
+                        />
+                    </Box>
+                )}
+                <Box p={2} pt={isTemporary ? 2 : 3} style={style}>
                     {children}
                 </Box>
             </Container>

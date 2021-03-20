@@ -3,8 +3,7 @@ import {Dayjs} from "dayjs";
 import {Grid} from "@material-ui/core";
 import {AvatarGroup} from "@material-ui/lab";
 import {StudentLessonDetail} from "types";
-
-import Avatar from "../Avatar";
+import {Avatar} from "components";
 
 import Description from "./Description";
 

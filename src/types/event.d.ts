@@ -7,6 +7,7 @@ export interface EventDetail {
     title: string;
     startDatetime: Dayjs;
     endDatetime: Dayjs;
+    information: string | null;
     id: string;
 }
 

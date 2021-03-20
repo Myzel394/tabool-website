@@ -52,6 +52,9 @@ const calendarStyles = (theme: Theme) => {
             "& .rbc-show-more": {
                 display: "none",
             },
+            "& .rbc-date-cell": {
+                padding: 0,
+            },
 
             "& .rbc-row-content": {
                 height: "100%",
