@@ -48,8 +48,7 @@ const Timetable = () => {
 
     const previousStartDate = usePrevious(startDate, dayjs());
 
-    const endDate = startDate.add(30, "day");
-
+    const [queryStartDate, queryEndDate] = getDates(view, startDate);
     const selectedColor = tinycolor(theme.palette.text.primary)
         .setAlpha(0.1)
         .toString();
@@ -59,15 +58,11 @@ const Timetable = () => {
         isLoading,
         error,
     } = useQuery<StudentWeekView, AxiosError>(
-        "fetch_week",
-        () => {
-            const [queryStartDate, queryEndDate] = getDates(view, startDate);
-
-            return fetchWeek({
-                startDate: queryStartDate,
-                endDate: queryEndDate,
-            });
-        },
+        ["fetch_week", {
+            startDate: queryStartDate,
+            endDate: queryEndDate,
+        }],
+        context => fetchWeek(context.queryKey[1]),
         {
             ...queryOptions,
             onSuccess: setTimetable,
@@ -90,8 +85,8 @@ const Timetable = () => {
             data={data}
             error={error}
             getDocumentTitle={() => t("Stundenplan ({{startDate}} - {{endDate}})", {
-                startDate: startDate.format("l"),
-                endDate: endDate.format("l"),
+                startDate: queryStartDate.format("l"),
+                endDate: queryEndDate.format("l"),
             })}
             renderLoading={() => <LoadingPage title={t("Stundenplan wird geladen...")} />}
         >
