@@ -122,7 +122,7 @@ export const preferenceSlice = createSlice({
             }),
 
         // Timetable
-        setShowFreePeriod: (state, {type: showFreePeriod}: PayloadAction<boolean>) =>
+        setShowFreePeriod: (state, {payload: showFreePeriod}: PayloadAction<boolean>) =>
             update(state, {
                 global: {
                     // @ts-ignore
@@ -133,7 +133,7 @@ export const preferenceSlice = createSlice({
                     },
                 },
             }),
-        setShowDetails: (state, {type: showDetails}: PayloadAction<boolean>) =>
+        setShowDetails: (state, {payload: showDetails}: PayloadAction<boolean>) =>
             update(state, {
                 global: {
                     // @ts-ignore
