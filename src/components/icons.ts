@@ -2,6 +2,7 @@ import {
     FaBlackTie,
     FaClock,
     FaStickyNote,
+    GiCardExchange,
     MdBook,
     MdPeople,
     MdRoom,
@@ -17,3 +18,4 @@ export const HomeworkIcon = FaStickyNote;
 export const ExamIcon = RiFileEditFill;
 export const RoomIcon = MdRoom;
 export const TimetableIcon = MdViewAgenda;
+export const ModificationIcon = GiCardExchange;

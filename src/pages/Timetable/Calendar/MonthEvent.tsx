@@ -1,5 +1,9 @@
+/* eslint-disable @shopify/jsx-prefer-fragment-wrappers */
 import React, {useContext} from "react";
 import dayjs from "dayjs";
+import {isDateEqual} from "utils";
+import {Zoom} from "react-reveal";
+import {useTheme} from "@material-ui/core";
 
 import TimetableContext from "../TimetableContext";
 
@@ -13,8 +17,14 @@ const MonthEvent = ({
         selectedDate,
         onSelectedDateChange,
         selectedColor,
+        calendarEvents,
     } = useContext(TimetableContext);
+    const theme = useTheme();
+
     const isValidWeekday = VALID_WEEKDAYS.includes(dayjs(date).day());
+    const eventsForDay = calendarEvents
+        .filter(event => isDateEqual(dayjs(date), dayjs(event.start)))
+        .slice(0, 6);
 
     const updateDate = () => {
         if (!isValidWeekday) {
@@ -34,6 +44,9 @@ const MonthEvent = ({
                 backgroundColor: selectedDate?.isSame(date) ? selectedColor : "",
                 height: "100%",
                 opacity: isValidWeekday ? 1 : 0.1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
             }}
             onClick={updateDate}
             onKeyDown={event => {
@@ -42,7 +55,30 @@ const MonthEvent = ({
                 }
             }}
         >
-            {label}
+            <div>
+                {label}
+            </div>
+            <div
+                style={{
+                    display: "flex",
+                    flexBasis: "calc(100% / 3)",
+                    flexWrap: "wrap-reverse",
+                }}
+            >
+                {eventsForDay.map(event => {
+                    const {icon: Icon} = event.resource;
+
+                    return (
+                        <Zoom
+                            key={event.resource.id}
+                            delay={Math.random() * 100}
+                            duration={theme.transitions.duration.enteringScreen}
+                        >
+                            <Icon size="1rem" style={{padding: 1}} />
+                        </Zoom>
+                    );
+                })}
+            </div>
         </div>
     );
 };

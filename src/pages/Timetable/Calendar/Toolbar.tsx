@@ -68,6 +68,7 @@ const Toolbar = ({
                                 </IconButton>
                                 <DatePicker
                                     size="small"
+                                    label={t("Datum")}
                                     value={date}
                                     inputVariant="outlined"
                                     onChange={date => {

@@ -1,19 +1,22 @@
-import React, {useLayoutEffect, useState} from "react";
+import React, {useLayoutEffect, useMemo, useState} from "react";
 import {useFetchStudentWeekAPI} from "hooks/apis";
 import {useQuery} from "react-query";
 import {StudentWeekView} from "types";
 import {AxiosError} from "axios";
-import {usePrevious, useQueryOptions} from "hooks";
+import {usePrevious, useQueryOptions, useWindowSize} from "hooks";
 import dayjs, {Dayjs} from "dayjs";
 import {LoadingPage, ResponseWrapper} from "components";
 import {useTranslation} from "react-i18next";
 import {useTheme} from "@material-ui/core";
 import tinycolor from "tinycolor2";
 import {findNextDate} from "utils";
+import _ from "lodash";
+import {useSwipeable} from "react-swipeable";
 
 import TimetableContext, {ITimetableContext} from "./TimetableContext";
 import Calendar from "./Calendar";
 import BottomInformation from "./BottomInformation";
+import getEvents from "./getEvents";
 
 const getDates = (view: ITimetableContext["view"], activeDate: Dayjs): [Dayjs, Dayjs] => {
     switch (view) {
@@ -34,12 +37,12 @@ const getDates = (view: ITimetableContext["view"], activeDate: Dayjs): [Dayjs, D
     }
 };
 
-
 const Timetable = () => {
     const theme = useTheme();
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchWeek = useFetchStudentWeekAPI();
+    const [width] = useWindowSize();
 
     const [view, setView] = useState<ITimetableContext["view"]>("month");
     const [startDate, setStartDate] = useState<Dayjs>(dayjs);
@@ -47,6 +50,36 @@ const Timetable = () => {
     const [timetable, setTimetable] = useState<StudentWeekView>();
 
     const previousStartDate = usePrevious(startDate, dayjs());
+    const events = useMemo(() => (timetable ? getEvents(timetable, view) : []), [timetable, view]);
+    const swipeHandlers = useSwipeable({
+        delta: width * 0.25,
+        onSwipedLeft: () => {
+            switch (view) {
+                case "month":
+                    setStartDate(prevDate => prevDate.add(1, "month"));
+                    break;
+                case "work_week":
+                    setStartDate(prevDate => prevDate.add(1, "week"));
+                    break;
+                case "day":
+                    setStartDate(prevDate => prevDate.add(1, "day"));
+                    break;
+            }
+        },
+        onSwipedRight: () => {
+            switch (view) {
+                case "month":
+                    setStartDate(prevDate => prevDate.subtract(1, "month"));
+                    break;
+                case "work_week":
+                    setStartDate(prevDate => prevDate.subtract(1, "week"));
+                    break;
+                case "day":
+                    setStartDate(prevDate => prevDate.subtract(1, "day"));
+                    break;
+            }
+        },
+    });
 
     const [queryStartDate, queryEndDate] = getDates(view, startDate);
     const selectedColor = tinycolor(theme.palette.text.primary)
@@ -65,7 +98,11 @@ const Timetable = () => {
         context => fetchWeek(context.queryKey[1]),
         {
             ...queryOptions,
-            onSuccess: setTimetable,
+            onSuccess: async newTimetable => {
+                if (!_.isEqual(timetable, newTimetable)) {
+                    setTimetable(newTimetable);
+                }
+            },
         },
     );
 
@@ -91,25 +128,28 @@ const Timetable = () => {
             renderLoading={() => <LoadingPage title={t("Stundenplan wird geladen...")} />}
         >
             {() => (timetable ? (
-                <TimetableContext.Provider
-                    value={{
-                        ...timetable,
-                        view,
-                        selectedColor,
-                        selectedDate,
-                        timetable,
-                        date: startDate,
-                        onDateChange: setStartDate,
-                        onViewChange: setView,
-                        onSelectedDateChange: setSelectedDate,
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore: Timetable is set here
-                        onTimetableChange: setTimetable,
-                    }}
-                >
-                    <Calendar />
-                    <BottomInformation />
-                </TimetableContext.Provider>
+                <div {...swipeHandlers}>
+                    <TimetableContext.Provider
+                        value={{
+                            ...timetable,
+                            view,
+                            selectedColor,
+                            selectedDate,
+                            timetable,
+                            calendarEvents: events,
+                            date: startDate,
+                            onDateChange: setStartDate,
+                            onViewChange: setView,
+                            onSelectedDateChange: setSelectedDate,
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore: Timetable is set here
+                            onTimetableChange: setTimetable,
+                        }}
+                    >
+                        <Calendar />
+                        <BottomInformation />
+                    </TimetableContext.Provider>
+                </div>
             ) : null)}
         </ResponseWrapper>
     );

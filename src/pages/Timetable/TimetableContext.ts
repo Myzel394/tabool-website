@@ -1,6 +1,7 @@
 import {StudentWeekView} from "types";
 import {Dayjs} from "dayjs";
 import {createContext, Dispatch, SetStateAction} from "react";
+import {Event as CalendarEvent} from "react-big-calendar";
 
 export interface ITimetableContext extends StudentWeekView {
     date: Dayjs;
@@ -16,6 +17,8 @@ export interface ITimetableContext extends StudentWeekView {
 
     timetable: StudentWeekView;
     onTimetableChange: Dispatch<SetStateAction<StudentWeekView>>;
+
+    calendarEvents: CalendarEvent[];
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

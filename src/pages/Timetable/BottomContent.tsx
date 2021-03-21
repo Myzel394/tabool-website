@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {Exam, HorizontalScroll, Material, SingleLesson, SingleModification} from "components";
+import {Exam, Material, ShowMoreArray, ShowMoreButton, SingleLesson, SingleModification} from "components";
 import {StudentExamDetail, StudentWeekView} from "types";
 import {Box, Grid, Link, List, ListItem, ListItemText, Typography, useTheme} from "@material-ui/core";
 import {useElementSize, useUniqueId} from "hooks";
@@ -82,7 +82,13 @@ const BottomContent = ({
                             }
                         }}
                     >
-                        <HorizontalScroll<StudentExamDetail> elements={timetable.exams}>
+                        <ShowMoreArray<StudentExamDetail>
+                            maxElements={2}
+                            elements={timetable.exams}
+                            renderButton={(isShown, update) =>
+                                <ShowMoreButton showMore={isShown} onClick={update} />
+                            }
+                        >
                             {exam =>
                                 <Zoom key={exam.id} duration={theme.transitions.duration.enteringScreen}>
                                     <Link
@@ -102,7 +108,7 @@ const BottomContent = ({
                                     </Link>
                                 </Zoom>
                             }
-                        </HorizontalScroll>
+                        </ShowMoreArray>
                     </div>
                 </Box>
             ) : null}

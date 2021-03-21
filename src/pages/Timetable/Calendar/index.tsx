@@ -14,6 +14,7 @@ import MonthEvent from "./MonthEvent";
 
 const Calendar = ({classes}) => {
     const {
+        timetable,
         view,
         date,
         onDateChange,
