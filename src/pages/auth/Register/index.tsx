@@ -1,3 +1,5 @@
+import {isExperimental} from "constants/dev";
+
 import React, {useContext} from "react";
 import {useTranslation} from "react-i18next";
 import {IRegistrationData, IRegistrationResponse, useSendRegistrationAPI} from "hooks/apis";
@@ -28,7 +30,7 @@ const Register = () => {
                     payload: data,
                 });
 
-                if (process.env.IS_EXPERIMENTAL) {
+                if (isExperimental) {
                     history.push(buildPath("/auth/registration/fill/"));
                 }
             },
