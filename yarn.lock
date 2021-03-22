@@ -14181,6 +14181,11 @@ tryer@^1.0.1:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
+ts-debounce@^2.0.1:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/ts-debounce/-/ts-debounce-2.3.0.tgz#a360a8bd29402ce0ea9970f7cfc0df44dfae7139"
+  integrity sha512-j63IP7/unAzovrhVHE7U+fNkvDKwIaLH11dCO9TcRbYOZw1chPL054poqq3ZloyRJ5KwJMeB8csN/vGPPpQJjw==
+
 ts-jest@^26.4.4:
   version "26.5.1"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.1.tgz#4d53ee4481552f57c1624f0bd3425c8b17996150"
@@ -14576,6 +14581,13 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-hash-state@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/use-hash-state/-/use-hash-state-2.0.1.tgz#3dab6aca0ea6bf6baf50d623141c1d6364de912d"
+  integrity sha512-GV1rVGTt3egyCTpk+hqcxIGQBsdYHET49R9M9/JEN2L+PMUZevpDyj+8FyupOXd3kwgpqqc647L5AmoqFMy5mw==
+  dependencies:
+    ts-debounce "^2.0.1"
 
 use-memo-one@^1.1.1:
   version "1.1.2"

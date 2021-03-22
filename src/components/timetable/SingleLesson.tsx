@@ -1,9 +1,10 @@
 import React, {CSSProperties} from "react";
 import {StudentLessonDetail} from "types";
-import {Badges, HomeworkBadge, Lesson, LessonContent, MaterialBadge} from "components/index";
 import {Link} from "@material-ui/core";
-import {buildPath, findNextDate, getEndTime, getStartTime, lazyDatetime} from "utils";
-import dayjs from "dayjs";
+import {buildPath, findNextDate, getEndTime, getStartTime, lazyDatetime, replaceDatetime} from "utils";
+import dayjs, {Dayjs} from "dayjs";
+
+import {Badges, ExamBadge, HomeworkBadge, Lesson, LessonContent, MaterialBadge, VideoConferenceBadge} from "./Lesson";
 
 
 export interface ILessonEvent {
@@ -11,25 +12,44 @@ export interface ILessonEvent {
 
     homeworkCount?: number;
     materialCount?: number;
+    hasExam?: boolean;
+    hasVideoConference?: boolean;
     style?: CSSProperties;
+    showDetails?: boolean;
+    date?: Dayjs;
 }
+
+
+const isVideoConferenceActive = (lesson: StudentLessonDetail): boolean => {
+    const startTime = replaceDatetime(dayjs(getStartTime(lesson.startHour)), "date");
+    const endTime = replaceDatetime(dayjs(getEndTime(lesson.endHour)), "date");
+    const now = dayjs();
+
+    return startTime.isBefore(now) && endTime.isAfter(now);
+};
 
 const SingleLesson = ({
     lesson,
     homeworkCount,
     materialCount,
+    hasVideoConference,
+    hasExam,
     style,
+    showDetails,
+    date,
 }: ILessonEvent) => {
     const badges = [
         homeworkCount && <HomeworkBadge count={homeworkCount} />,
         materialCount && <MaterialBadge count={materialCount} />,
+        hasVideoConference && <VideoConferenceBadge isActive={isVideoConferenceActive(lesson)} />,
+        hasExam && <ExamBadge />,
     ].filter(Boolean) as JSX.Element[];
 
     return (
         <Link
             href={buildPath("/agenda/lesson/detail/:id/:date/", {
                 id: lesson.id,
-                date: lazyDatetime(findNextDate(dayjs(), lesson.weekday), "date") ?? "",
+                date: lazyDatetime(date ?? findNextDate(dayjs(), lesson.weekday), "date") || "",
             })}
             underline="none"
         >
@@ -40,7 +60,7 @@ const SingleLesson = ({
             >
                 <Badges badges={badges} />
                 <LessonContent
-                    showDetails
+                    showDetails={showDetails}
                     courseName={lesson.course.name}
                     roomName={lesson.course.room.place}
                     teacherName={lesson.course.teacher.lastName}

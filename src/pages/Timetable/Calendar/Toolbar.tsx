@@ -1,6 +1,17 @@
 import React, {useContext} from "react";
 import {DatePicker} from "@material-ui/pickers";
-import {Box, Container, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select} from "@material-ui/core";
+import {
+    Box,
+    Container,
+    FormControl,
+    Grid,
+    IconButton,
+    InputLabel,
+    LinearProgress,
+    MenuItem,
+    Paper,
+    Select,
+} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {FaCaretLeft, FaCaretRight, MdViewComfy, MdViewDay, MdViewWeek} from "react-icons/all";
 import {navigate as navigationConstants} from "react-big-calendar/lib/utils/constants";
@@ -10,6 +21,10 @@ import TimetableContext from "../TimetableContext";
 const style = {
     marginRight: 4,
 };
+
+const VALID_WEEKDAYS = [
+    1, 2, 3, 4, 5,
+];
 
 const Toolbar = ({
     onNavigate,
@@ -21,6 +36,7 @@ const Toolbar = ({
         date,
         onDateChange,
         onSelectedDateChange,
+        isLoading,
     } = useContext(TimetableContext);
 
     const label = t("Ansicht");
@@ -28,7 +44,7 @@ const Toolbar = ({
     return (
         <Paper>
             <Container maxWidth="md">
-                <Box py={3} px={2}>
+                <Box pt={3} pb={1} px={2}>
                     <Grid container spacing={1} alignItems="center" justify="space-between">
                         <Grid item xs={12} sm="auto">
                             <FormControl fullWidth variant="outlined" size="small">
@@ -67,10 +83,20 @@ const Toolbar = ({
                                     <FaCaretLeft />
                                 </IconButton>
                                 <DatePicker
+                                    shouldDisableDate={date => Boolean(date && !VALID_WEEKDAYS.includes(date.day()))}
                                     size="small"
                                     label={t("Datum")}
                                     value={date}
                                     inputVariant="outlined"
+                                    format={(() => {
+                                        switch (view) {
+                                            case "month":
+                                            case "work_week":
+                                                return "LL";
+                                            case "day":
+                                                return "ddd, LL";
+                                        }
+                                    })()}
                                     onChange={date => {
                                         if (date) {
                                             onDateChange(date);
@@ -86,6 +112,7 @@ const Toolbar = ({
                     </Grid>
                 </Box>
             </Container>
+            {isLoading && <LinearProgress />}
         </Paper>
     );
 };

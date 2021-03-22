@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {FaClipboardList} from "react-icons/all";
 
@@ -21,4 +21,4 @@ const HomeworkBadge = ({count}: IHomeworkBadge) => {
     );
 };
 
-export default memo(HomeworkBadge);
+export default HomeworkBadge;

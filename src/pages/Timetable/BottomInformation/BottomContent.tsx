@@ -2,27 +2,69 @@ import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {Exam, Material, ShowMoreArray, ShowMoreButton, SingleLesson, SingleModification} from "components";
 import {StudentExamDetail, StudentWeekView} from "types";
-import {Box, Grid, Link, List, ListItem, ListItemText, Typography, useTheme} from "@material-ui/core";
-import {useElementSize, useUniqueId} from "hooks";
+import {Box, Button, Grid, Link, List, ListItem, ListItemText, Typography, useTheme} from "@material-ui/core";
+import {useElementSize, useSnackbar, useUniqueId} from "hooks";
 import {Fade, Slide, Zoom} from "react-reveal";
-import {buildPath, truncate} from "utils";
+import {buildPath, copyText, lazyDatetime, truncate} from "utils";
+import {MdShare} from "react-icons/all";
+import {Dayjs} from "dayjs";
 
 
 export interface IBottomContent {
     timetable: StudentWeekView;
+    selectedDate: Dayjs;
 }
 
 const BottomContent = ({
     timetable,
+    selectedDate,
 }: IBottomContent) => {
     const {t} = useTranslation();
+    const {
+        addSuccess,
+        addWarning,
+    } = useSnackbar();
     const theme = useTheme();
+
     const [examWrapperRef, setExamWrapperRef] = useState<any>();
     const [wrapperWidth = 0] = useElementSize(examWrapperRef);
     const width = Math.max(200, wrapperWidth * 0.9);
+
     const materialsId = useUniqueId();
     const modificationsId = useUniqueId();
     const eventsId = useUniqueId();
+
+    const shareDate = async (): Promise<void> => {
+        const {origin, pathname} = window.location;
+        const hash = `#${lazyDatetime(selectedDate, "date")}`;
+        const url = `${origin}${pathname}#${hash}`;
+        const adMessage = t("Schau dir den {{date}} an!", {
+            date: selectedDate.format("LL"),
+        });
+
+        if (navigator.share) {
+            await navigator.share({
+                url,
+                title: t("{{weekday}}, der {{date}}", {
+                    weekday: selectedDate.format("dddd"),
+                    date: selectedDate.format("l"),
+                }),
+                text: adMessage,
+            });
+            return;
+        }
+
+        try {
+            await copyText(`${adMessage}\n\n${url}`);
+            addSuccess(t("Dein Browser unterstützt Teilen nicht, der Text wurde dir dafür in die Zwischenablage kopiert!"));
+        } catch (err) {
+            addWarning(t("Dein Browser unterstützt Teilen nicht und der Text konnte auch nicht kopiert werden. Du kannst die URL manuell kopieren und teilen."));
+
+            if (window.location.hash) {
+                window.location.hash = hash;
+            }
+        }
+    };
 
     return (
         <Box my={3}>
@@ -31,6 +73,10 @@ const BottomContent = ({
                     <Grid key={lesson.id} item>
                         <Zoom duration={theme.transitions.duration.enteringScreen}>
                             <SingleLesson
+                                showDetails
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore: BottomContent (this component) is only rendered, when a selectedDate is chosen
+                                date={selectedDate}
                                 lesson={lesson}
                                 homeworkCount={timetable.homeworks.filter(homework => homework.lesson.id === lesson.id).length}
                                 materialCount={timetable.materials.filter(material => material.lesson.id === lesson.id).length}
@@ -126,13 +172,22 @@ const BottomContent = ({
                                         secondary={[
                                             event.room?.place,
                                             truncate(event.information),
-                                        ].filter(Boolean).join(" | ")}
+                                        ].filter(Boolean)
+                                            .join(" | ")}
                                     />
                                 </Fade>
                             </ListItem>)}
                     </List>
                 </Box>
             ) : null}
+            <Box my={3} display="flex" alignItems="center" justifyContent="center">
+                <Button
+                    startIcon={<MdShare />}
+                    onClick={shareDate}
+                >
+                    {t("Teilen")}
+                </Button>
+            </Box>
         </Box>
     );
 };

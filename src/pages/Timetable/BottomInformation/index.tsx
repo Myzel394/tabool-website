@@ -5,9 +5,10 @@ import {useAsync} from "hooks";
 import {useTranslation} from "react-i18next";
 import {MdVisibilityOff} from "react-icons/all";
 
+import TimetableContext from "../TimetableContext";
+import filterTimetableForDay from "../filterTimetableForDay";
+
 import BottomContent from "./BottomContent";
-import TimetableContext from "./TimetableContext";
-import filterTimetableForDay from "./filterTimetableForDay";
 
 
 const BottomInformation = () => {
@@ -20,11 +21,15 @@ const BottomInformation = () => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const getData = useCallback(() => filterTimetableForDay(timetable, selectedDate), [timetable, selectedDate]);
+    const getData = useCallback(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        () => filterTimetableForDay(timetable, selectedDate),
+        [timetable, selectedDate],
+    );
+
     const {
-        value,
+        value: timetableForDay,
     } = useAsync(getData, Boolean(selectedDate));
 
     useEffect(() => {
@@ -48,19 +53,26 @@ const BottomInformation = () => {
                             </Typography>
                         </Box>
                         <Collapse mountOnEnter unmountOnExit in={isOpen}>
-                            {value
-                                ? <BottomContent timetable={value} />
+                            {timetableForDay
+                                ? <BottomContent timetable={timetableForDay} selectedDate={selectedDate} />
                                 : (
-                                    <Box display="flex" alignItems="center">
-                                        <CircularProgress />
-                                        <Typography variant="body1">
-                                            {t("Daten werden geladen")}
-                                        </Typography>
+                                    <Box display="flex" alignItems="center" justifyContent="center" py={3}>
+                                        <CircularProgress size="1rem" color="inherit" />
+                                        <Box ml={1}>
+                                            <Typography variant="body1">
+                                                {t("Daten werden geladen")}
+                                            </Typography>
+                                        </Box>
                                     </Box>
                                 )
                             }
                         </Collapse>
-                        <Box display="flex" alignItems="center" justifyContent="center">
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            flexWrap="wrap"
+                        >
                             <ShowMoreButton showMore={isOpen} onClick={() => setIsOpen(prevState => !prevState)} />
                             <Button startIcon={<MdVisibilityOff />} onClick={() => onSelectedDateChange(null)}>
                                 {t("Ausblenden")}

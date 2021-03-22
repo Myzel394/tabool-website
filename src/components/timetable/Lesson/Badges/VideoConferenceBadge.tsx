@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {FaVideo} from "react-icons/all";
 
@@ -21,4 +21,4 @@ const VideoConferenceBadge = ({isActive}: IVideoConferenceBadge) => {
     );
 };
 
-export default memo(VideoConferenceBadge);
+export default VideoConferenceBadge;

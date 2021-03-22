@@ -13,12 +13,15 @@ export interface ITimetableContext extends StudentWeekView {
     selectedDate: Dayjs | null;
     onSelectedDateChange: (newDate: Dayjs | null) => any;
 
-    selectedColor: string;
-
-    timetable: StudentWeekView;
+    timetable?: StudentWeekView;
     onTimetableChange: Dispatch<SetStateAction<StudentWeekView>>;
 
     calendarEvents: CalendarEvent[];
+
+    minTime: Date;
+    maxTime: Date;
+
+    isLoading: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

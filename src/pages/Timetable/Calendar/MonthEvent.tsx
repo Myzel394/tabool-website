@@ -6,6 +6,7 @@ import {Zoom} from "react-reveal";
 import {useTheme} from "@material-ui/core";
 
 import TimetableContext from "../TimetableContext";
+import useSelectedColor from "../hooks/useSelectedColor";
 
 const VALID_WEEKDAYS = [1, 2, 3, 4, 5];
 
@@ -16,9 +17,9 @@ const MonthEvent = ({
     const {
         selectedDate,
         onSelectedDateChange,
-        selectedColor,
         calendarEvents,
     } = useContext(TimetableContext);
+    const selectedColor = useSelectedColor();
     const theme = useTheme();
 
     const isValidWeekday = VALID_WEEKDAYS.includes(dayjs(date).day());
@@ -74,7 +75,11 @@ const MonthEvent = ({
                             delay={Math.random() * 100}
                             duration={theme.transitions.duration.enteringScreen}
                         >
-                            <Icon size="1rem" style={{padding: 1}} />
+                            <Icon
+                                size="1rem"
+                                style={{padding: 1}}
+                                color={theme.palette.text.hint}
+                            />
                         </Zoom>
                     );
                 })}

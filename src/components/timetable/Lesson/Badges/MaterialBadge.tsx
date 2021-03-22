@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {HiDocument} from "react-icons/all";
 
@@ -21,4 +21,4 @@ const MaterialBadge = ({count}: IMaterialBadge) => {
     );
 };
 
-export default memo(MaterialBadge);
+export default MaterialBadge;

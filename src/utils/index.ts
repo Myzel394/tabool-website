@@ -22,6 +22,7 @@ export * from "./lazyDatetime";
 export * from "./buildPath";
 export * from "./createShort";
 export * from "./setTime";
+export * from "./copyText";
 
 export {default as isAllDay} from "./isAllDay";
 export {default as snakeCaseKeys} from "./snakeCaseKeys";
@@ -55,3 +56,4 @@ export {default as observeStore} from "./observeStore";
 export {default as getMaterialDownloadDateString} from "./getMaterialDownloadDateString";
 export {default as getLessonMinMaxTime} from "./getLessonMinMaxTime";
 export {default as parseQueryDate} from "./parseQueryDate";
+export {default as copyText} from "./copyText";

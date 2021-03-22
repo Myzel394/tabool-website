@@ -34,6 +34,7 @@ const Timetable = ({
                         delay={index * 100}
                     >
                         <SingleLesson
+                            showDetails
                             lesson={lesson}
                             homeworkCount={homeworks.filter(homework => homework.lesson.id === lesson.id).length}
                             materialCount={materials.filter(material => material.lesson.id === lesson.id).length}
