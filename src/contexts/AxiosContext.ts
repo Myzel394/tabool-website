@@ -34,7 +34,9 @@ export const createInstance = () => {
 
         return response;
     }, error => {
-        error.response.data = camelcaseKeys(error.response.data ?? {}, {deep: true});
+        if (error.response) {
+            error.response.data = camelcaseKeys(error.response?.data ?? {}, {deep: true});
+        }
 
         return Promise.reject(error);
     });

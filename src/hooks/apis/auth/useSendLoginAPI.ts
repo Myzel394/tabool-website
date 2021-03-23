@@ -1,15 +1,24 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
 import {Gender, UserType} from "api";
+import {Preferences, TeacherDetail} from "types";
 
 import {parsePreference} from "../preference";
-import {Preferences} from "../../../types";
 
 export interface ILoginData {
     email: string;
     password: string;
 
     otpKey?: string;
+}
+
+interface StudentData {
+    classNumber: number;
+    mainTeacher: TeacherDetail;
+}
+
+interface TeacherData {
+    shortName: string;
 }
 
 export interface ILoginResponse {
@@ -20,6 +29,20 @@ export interface ILoginResponse {
     userType: UserType;
     gender: Gender;
     preference: Preferences;
+    student: StudentData | null;
+    teacher: TeacherData | null;
+}
+
+export interface ILoginResponseAsStudent extends ILoginResponse {
+    userType: UserType.Student;
+    student: StudentData;
+    teacher: null;
+}
+
+export interface ILoginResponseAsTeacher extends ILoginResponse {
+    userType: UserType.Teacher;
+    teacher: TeacherData;
+    student: null;
 }
 
 const useSendLoginAPI = () => {
@@ -29,7 +52,7 @@ const useSendLoginAPI = () => {
         email,
         password,
         otpKey,
-    }: ILoginData): Promise<ILoginResponse> => {
+    }: ILoginData): Promise<ILoginResponseAsStudent | ILoginResponseAsTeacher> => {
         const {data} = await instance.post("/api/auth/login/", {
             email,
             password,

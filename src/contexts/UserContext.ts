@@ -40,6 +40,8 @@ export const reducer = (state: IUser, action: ActionType): IUser => {
                 gender,
                 userType,
                 id,
+                student,
+                teacher,
             } = action.payload;
 
             return {
@@ -52,6 +54,8 @@ export const reducer = (state: IUser, action: ActionType): IUser => {
                     gender,
                     userType,
                     id,
+                    student,
+                    teacher,
                 },
             };
         }

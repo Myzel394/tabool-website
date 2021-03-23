@@ -57,7 +57,7 @@ const MoreSheet = ({
                         {t("Einstellungen")}
                     </ListItemText>
                 </ListItem>
-                <Link download underline="none" color="inherit" href={submission.file}>
+                <Link download underline="none" color="inherit" href={submission.file} target="_blank">
                     <ListItem button>
                         <ListItemIcon>
                             <MdFileDownload size="1.5rem" />

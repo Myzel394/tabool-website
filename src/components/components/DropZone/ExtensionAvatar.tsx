@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {Avatar} from "@material-ui/core";
 
 export interface IExtensionAvatar {
@@ -45,6 +45,7 @@ const ExtensionAvatar = ({
     return (
         <Avatar
             style={{
+                cursor: "pointer",
                 backgroundColor: color ?? getColor(extension.toLowerCase()),
             }}
         >
@@ -54,4 +55,4 @@ const ExtensionAvatar = ({
     );
 };
 
-export default memo(ExtensionAvatar);
+export default ExtensionAvatar;

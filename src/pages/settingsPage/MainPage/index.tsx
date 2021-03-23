@@ -3,6 +3,7 @@ import {useTranslation} from "react-i18next";
 import {DefaultPage} from "components";
 import {Box, Grid, Typography} from "@material-ui/core";
 import {useTitle, useUser} from "hooks";
+import {UserType} from "api";
 
 import Area from "../Area";
 
@@ -11,12 +12,18 @@ import Account from "./Account";
 import Design from "./Design";
 import Faq from "./Faq";
 import DataShare from "./DataShare";
+import StudentInformation from "./StudentInformation";
 
 const MainPage = () => {
     const {t} = useTranslation();
     const user = useUser();
 
     useTitle(t("Einstellungen"));
+
+    // Just for typescript
+    if (!user.data) {
+        return null;
+    }
 
     return (
         <DefaultPage>
@@ -27,6 +34,15 @@ const MainPage = () => {
                             <Account />
                         </Area>
                     </Grid>
+                    {user.data.userType === UserType.Student && (
+                        <Grid item xs={12}>
+                            <Area title={t("Dein Lehrer")}>
+                                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                                {/* @ts-ignore: Student data is given (it's previously just checked) */}
+                                <StudentInformation {...user.data.student} />
+                            </Area>
+                        </Grid>
+                    )}
                     <Grid item xs={12}>
                         <Area title={t("Berechtigungen")}>
                             <Permissions />

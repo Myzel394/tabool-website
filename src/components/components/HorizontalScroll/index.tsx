@@ -1,5 +1,6 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useRef} from "react";
 import {Grid} from "@material-ui/core";
+import {useElementSize} from "hooks";
 
 import styles from "./styles.module.scss";
 
@@ -15,8 +16,12 @@ const HorizontalScroll = <DataType extends any>({
     elements,
     getKey,
 }: IHorizontalScroll<DataType>) => {
+    const $element = useRef<any>();
+    const [width = 0] = useElementSize($element);
+
     return (
         <Grid
+            ref={$element}
             container
             spacing={5}
             direction="row"
@@ -25,7 +30,15 @@ const HorizontalScroll = <DataType extends any>({
             alignItems="center"
         >
             {elements.map(element =>
-                <Grid key={getKey(element)} item xs={12}>
+                <Grid
+                    key={getKey(element)}
+                    item
+                    xs={12}
+                    style={{
+                        width: width * 0.9 || "100%",
+                        flexShrink: 0,
+                    }}
+                >
                     {renderElement(element)}
                 </Grid>)}
         </Grid>
