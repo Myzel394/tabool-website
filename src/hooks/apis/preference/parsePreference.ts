@@ -1,6 +1,8 @@
 import {ServerPreference} from "types";
 
 const parsePreference = async (preference: ServerPreference): Promise<void> => {
+    // eslint-disable-next-line no-param-reassign
+    preference = preference ?? {};
     preference.data = {};
 
     try {

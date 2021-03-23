@@ -46,7 +46,7 @@ const SuspiciousLoginForm = ({onSubmit, loginData}: ISuspiciousLoginForm) => {
                         ...values,
                     })
                         .catch((error) => {
-                            if (error.response.status === 401) {
+                            if (error.response?.data) {
                                 setErrors(error.response.data);
                             }
                         })
