@@ -10,6 +10,8 @@ import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {reset} from "state";
 
+import UserProviderHandler from "./UserProviderHandler";
+
 const usePersistedReducer = createPersistedReducer("user");
 
 export interface IUserContextHandler {
@@ -75,6 +77,7 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
                     logout,
                 }}
             >
+                <UserProviderHandler />
                 {children}
             </UserContext.Provider>
         </AxiosContext.Provider>

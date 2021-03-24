@@ -1,17 +1,14 @@
-import {ServerPreference} from "types";
+import {Preferences, ServerPreference} from "types";
 
-const parsePreference = async (preference: ServerPreference): Promise<void> => {
-    // eslint-disable-next-line no-param-reassign
-    preference = preference ?? {};
-    preference.data = {};
-
+const parsePreference = async (preference: ServerPreference): Promise<Preferences> => {
     try {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: Data from server is a string
-        preference.data = JSON.parse(preference.data);
+        return JSON.parse(preference.data);
         // eslint-disable-next-line no-empty
     } catch {
     }
+    return {};
 };
 
 export default parsePreference;

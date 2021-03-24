@@ -39,14 +39,11 @@ const Login = () => {
                 }
             },
             onSuccess: (data) => {
-                console.log("before dipatch");
                 dispatch({
                     type: "login",
                     payload: data,
                 });
-                console.log("after dipatch");
                 reduxDispatch(setRaw(data.preference));
-                console.log("after redux");
                 history.push(typeof next === "string" ? next : buildPath("/"));
             },
         },

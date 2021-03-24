@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect} from "react";
+import React, {useEffect} from "react";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {observeStore} from "utils";
@@ -8,13 +8,7 @@ import {IUpdatePreferenceData, useUpdatePreferenceAPI} from "hooks/apis";
 import {useUser} from "hooks";
 
 
-export interface IUserProviderHandler {
-    children: ReactNode;
-}
-
-const UserProviderHandler = ({
-    children,
-}: IUserProviderHandler) => {
+const UserProviderHandler = () => {
     const user = useUser();
     const updatePreferences = useUpdatePreferenceAPI();
 
@@ -34,6 +28,7 @@ const UserProviderHandler = ({
 
     // Upload preference
     useEffect(() => {
+        console.log("blaaaaaa");
         const unsubscribe = observeStore<RootState, RootState["preferences"]>(
             preferences => {
                 mutate({
@@ -49,7 +44,7 @@ const UserProviderHandler = ({
         return unsubscribe;
     }, [mutate]);
 
-    return children;
+    return null;
 };
 export default UserProviderHandler;
 

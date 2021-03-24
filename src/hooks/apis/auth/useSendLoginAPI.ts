@@ -58,7 +58,7 @@ const useSendLoginAPI = () => {
             password,
             otpKey,
         });
-        await parsePreference(data.preference);
+        data.preference = await parsePreference(data.preference);
         return data;
     }, [instance]);
 };
