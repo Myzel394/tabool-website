@@ -28,7 +28,6 @@ const UserProviderHandler = () => {
 
     // Upload preference
     useEffect(() => {
-        console.log("blaaaaaa");
         const unsubscribe = observeStore<RootState, RootState["preferences"]>(
             preferences => {
                 mutate({

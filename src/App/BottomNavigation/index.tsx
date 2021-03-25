@@ -6,8 +6,7 @@ import {FaFile, FaPenNib, FaTable, MdEventNote, MdHome, MdMoreVert, MdSettings} 
 import {useLocation} from "react-router";
 import {buildPath} from "utils";
 import {BottomSheet} from "components";
-
-import {useUser} from "../../hooks";
+import {useUser} from "hooks";
 
 import MoreElement from "./MoreElement";
 
@@ -33,7 +32,9 @@ const BottomNavigation = ({innerRef}) => {
     const classes = useStyles();
     const {t} = useTranslation();
     const user = useUser();
-    const {bottomSheetHeight} = useContext(UtilsContext);
+    const {
+        bottomSheetHeight,
+    } = useContext(UtilsContext);
     const location = useLocation();
     const baseLocation = `/${location.pathname.split("/")[2]}`;
 

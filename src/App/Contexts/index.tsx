@@ -7,22 +7,18 @@ import UtilsContextHandler from "./UtilsContextHandler";
 
 export interface IContexts {
     children: ReactNode;
-
-    bottomSheetHeight?: number;
 }
 
 const queryClient = new QueryClient();
 
-const Contexts = ({children, bottomSheetHeight}: IContexts) => {
+const Contexts = ({children}: IContexts) => {
     return (
         <QueryClientProvider client={queryClient}>
-            <UtilsContextHandler
-                bottomSheetHeight={bottomSheetHeight}
-            >
-                <UserContextHandler>
+            <UserContextHandler>
+                <UtilsContextHandler>
                     {children}
-                </UserContextHandler>
-            </UtilsContextHandler>
+                </UtilsContextHandler>
+            </UserContextHandler>
         </QueryClientProvider>
     );
 };

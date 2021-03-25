@@ -12,7 +12,7 @@ const DefaultPage = ({children, style, ...other}: IDefaultPage) => {
     const containerStyles = {
         ...style,
         width: "100%",
-        minHeight: `calc(100vh - ${bottomSheetHeight ?? 0}px)`,
+        minHeight: `calc(100vh - ${bottomSheetHeight}px)`,
     };
 
     return (

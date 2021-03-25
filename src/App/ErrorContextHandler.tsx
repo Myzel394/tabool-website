@@ -1,4 +1,4 @@
-import React, {memo, ReactNode, useReducer} from "react";
+import React, {ReactNode, useReducer} from "react";
 import ErrorContext, {DispatchType, IError, initialErrorState} from "contexts/ErrorContext";
 import update from "immutability-helper";
 
@@ -64,4 +64,4 @@ const ErrorContextHandler = ({children}: IErrorContext) => {
     );
 };
 
-export default memo(ErrorContextHandler);
+export default ErrorContextHandler;

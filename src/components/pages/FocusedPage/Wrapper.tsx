@@ -18,7 +18,7 @@ const Wrapper = ({children, maxWidth}: IWrapper) => {
     const theme = useTheme();
     const containerStyles = {
         backgroundColor: theme.palette.background.paper,
-        minHeight: `calc(100vh - ${bottomSheetHeight ?? 0}px)`,
+        minHeight: `calc(100vh - ${bottomSheetHeight}px)`,
     };
 
     return (

@@ -2,6 +2,8 @@ import {createContext} from "react";
 
 export interface IUtilsContext {
     bottomSheetHeight?: number;
+    _updateBottomSheetHeight: (value: number) => void;
+    _forceTopComponentUpdate: () => void;
 }
 
 
