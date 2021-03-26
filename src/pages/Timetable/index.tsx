@@ -2,45 +2,30 @@ import React, {useRef, useState} from "react";
 import {StudentWeekView} from "types";
 import {LoadingPage, ResponseWrapper} from "components";
 import {useTranslation} from "react-i18next";
-import dayjs, {Dayjs} from "dayjs";
-
-import {usePersistentStorage} from "../../hooks";
+import {usePersistentStorage} from "hooks";
 
 import TimetableContext, {ITimetableContext} from "./TimetableContext";
 import Calendar from "./Calendar";
 import BottomInformation from "./BottomInformation";
 import {useTimetableDays, useTimetableQuery, useTimetableSwipe} from "./hooks";
 
-const getDateFromHash = (): Dayjs | null => {
-    try {
-        const date = dayjs(window.location.hash?.slice(1));
-
-        if (date.isValid()) {
-            return date;
-        }
-        // eslint-disable-next-line no-empty
-    } catch (err) {
-    }
-
-    return null;
-};
-
 const Timetable = () => {
     const {t} = useTranslation();
 
-    const [selectedDate, setSelectedDate] = useState<Dayjs | null>(getDateFromHash);
-    const [startDate, setStartDate] = useState<Dayjs>(dayjs);
     const [view, setView] = usePersistentStorage<ITimetableContext["view"]>("month", "timetable_view");
     const [timetable, setTimetable] = useState<StudentWeekView>();
 
     const $isInitialLoading = useRef<boolean>(true);
 
-    const [queryStartDate, queryEndDate] = useTimetableDays({
-        view,
+    const {
+        setSelectedDate,
+        queryStartDate,
+        queryEndDate,
         startDate,
         selectedDate,
-        updateSelectedDate: setSelectedDate,
-        updateStartDate: setStartDate,
+        setStartDate,
+    } = useTimetableDays({
+        view,
     });
     const {
         events,

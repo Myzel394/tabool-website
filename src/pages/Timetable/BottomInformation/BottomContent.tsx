@@ -36,7 +36,7 @@ const BottomContent = ({
 
     const shareDate = async (): Promise<void> => {
         const {origin, pathname} = window.location;
-        const hash = `#${lazyDatetime(selectedDate, "date")}`;
+        const hash = `${lazyDatetime(selectedDate, "date")}`;
         const url = `${origin}${pathname}#${hash}`;
         const adMessage = t("Schau dir den {{date}} an!", {
             date: selectedDate.format("LL"),

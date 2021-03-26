@@ -1,19 +1,24 @@
-import {Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef} from "react";
-import {Dayjs} from "dayjs";
+import {Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef, useState} from "react";
+import dayjs, {Dayjs} from "dayjs";
 import {usePrevious} from "hooks";
 import {useDebouncedValue} from "@shopify/react-hooks";
+import {findNextDate} from "utils";
 
 import {ITimetableContext} from "../TimetableContext";
-import {findNextDate} from "../../../utils";
 
 export interface IUseTimetableDaysData {
-    startDate: Dayjs;
-    updateStartDate: Dispatch<SetStateAction<Dayjs>>;
-
-    selectedDate: Dayjs | null;
-    updateSelectedDate: (newDate: Dayjs | null) => any;
-
     view: ITimetableContext["view"];
+}
+
+export interface IUseTimetableDaysResult {
+    selectedDate: Dayjs | null;
+    setSelectedDate: Dispatch<SetStateAction<Dayjs | null>>;
+
+    startDate: Dayjs;
+    setStartDate: Dispatch<SetStateAction<Dayjs>>;
+
+    queryStartDate: Dayjs;
+    queryEndDate: Dayjs;
 }
 
 const getDates = (view: ITimetableContext["view"], activeDate: Dayjs): [Dayjs, Dayjs] => {
@@ -36,13 +41,26 @@ const getDates = (view: ITimetableContext["view"], activeDate: Dayjs): [Dayjs, D
     }
 };
 
+const getDateFromHash = (): Dayjs | null => {
+    try {
+        const date = dayjs(window.location.hash?.slice(1));
+
+        if (date.isValid()) {
+            return date;
+        }
+        // eslint-disable-next-line no-empty
+    } catch (err) {
+    }
+
+    return null;
+};
+
 const useTimetableDays = ({
-    selectedDate,
-    startDate,
-    updateSelectedDate,
-    updateStartDate,
     view,
-}: IUseTimetableDaysData): [Dayjs, Dayjs] => {
+}: IUseTimetableDaysData): IUseTimetableDaysResult => {
+    const [selectedDate, setSelectedDate] = useState<Dayjs | null>(getDateFromHash);
+    const [startDate, setStartDate] = useState<Dayjs>(dayjs);
+
     const $isInitializing = useRef<boolean>(false);
     const previousStartDate = usePrevious(startDate, undefined);
 
@@ -50,35 +68,15 @@ const useTimetableDays = ({
         timeoutMs: 600,
     });
 
-    // Deselect selectedDate on date change
-    useEffect(() => {
-        if (selectedDate && previousStartDate) {
-            if (selectedDate.isSame(previousStartDate, "month")) {
-                updateStartDate(selectedDate);
-            } else if ($isInitializing.current) {
-                $isInitializing.current = false;
-            } else {
-                updateSelectedDate(null);
-            }
-        }
-    }, [previousStartDate, selectedDate, updateSelectedDate, updateStartDate]);
-
-    // Deselect selectedDate on view change
-    useEffect(() => {
-        if (view !== "month" && selectedDate) {
-            updateSelectedDate(null);
-        }
-    }, [view, selectedDate, updateSelectedDate]);
-
     // Jump to right month
     useLayoutEffect(() => {
         if (!previousStartDate) {
             if (selectedDate) {
                 $isInitializing.current = true;
-                updateStartDate(prevDate => prevDate.startOf("month"));
+                setStartDate(selectedDate.startOf("month"));
             }
         }
-    }, [selectedDate, previousStartDate, updateStartDate, updateSelectedDate]);
+    }, [selectedDate, previousStartDate, setStartDate, setSelectedDate]);
 
     // Update date on view change
     useLayoutEffect(() => {
@@ -86,13 +84,41 @@ const useTimetableDays = ({
             switch (startDate.day()) {
                 case 0:
                 case 6:
-                    updateStartDate(startDate.startOf("week"));
+                    setStartDate(startDate.startOf("week"));
                     break;
             }
         }
-    }, [view, startDate, updateStartDate]);
+    }, [view, startDate, setStartDate]);
 
-    return [queryStartDate, queryEndDate];
+    // Deselect selectedDate on view change
+    useLayoutEffect(() => {
+        if (view !== "month" && selectedDate) {
+            setSelectedDate(null);
+        }
+    }, [view, selectedDate, setSelectedDate]);
+
+    // Deselect selectedDate on date change
+    useEffect(() => {
+        if (selectedDate && previousStartDate) {
+            if (selectedDate.isSame(previousStartDate, "month")) {
+                setStartDate(selectedDate);
+            } else if ($isInitializing.current) {
+                // Ignore if initializing (date from hash is being set)
+                $isInitializing.current = false;
+            } else {
+                setSelectedDate(null);
+            }
+        }
+    }, [previousStartDate, selectedDate, setSelectedDate, setStartDate]);
+
+    return {
+        selectedDate,
+        startDate,
+        queryEndDate,
+        queryStartDate,
+        setSelectedDate,
+        setStartDate,
+    };
 };
 
 export default useTimetableDays;
