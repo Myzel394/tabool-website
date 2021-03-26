@@ -1,5 +1,6 @@
 {
     "plugins": [
+        "babel-plugin-dynamic-import-node",
         "babel-plugin-lodash",
         [
             "babel-plugin-import",

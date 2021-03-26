@@ -1,5 +1,11 @@
+const esModules = ["react-icons"].join("|");
+
 module.exports = {
     preset: "ts-jest",
     testEnvironment: "node",
-    testMatch: ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(test).ts?(x)"],
+    transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
+    moduleDirectories: [
+        "node_modules",
+        "src",
+    ],
 };

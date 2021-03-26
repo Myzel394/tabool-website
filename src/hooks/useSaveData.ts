@@ -1,5 +1,4 @@
-import {useNetworkStatus} from "react-adaptive-hooks/network";
-import {useSaveData as useAdaptiveSaveData} from "react-adaptive-hooks/save-data";
+import {useNetworkStatus, useSaveData as useAdaptiveSaveData} from "react-adaptive-hooks";
 
 const useSaveData = (): boolean => {
     const {saveData} = useAdaptiveSaveData();

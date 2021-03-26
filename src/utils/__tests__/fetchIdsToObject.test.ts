@@ -1,4 +1,4 @@
-import fetchIdsToObject from "./fetchIdsToObject";
+import fetchIdsToObject from "../fetchIdsToObject";
 
 describe("fetchIdsToObject works as expected", () => {
     const element = {

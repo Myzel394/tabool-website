@@ -1,6 +1,6 @@
 /* eslint-disable line-comment-position */
 
-import convertToLocalWeekday from "./convertToLocalWeekday";
+import convertToLocalWeekday from "../convertToLocalWeekday";
 
 describe("convertToLocalWeekday", () => {
     it("works as expected", () => {

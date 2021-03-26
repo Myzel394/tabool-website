@@ -1,6 +1,6 @@
 import dayjs, {Dayjs} from "dayjs";
 
-import isAllDay from "./isAllDay";
+import isAllDay from "../isAllDay";
 
 describe("isAllDay", () => {
     const setBegin = (value: Dayjs): Dayjs => value

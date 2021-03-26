@@ -1,4 +1,4 @@
-import parseErrors from "./parseErrors";
+import parseErrors from "../parseErrors";
 
 describe("parseErrors", () => {
     it("work with array (no non-field errors)", () => {

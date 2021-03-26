@@ -1,7 +1,7 @@
 import tinycolor from "tinycolor2";
 
-import getAdaptedColor from "./getAdaptedColor";
-import {isDark, isLight} from "./color";
+import getAdaptedColor from "../getAdaptedColor";
+import {isDark, isLight} from "../color";
 
 const expectToBeLight = value => expect(isLight(tinycolor(value))).toEqual(true);
 const expectToBeDark = value => expect(isDark(tinycolor(value))).toEqual(true);
