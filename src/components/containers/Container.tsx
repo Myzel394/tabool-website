@@ -12,7 +12,7 @@ const style = {
 export default function Container({children}: IContainer) {
     return (
         <Box flexDirection="column" display="flex" justifyContent="center" alignItems="center">
-            <MUIContainer style={style}>
+            <MUIContainer style={style} maxWidth="md">
                 {children}
             </MUIContainer>
         </Box>
