@@ -10,7 +10,7 @@ import dayjs, {Dayjs} from "dayjs";
 // eslint-disable-next-line import/no-cycle
 import {RootState} from "../store";
 
-export type AvailableThemes = "light" | "dark" | "blue" | "midnight";
+export type AvailableThemes = "light" | "dark" | "blue" | "midnight" | "_system";
 export type AvailableUpdatedAtTimeViews = "static" | "dynamic";
 
 interface IAddDetailPageOrdering {

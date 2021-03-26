@@ -6,6 +6,7 @@ import blue from "themes/blue";
 import midnight from "themes/midnight";
 import {useSelector} from "react-redux";
 import {AvailableThemes, getTheme, RootState} from "state";
+import useSystemTheme from "react-use-system-theme";
 
 
 const THEME_MAP = {
@@ -17,9 +18,11 @@ const THEME_MAP = {
 
 const ThemeHandler = ({children}) => {
     const theme = useSelector<RootState>(getTheme) as AvailableThemes;
+    const systemTheme = useSystemTheme();
+    const activeTheme = theme === "_system" ? systemTheme : theme;
 
     return (
-        <ThemeProvider theme={THEME_MAP[theme]}>
+        <ThemeProvider theme={THEME_MAP[activeTheme]}>
             {children}
         </ThemeProvider>
     );

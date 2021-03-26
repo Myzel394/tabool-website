@@ -10,7 +10,7 @@ import {
     Radio,
     RadioGroup,
 } from "@material-ui/core";
-import {Information} from "components";
+import {CurrentDeviceOSIcon, Information} from "components";
 import {FaMoon, FaSun, IoIosWater, WiMoonFull} from "react-icons/all";
 import {useDispatch, useSelector} from "react-redux";
 import {AvailableThemes, getTheme, RootState, setTheme} from "state";
@@ -34,6 +34,16 @@ const Design = () => {
                             value={theme}
                             onChange={event => updateTheme(event.target.value as AvailableThemes)}
                         >
+                            <FormControlLabel
+                                value="_system"
+                                control={<Radio />}
+                                label={
+                                    <Information
+                                        getIcon={props => <CurrentDeviceOSIcon {...props} />}
+                                        text={t("Nach Systemeinstellung")}
+                                        tooltip={t("Richtet sich automtisch nach deinen Systemeinstellung")}
+                                    />}
+                            />
                             <FormControlLabel
                                 value="light"
                                 control={<Radio />}
