@@ -33,6 +33,13 @@ export interface IForm {
     onSubmit: (data: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => Promise<StudentHomeworkDetail>;
 }
 
+const parseData = (stringData: string): FormikForm => {
+    const data: FormikForm = JSON.parse(stringData);
+    convertToDate(data, ["dueDate", "lesson.date"]);
+
+    return data;
+};
+
 const Form = ({
     onSubmit,
 }: IForm) => {
@@ -182,12 +189,7 @@ const Form = ({
                         </Box>
                         <FormikRemember<FormikForm>
                             name="student-homework-add"
-                            parse={stringData => {
-                                const data: FormikForm = JSON.parse(stringData);
-                                convertToDate(data, ["dueDate", "lesson.date"]);
-
-                                return data;
-                            }}
+                            parse={parseData}
                         />
                     </IkForm>
                 </LoadingOverlay>
