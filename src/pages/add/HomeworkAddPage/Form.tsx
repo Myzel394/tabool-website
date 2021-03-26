@@ -22,6 +22,8 @@ import {Alert} from "@material-ui/lab";
 import {MdAdd} from "react-icons/all";
 import {getEndTime, getNextLessonDate, getStartTime, LessonDate, parseQueryDate} from "utils";
 import {LessonIdentifier} from "components/formik/LessonField/LessonFieldContext";
+import {convertToDate} from "api";
+import FormikRemember from "formik-remember";
 
 type FormikForm = Omit<ICreateStudentHomeworkData, "lessonId" | "lessonDate"> & ErrorFieldsInjection & {
     lesson: LessonIdentifier;
@@ -178,12 +180,20 @@ const Form = ({
                                 {t("Hausaufgabe hinzufügen")}
                             </PrimaryButton>
                         </Box>
+                        <FormikRemember<FormikForm>
+                            name="student-homework-add"
+                            parse={stringData => {
+                                const data: FormikForm = JSON.parse(stringData);
+                                convertToDate(data, ["dueDate", "lesson.date"]);
+
+                                return data;
+                            }}
+                        />
                     </IkForm>
                 </LoadingOverlay>
             )}
         </Formik>
     );
 };
+
 export default Form;
-
-
