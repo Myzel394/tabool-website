@@ -15,7 +15,7 @@ import AppRoutes from "./AppRoutes";
 import Contexts from "./Contexts";
 import ErrorContextHandler from "./ErrorContextHandler";
 import ThemeHandler from "./ThemeHandler";
-import SnackbarWrapper from "./SnackbarWrapper";
+import BottomNavigationHandler from "./BottomNavigationHandler";
 
 import "./global.scss";
 
@@ -33,6 +33,7 @@ const App = () => {
                                 <MuiPickersUtilsProvider utils={DayjsUtils}>
                                     <CssBaseline />
                                     <AppRoutes />
+                                    <BottomNavigationHandler />
                                 </MuiPickersUtilsProvider>
                             </ErrorContextHandler>
                         </ThemeHandler>

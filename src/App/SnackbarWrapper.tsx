@@ -19,27 +19,17 @@ const SnackbarWrapper = ({
 }: ISnackbarProvider) => {
     const {
         bottomSheetHeight,
-        _updateBottomSheetHeight,
     } = useContext(UtilsContext);
 
-    const [$bottom, $setBottom] = useState<HTMLDivElement | null>();
     const $snackbar = useRef<any>();
 
-    const [, elementHeight = 0] = useElementSize($bottom);
-    const bottomHeight = $bottom ? elementHeight : 0;
     const snackbarStyles = useMemo(() => ({
-        marginBottom: bottomHeight,
-    }), [bottomHeight]);
+        marginBottom: bottomSheetHeight,
+    }), [bottomSheetHeight]);
     const closeSnackbar = useCallback(
         (key: SnackbarKey) => $snackbar.current.closeSnackbar(key),
         [],
     );
-
-    useLayoutEffect(() => {
-        if (bottomHeight !== undefined && bottomHeight !== bottomSheetHeight) {
-            _updateBottomSheetHeight(bottomHeight);
-        }
-    }, [bottomHeight, bottomSheetHeight, _updateBottomSheetHeight]);
 
     return (
         <>
@@ -58,16 +48,6 @@ const SnackbarWrapper = ({
             >
                 {children}
             </SnackbarProvider>
-
-            {/* Bottom padding */}
-            <div
-                style={{
-                    height: bottomHeight,
-                }}
-            />
-            <BottomNavigation
-                innerRef={$setBottom}
-            />
         </>
     );
 };
