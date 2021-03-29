@@ -13,6 +13,7 @@ const BottomNavigationHandler = () => {
     const [$bottom, $setBottom] = useState<any>();
 
     const [, bottomHeight] = useElementSize($bottom);
+    console.log(bottomHeight);
 
     useLayoutEffect(() => {
         if (bottomHeight !== undefined && bottomHeight !== bottomSheetHeight) {

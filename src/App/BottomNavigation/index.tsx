@@ -118,7 +118,9 @@ const BottomNavigation = ({innerRef}) => {
         );
     }
 
-    return null;
+    return (
+        <div ref={innerRef} />
+    );
 };
 
 export default BottomNavigation;
