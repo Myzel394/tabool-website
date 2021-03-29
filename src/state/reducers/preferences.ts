@@ -6,6 +6,7 @@ import {Preferences} from "types";
 import update from "immutability-helper";
 import {persistReducer} from "redux-persist";
 import dayjs, {Dayjs} from "dayjs";
+import {supportsThemes} from "utils";
 
 // eslint-disable-next-line import/no-cycle
 import {RootState} from "../store";
@@ -147,7 +148,8 @@ export const preferenceSlice = createSlice({
     },
 });
 
-export const getTheme = (state: RootState): AvailableThemes => state.preferences.global?.theme ?? "light";
+export const getTheme = (state: RootState): AvailableThemes =>
+    state.preferences.global?.theme ?? (supportsThemes ? "_system" : "light");
 export const getMaxFutureDays = (state: RootState): number => state.preferences.global?.startPageMaxFutureDays ?? 7;
 export const getMaterialDownloadDate = (materialId: string): ((state: RootState) => Dayjs | null) =>
     (state: RootState) => {

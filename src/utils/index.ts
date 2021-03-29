@@ -57,3 +57,4 @@ export {default as getMaterialDownloadDateString} from "./getMaterialDownloadDat
 export {default as getLessonMinMaxTime} from "./getLessonMinMaxTime";
 export {default as parseQueryDate} from "./parseQueryDate";
 export {default as copyText} from "./copyText";
+export {default as supportsThemes} from "./supportsThemes";
