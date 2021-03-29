@@ -2,7 +2,7 @@ import React, {CSSProperties, ReactNode} from "react";
 import {Box} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
-import {Logo, Tooltip} from "../../components";
+import {Logo} from "../../components";
 import {BackButton} from "../../buttons";
 
 import Title from "./Title";
@@ -44,18 +44,8 @@ export default function FocusedPage({
                 flexDirection="column"
             >
                 {!disableBackButton &&
-                <Box display="flex" justifyContent="flex-end">
-                    <Tooltip
-                        title={t("Zurück gehen")
-                            .toString()}
-                    >
-                        <>
-                            {/* eslint-disable-next-line @shopify/jsx-prefer-fragment-wrappers */}
-                            <span>
-                                <BackButton confirm={important} onBack={onBackButtonClick} />
-                            </span>
-                        </>
-                    </Tooltip>
+                <Box display="flex" alignSelf="flex-end">
+                    <BackButton confirm={important} onBack={onBackButtonClick} />
                 </Box>
                 }
                 {title &&
