@@ -69,18 +69,46 @@
     </div>
 </div>
 <script>
-    // Set background color
-    var redux = JSON.parse(localStorage.getItem("persist:redux"));
-    var global = JSON.parse(redux.global);
-    var theme = global === null || global === void 0 ? void 0 : global.theme;
-    var $element = document.getElementById("loading_content");
-    theme === "dark" ? $element.style.backgroundColor = "#1e1e1e" : theme === "blue" ? $element.style.backgroundColor = "#091740" : theme === "midnight" ? $element.style.backgroundColor = "#090909" : void 0;
-
-    /*
+    const $element = document.getElementById("loading_content");
     const redux = JSON.parse(localStorage.getItem("persist:redux"));
     const global = JSON.parse(redux.global);
-    const theme = global?.theme;
+    let theme = global === null || global === void 0 ? void 0 : global.theme;
+
+    if (theme === "_system") {
+        if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+            theme = "light";
+        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            theme = "dark";
+        }
+    }
+
+    switch (theme) {
+        case "dark":
+            $element.style.backgroundColor = "#1e1e1e";
+            break;
+
+        case "blue":
+            $element.style.backgroundColor = "#091740";
+            break;
+
+        case "midnight":
+            $element.style.backgroundColor = "#090909";
+            break;
+    }
+
+    /*
     const $element = document.getElementById("loading_content");
+    const redux = JSON.parse(localStorage.getItem("persist:redux"));
+    const global = JSON.parse(redux.global);
+    let theme = global?.theme;
+
+    if (theme === "_system") {
+        if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+            theme = "light";
+        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            theme = "dark";
+        }
+    }
 
     switch (theme) {
         case "dark":
@@ -92,8 +120,7 @@
         case "midnight":
             $element.style.backgroundColor = "#090909";
             break;
-    }
-    */
+    }*/
 </script>
 <script async defer>
     if ("serviceWorker" in navigator) {
