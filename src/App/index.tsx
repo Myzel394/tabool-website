@@ -29,14 +29,12 @@ const App = () => {
                 <Router>
                     <Contexts>
                         <ThemeHandler>
-                            <SnackbarWrapper>
-                                <ErrorContextHandler>
-                                    <MuiPickersUtilsProvider utils={DayjsUtils}>
-                                        <CssBaseline />
-                                        <AppRoutes />
-                                    </MuiPickersUtilsProvider>
-                                </ErrorContextHandler>
-                            </SnackbarWrapper>
+                            <ErrorContextHandler>
+                                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                                    <CssBaseline />
+                                    <AppRoutes />
+                                </MuiPickersUtilsProvider>
+                            </ErrorContextHandler>
                         </ThemeHandler>
                     </Contexts>
                 </Router>

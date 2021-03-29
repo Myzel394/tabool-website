@@ -1,5 +1,5 @@
 import {createContext} from "react";
-import axios, {AxiosInstance} from "axios";
+import axios, {AxiosError, AxiosInstance} from "axios";
 import camelcaseKeys from "camelcase-keys";
 
 import {snakeCaseKeys} from "../utils";
@@ -23,7 +23,7 @@ const AxiosContext = createContext<IAxios>(initialAxiosState);
 
 export const baseURL = isDev ? "http://127.0.0.1:8000/" : "";
 
-export const createInstance = () => {
+export const createInstance = (onMissingConnection: (error: AxiosError) => any) => {
     const instance = axios.create({
         baseURL,
     });
@@ -34,6 +34,11 @@ export const createInstance = () => {
 
         return response;
     }, error => {
+        // No internet
+        if (!error.response) {
+            onMissingConnection(error);
+        }
+
         if (error.response) {
             error.response.data = camelcaseKeys(error.response?.data ?? {}, {deep: true});
         }

@@ -9,6 +9,8 @@ import {createInstance} from "contexts/AxiosContext";
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {reset} from "state";
+import {useSnackbar} from "hooks";
+import {useTranslation} from "react-i18next";
 
 import UserProviderHandler from "./UserProviderHandler";
 
@@ -21,6 +23,8 @@ export interface IUserContextHandler {
 const UserContextHandler = ({children}: IUserContextHandler) => {
     const history = useHistory();
     const reduxDispatch = useDispatch();
+    const {addError} = useSnackbar();
+    const {t} = useTranslation();
 
     const [state, dispatch]: [IUser, any] = usePersistedReducer(reducer, initialUserState);
     const logout = useCallback(() => {
@@ -35,7 +39,8 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
     }, [dispatch, history, reduxDispatch]);
 
     const instance = useMemo(() => {
-        const instance = createInstance();
+        const instance = createInstance(error =>
+            addError(error, t("Es konnte keine Internetverbindung aufgebaut werden")));
 
         instance.interceptors.response.use(response => response, (error: AxiosError) => {
             if (error.response) {
@@ -53,7 +58,7 @@ const UserContextHandler = ({children}: IUserContextHandler) => {
         });
 
         return instance;
-    }, [logout]);
+    }, [logout, addError, t]);
 
     const buildUrl = useCallback((url: string) => {
         if (state.data?.userType === UserType.Student) {

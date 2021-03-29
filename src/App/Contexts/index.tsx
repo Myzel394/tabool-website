@@ -1,5 +1,8 @@
 import React, {ReactNode} from "react";
 import {QueryClient, QueryClientProvider} from "react-query";
+import {BrowserRouter as Router} from "react-router-dom";
+
+import SnackbarWrapper from "../SnackbarWrapper";
 
 import UserContextHandler from "./UserContextHandler";
 import UtilsContextHandler from "./UtilsContextHandler";
@@ -14,11 +17,13 @@ const queryClient = new QueryClient();
 const Contexts = ({children}: IContexts) => {
     return (
         <QueryClientProvider client={queryClient}>
-            <UserContextHandler>
-                <UtilsContextHandler>
-                    {children}
-                </UtilsContextHandler>
-            </UserContextHandler>
+            <UtilsContextHandler>
+                <SnackbarWrapper>
+                    <UserContextHandler>
+                        {children}
+                    </UserContextHandler>
+                </SnackbarWrapper>
+            </UtilsContextHandler>
         </QueryClientProvider>
     );
 };

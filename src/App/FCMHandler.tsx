@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {ISendFCMTokenData, useSendFCMTokenAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
-import {useOnFCMMessageHandler, usePermissions, usePersistentStorage} from "hooks";
+import {useOnFCMMessageHandler, usePermissions, usePersistentStorage, useUser} from "hooks";
 import {PermissionType} from "hooks/usePermissions";
 
 import {message} from "../firebase";
@@ -19,6 +19,7 @@ const FCMHandler = ({children}: IFCMHandler) => {
         state,
         isLoading,
     } = usePermissions();
+    const user = useUser();
 
     const [hasSent, setHasSent] = usePersistentStorage<boolean>(false, "has_sent_fcm_token_to_server");
 
@@ -33,7 +34,11 @@ const FCMHandler = ({children}: IFCMHandler) => {
     );
 
     useEffect(() => {
-        if (!isLoading && state.notification === PermissionType.Granted && !hasSent) {
+        if (!isLoading &&
+            state.notification === PermissionType.Granted &&
+            !hasSent &&
+            user.isAuthenticated
+        ) {
             message
                 .getToken({
                     vapidKey: fcmKey,
@@ -47,7 +52,7 @@ const FCMHandler = ({children}: IFCMHandler) => {
                 })
                 .catch(() => null);
         }
-    }, [mutate, hasSent, isLoading, state.notification]);
+    }, [mutate, hasSent, isLoading, state.notification, user.isAuthenticated]);
 
     useOnFCMMessageHandler();
 
