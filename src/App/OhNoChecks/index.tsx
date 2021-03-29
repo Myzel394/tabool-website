@@ -1,9 +1,8 @@
 import React from "react";
 import {usePersistentStorage} from "hooks";
-import {isChrome, isIOS} from "react-device-detect";
+import {isIOS} from "react-device-detect";
 
 import IsIOS from "./IsIOS";
-import IsChrome from "./IsChrome";
 
 
 export interface IOhNoChecks {
@@ -12,7 +11,6 @@ export interface IOhNoChecks {
 
 interface Checks {
     ios: boolean;
-    notChrome: boolean;
 }
 
 const OhNoChecks = ({
@@ -20,19 +18,7 @@ const OhNoChecks = ({
 }: IOhNoChecks) => {
     const [checks, setChecks] = usePersistentStorage<Checks>({
         ios: false,
-        notChrome: false,
     }, "checks");
-
-    if (!isChrome && !checks.notChrome) {
-        return (
-            <IsChrome
-                onClose={() => setChecks(prevState => ({
-                    ...prevState,
-                    notChrome: true,
-                }))}
-            />
-        );
-    }
 
     if (isIOS && !checks.ios) {
         return (
