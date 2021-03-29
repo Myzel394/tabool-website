@@ -4,9 +4,12 @@ import {useTranslation} from "react-i18next";
 import {Gender} from "api";
 
 import {Information} from "../components";
+import genderColor from "../../constants/genderColor";
 
 export interface IGenderField {
     value: Gender;
+    justIcon?: boolean;
+    withColor?: boolean;
 }
 
 const ICON_GENDER_MAPPING = {
@@ -15,7 +18,11 @@ const ICON_GENDER_MAPPING = {
     [Gender.Diverse]: FaGenderless,
 };
 
-const GenderStatus = ({value}: IGenderField) => {
+const GenderStatus = ({
+    value,
+    justIcon,
+    withColor,
+}: IGenderField) => {
     const {t} = useTranslation();
 
     const Icon = ICON_GENDER_MAPPING[value];
@@ -27,8 +34,8 @@ const GenderStatus = ({value}: IGenderField) => {
 
     return (
         <Information
-            getIcon={props => <Icon {...props} />}
-            text={text}
+            getIcon={props => <Icon {...props} color={withColor ? genderColor[value] : undefined} />}
+            text={justIcon ? null : text}
         />
     );
 };

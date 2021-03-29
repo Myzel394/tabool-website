@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, {useState} from "react";
-import {ICreateStudentHomeworkData} from "hooks/apis";
-import {ErrorFieldsInjection, StudentHomeworkDetail, StudentLessonDetail} from "types";
-import {useQueryString, useSnackbar} from "hooks";
+import {StudentHomeworkDetail, StudentLessonDetail} from "types";
+import {useSnackbar} from "hooks";
 import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
-import * as yup from "yup";
 import {
     HomeworkDueDateField,
     HomeworkInformationField,
@@ -20,14 +18,12 @@ import {Box, FormGroup, FormHelperText, Grid} from "@material-ui/core";
 import {CheckboxWithLabel} from "formik-material-ui";
 import {Alert} from "@material-ui/lab";
 import {MdAdd} from "react-icons/all";
-import {getEndTime, getNextLessonDate, getStartTime, LessonDate, parseQueryDate} from "utils";
-import {LessonIdentifier} from "components/formik/LessonField/LessonFieldContext";
+import {getEndTime, getNextLessonDate, getStartTime, LessonDate} from "utils";
 import {convertToDate} from "api";
 import FormikRemember from "formik-remember";
 
-type FormikForm = Omit<ICreateStudentHomeworkData, "lessonId" | "lessonDate"> & ErrorFieldsInjection & {
-    lesson: LessonIdentifier;
-};
+import useInitialValues, {FormikForm} from "./useInitialValues";
+import useSchema from "./useSchema";
 
 export interface IForm {
     onSubmit: (data: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => Promise<StudentHomeworkDetail>;
@@ -45,46 +41,17 @@ const Form = ({
 }: IForm) => {
     const {t} = useTranslation();
     const {addSnackbar} = useSnackbar();
-    const {
-        lessonId: givenLessonId,
-        lessonDate: lessonDateString,
-        type: givenType,
-        dueDate: dueDateString,
-        isPrivate: givenIsPrivate,
-    } = useQueryString({
-        parseBooleans: true,
-        parseNumbers: false,
-    });
+    const initialValues = useInitialValues();
+    const schema = useSchema();
 
     const [lesson, setLesson] = useState<StudentLessonDetail>();
-
-    const lessonId = typeof givenLessonId === "string" ? givenLessonId : null;
-    const lessonDate = parseQueryDate(lessonDateString);
-    // noinspection SuspiciousTypeOfGuard: Type can in fact have bool type
-    const initialValues = {
-        lesson: (lessonId && lessonDate) ? {
-            date: lessonDate,
-            id: lessonId,
-        } : null,
-        type: typeof givenType === "string" ? givenType : null,
-        dueDate: parseQueryDate(dueDateString),
-        isPrivate: typeof givenIsPrivate === "boolean" ? givenIsPrivate : false,
-    };
-
-    const schema = yup.object().shape({
-        isPrivate: yup.boolean(),
-        lesson: yup.object().typeError(t("Die Stunde wird benötigt.")).required(),
-        information: yup.string().nullable(),
-        type: yup.string().nullable(),
-        dueDate: yup.date().min(dayjs(), "Das Fälligkeitsdatum kann nicht in der Vergangenheit liegen.").nullable(),
-    });
 
     const renderDueDateDay = lesson && renderDayWithLessonWeekdays(lesson.course.weekdays, lesson.course.subject.userRelation.color);
 
     return (
         <Formik<FormikForm>
             validationSchema={schema}
-            // @ts-ignore: Values will be validated before sending, so initial values can be invalid
+            // @ts-ignore: Values will be validated before sending, so initial values will not be invalid
             initialValues={initialValues}
             onSubmit={onSubmit}
         >
@@ -174,11 +141,11 @@ const Form = ({
                                     </FormGroup>
                                 </Grid>
                                 {errors.nonFieldErrors &&
-                                <Grid item xs={12}>
-                                    <Alert severity="error">
-                                        {errors.nonFieldErrors}
-                                    </Alert>
-                                </Grid>
+                                    <Grid item xs={12}>
+                                        <Alert severity="error">
+                                            {errors.nonFieldErrors}
+                                        </Alert>
+                                    </Grid>
                                 }
                             </Grid>
                         </Box>

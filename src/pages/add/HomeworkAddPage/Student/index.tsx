@@ -12,7 +12,7 @@ import {useTitle} from "hooks";
 import Form from "./Form";
 
 
-const HomeworkAddPage = () => {
+const StudentHomeworkAddPage = () => {
     const {t} = useTranslation();
     const history = useHistory();
     const sendHomework = useCreateStudentHomeworkAPI();
@@ -52,6 +52,5 @@ const HomeworkAddPage = () => {
         </FocusedPage>
     );
 };
-export default HomeworkAddPage;
 
-
+export default StudentHomeworkAddPage;
