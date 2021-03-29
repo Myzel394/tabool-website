@@ -1,7 +1,7 @@
 import {AVAILABLE_LANGUAGES} from "constants/language";
 
 import React, {useState} from "react";
-import {Box, List, ListItem, MenuItem, Paper, Select} from "@material-ui/core";
+import {Box, FormControl, InputLabel, List, ListItem, MenuItem, Paper, Select} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {getLanguage, RootState, setLanguage} from "state";
 import {AvailableLanguages} from "types";
@@ -31,59 +31,65 @@ const Language = () => {
             <Paper>
                 <List>
                     <ListItem>
-                        <Select
-                            value={selectedLanguageOption}
-                            renderValue={() => selectedLanguage && (
-                                <Box display="flex" alignItems="center">
-                                    <ReactCountryFlag
-                                        countryCode={selectedLanguage.countryCode}
-                                    />
-                                    <Box ml={1} component="span">
-                                        {selectedLanguage.label}
-                                    </Box>
-                                    {isAutomatic &&
+                        <FormControl variant="outlined">
+                            <InputLabel>
+                                {t("Sprache")}
+                            </InputLabel>
+                            <Select
+                                label={t("Sprache")}
+                                value={selectedLanguageOption}
+                                renderValue={() => selectedLanguage && (
+                                    <Box display="flex" alignItems="center">
+                                        <ReactCountryFlag
+                                            countryCode={selectedLanguage.countryCode}
+                                        />
+                                        <Box ml={1} component="span">
+                                            {selectedLanguage.label}
+                                        </Box>
+                                        {isAutomatic &&
                                     <Box ml={1} component="i">
                                         {t("(Automatisch)")}
                                     </Box>}
-                                </Box>
-                            )}
-                            variant="outlined"
-                            onChange={event => {
-                                if (event.target.value) {
-                                    updateLanguage(event.target.value as AvailableLanguages);
-                                }
-                            }}
-                        >
-                            <MenuItem value="_automatic">
-                                <Box display="flex" alignItems="center">
-                                    <CurrentDeviceOSIcon />
-                                    <Box ml={1} component="span">
-                                        {t("Automatisch")}
                                     </Box>
-                                </Box>
-                            </MenuItem>
-                            {AVAILABLE_LANGUAGES.map(({label, code, countryCode}) =>
-                                <MenuItem key={code} value={code}>
+                                )}
+                                variant="outlined"
+                                onChange={event => {
+                                    if (event.target.value) {
+                                        updateLanguage(event.target.value as AvailableLanguages);
+                                    }
+                                }}
+                            >
+                                <MenuItem value="_automatic">
                                     <Box display="flex" alignItems="center">
-                                        <ReactCountryFlag
-                                            countryCode={countryCode}
-                                        />
+                                        <CurrentDeviceOSIcon />
                                         <Box ml={1} component="span">
-                                            {label}
+                                            {t("Automatisch")}
                                         </Box>
                                     </Box>
-                                </MenuItem>)}
-                            <MenuItem
-                                onClick={() => setIsHelpDialogOpen(true)}
-                            >
-                                <Box display="flex" alignItems="center">
-                                    <MdAdd />
-                                    <Box ml={1} component="span">
-                                        {t("Sprache hinzufügen")}
+                                </MenuItem>
+                                {AVAILABLE_LANGUAGES.map(({label, code, countryCode}) =>
+                                    <MenuItem key={code} value={code}>
+                                        <Box display="flex" alignItems="center">
+                                            <ReactCountryFlag
+                                                countryCode={countryCode}
+                                            />
+                                            <Box ml={1} component="span">
+                                                {label}
+                                            </Box>
+                                        </Box>
+                                    </MenuItem>)}
+                                <MenuItem
+                                    onClick={() => setIsHelpDialogOpen(true)}
+                                >
+                                    <Box display="flex" alignItems="center">
+                                        <MdAdd />
+                                        <Box ml={1} component="span">
+                                            {t("Sprache hinzufügen")}
+                                        </Box>
                                     </Box>
-                                </Box>
-                            </MenuItem>
-                        </Select>
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
                     </ListItem>
                 </List>
             </Paper>
