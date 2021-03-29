@@ -5,8 +5,9 @@ import dark from "themes/dark";
 import blue from "themes/blue";
 import midnight from "themes/midnight";
 import {useSelector} from "react-redux";
-import {AvailableThemes, getTheme, RootState} from "state";
+import {getTheme, RootState} from "state";
 import useSystemTheme from "react-use-system-theme";
+import {AvailableThemes} from "types";
 
 
 const THEME_MAP = {

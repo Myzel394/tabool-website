@@ -8,14 +8,14 @@ import {Provider} from "react-redux";
 import {persistor, store} from "state";
 import {PersistGate} from "redux-persist/integration/react";
 import {useTranslation} from "react-i18next";
-
-import {LoadingPage} from "../components";
+import {LoadingPage} from "components";
 
 import AppRoutes from "./AppRoutes";
 import Contexts from "./Contexts";
 import ErrorContextHandler from "./ErrorContextHandler";
 import ThemeHandler from "./ThemeHandler";
 import BottomNavigationHandler from "./BottomNavigationHandler";
+import LanguageChangeObserver from "./LanguageChangeObserver";
 
 import "./global.scss";
 
@@ -39,6 +39,7 @@ const App = () => {
                         </ThemeHandler>
                     </Contexts>
                 </Router>
+                <LanguageChangeObserver />
             </PersistGate>
         </Provider>
     );

@@ -1,4 +1,4 @@
-import React, {ReactNode, useContext} from "react";
+import React, {CSSProperties, ReactNode, useContext} from "react";
 import {Box, Container, useTheme} from "@material-ui/core";
 import {UtilsContext} from "contexts";
 
@@ -7,13 +7,20 @@ export interface IWrapper {
     children: NonNullable<ReactNode>;
 
     maxWidth: "xs" | "sm" | "md" | "lg" | "xl" | false;
+    bottomContent?: ReactNode;
+    style?: CSSProperties;
 }
 
 const noPadding = {
     padding: 0,
 };
 
-const Wrapper = ({children, maxWidth}: IWrapper) => {
+const Wrapper = ({
+    children,
+    maxWidth,
+    bottomContent,
+    style,
+}: IWrapper) => {
     const {bottomSheetHeight} = useContext(UtilsContext);
     const theme = useTheme();
     const containerStyles = {
@@ -29,9 +36,16 @@ const Wrapper = ({children, maxWidth}: IWrapper) => {
             justifyContent="center"
             alignItems="center"
         >
-            <Container maxWidth={maxWidth} style={noPadding}>
+            <Container
+                maxWidth={maxWidth}
+                style={{
+                    ...noPadding,
+                    ...style,
+                }}
+            >
                 {children}
             </Container>
+            {bottomContent}
         </Box>
     );
 };

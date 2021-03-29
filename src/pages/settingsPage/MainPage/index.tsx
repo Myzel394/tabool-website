@@ -13,6 +13,7 @@ import Design from "./Design";
 import Faq from "./Faq";
 import DataShare from "./DataShare";
 import StudentInformation from "./StudentInformation";
+import Language from "./Language";
 
 const MainPage = () => {
     const {t} = useTranslation();
@@ -51,6 +52,11 @@ const MainPage = () => {
                     <Grid item xs={12}>
                         <Area title={t("Design")}>
                             <Design />
+                        </Area>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Area title={t("Sprache")}>
+                            <Language />
                         </Area>
                     </Grid>
                     <Grid item xs={12}>

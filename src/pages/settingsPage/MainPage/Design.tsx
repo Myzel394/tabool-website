@@ -13,7 +13,8 @@ import {
 import {CurrentDeviceOSIcon, Information} from "components";
 import {FaMoon, FaSun, IoIosWater, WiMoonFull} from "react-icons/all";
 import {useDispatch, useSelector} from "react-redux";
-import {AvailableThemes, getTheme, RootState, setTheme} from "state";
+import {getTheme, RootState, setTheme} from "state";
+import {AvailableThemes} from "types";
 
 
 const Design = () => {

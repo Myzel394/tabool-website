@@ -7,12 +7,17 @@ export interface ServerPreference {
     data: UserPreferences;
 }
 
+export type AvailableLanguages = string;
+export type AvailableThemes = "light" | "dark" | "blue" | "midnight" | "_system";
+export type AvailableUpdatedAtTimeViews = "static" | "dynamic";
+
 export interface Preferences {
     global?: {
-        theme?: "light" | "dark" | "blue" | "midnight";
+        theme?: AvailableThemes;
         allowStatistics?: boolean;
-        updatedAtTimeView?: string;
+        updatedAtTimeView?: AvailableUpdatedAtTimeViews;
         startPageMaxFutureDays?: number;
+        language?: AvailableLanguages;
     };
     detailPage?: {
         ordering?: Record<string, string[]>;

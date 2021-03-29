@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, {CSSProperties, ReactNode} from "react";
 import {Box} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
@@ -10,11 +10,14 @@ import Wrapper from "./Wrapper";
 
 export interface IFocusedPage {
     children: ReactNode;
+
     title?: string;
     important?: boolean;
     disableBackButton?: boolean;
     showLogo?: boolean;
     onBackButtonClick?: () => any;
+    bottomContent?: ReactNode;
+    style?: CSSProperties;
 }
 
 
@@ -25,12 +28,21 @@ export default function FocusedPage({
     disableBackButton,
     showLogo,
     onBackButtonClick,
+    bottomContent,
+    style,
 }: IFocusedPage) {
     const {t} = useTranslation();
 
     return (
-        <Wrapper>
-            <Box marginY={1} marginX={2}>
+        <Wrapper bottomContent={bottomContent} style={style}>
+            <Box
+                mx={2}
+                my={1}
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                flexDirection="column"
+            >
                 {!disableBackButton &&
                 <Box display="flex" justifyContent="flex-end">
                     <Tooltip

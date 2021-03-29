@@ -2,7 +2,7 @@
 import persistConfig from "constants/persistConfig";
 
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Preferences} from "types";
+import {AvailableLanguages, AvailableThemes, AvailableUpdatedAtTimeViews, Preferences} from "types";
 import update from "immutability-helper";
 import {persistReducer} from "redux-persist";
 import dayjs, {Dayjs} from "dayjs";
@@ -10,9 +10,6 @@ import {supportsThemes} from "utils";
 
 // eslint-disable-next-line import/no-cycle
 import {RootState} from "../store";
-
-export type AvailableThemes = "light" | "dark" | "blue" | "midnight" | "_system";
-export type AvailableUpdatedAtTimeViews = "static" | "dynamic";
 
 interface IAddDetailPageOrdering {
     identifier: string;
@@ -73,6 +70,17 @@ export const preferenceSlice = createSlice({
                     $auto: {
                         startPageMaxFutureDays: {
                             $set: maxDays,
+                        },
+                    },
+                },
+            }),
+        setLanguage: (state, {payload: language}: PayloadAction<AvailableLanguages>) =>
+            update(state, {
+                global: {
+                    // @ts-ignore
+                    $auto: {
+                        language: {
+                            $set: language,
                         },
                     },
                 },
@@ -157,6 +165,8 @@ export const getMaterialDownloadDate = (materialId: string): ((state: RootState)
 
         return value ? dayjs(value) : null;
     };
+export const getLanguage = (state: RootState): AvailableLanguages =>
+    state.preferences.global?.language ?? "_automatic";
 
 export const {
     reset,
@@ -169,6 +179,7 @@ export const {
     setStartPageMaxFutureDays,
     setTheme,
     setUpdatedAtTimeView,
+    setLanguage,
 } = preferenceSlice.actions;
 
 const reducer = preferenceSlice.reducer;

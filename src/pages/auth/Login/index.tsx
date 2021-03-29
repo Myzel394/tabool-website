@@ -13,7 +13,11 @@ import {setRaw} from "state";
 
 import LoginForm from "./LoginForm";
 import SuspiciousLoginForm from "./SuspiciousLoginForm";
+import LanguageSelector from "./LanguageSelector";
 
+const centerStyle = {
+    marginTop: "auto",
+};
 
 const Login = () => {
     const {t} = useTranslation();
@@ -52,7 +56,12 @@ const Login = () => {
     useTitle(t("Anmelden"));
 
     return (
-        <FocusedPage title={isSuspicious ? undefined : t("Anmelden")} disableBackButton={!user.isAuthenticated}>
+        <FocusedPage
+            title={isSuspicious ? undefined : t("Anmelden")}
+            disableBackButton={!user.isAuthenticated}
+            bottomContent={<LanguageSelector />}
+            style={centerStyle}
+        >
             {(isSuspicious && loginData)
                 ? <SuspiciousLoginForm loginData={loginData} onSubmit={mutateAsync} />
                 : <LoginForm onSubmit={mutateAsync} />

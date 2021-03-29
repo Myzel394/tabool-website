@@ -58,3 +58,4 @@ export {default as getLessonMinMaxTime} from "./getLessonMinMaxTime";
 export {default as parseQueryDate} from "./parseQueryDate";
 export {default as copyText} from "./copyText";
 export {default as supportsThemes} from "./supportsThemes";
+export {default as getLanguageFromI18Next} from "./getLanguageFromI18Next";
