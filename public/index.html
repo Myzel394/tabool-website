@@ -70,11 +70,15 @@
 </div>
 <script>
     const $element = document.getElementById("loading_content");
-    const redux = JSON.parse(localStorage.getItem("persist:redux"));
-    const global = JSON.parse(redux.global);
-    let theme = global === null || global === void 0 ? void 0 : global.theme;
+    let theme;
 
-    if (theme === "_system") {
+    try {
+        const redux = JSON.parse(localStorage.getItem("persist:redux"));
+        const global = JSON.parse(redux.global);
+        theme = global === null || global === void 0 ? void 0 : global.theme;
+    } catch {}
+
+    if (!theme || theme === "_system") {
         if (window.matchMedia("(prefers-color-scheme: light)").matches) {
             theme = "light";
         } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
@@ -96,13 +100,18 @@
             break;
     }
 
+
     /*
     const $element = document.getElementById("loading_content");
-    const redux = JSON.parse(localStorage.getItem("persist:redux"));
-    const global = JSON.parse(redux.global);
-    let theme = global?.theme;
+    let theme;
 
-    if (theme === "_system") {
+    try {
+        const redux = JSON.parse(localStorage.getItem("persist:redux"));
+        const global = JSON.parse(redux.global);
+        theme = global?.theme;
+    } catch {}
+
+    if (!theme || theme === "_system") {
         if (window.matchMedia("(prefers-color-scheme: light)").matches) {
             theme = "light";
         } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
