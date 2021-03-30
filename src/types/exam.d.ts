@@ -13,6 +13,7 @@ export interface TeacherExamApprox {
     course: TeacherCourseDetail;
     date: Dayjs;
     title: string;
+    id: string;
 }
 
 export interface StudentExamDetail extends StudentExamApprox {
