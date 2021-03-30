@@ -22,7 +22,7 @@ const IllEmailButton = ({children, ...other}: IIllEmailButton) => {
             {...other}
             rel="noopener noreferrer"
             component={SecondaryButton}
-            href={(contacts && user.data) && createMailToLink({
+            href={((contacts && user.data) && createMailToLink({
                 to: contacts.illnessReportEmail,
                 cc: [
                     contacts.mainTeacher.email,
@@ -36,7 +36,7 @@ Ich entschuldige mich für das Fehlen.
 Mit freundlichen Grüßen
 ${user.data.firstName} ${user.data.lastName}
                 `,
-            })}
+            })) || undefined}
             onClick={() => {
                 if (!contacts || !user.data) {
                     addError(undefined, t("Konnte die Entschuldigungs-Emails nicht finden."));
