@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import {isDateEqual} from "utils";
 import {Zoom} from "react-reveal";
 import {useTheme} from "@material-ui/core";
+import {ButtonLike} from "components";
 
 import TimetableContext from "../TimetableContext";
 import useSelectedColor from "../hooks/useSelectedColor";
@@ -40,10 +41,11 @@ const MonthEvent = ({
     };
 
     return (
-        <div
+        <ButtonLike
             style={{
                 backgroundColor: selectedDate?.isSame(date) ? selectedColor : "",
                 height: "100%",
+                width: "100%",
                 opacity: isValidWeekday ? 1 : 0.1,
                 display: "flex",
                 flexDirection: "column",
@@ -84,7 +86,7 @@ const MonthEvent = ({
                     );
                 })}
             </div>
-        </div>
+        </ButtonLike>
     );
 };
 export default MonthEvent;
