@@ -98,6 +98,11 @@ export default function Routes() {
                     path="/app/add/homework/"
                     component={lazy(() => import("pages/add/HomeworkAddPage"))}
                 />
+                <Route
+                    exact
+                    path="/app/add/exam/"
+                    component={lazy(() => import("pages/add/ExamAddPage"))}
+                />
                 {/* Landing page }
                 {!user.isAuthenticated &&
                 <Route
