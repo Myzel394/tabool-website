@@ -7460,10 +7460,10 @@ formik-material-ui@^3.0.1:
   resolved "https://registry.yarnpkg.com/formik-material-ui/-/formik-material-ui-3.0.1.tgz#189407885c411fb202514eb9993a4d9ea46ce82a"
   integrity sha512-N8oxZIdhY70npRv86IfF6Zaaps9RL3a37XRdq02WDroB3XZC1mXs6lA/zQ09ZYFWYJp/UjI80SKVpVa/xJOJJA==
 
-formik-remember@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/formik-remember/-/formik-remember-1.3.0.tgz#ec6d5c783f2faed793ecc000fa7da6991c820d38"
-  integrity sha512-V4jIXd7gdpGoJLLwOlvHEm/gOBgeiDluh2toNGKcXjV9y0cdgxl28GyLf3v0O+VN9BXqrQvGTZpMeOe7QMfkWg==
+formik-remember@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/formik-remember/-/formik-remember-1.4.0.tgz#5745bd36f40f550185a656777ce44c2f2be077f9"
+  integrity sha512-9kNyoBmdB15/h74T/XuBEf3NLhs3r8hBV0r0dC7AH1ZiQEsSnhychpYgBN7SU87YBVK2yXHRWZSpxZATwUo7zQ==
   dependencies:
     lodash.debounce "^4.0.8"
     react-fast-compare "^2.0.1"

@@ -33,6 +33,7 @@ export interface ILessonField extends FieldProps {
     disableFuture?: boolean;
 
     onChange?: (event) => any;
+    onError?: (error: AxiosError) => any;
     helpText?: string;
 }
 
@@ -69,6 +70,7 @@ const LessonField = ({
     disableFuture,
 
     helpText,
+    onError,
     onChange: customOnChange,
 }: ILessonField, ref) => {
     const {t} = useTranslation();
@@ -91,7 +93,10 @@ const LessonField = ({
     } = useQuery<StudentTimetableDetail, AxiosError>(
         "fetch_current_timetable",
         fetchTimetable,
-        queryOptions,
+        {
+            ...queryOptions,
+            onError,
+        },
     );
 
     const lesson = timetable?.lessons?.find?.(lesson => lesson.id === selectedLessonIdentifier?.id);

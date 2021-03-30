@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {Field, Form as IkForm, Formik, FormikHelpers} from "formik";
 import {TeacherLessonDetail} from "types";
 import {
-    GenderStatus,
     HomeworkDueDateField,
     HomeworkInformationField,
     HomeworkTypeField,
@@ -11,30 +10,21 @@ import {
     PrimaryButton,
     renderDayWithLessonWeekdays,
 } from "components";
-import {
-    Box,
-    CircularProgress,
-    Collapse,
-    FormControl,
-    FormGroup,
-    FormHelperText,
-    Grid,
-    InputLabel,
-    MenuItem,
-} from "@material-ui/core";
+import {Box, Collapse, FormGroup, FormHelperText, Grid} from "@material-ui/core";
 import dayjs from "dayjs";
 import {getEndTime, getNextLessonDate, getStartTime, LessonDate} from "utils";
 import {useSnackbar} from "hooks";
 import {useTranslation} from "react-i18next";
-import {CheckboxWithLabel, Select} from "formik-material-ui";
+import {CheckboxWithLabel} from "formik-material-ui";
 import {Alert} from "@material-ui/lab";
 import {MdAdd} from "react-icons/all";
 import FormikRemember from "formik-remember";
 import {convertToDate} from "api";
-
+import {useFetchTeacherLessonAPI} from "hooks/apis";
 
 import useSchema from "./useSchema";
 import useInitialValues, {FormikForm} from "./useInitialValues";
+import Students from "./Students";
 
 export interface IForm {
     onSubmit: (data: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => any;
@@ -54,7 +44,9 @@ const Form = ({
     const initialValues = useInitialValues();
     const schema = useSchema();
     const {addSnackbar} = useSnackbar();
+    const fetchLesson = useFetchTeacherLessonAPI();
 
+    const [isError, setIsError] = useState<boolean>(false);
     const [lesson, setLesson] = useState<TeacherLessonDetail>();
 
     const renderDueDateDay = lesson && renderDayWithLessonWeekdays(
@@ -87,7 +79,9 @@ const Form = ({
                                         name="lesson"
                                         label={t("Stunde")}
                                         component={LessonField}
+                                        onError={() => setIsError(true)}
                                         onChange={async event => {
+                                            setIsError(false);
                                             const lesson: TeacherLessonDetail = event.target.lesson;
 
                                             setFieldValue("lesson", event.target.value);
@@ -154,48 +148,11 @@ const Form = ({
                                         }
                                     </FormGroup>
                                     <Collapse in={values.isPrivate}>
-                                        {(() => {
-                                            if (!values.lesson) {
-                                                return (
-                                                    <Alert severity="warning">
-                                                        {t("Wähle eine Stunde aus")}
-                                                    </Alert>
-                                                );
-                                            }
-                                            if (!lesson) {
-                                                return <CircularProgress />;
-                                            }
-
-                                            return (
-                                                <Box mt={2}>
-                                                    <FormControl
-                                                        required
-                                                        fullWidth
-                                                        variant="outlined"
-                                                    >
-                                                        <InputLabel>
-                                                            {t("Schüler")}
-                                                        </InputLabel>
-                                                        <Field
-                                                            component={Select}
-                                                            defaultValue=""
-                                                            type="radio"
-                                                            name="privateToStudentId"
-                                                            label={t("Schüler")}
-                                                        >
-                                                            {lesson.course.participants.map(student =>
-                                                                <MenuItem key={student.id} value={student.id}>
-                                                                    {/* eslint-disable-next-line @shopify/jsx-no-hardcoded-content */}
-                                                                    <Box display="flex" alignItems="center">
-                                                                        <GenderStatus justIcon withColor value={student.gender} />
-                                                                        {`${student.firstName} ${student.lastName}`}
-                                                                    </Box>
-                                                                </MenuItem>)}
-                                                        </Field>
-                                                    </FormControl>
-                                                </Box>
-                                            );
-                                        })()}
+                                        <Students
+                                            hasLessonSelected={Boolean(values.lesson)}
+                                            students={lesson?.course.participants}
+                                            isError={isError}
+                                        />
                                     </Collapse>
                                 </Grid>
                                 {errors.nonFieldErrors &&
@@ -215,6 +172,22 @@ const Form = ({
                         <FormikRemember<FormikForm>
                             name="teacher-homework-add"
                             parse={parseData}
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            onLoaded={async data => {
+                                setIsError(false);
+                                if (data.lesson) {
+                                    try {
+                                        const {lessonInformation} = await fetchLesson({
+                                            lessonDate: data.lesson.date,
+                                            lessonId: data.lesson.id,
+                                        });
+                                        setLesson(lessonInformation);
+                                    } catch (err) {
+                                        setIsError(true);
+                                    }
+                                }
+                            }}
                         />
                     </IkForm>
                 </LoadingOverlay>
