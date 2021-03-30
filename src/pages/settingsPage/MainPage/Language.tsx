@@ -47,9 +47,10 @@ const Language = () => {
                                             {selectedLanguage.label}
                                         </Box>
                                         {isAutomatic &&
-                                    <Box ml={1} component="i">
-                                        {t("(Automatisch)")}
-                                    </Box>}
+                                            <Box ml={1} component="i">
+                                                {t("(Automatisch)")}
+                                            </Box>
+                                        }
                                     </Box>
                                 )}
                                 variant="outlined"
