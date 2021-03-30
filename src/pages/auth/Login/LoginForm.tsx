@@ -4,7 +4,7 @@ import * as yup from "yup";
 import {Box, Grid, InputAdornment} from "@material-ui/core";
 import {TextField} from "formik-material-ui";
 import {useTranslation} from "react-i18next";
-import {MdEmail, MdLock} from "react-icons/all";
+import {FiLogIn, MdEmail, MdLock} from "react-icons/all";
 import {HiddenTextField, LoadingOverlay, PrimaryButton} from "components";
 import {ILoginData, ILoginResponse} from "hooks/apis";
 import {AxiosError} from "axios";
@@ -105,9 +105,11 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                                 </Grid>
                             </Grid>
                         </Box>
-                        <PrimaryButton type="submit">
-                            {t("Anmelden")}
-                        </PrimaryButton>
+                        <Box display="flex" alignItems="center" justifyContent="center">
+                            <PrimaryButton type="submit" size="large" startIcon={<FiLogIn />}>
+                                {t("Anmelden")}
+                            </PrimaryButton>
+                        </Box>
                     </Form>
                 </LoadingOverlay>
             )}
