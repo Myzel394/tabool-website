@@ -43,7 +43,7 @@ const StudentHomeworkAddPage = () => {
                         lessonId: data.lesson.id,
                         type: data.type,
                     })
-                        .catch((error: AxiosError) => {
+                        .catch(error => {
                             setSubmitting(false);
                             setErrors(error.response?.data);
                         })

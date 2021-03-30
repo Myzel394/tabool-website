@@ -6,7 +6,7 @@ import {buildPath} from "utils";
 
 const ITEM_SIZE = "1.5rem";
 
-const AgendaPage = () => {
+const StudentAgendaPage = () => {
     const {t} = useTranslation();
 
     return (
@@ -28,6 +28,5 @@ const AgendaPage = () => {
         </FocusedPage>
     );
 };
-export default AgendaPage;
 
-
+export default StudentAgendaPage;

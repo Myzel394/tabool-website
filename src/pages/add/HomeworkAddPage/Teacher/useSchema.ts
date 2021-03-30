@@ -11,7 +11,7 @@ const useSchema = (): yup.ObjectSchema<ObjectShape> => {
         lesson: yup.object().typeError(t("Die Stunde wird benötigt.")).required(),
         information: yup.string().nullable(),
         type: yup.string().nullable(),
-        dueDate: yup.date().min(dayjs(), "Das Fälligkeitsdatum kann nicht in der Vergangenheit liegen.").nullable(),
+        dueDate: yup.date().min(dayjs(), t("Das Fälligkeitsdatum kann nicht in der Vergangenheit liegen.")).nullable(),
     });
 
     return schema;
