@@ -11,7 +11,7 @@ import {useQueryOptions} from "hooks";
 import BaseSearchField, {ActiveCheckIcon, WindowedList} from "./BaseSearchField";
 
 
-const StudentCourseField = (props) => {
+const TeacherCourseField = (props) => {
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const fetchCourses = useFetchTeacherCourseListAPI();
@@ -51,6 +51,7 @@ const StudentCourseField = (props) => {
             getCaption={course => course.name}
             isLoading={isLoading}
             search={search}
+            getElementFromKey={async id => courses.find(course => course.id === id)}
             onSearchChange={setSearch}
         >
             {({onElementSelect, selectedKey}) =>
@@ -60,7 +61,10 @@ const StudentCourseField = (props) => {
                     selectedKey={selectedKey}
                     fetchNextPage={fetchNextPage}
                     hasNextPage={Boolean(hasNextPage)}
-                    onElementSelect={onElementSelect}
+                    onElementSelect={value => {
+                        props.onSelect?.(value);
+                        onElementSelect(value);
+                    }}
                 >
                     {(course, {isSelected, onClick}) =>
                         <ListItem
@@ -87,4 +91,4 @@ const StudentCourseField = (props) => {
     );
 };
 
-export default StudentCourseField;
+export default TeacherCourseField;
