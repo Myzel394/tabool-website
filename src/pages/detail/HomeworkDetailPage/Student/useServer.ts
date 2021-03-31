@@ -13,7 +13,6 @@ import {QueryObserverBaseResult, UseMutateAsyncFunction, useMutation, useQuery} 
 import {AxiosError} from "axios";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 import update from "immutability-helper";
-import {useTranslation} from "react-i18next/src";
 import dayjs, {Dayjs} from "dayjs";
 
 export interface IUseServer {
@@ -32,7 +31,6 @@ export interface IUseServer {
 }
 
 const useServer = (id: string): IUseServer => {
-    const {t} = useTranslation();
     const queryOptions = useQueryOptions();
     const updateHomeworkDataMutation = useUpdateStudentHomeworkAPI();
     const updateHomeworkRelationMutation = useUpdateHomeworkUserRelationAPI();
