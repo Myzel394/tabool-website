@@ -7,7 +7,7 @@ const useSchema = (): yup.ObjectSchema<ObjectShape> => {
     const {t} = useTranslation();
 
     const schema = yup.object().shape({
-        information: yup.string().nullable(),
+        information: yup.string().required(t("Ein paar Informationen werden benötigt.")),
         date: yup
             .date()
             .min(dayjs(), t("Das Datum kann nicht in der Vergangenheit liegen."))

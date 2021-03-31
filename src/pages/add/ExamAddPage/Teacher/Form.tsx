@@ -101,6 +101,8 @@ const Form = ({
                                     <Field
                                         multiline
                                         fullWidth
+                                        required
+                                        type="text"
                                         variant="outlined"
                                         name="information"
                                         label={t("Informationen")}
