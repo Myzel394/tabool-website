@@ -1,4 +1,4 @@
-import {useDetailPageError, useQueryOptions, useSnackbar} from "hooks";
+import {useQueryOptions, useSnackbar} from "hooks";
 import {
     IUpdateHomeworkUserRelationData,
     IUpdateHomeworkUserRelationResponse,
@@ -37,7 +37,6 @@ const useServer = (id: string): IUseServer => {
     const updateHomeworkDataMutation = useUpdateStudentHomeworkAPI();
     const updateHomeworkRelationMutation = useUpdateHomeworkUserRelationAPI();
     const fetchHomework = useFetchStudentHomeworkDetailAPI();
-    const {onFetchError} = useDetailPageError();
     const {addError} = useSnackbar();
 
     const [homework, setHomework] = useState<StudentHomeworkDetail>();
@@ -77,7 +76,6 @@ const useServer = (id: string): IUseServer => {
         {
             ...queryOptions,
             onSuccess: setHomework,
-            onError: (error) => onFetchError(error, Boolean(homework), t("Diese Hausaufgabe wurde nicht gefunden")),
         },
     );
 
