@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {ErrorPage, LoadingPage, ResponseWrapper} from "components";
 import {useTranslation} from "react-i18next";
 import {StudentHomeworkDetail} from "types";
@@ -14,10 +14,10 @@ const StudentHomeworkDetailPage = () => {
     const {
         isLoading,
         error,
+        homework,
+        updateHomework,
         ...contentProps
     } = useServer(id);
-
-    const [homework, setHomework] = useState<StudentHomeworkDetail>();
 
     return (
         <ResponseWrapper<StudentHomeworkDetail>
@@ -42,7 +42,7 @@ const StudentHomeworkDetailPage = () => {
                     homework={homework}
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore: homework is just checked
-                    updateHomework={setHomework}
+                    updateHomework={updateHomework}
                 />
             ) : null)}
         </ResponseWrapper>

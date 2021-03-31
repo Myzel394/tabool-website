@@ -7,7 +7,7 @@ import {
     useUpdateHomeworkUserRelationAPI,
     useUpdateStudentHomeworkAPI,
 } from "hooks/apis";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import {StudentHomeworkDetail} from "types";
 import {QueryObserverBaseResult, UseMutateAsyncFunction, useMutation, useQuery} from "react-query";
 import {AxiosError} from "axios";
@@ -26,6 +26,9 @@ export interface IUseServer {
     update: UseMutateAsyncFunction<StudentHomeworkDetail, AxiosError, IUpdateStudentHomeworkData>;
     updateRelation: UseMutateAsyncFunction<IUpdateHomeworkUserRelationResponse, AxiosError, IUpdateHomeworkUserRelationData>;
     refetch: QueryObserverBaseResult<StudentHomeworkDetail, AxiosError>["refetch"];
+
+    homework?: StudentHomeworkDetail;
+    updateHomework: Dispatch<SetStateAction<StudentHomeworkDetail | undefined>>;
 }
 
 const useServer = (id: string): IUseServer => {
@@ -80,12 +83,14 @@ const useServer = (id: string): IUseServer => {
 
     return {
         isFetching,
+        homework,
         isLoading,
         refetch,
         error,
         update: mutateAsync,
         updateRelation: mutateRelation,
         dataUpdatedAt: dayjs(dataUpdatedAt),
+        updateHomework: setHomework,
     };
 };
 
