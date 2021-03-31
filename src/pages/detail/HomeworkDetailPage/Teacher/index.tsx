@@ -1,16 +1,16 @@
 import React from "react";
-import {ErrorPage, LoadingPage, ResponseWrapper} from "components";
-import {useTranslation} from "react-i18next";
-import {StudentHomeworkDetail} from "types";
 import {useParams} from "react-router";
+import {useTranslation} from "react-i18next/src";
+import {ErrorPage, LoadingPage, ResponseWrapper} from "components";
+import {TeacherHomeworkDetail} from "types";
 
 import useServer from "./useServer";
 import Content from "./Content";
 
 
-const StudentHomeworkDetailPage = () => {
-    const {id} = useParams<{ id: string; }>();
+const TeacherHomeworkDetailPage = () => {
     const {t} = useTranslation();
+    const {id} = useParams<{ id: string; }>();
     const {
         isLoading,
         error,
@@ -20,7 +20,7 @@ const StudentHomeworkDetailPage = () => {
     } = useServer(id);
 
     return (
-        <ResponseWrapper<StudentHomeworkDetail>
+        <ResponseWrapper<TeacherHomeworkDetail>
             isLoading={isLoading}
             renderLoading={() => <LoadingPage title={t("Hausaufgabe wird geladen...")} />}
             renderError={error =>
@@ -43,10 +43,9 @@ const StudentHomeworkDetailPage = () => {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore: homework is just checked
                     updateHomework={updateHomework}
-                />
-            ) : null)}
+                />) : null)}
         </ResponseWrapper>
     );
 };
+export default TeacherHomeworkDetailPage;
 
-export default StudentHomeworkDetailPage;

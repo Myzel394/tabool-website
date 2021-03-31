@@ -15,7 +15,7 @@ import {
     IUpdateStudentHomeworkData,
 } from "hooks/apis";
 import {BiBarChartSquare, FaClock, MdBlock, MdCheck, MdInfo, MdLock, MdLockOpen} from "react-icons/all";
-import dayjs, {Dayjs} from "dayjs";
+import {Dayjs} from "dayjs";
 import {buildPath, lazyDatetime} from "utils";
 import {Button, Grid, Link, makeStyles} from "@material-ui/core";
 import {Field} from "formik";
@@ -24,8 +24,9 @@ import {useTranslation} from "react-i18next/src";
 import {AxiosError} from "axios";
 import {QueryObserverBaseResult, UseMutateAsyncFunction} from "react-query";
 
+import getDueDateIcon from "../getDueDateIcon";
+
 import useSchema from "./useSchema";
-import getDueDateIcon from "./getDueDateIcon";
 import ExtraActions from "./ExtraActions";
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
@@ -64,10 +65,6 @@ const Content = ({
     const {t} = useTranslation();
     const schema = useSchema();
     const classes = useClasses();
-
-    if (!homework) {
-        return null;
-    }
 
     const canEditHomework = homework.isPrivate;
 
@@ -110,9 +107,9 @@ const Content = ({
                             .catch(resetForm)
                             .finally(() => setSubmitting(false)),
                 }}
-                updatedAt={dayjs(dataUpdatedAt)}
+                updatedAt={dataUpdatedAt}
                 color={homework.lesson.course.subject.userRelation.color}
-                orderingStorageName="homework"
+                orderingStorageName="student-homework"
                 addPath={buildPath("/add/homework/", undefined, {
                     lessonId: homework.lesson.id,
                     lessonDate: lazyDatetime(homework.lessonDate, "date"),

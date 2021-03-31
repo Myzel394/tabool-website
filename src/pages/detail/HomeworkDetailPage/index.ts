@@ -1,7 +1,8 @@
 import {withUserType} from "hocs";
 
 import Student from "./Student";
+import Teacher from "./Teacher";
 
-const HomeworkDetailPage = withUserType(Student, Student);
+const HomeworkDetailPage = withUserType(Student, Teacher);
 
 export default HomeworkDetailPage;
