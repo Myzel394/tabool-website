@@ -11,7 +11,6 @@ export interface IUpdateTeacherHomeworkData {
     type?: string | null;
     information?: string | null;
     dueDate?: Dayjs | null;
-    privateToStudentId?: string | null;
 }
 
 const useUpdateTeacherHomeworkAPI = () => {
@@ -21,13 +20,11 @@ const useUpdateTeacherHomeworkAPI = () => {
         dueDate,
         information,
         type,
-        privateToStudentId,
     }: IUpdateTeacherHomeworkData): Promise<TeacherHomeworkDetail> => {
         const {data} = await instance.patch(buildUrl(`/homework/${id}/`), {
             information,
             type,
-            dueDate: dueDate === undefined ? undefined : lazyDatetime(dueDate, "date"),
-            privateToStudent: privateToStudentId,
+            dueDate: dueDate === undefined ? undefined : lazyDatetime(dueDate),
         }, await getLoginConfig());
 
         await parseTeacherHomeworkDetail(data);
