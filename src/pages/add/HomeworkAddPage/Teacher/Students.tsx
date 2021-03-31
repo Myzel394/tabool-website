@@ -45,7 +45,6 @@ const Students = ({
     return (
         <Box mt={2}>
             <FormControl
-                required
                 fullWidth
                 variant="outlined"
             >
