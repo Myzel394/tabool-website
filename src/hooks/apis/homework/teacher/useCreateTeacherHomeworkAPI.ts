@@ -29,10 +29,10 @@ const useCreateTeacherHomeworkAPI = () => {
         privateToStudentId,
     }: ICreateTeacherHomeworkData): Promise<TeacherHomeworkDetail> => {
         const {data} = await instance.post(buildUrl("/homework/"), {
-            lessonDate,
             information,
             type,
-            dueDate: dueDate === undefined ? undefined : lazyDatetime(dueDate, "date"),
+            lessonDate: lazyDatetime(lessonDate, "date"),
+            dueDate: dueDate === undefined ? undefined : lazyDatetime(dueDate),
             lesson: lessonId,
             privateToStudent: privateToStudentId,
         }, await getLoginConfig());
