@@ -12,7 +12,7 @@ export interface IGenderField {
     withColor?: boolean;
 }
 
-const ICON_GENDER_MAPPING = {
+export const ICON_GENDER_MAPPING = {
     [Gender.Male]: IoMdMale,
     [Gender.Female]: IoMdFemale,
     [Gender.Diverse]: FaGenderless,

@@ -61,9 +61,10 @@ const Form = ({
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <Field
+                                        required
                                         name="courseId"
+                                        label={t("Kurs")}
                                         component={TeacherCourseField}
-                                        onSelect={setCourse}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>

@@ -1,116 +1,248 @@
-import React, {useEffect, useState} from "react";
+import React, {Context, ReactNode, useCallback, useRef, useState} from "react";
+import {Autocomplete, AutocompleteProps, createFilterOptions} from "@material-ui/lab";
+import {TextFieldProps} from "@material-ui/core";
 import {FieldProps} from "formik";
-import {Button, CircularProgress, FormControl, FormHelperText} from "@material-ui/core";
-import {useTranslation} from "react-i18next";
+import {useTranslation} from "react-i18next/src";
+import {FilterOptionsState} from "@material-ui/lab/useAutocomplete/useAutocomplete";
 
-import SelectModal, {ISelectModal} from "./SelectModal";
+import useQuery, {QueryResult} from "./useQuery";
+import useFillField from "./useFillField";
+import useRenderers from "./useRenderers";
+import SearchFieldContext, {ISearchFieldContext} from "./SearchFieldContext";
+import SearchModal from "./SearchModal";
 
+const MORE_AVAILABLE_SYMBOL = Symbol("more-available");
 
-export type IBaseSearchField<DataType, DetailedDataType = DataType, KeyType extends string = string> =
-    FieldProps &
-    Omit<ISelectModal<DataType, KeyType>, "nullable" | "renderElement" | "isOpen" | "selectedKey" | "title" | "onClose" | "onSelect">
-    & {
-    getCaption: (element: DetailedDataType) => string;
+interface MoreAvailableType {
+    [MORE_AVAILABLE_SYMBOL]: true;
+    title: string;
+}
 
-    helperText?: string;
+const filter = createFilterOptions();
+
+export type ISearchField<
+    DataType,
+    KeyType = string,
+    QueryResponse = QueryResult<DataType>
+> = FieldProps & Omit<
+    AutocompleteProps<DataType, false, false, false>,
+    "renderInput" |
+    "getOptionSelected" |
+    "value" |
+    "options" |
+    "inputValue" |
+    "onInputChange" |
+    "onChange"
+    > & {
+    getKeyFromElement: (element: Readonly<DataType>) => KeyType;
+    children: (
+        element: Readonly<DataType>,
+        isSelected: boolean,
+        onThisSelect: () => any,
+        isParentSelected: boolean
+    ) => ReactNode;
+
+    flattenResults: (page: QueryResponse) => DataType[];
+    fetchElements: (search: string, page: number) => Promise<QueryResponse>;
+    fetchSingleLabel: (key: KeyType) => Promise<string>;
+    filterElements: (elements: DataType[], search: string, selectedKey: KeyType | null) => DataType[];
+    queryKey: string;
+    getOptionLabel: (element: DataType) => string;
+    initialSearchValue: string;
+
+    modalTitle?: string;
+    searchPlaceholder?: string;
+
+    onChange?: (key: KeyType | null, data: DataType | null) => any;
     label?: string;
     required?: boolean;
 
-    modalTitle: ISelectModal<DataType, KeyType>["title"];
-    children: ISelectModal<DataType, KeyType>["renderElement"];
-
-    elements: DataType[];
-    fetchData: (search: string) => Promise<DataType[]>;
-
-    /* This will be called, if an id was passed and the element is unknown */
-    getElementFromKey: (value: KeyType) => Promise<DetailedDataType>;
-
-    onChange?: (element: DataType | null) => any;
+    textFieldProps?: Omit<TextFieldProps, "label" | "required">;
 };
 
-
-const BaseSearchField = <
-    DataType,
-    DetailedDataType = DataType,
-    KeyType extends string = string,
-    >({
+const SearchField = <
+    DataType extends Record<string, any>,
+    QueryResponse = QueryResult<DataType>,
+    KeyType = string,
+>({
+        getKeyFromElement,
+        filterElements,
+        fetchSingleLabel,
+        queryKey,
+        textFieldProps,
+        initialSearchValue,
+        fetchElements,
+        flattenResults,
         field,
-        form,
-        getCaption,
-        helperText,
         label,
         required,
-        modalTitle,
-        getKeyFromElement,
-        getElementFromKey,
-        fetchData,
-        elements,
+        getOptionLabel,
         onChange,
         children: renderElement,
+        renderOption,
+        form,
+        meta,
+        modalTitle,
+        searchPlaceholder,
+        filterOptions,
         ...other
-    }: IBaseSearchField<DataType, DetailedDataType, KeyType>) => {
+    }: ISearchField<DataType, KeyType, QueryResponse>) => {
     const {t} = useTranslation();
-    const error = form.touched[field.name] && form.errors[field.name];
-    const {value} = field;
+    // $hasModified function should only be applied if there's an initial value
+    const $hasModified = useRef<boolean>(Boolean(field.value));
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [isFetchingElement, setIsFetchingElement] = useState<boolean>(false);
-    const [selectedElement, setSelectedElement] = useState<DetailedDataType | null>();
+    const [inputValue, setInputValue] = useState<string>("");
+    const [search, setSearch] = useState<string>(initialSearchValue);
 
-    useEffect(() => {
-        // eslint-disable-next-line promise/catch-or-return
-        getElementFromKey(value)
-            .then(setSelectedElement)
-            .finally(() => setIsFetchingElement(false));
-    }, [value, getElementFromKey]);
+    const selectedKey = field.value ?? null;
+    // MUI shows the id if the field hasn't been modified once, so just show nothing to avoid showing the ID to the user
+    // (which would be strange to the user to see)
+    const shownValue = $hasModified.current ? field.value : "";
+
+    const setFieldValue = useCallback((option: DataType | null) => {
+        const key = option?._searchFieldKey;
+        field.onChange({
+            target: {
+                value: key,
+                name: field.name,
+            },
+        });
+        onChange?.(key, option);
+    }, [field, onChange]);
+
+    const {
+        hasNextPage,
+        findElementByKey,
+        fetchNextPage,
+        elements,
+        isFetching,
+    } = useQuery<DataType, QueryResponse, KeyType>({
+        selectedKey,
+        getKeyFromElement,
+        filterElements,
+        flattenResults,
+        fetchElements,
+        queryKey,
+        search,
+    });
+
+    const isFetchingLabel = useFillField<DataType, KeyType>({
+        getOptionLabel,
+        value: field.value,
+        findElementByKey,
+        elements,
+        updateSearchValue: setInputValue,
+        $hasModified,
+        updateFieldValue: setFieldValue,
+        fetchLabel: fetchSingleLabel,
+    });
+
+    const {
+        renderInput,
+        renderOption: renderAutocompleteOption,
+        getTextFromOption,
+    } = useRenderers({
+        isFetching: isFetching || isFetchingLabel,
+        updateIsOpen: setIsOpen,
+        textFieldProps: {
+            ...textFieldProps,
+            name: field.name,
+            label,
+            required,
+        },
+        getOptionLabel,
+        findElementByKey,
+        customRenderOption: renderOption,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const ModalContext = SearchFieldContext as Context<ISearchFieldContext<DataType, KeyType>>;
 
     return (
         <>
-            <FormControl>
-                <Button variant="outlined" onClick={() => setIsOpen(true)}>
-                    {(() => {
-                        if (isFetchingElement) {
-                            return <CircularProgress size="1rem" color="inherit" />;
-                        }
-                        if (selectedElement) {
-                            return getCaption(selectedElement);
-                        }
-                        return label ?? t("Auswählen");
-                    })()}
-                </Button>
-                <FormHelperText error={Boolean(error)}>
-                    {error ?? helperText}
-                </FormHelperText>
-            </FormControl>
-            <SelectModal<DataType, KeyType>
+            <Autocomplete<DataType>
+                autoHighlight
                 {...other}
-                elements={elements}
-                getKeyFromElement={getKeyFromElement}
-                nullable={!required}
-                renderElement={renderElement}
-                isOpen={isOpen}
-                selectedKey={field.value}
-                title={modalTitle}
-                onClose={() => setIsOpen(false)}
-                onSelect={element => {
-                    setIsOpen(false);
-                    field.onChange({
-                        target: {
-                            name: field.name,
-                            value: element ? getKeyFromElement(element) : null,
-                        },
-                    });
-                    onChange?.(element);
+                renderInput={renderInput}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore: value is custom type
+                getOptionSelected={(option, value: KeyType) => option._searchFieldKey === value}
+                getOptionLabel={getTextFromOption}
+                renderOption={renderAutocompleteOption}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                filterOptions={(options, params) => {
+                    const defaultFilterFn = filter as ((option: DataType[], state: FilterOptionsState<DataType>) => (DataType | MoreAvailableType)[]);
+
+                    const filtered = filterOptions
+                        ? filterOptions(options, params)
+                        : defaultFilterFn(options, params);
+
+                    // Add more available information
+                    if (params.inputValue === "" && hasNextPage) {
+                        filtered.push({
+                            [MORE_AVAILABLE_SYMBOL]: true,
+                            title: t("Mehr verfügbar. Nutze die Suche um die anderen zu finden."),
+                        });
+                    }
+
+                    return filtered;
                 }}
+                value={shownValue}
+                options={elements}
+                inputValue={inputValue}
+                onInputChange={(event, value) => {
+                    $hasModified.current = true;
+                    setInputValue(value);
+                }}
+                onChange={(event, option) => {
+                    if (option) {
+                        setFieldValue(option);
+                    }
+                }}
+                onBlur={field.onBlur}
             />
+            <ModalContext.Provider
+                value={{
+                    hasNextPage,
+                    fetchNextPage,
+                    getKeyFromElement,
+                    isOpen,
+                    selectedKey,
+                    elements,
+                    search,
+                    searchPlaceholder,
+                    renderElement,
+                    updateSelectedKey: key => {
+                        if (key) {
+                            const data = findElementByKey(key);
+
+                            if (data) {
+                                setFieldValue(data);
+                            }
+                        } else {
+                            setFieldValue(null);
+                        }
+                    },
+                    title: modalTitle || t("Auswählen"),
+                    required: Boolean(required),
+                    onClose: () => setIsOpen(false),
+                    isFetching,
+                    updateSearch: setSearch,
+                }}
+            >
+                <SearchModal />
+            </ModalContext.Provider>
         </>
     );
 };
 
-BaseSearchField.defaultProps = {
+SearchField.defaultProps = {
+    initialSearchValue: "",
+    flattenResults: page => page.results,
     getKeyFromElement: element => element.id,
 };
 
-BaseSearchField.whyDidYouRender = true;
-
-export default BaseSearchField;
+export default SearchField;
