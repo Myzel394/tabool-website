@@ -153,11 +153,11 @@ const Element = ({
                 </ListItemSecondaryAction>
             </ListItem>
             <div ref={$warningContainer} />
-            {errorMessage &&
-            <Alert severity="error">
-                {errorMessage}
-            </Alert>
-            }
+            {errorMessage && (
+                <Alert severity="error">
+                    {errorMessage}
+                </Alert>
+            )}
             <SettingsModal
                 publishDatetime={publishDatetime}
                 isOpen={isSettingsOpen}

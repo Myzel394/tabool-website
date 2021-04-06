@@ -60,16 +60,17 @@ const Material = ({name, id, size, file, publishDatetime}: IMaterial) => {
                                 </Typography>
                             </Grid>
                             <Grid item>
-                                {downloadDate &&
-                                <TimeRelative>
-                                    {now =>
-                                        <Typography variant="body2" color="textSecondary">
-                                            {t("Zuletzt runtergeladen: {{relative}}", {
-                                                relative: downloadDate.from(now.add(3, "second")),
-                                            })}
-                                        </Typography>
-                                    }
-                                </TimeRelative>}
+                                {downloadDate && (
+                                    <TimeRelative>
+                                        {now =>
+                                            <Typography variant="body2" color="textSecondary">
+                                                {t("Zuletzt runtergeladen: {{relative}}", {
+                                                    relative: downloadDate.from(now.add(3, "second")),
+                                                })}
+                                            </Typography>
+                                        }
+                                    </TimeRelative>
+                                )}
                             </Grid>
                         </Grid>
                     </Grid>

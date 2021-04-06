@@ -16,7 +16,7 @@ const Information = ({getIcon, text, tooltip, ...other}: IInformation) => {
         color: theme.palette.text.secondary,
         fontSize: theme.typography.body1.fontSize,
     }), [theme.palette.text.secondary, theme.typography.body1.fontSize]);
-    const textNode =
+    const textNode = (
         <Typography
             className={styles.text}
             variant="body1"
@@ -25,7 +25,8 @@ const Information = ({getIcon, text, tooltip, ...other}: IInformation) => {
             {...other}
         >
             {text}
-        </Typography>;
+        </Typography>
+    );
     const tooltipNode = tooltip ? <Tooltip title={tooltip}>{textNode}</Tooltip> : textNode;
 
     return (

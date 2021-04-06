@@ -32,18 +32,22 @@ const DeleteConfirmDialog = ({amount, filename, isOpen, onClose, onConfirm}: IDe
         >
             <DialogContentText>
                 {filename
-                    ? <Trans>
+                    ? (
+                        <Trans>
                         Möchtest du wirklich das Hochladedatum der Datei
-                        <Box
-                            m={2}
-                            style={breakStyle}
-                        >
-                            <i>{{filename}}</i>
-                        </Box> zurücksetzen?
-                    </Trans>
-                    : <Trans count={amount}>
+                            <Box
+                                m={2}
+                                style={breakStyle}
+                            >
+                                <i>{{filename}}</i>
+                            </Box> zurücksetzen?
+                        </Trans>
+                    )
+                    : (
+                        <Trans count={amount}>
                         Möchtest du wirklich die Hochladedaten <strong>{{amount}}</strong> Dateien zurücksetzen?
-                    </Trans>
+                        </Trans>
+                    )
                 }
             </DialogContentText>
         </SimpleDialog>

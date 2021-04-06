@@ -47,12 +47,13 @@ const RequestPermission = ({
                                 {t("Zugriff erteilen")}
                             </Button>
                         </Grid>
-                        {onDismiss &&
+                        {onDismiss && (
                             <Grid item xs={12}>
                                 <Button variant="text" color="default" onClick={onDismiss}>
                                     {t("Nicht erteilen")}
                                 </Button>
-                            </Grid>}
+                            </Grid>
+                        )}
                     </Grid>
                 </Grid>
             </Grid>

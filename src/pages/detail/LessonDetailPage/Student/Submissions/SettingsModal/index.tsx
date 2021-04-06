@@ -67,7 +67,8 @@ const SettingsModal = ({
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment
-                                    position="end" onClick={event => {
+                                    position="end"
+                                    onClick={event => {
                                         event.stopPropagation();
                                         setPublishDatetime(null);
                                     }}

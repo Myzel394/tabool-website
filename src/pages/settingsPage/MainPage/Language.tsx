@@ -46,11 +46,11 @@ const Language = () => {
                                         <Box ml={1} component="span">
                                             {selectedLanguage.label}
                                         </Box>
-                                        {isAutomatic &&
+                                        {isAutomatic && (
                                             <Box ml={1} component="i">
                                                 {t("(Automatisch)")}
                                             </Box>
-                                        }
+                                        )}
                                     </Box>
                                 )}
                                 variant="outlined"

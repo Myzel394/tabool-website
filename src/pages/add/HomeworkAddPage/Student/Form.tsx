@@ -25,6 +25,7 @@ import FormikRemember from "formik-remember";
 import useInitialValues, {FormikForm} from "./useInitialValues";
 import useSchema from "./useSchema";
 
+
 export interface IForm {
     onSubmit: (data: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => Promise<StudentHomeworkDetail>;
 }
@@ -140,13 +141,13 @@ const Form = ({
                                         </FormHelperText>
                                     </FormGroup>
                                 </Grid>
-                                {errors.nonFieldErrors &&
+                                {errors.nonFieldErrors && (
                                     <Grid item xs={12}>
                                         <Alert severity="error">
                                             {errors.nonFieldErrors}
                                         </Alert>
                                     </Grid>
-                                }
+                                )}
                             </Grid>
                         </Box>
                         <Box display="flex" justifyContent="center">

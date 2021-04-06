@@ -131,7 +131,9 @@ const Homework = ({
                                 </Grid>
                                 <Grid item>
                                     <Box
-                                        flexDirection="row" display="flex" alignItems="flex-end"
+                                        flexDirection="row"
+                                        display="flex"
+                                        alignItems="flex-end"
                                         justifyContent="space-between"
                                     >
                                         <Box display="flex" flexDirection="column">

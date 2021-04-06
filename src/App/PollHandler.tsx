@@ -33,17 +33,17 @@ const PollHandler = ({children}: IPollHandler) => {
     return (
         <>
             {children}
-            {poll &&
-            <Poll
-                key={poll.id}
-                id={poll.id}
-                minVoteChoices={poll.minVoteChoices}
-                maxVoteChoices={poll.maxVoteChoices}
-                maxVoteDate={poll.maxVoteDate}
-                choices={poll.choices}
-                title={poll.title}
-            />
-            }
+            {poll && (
+                <Poll
+                    key={poll.id}
+                    id={poll.id}
+                    minVoteChoices={poll.minVoteChoices}
+                    maxVoteChoices={poll.maxVoteChoices}
+                    maxVoteDate={poll.maxVoteDate}
+                    choices={poll.choices}
+                    title={poll.title}
+                />
+            )}
         </>
     );
 };

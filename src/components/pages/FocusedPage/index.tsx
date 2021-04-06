@@ -43,17 +43,17 @@ export default function FocusedPage({
                 justifyContent="space-between"
                 flexDirection="column"
             >
-                {!disableBackButton &&
-                <Box display="flex" alignSelf="flex-end">
-                    <BackButton confirm={important} onBack={onBackButtonClick} />
-                </Box>
-                }
-                {title &&
-                <>
-                    {showLogo && <Logo />}
-                    <Title title={title} />
-                </>
-                }
+                {!disableBackButton && (
+                    <Box display="flex" alignSelf="flex-end">
+                        <BackButton confirm={important} onBack={onBackButtonClick} />
+                    </Box>
+                )}
+                {title && (
+                    <>
+                        {showLogo && <Logo />}
+                        <Title title={title} />
+                    </>
+                )}
                 {children}
             </Box>
         </Wrapper>

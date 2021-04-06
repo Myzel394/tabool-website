@@ -92,16 +92,18 @@ const FileInformation = ({
                                 locale: "de",
                             })}
                         />
-                        {creationDate &&
-                        <SecondaryInformation
-                            icon={<MdAdd />}
-                            text={creationDate.format("lll")}
-                        />}
-                        {uploadDate &&
-                        <SecondaryInformation
-                            icon={<MdFileUpload />}
-                            text={uploadDate.format("lll")}
-                        />}
+                        {creationDate && (
+                            <SecondaryInformation
+                                icon={<MdAdd />}
+                                text={creationDate.format("lll")}
+                            />
+                        )}
+                        {uploadDate && (
+                            <SecondaryInformation
+                                icon={<MdFileUpload />}
+                                text={uploadDate.format("lll")}
+                            />
+                        )}
                     </>
                 }
             />

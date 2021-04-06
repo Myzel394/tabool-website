@@ -37,28 +37,28 @@ const Footer = ({
                             {t("Hochladen")}
                         </PrimaryButton>
                     </Grid>
-                    {containsImages &&
-                    <Grid item>
-                        <FormControlLabel
-                            label={
-                                <Box component="span" display="flex" alignItems="center">
-                                    {t("Bilder komprimieren")}
-                                    <IconButton size="small" onClick={() => setShowExplanation(true)}>
-                                        <MdInfoOutline />
-                                    </IconButton>
-                                </Box>
-                            }
-                            control={
-                                <Checkbox
-                                    color="primary"
-                                    disabled={!supportsWASM}
-                                    checked={compressImages}
-                                    onChange={event => onCompressImagesChange(event.target.checked)}
-                                />
-                            }
-                        />
-                    </Grid>
-                    }
+                    {containsImages && (
+                        <Grid item>
+                            <FormControlLabel
+                                label={
+                                    <Box component="span" display="flex" alignItems="center">
+                                        {t("Bilder komprimieren")}
+                                        <IconButton size="small" onClick={() => setShowExplanation(true)}>
+                                            <MdInfoOutline />
+                                        </IconButton>
+                                    </Box>
+                                }
+                                control={
+                                    <Checkbox
+                                        color="primary"
+                                        disabled={!supportsWASM}
+                                        checked={compressImages}
+                                        onChange={event => onCompressImagesChange(event.target.checked)}
+                                    />
+                                }
+                            />
+                        </Grid>
+                    )}
                 </Grid>
                 <Box py={2}>
                     <Typography variant="body2" color="textSecondary">

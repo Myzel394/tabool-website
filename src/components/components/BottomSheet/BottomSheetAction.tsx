@@ -28,18 +28,20 @@ const BottomSheetAction = ({
             isOpen={isOpen}
             onClose={onClose}
         >
-            {title &&
-            <Box mt={2} mx={2}>
-                <Typography variant="h5" style={wordBreakStyle}>
-                    {title}
-                </Typography>
-            </Box>}
-            {description &&
-            <Box mt={1} mb={2} mx={2}>
-                <Typography variant="body2" color="textSecondary" style={wordBreakStyle}>
-                    {description}
-                </Typography>
-            </Box>}
+            {title && (
+                <Box mt={2} mx={2}>
+                    <Typography variant="h5" style={wordBreakStyle}>
+                        {title}
+                    </Typography>
+                </Box>
+            )}
+            {description && (
+                <Box mt={1} mb={2} mx={2}>
+                    <Typography variant="body2" color="textSecondary" style={wordBreakStyle}>
+                        {description}
+                    </Typography>
+                </Box>
+            )}
             <List>
                 {children}
             </List>

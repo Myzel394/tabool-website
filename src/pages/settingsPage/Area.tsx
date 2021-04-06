@@ -13,9 +13,7 @@ const style = {
 
 const Area = ({title, children}: IArea) => {
     return (
-        <Grid
-            container spacing={1}
-        >
+        <Grid container spacing={1}>
             <Grid item>
                 <Typography variant="h5" component="h1">
                     {title}

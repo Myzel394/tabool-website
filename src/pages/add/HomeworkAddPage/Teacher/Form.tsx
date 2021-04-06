@@ -141,11 +141,11 @@ const Form = ({
                                             type="checkbox"
                                             Label={{label: t("Private Hausaufgabe")}}
                                         />
-                                        {!values.isPrivate &&
+                                        {!values.isPrivate && (
                                             <FormHelperText>
                                                 {t("Eine private Hausaufgabe ist nur für einen Schüler auf.")}
                                             </FormHelperText>
-                                        }
+                                        )}
                                     </FormGroup>
                                     <Collapse in={values.isPrivate}>
                                         <Students
@@ -155,13 +155,13 @@ const Form = ({
                                         />
                                     </Collapse>
                                 </Grid>
-                                {errors.nonFieldErrors &&
+                                {errors.nonFieldErrors && (
                                     <Grid item xs={12}>
                                         <Alert severity="error">
                                             {errors.nonFieldErrors}
                                         </Alert>
                                     </Grid>
-                                }
+                                )}
                             </Grid>
                         </Box>
                         <Box display="flex" justifyContent="center">

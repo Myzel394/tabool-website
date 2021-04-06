@@ -72,7 +72,20 @@
         "jsx-a11y/no-autofocus": "off",
         "promise/catch-or-return": 1,
         "no-process-env": "off",
-        "no-console": "warn"
+        "no-console": "warn",
+        "react/jsx-wrap-multilines": ["error", {
+            "declaration": "parens",
+            "assignment": "parens",
+            "return": "parens",
+            "arrow": "ignore",
+            "condition": "parens-new-line",
+            "logical": "parens-new-line",
+            "prop": "ignore"
+        }],
+        "react/jsx-max-props-per-line": ["error", {
+            "maximum": 1,
+            "when": "multiline"
+        }]
     },
     "env": {
         "browser": true,

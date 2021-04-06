@@ -110,13 +110,13 @@ const Form = ({
                                         component={TextField}
                                     />
                                 </Grid>
-                                {errors.nonFieldErrors &&
+                                {errors.nonFieldErrors && (
                                     <Grid item xs={12}>
                                         <Alert severity="error">
                                             {errors.nonFieldErrors}
                                         </Alert>
                                     </Grid>
-                                }
+                                )}
                             </Grid>
                         </Box>
                         <Box display="flex" justifyContent="center">

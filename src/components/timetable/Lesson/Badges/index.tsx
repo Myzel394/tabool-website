@@ -25,9 +25,11 @@ const Badges = ({badges}: IBadges) => {
                 style={style}
             >
                 {badges.map(element =>
-                    element && <Grid key={element.key} item>
-                        {element}
-                    </Grid>)}
+                    element && (
+                        <Grid key={element.key} item>
+                            {element}
+                        </Grid>
+                    ))}
             </Grid>
         </Box>
     );

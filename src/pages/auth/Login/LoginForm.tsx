@@ -98,10 +98,11 @@ const LoginForm = ({onSubmit}: ILoginPage) => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    {errors.nonFieldErrors &&
-                                    <Alert severity="error">
-                                        {errors.nonFieldErrors}
-                                    </Alert>}
+                                    {errors.nonFieldErrors && (
+                                        <Alert severity="error">
+                                            {errors.nonFieldErrors}
+                                        </Alert>
+                                    )}
                                 </Grid>
                             </Grid>
                         </Box>

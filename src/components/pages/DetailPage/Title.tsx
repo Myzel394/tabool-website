@@ -33,7 +33,7 @@ const Title = ({title, color, subTitle}: ITitle) => {
                 >
                     {title}
                 </Typography>
-                {subTitle &&
+                {subTitle && (
                     <Typography
                         variant="h5"
                         component="h2"
@@ -42,7 +42,7 @@ const Title = ({title, color, subTitle}: ITitle) => {
                     >
                         {subTitle}
                     </Typography>
-                }
+                )}
             </Container>
         </Box>
     );

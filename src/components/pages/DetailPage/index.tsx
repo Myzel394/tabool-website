@@ -164,14 +164,14 @@ const DetailPage = <AvailableKeys extends string,
                             onDelete={onDelete}
                         />
                     </Grid>
-                    {relationButtons &&
-                    <Grid item>
-                        <ToggleButtonsForm<RelationKeys>
-                            values={relationButtons.values}
-                            onSubmit={relationButtons.onSubmit}
-                        />
-                    </Grid>
-                    }
+                    {relationButtons && (
+                        <Grid item>
+                            <ToggleButtonsForm<RelationKeys>
+                                values={relationButtons.values}
+                                onSubmit={relationButtons.onSubmit}
+                            />
+                        </Grid>
+                    )}
                     {(() => {
                         if (Array.isArray(bottomNode)) {
                             return (
@@ -223,11 +223,11 @@ const DetailPage = <AvailableKeys extends string,
                             </ButtonGroup>
                         </Grid>
                     )}
-                    {footerNode &&
-                    <Grid item>
-                        {footerNode}
-                    </Grid>
-                    }
+                    {footerNode && (
+                        <Grid item>
+                            {footerNode}
+                        </Grid>
+                    )}
                 </Grid>
             </Container>
         </PullToRefresh>

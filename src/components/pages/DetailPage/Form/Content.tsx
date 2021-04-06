@@ -20,7 +20,6 @@ interface RenderFieldProps<T> extends FormikProps<T> {
     helperText?: string | JSX.Element;
 }
 
-
 export interface IContent<FormikForm> {
     title: string;
     icon: JSX.Element | null | ((value: any) => JSX.Element | null);
@@ -119,7 +118,8 @@ const Content = <T extends any>({
                                                                     </Button>
                                                                     {!softTruncateActive && (
                                                                         <Button
-                                                                            color="default" onClick={() => {
+                                                                            color="default"
+                                                                            onClick={() => {
                                                                                 setShowFullText(true);
                                                                                 setSoftTruncateActive(true);
                                                                             }}
@@ -205,17 +205,18 @@ const Content = <T extends any>({
                     </Grid>
                 </Grid>
             </Box>
-            {!disableShowMore &&
-            <SimpleDialog
-                isOpen={showFullText}
-                primaryButton={null}
-                title={title}
-                onClose={() => setShowFullText(false)}
-            >
-                <DialogContentText>
-                    {information}
-                </DialogContentText>
-            </SimpleDialog>}
+            {!disableShowMore && (
+                <SimpleDialog
+                    isOpen={showFullText}
+                    primaryButton={null}
+                    title={title}
+                    onClose={() => setShowFullText(false)}
+                >
+                    <DialogContentText>
+                        {information}
+                    </DialogContentText>
+                </SimpleDialog>
+            )}
         </>
     );
 };

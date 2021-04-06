@@ -32,18 +32,22 @@ const DeleteConfirmDialog = ({amount, filename, isOpen, onClose, onConfirm}: IDe
         >
             <DialogContentText>
                 {filename
-                    ? <Trans>
+                    ? (
+                        <Trans>
                         Möchtest du wirklich die Datei
-                        <Box
-                            m={2}
-                            style={breakStyle}
-                        >
-                            <i>{{filename}}</i>
-                        </Box> hochladen?
-                    </Trans>
-                    : <Trans count={amount}>
+                            <Box
+                                m={2}
+                                style={breakStyle}
+                            >
+                                <i>{{filename}}</i>
+                            </Box> hochladen?
+                        </Trans>
+                    )
+                    : (
+                        <Trans count={amount}>
                         Möchtest du wirklich <strong>{{amount}}</strong> Dateien hochladen?
-                    </Trans>
+                        </Trans>
+                    )
                 }
             </DialogContentText>
         </SimpleDialog>

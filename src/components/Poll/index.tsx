@@ -100,7 +100,8 @@ const Poll = ({
                                         minVoteChoices={minVoteChoices}
                                         maxVoteChoices={maxVoteChoices}
                                         onChange={setValue}
-                                    />)}
+                                    />
+                                )}
                         </Box>
                         <Box>
                             <FormControlLabel
@@ -131,7 +132,8 @@ const Poll = ({
                         </Box>
                     </Box>
                     <PrimaryButton
-                        disabled={!hasSelected} onClick={() => {
+                        disabled={!hasSelected}
+                        onClick={() => {
                             setIsOpen(false);
                             mutate({
                                 feedback,
