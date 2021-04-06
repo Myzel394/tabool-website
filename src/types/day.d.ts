@@ -51,3 +51,13 @@ export interface StudentDailyDataView {
     homeworks: StudentHomeworkDetail[];
     classbookWithVideoConferences: StudentClassbook[];
 }
+
+export interface TeacherDailyDataView {
+    lessons: TeacherLessonDetail[];
+    modifications: TeacherModificationDetail[];
+    homeworks: TeacherHomeworkDetail[];
+    submissions: TeacherSubmissionDetail[];
+    classbookWithVideoConferences: TeacherClassbook[];
+    materials: TeacherMaterialDetail[];
+    events: EventDetail[];
+}
