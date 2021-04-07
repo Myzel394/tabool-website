@@ -25,19 +25,20 @@ const Modifications = ({
     return (
         <>
             {modifications.map(modification =>
-                (modification.lesson) &&
-                <div key={modification.id}>
-                    <Box mb={1}>
-                        <Typography variant="h6">
-                            {modification.lessonDate.format("lll")}
-                        </Typography>
-                    </Box>
-                    <SingleModification
-                        lesson={modification.lesson}
-                        modificationType={modification.modificationType}
-                        newSubject={modification.newSubject}
-                    />
-                </div>)}
+                (modification.lesson) && (
+                    <div key={modification.id}>
+                        <Box mb={1}>
+                            <Typography variant="h6">
+                                {modification.lessonDate.format("lll")}
+                            </Typography>
+                        </Box>
+                        <SingleModification
+                            lesson={modification.lesson}
+                            modificationType={modification.modificationType}
+                            newSubject={modification.newSubject}
+                        />
+                    </div>
+                ))}
         </>
     );
 };

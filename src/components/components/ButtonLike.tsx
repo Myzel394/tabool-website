@@ -15,7 +15,7 @@ const ButtonLike = ({children, style: givenStyle, ...other}: IButtonLike) => {
     };
 
     return (
-        <Box {...other} component={ButtonBase} p={1} style={style}>
+        <Box p={1} {...other} component={ButtonBase} style={style}>
             {children}
         </Box>
     );

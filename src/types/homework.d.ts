@@ -30,6 +30,8 @@ interface TeacherBaseDetail extends Omit<TeacherHomeworkApprox, "truncatedInform
     createdAt: Dayjs;
     type: string | null;
     information: string | null;
+    completedAmount: number;
+    ignoredAmount: number;
 }
 
 interface TeacherPrivateDetail extends TeacherBaseDetail {

@@ -58,6 +58,7 @@ export interface TeacherDailyDataView {
     homeworks: TeacherHomeworkDetail[];
     submissions: TeacherSubmissionDetail[];
     classbookWithVideoConferences: TeacherClassbook[];
+    classbooksForLessons: TeacherClassbook[];
     materials: TeacherMaterialDetail[];
     events: EventDetail[];
 }

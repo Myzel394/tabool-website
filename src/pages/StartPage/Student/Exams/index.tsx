@@ -7,7 +7,7 @@ import {Box, Link, useTheme} from "@material-ui/core";
 import {Zoom} from "react-reveal";
 import {buildPath, truncate} from "utils";
 
-import createShadow from "../createShadow";
+import createShadow from "../../createShadow";
 
 
 export interface IExams {

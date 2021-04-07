@@ -16,6 +16,7 @@ const parseTeacherDailyData = async (dailyData: TeacherDailyDataView) => {
         ...dailyData.homeworks.map(parseTeacherHomeworkDetail),
         ...dailyData.submissions.map(parseTeacherSubmissionDetail),
         ...dailyData.classbookWithVideoConferences.map(parseTeacherClassbookDetail),
+        ...dailyData.classbooksForLessons.map(parseTeacherClassbookDetail),
         ...dailyData.materials.map(parseTeacherMaterialDetail),
         ...dailyData.events.map(parseEventDetail),
     ]);

@@ -22,23 +22,23 @@ const Description = ({
     return (
         <ButtonLike
             style={style}
+            component={Link}
             justifyContent="flex-start"
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            href={buildPath("/timetable", undefined, {
+                date: lazyDatetime(date, "date"),
+            })}
+            underline="none"
         >
-            <Link
-                href={buildPath("/timetable", undefined, {
-                    date: lazyDatetime(date, "date"),
-                })}
-                underline="none"
-            >
-                <Box textAlign="left">
-                    <Typography variant="body1" color="textPrimary">
-                        {date.format("LL")}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                        {secondaryText}
-                    </Typography>
-                </Box>
-            </Link>
+            <Box textAlign="left">
+                <Typography variant="body1" color="textPrimary">
+                    {date.format("LL")}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                    {secondaryText}
+                </Typography>
+            </Box>
         </ButtonLike>
     );
 };

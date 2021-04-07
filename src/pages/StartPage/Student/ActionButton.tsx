@@ -1,13 +1,14 @@
-import React, {CSSProperties, useContext, useState} from "react";
+import React, {useState} from "react";
 import {HomeworkIcon} from "components";
 import {Backdrop, useTheme} from "@material-ui/core";
 import {SpeedDial, SpeedDialAction, SpeedDialIcon} from "@material-ui/lab";
-import {UtilsContext} from "contexts";
 import {useTranslation} from "react-i18next/src";
 import {buildPath, lazyDatetime} from "utils";
 import {useHistory} from "react-router-dom";
 import {StudentLessonDetail} from "types";
 import {Dayjs} from "dayjs";
+
+import useSpeedDialStyle from "../useSpeedDialStyle";
 
 export interface IActionButton {
     lesson: StudentLessonDetail;
@@ -21,15 +22,7 @@ const ActionButton = ({
     const {t} = useTranslation();
     const theme = useTheme();
     const history = useHistory();
-    const {
-        bottomSheetHeight,
-    } = useContext(UtilsContext);
-    const speedDialStyle: CSSProperties = {
-        position: "fixed",
-        bottom: `calc(${theme.spacing(2)}px + ${bottomSheetHeight}px)`,
-        right: theme.spacing(2),
-        zIndex: theme.zIndex.speedDial,
-    };
+    const speedDialStyle = useSpeedDialStyle();
 
     const [isSpeedDialOpen, setIsSpeedDialOpen] = useState<boolean>(false);
 

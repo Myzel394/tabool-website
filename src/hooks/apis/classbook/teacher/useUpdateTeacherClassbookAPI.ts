@@ -8,6 +8,7 @@ import parseTeacherClassbookDetail from "./parseTeacherClassbookDetail";
 export interface IUpdateTeacherClassbookData {
     presenceContent?: string | null;
     onlineContent?: string | null;
+    videoConferenceLink?: string | null;
 }
 
 const useUpdateTeacherClassbookAPI = () => {
@@ -16,10 +17,12 @@ const useUpdateTeacherClassbookAPI = () => {
     return useCallback(async (id: string, {
         onlineContent,
         presenceContent,
+        videoConferenceLink,
     }: IUpdateTeacherClassbookData): Promise<TeacherClassbook> => {
         const {data} = await instance.patch(buildUrl(`/classbook/${id}/`), {
             onlineContent,
             presenceContent,
+            videoConferenceLink,
         }, await getLoginConfig());
 
         await parseTeacherClassbookDetail(data);

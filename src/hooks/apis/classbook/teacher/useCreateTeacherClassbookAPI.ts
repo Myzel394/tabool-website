@@ -12,6 +12,7 @@ export interface ICreateTeacherClassbookData {
 
     presenceContent?: string | null;
     onlineContent?: string | null;
+    videoConferenceLink?: string | null;
 }
 
 const useCreateTeacherClassbookAPI = () => {
@@ -22,11 +23,13 @@ const useCreateTeacherClassbookAPI = () => {
         lessonId,
         onlineContent,
         presenceContent,
+        videoConferenceLink,
     }: ICreateTeacherClassbookData): Promise<TeacherClassbook> => {
         const {data} = await instance.post(buildUrl("/classbook/"), {
             lessonDate,
             onlineContent,
             presenceContent,
+            videoConferenceLink,
             lesson: lessonId,
         }, await getLoginConfig());
 

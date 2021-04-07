@@ -1,33 +1,22 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
 import {useFetchStudentDailyDataAPI} from "hooks/apis";
 import {AxiosError} from "axios";
-import dayjs, {Dayjs} from "dayjs";
+import {Dayjs} from "dayjs";
 import {StudentDailyDataView} from "types";
 import {ErrorPage, ResponseWrapper} from "components";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getMaxFutureDays, RootState, setStartPageMaxFutureDays} from "state";
 
+import getTargetedDate from "../getTargetedDate";
+
 import StartPageView from "./StartPageView";
 import SkeletonView from "./SkeletonView";
 
 
-const getTargetedDate = (): Dayjs => {
-    let today = dayjs();
-    const weekday = today.day();
-
-    if (weekday === 0) {
-        today = today.add(1, "day");
-    } else if (weekday === 6) {
-        today = today.add(2, "day");
-    }
-
-    return today;
-};
-
-const StartPage = () => {
+const StudentStartPage = () => {
     const {t} = useTranslation();
     const fetchDailyData = useFetchStudentDailyDataAPI();
     const queryOptions = useQueryOptions();
@@ -44,7 +33,7 @@ const StartPage = () => {
         isFetching,
         error,
     } = useQuery<StudentDailyDataView, AxiosError>(
-        ["fetch_daily_data", maxFutureDays, targetedDate],
+        ["fetch_student_daily_data", maxFutureDays, targetedDate],
         () => fetchDailyData({
             maxFutureDays,
             date: targetedDate,
@@ -56,12 +45,6 @@ const StartPage = () => {
             keepPreviousData: true,
         },
     );
-
-    useEffect(() => {
-        if (isLoading) {
-            document.title = t("Startseite wird geladen...");
-        }
-    }, [isLoading, t]);
 
     return (
         <ResponseWrapper<StudentDailyDataView>
@@ -91,4 +74,4 @@ const StartPage = () => {
     );
 };
 
-export default StartPage;
+export default StudentStartPage;

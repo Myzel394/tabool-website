@@ -4,7 +4,7 @@ import {Grid, useTheme} from "@material-ui/core";
 import {StudentHomeworkDetail, StudentLessonDetail, StudentMaterialDetail} from "types";
 import {SingleLesson} from "components";
 
-import createShadow from "../createShadow";
+import createShadow from "../../createShadow";
 
 export interface ITimetable {
     lessons: StudentLessonDetail[];

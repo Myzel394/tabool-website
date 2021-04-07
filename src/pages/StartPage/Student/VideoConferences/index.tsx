@@ -8,8 +8,9 @@ import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {getPerUniqueValue} from "utils";
 
+import Connector from "../../Connector";
+
 import ConferenceList from "./ConferenceList";
-import Connector from "./Connector";
 
 export interface IVideoConferences {
     classbooks: StudentClassbook[];

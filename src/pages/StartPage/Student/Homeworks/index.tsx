@@ -9,7 +9,7 @@ import {Box} from "@material-ui/core";
 import {buildPath, truncate} from "utils";
 import {MdAdd} from "react-icons/all";
 
-import createShadow from "../createShadow";
+import createShadow from "../../createShadow";
 
 export interface IHomeworks {
     homeworks: StudentHomeworkDetail[];

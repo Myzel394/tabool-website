@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {Box, useTheme} from "@material-ui/core";
 import tinycolor from "tinycolor2";
 
@@ -18,4 +18,4 @@ const Connector = () => {
     );
 };
 
-export default memo(Connector);
+export default Connector;

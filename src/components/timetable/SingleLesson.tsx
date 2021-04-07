@@ -17,6 +17,7 @@ export interface ILessonEvent {
     style?: CSSProperties;
     showDetails?: boolean;
     date?: Dayjs;
+    disableLinkWrapper?: boolean;
 }
 
 
@@ -37,6 +38,7 @@ const SingleLesson = ({
     style,
     showDetails,
     date,
+    disableLinkWrapper,
 }: ILessonEvent) => {
     const badges = [
         homeworkCount && <HomeworkBadge count={homeworkCount} />,
@@ -44,6 +46,27 @@ const SingleLesson = ({
         hasVideoConference && <VideoConferenceBadge isActive={isVideoConferenceActive(lesson)} />,
         hasExam && <ExamBadge />,
     ].filter(Boolean) as JSX.Element[];
+
+    const lessonContent = (
+        <Lesson
+            color={lesson.course.subject.userRelation.color}
+            startTime={dayjs(getStartTime(lesson.startHour))}
+            endTime={dayjs(getEndTime(lesson.endHour))}
+        >
+            <Badges badges={badges} />
+            <LessonContent
+                showDetails={showDetails}
+                courseName={lesson.course.name}
+                roomName={lesson.course.room.place}
+                teacherName={lesson.course.teacher.lastName}
+                style={style}
+            />
+        </Lesson>
+    );
+
+    if (disableLinkWrapper) {
+        return lessonContent;
+    }
 
     return (
         <Link
@@ -53,20 +76,7 @@ const SingleLesson = ({
             })}
             underline="none"
         >
-            <Lesson
-                color={lesson.course.subject.userRelation.color}
-                startTime={dayjs(getStartTime(lesson.startHour))}
-                endTime={dayjs(getEndTime(lesson.endHour))}
-            >
-                <Badges badges={badges} />
-                <LessonContent
-                    showDetails={showDetails}
-                    courseName={lesson.course.name}
-                    roomName={lesson.course.room.place}
-                    teacherName={lesson.course.teacher.lastName}
-                    style={style}
-                />
-            </Lesson>
+            {lessonContent}
         </Link>
     );
 };
