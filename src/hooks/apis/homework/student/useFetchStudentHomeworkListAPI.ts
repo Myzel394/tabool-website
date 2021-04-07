@@ -28,6 +28,7 @@ const useFetchStudentHomeworkListAPI = () => {
         dueDateMin,
         search,
         type,
+        ordering,
     }: IFetchStudentHomeworkData = {}, page = 1): Promise<IFetchStudentHomeworkResponse> => {
         const {data} = await instance.get(buildUrl("/homework/"), {
             params: {
@@ -35,6 +36,7 @@ const useFetchStudentHomeworkListAPI = () => {
                 pageSize,
                 search,
                 type,
+                ordering,
                 course: courseId,
                 due_date__gte: dueDateMin ? lazyDatetime(dueDateMin) : undefined,
                 due_date__lte: dueDateMax ? lazyDatetime(dueDateMax) : undefined,
