@@ -6,7 +6,7 @@ import {IconButton} from "@material-ui/core";
 import {FaBookOpen} from "react-icons/all";
 import {buildPath} from "utils";
 
-import {message} from "../firebase";
+import firebase, {isSupported} from "../firebase";
 
 import useSnackbar from "./useSnackbar";
 
@@ -15,63 +15,65 @@ const useOnFCMMessageHandler = () => {
     const {addSnackbar} = useSnackbar();
 
     useEffect(() => {
-        message.onMessage((rawNotification: FCMNotification) => {
-            if (rawNotification.data?.payload) {
-                try {
-                    rawNotification.data.payload = JSON.parse(rawNotification.data.payload);
+        if (isSupported) {
+            firebase.messaging().onMessage((rawNotification: FCMNotification) => {
+                if (rawNotification.data?.payload) {
+                    try {
+                        rawNotification.data.payload = JSON.parse(rawNotification.data.payload);
                     // eslint-disable-next-line no-empty
-                } finally {}
-            }
+                    } finally {}
+                }
 
-            const notification = camelcaseKeys(rawNotification, {deep: true});
-            let variant = "info" as "info" | "error" | "success" | "warning" | "default";
+                const notification = camelcaseKeys(rawNotification, {deep: true});
+                let variant = "info" as "info" | "error" | "success" | "warning" | "default";
 
-            switch (notification.data?.type) {
-                case "scooso_data_invalid":
-                case "submission_scooso_upload_failed":
-                    variant = "error";
-                    break;
-                case "submission_scooso_upload_succeeded":
-                    variant = "success";
-                    break;
-            }
+                switch (notification.data?.type) {
+                    case "scooso_data_invalid":
+                    case "submission_scooso_upload_failed":
+                        variant = "error";
+                        break;
+                    case "submission_scooso_upload_succeeded":
+                        variant = "success";
+                        break;
+                }
 
-            addSnackbar(notification.notification.title, {
-                variant,
-                autoHideDuration: 10 * 1000,
-                action() {
-                    let link;
+                addSnackbar(notification.notification.title, {
+                    variant,
+                    autoHideDuration: 10 * 1000,
+                    action() {
+                        let link;
 
-                    if (notification.data?.type) {
-                        switch (notification.data.type) {
-                            case "homework":
-                                link = buildPath("/agenda/homework/detail/:id/", {
-                                    id: notification.data.payload.id,
-                                });
-                                break;
-                            case "scooso_data_invalid":
-                                link = buildPath("/settings/change-scooso-credentials/");
-                                break;
-                            case "modification":
-                                link = buildPath("/agenda/lesson/detail/:id/", {
-                                    id: notification.data.payload.lessonId,
-                                });
-                                break;
+                        if (notification.data?.type) {
+                            switch (notification.data.type) {
+                                case "homework":
+                                    link = buildPath("/agenda/homework/detail/:id/", {
+                                        id: notification.data.payload.id,
+                                    });
+                                    break;
+                                case "scooso_data_invalid":
+                                    link = buildPath("/settings/change-scooso-credentials/");
+                                    break;
+                                case "modification":
+                                    link = buildPath("/agenda/lesson/detail/:id/", {
+                                        id: notification.data.payload.lessonId,
+                                    });
+                                    break;
+                            }
                         }
-                    }
 
-                    if (link) {
-                        return (
-                            <IconButton
-                                href={link}
-                            >
-                                <FaBookOpen />
-                            </IconButton>
-                        );
-                    }
-                    return null;
-                }});
-        });
+                        if (link) {
+                            return (
+                                <IconButton
+                                    href={link}
+                                >
+                                    <FaBookOpen />
+                                </IconButton>
+                            );
+                        }
+                        return null;
+                    }});
+            });
+        }
     }, [addSnackbar, history]);
 };
 

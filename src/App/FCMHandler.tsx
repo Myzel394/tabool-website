@@ -5,7 +5,7 @@ import {AxiosError} from "axios";
 import {useOnFCMMessageHandler, usePermissions, usePersistentStorage} from "hooks";
 import {PermissionType} from "hooks/usePermissions";
 
-import {message} from "../firebase";
+import firebase, {isSupported} from "../firebase";
 
 
 export interface IFCMHandler {
@@ -32,8 +32,13 @@ const FCMHandler = ({children}: IFCMHandler) => {
     );
 
     useEffect(() => {
-        if (!isLoading && state.notification === PermissionType.Granted && !hasSent) {
-            message
+        if (
+            isSupported &&
+            !isLoading &&
+            state.notification === PermissionType.Granted &&
+            !hasSent
+        ) {
+            firebase.messaging()
                 .getToken({
                     vapidKey: process.env.REACT_APP_FCM_VAPID_KEY,
                 })
