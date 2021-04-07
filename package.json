@@ -37,7 +37,7 @@
     "material-ui-search-bar": "^1.0.0",
     "materialui-daterange-picker": "^1.1.92",
     "moment": "^2.29.1",
-    "node-sass": "4.14.0",
+    "node-sass": "4.x",
     "notistack": "^1.0.2",
     "paralleljs": "^1.1.0",
     "pretty-bytes": "^5.4.1",
