@@ -5,7 +5,7 @@ import {Collapse} from "@material-ui/core";
 export interface IShowMoreArray<Element> {
     elements: Element[];
     maxElements: number;
-    children: (element: Element) => ReactNode;
+    children: (element: Element, relativeIndex: number, absoluteIndex: number) => ReactNode;
 
     renderButton: (isShown: boolean, update: () => void) => ReactNode;
 }
@@ -27,11 +27,11 @@ const ShowMoreArray = <Element extends any>({
 
     return (
         <>
-            {shownElements.map(render)}
+            {shownElements.map((element, index) => render(element, index, index))}
             {hasMore && (
                 <Collapse in={showMore}>
                     <>
-                        {hiddenElements.map(render)}
+                        {hiddenElements.map((element, index) => render(element, index, index + shownElements.length))}
                     </>
                 </Collapse>
             )}

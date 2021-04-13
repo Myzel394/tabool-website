@@ -1,5 +1,6 @@
 import React, {CSSProperties, useEffect, useRef, useState} from "react";
 import {useForceUpdate} from "@shopify/react-hooks";
+import {useTheme} from "@material-ui/core";
 
 
 export interface ICircle {
@@ -26,6 +27,7 @@ const Circle = ({
     offsetPercentage,
     color,
 }: ICircle) => {
+    const theme = useTheme();
     const forceUpdate = useForceUpdate();
 
     const $circle = useRef<any>();
@@ -37,7 +39,7 @@ const Circle = ({
     const styles = {
         ...circleStyles,
         // Animation
-        transition: isFirstCircumference ? "0s" : "2000ms stroke-dashoffset",
+        transition: isFirstCircumference ? "0s" : `${theme.transitions.duration.complex}ms stroke-dashoffset`,
     };
 
     // Helps creating appear animation

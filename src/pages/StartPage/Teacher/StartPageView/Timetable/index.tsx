@@ -1,16 +1,15 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Box, Collapse, Grid, useTheme} from "@material-ui/core";
 import {Fade} from "react-reveal";
-import {TeacherClassbook, TeacherLessonDetail} from "types";
+import {TeacherLessonDetail} from "types";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
+
+import StartPageContext from "../../StartPageContext";
 
 import Lesson from "./Lesson";
 
 export interface ITimetable {
-    lessons: TeacherLessonDetail[];
-    classbooks: TeacherClassbook[];
-    isLessonSelectMode: boolean;
     onLessonSelect?: (lesson: TeacherLessonDetail) => any;
 }
 
@@ -19,11 +18,15 @@ const fullWidth = {
 };
 
 const Timetable = ({
-    lessons,
-    classbooks,
-    isLessonSelectMode,
     onLessonSelect,
 }: ITimetable) => {
+    const {
+        dailyData: {
+            classbooksForLessons: classbooks,
+            lessons,
+        },
+        isLessonSelectMode,
+    } = useContext(StartPageContext);
     const {t} = useTranslation();
     const theme = useTheme();
     const style = {

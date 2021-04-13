@@ -7,7 +7,7 @@ import {PredefinedMessageType} from "hooks/useSnackbar";
 import {useContext} from "react";
 import update from "immutability-helper";
 
-import StartPageContext from "../StartPageContext";
+import StartPageContext from "../../StartPageContext";
 
 export interface IUseQuery {
     homework: TeacherHomeworkDetail;

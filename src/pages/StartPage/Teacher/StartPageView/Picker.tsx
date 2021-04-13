@@ -1,5 +1,5 @@
 import React from "react";
-import {DatePicker} from "@material-ui/pickers";
+import {DatePicker, DateTimePicker} from "@material-ui/pickers";
 import {Dayjs} from "dayjs";
 import {useInheritedState} from "hooks";
 import {Dialog, DialogActions, DialogContent} from "@material-ui/core";
@@ -13,17 +13,28 @@ export interface IPicker {
     onClose: () => any;
     value: Dayjs | null;
     onUpdate: (newDate: Dayjs | null) => any;
+    pickerType: "date" | "datetime";
+    renderDay: any;
 }
+
+const PICKER_TYPE_COMPONENT_MAP: Record<string, any> = {
+    date: DatePicker,
+    datetime: DateTimePicker,
+};
 
 const Picker = ({
     isOpen,
     onClose,
     onUpdate,
+    pickerType,
+    renderDay,
     value: parentValue,
 }: IPicker) => {
     const {t} = useTranslation();
 
     const [value, setValue] = useInheritedState<Dayjs | null>(parentValue);
+
+    const PickerComponent = PICKER_TYPE_COMPONENT_MAP[pickerType];
 
     return (
         <Dialog
@@ -31,9 +42,10 @@ const Picker = ({
             onBackdropClick={onClose}
         >
             <DialogContent style={{padding: 0}}>
-                <DatePicker
+                <PickerComponent
                     variant="static"
                     value={value}
+                    renderDay={renderDay}
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     onChange={setValue}
@@ -42,9 +54,9 @@ const Picker = ({
             <DialogActions>
                 <SecondaryButton
                     startIcon={<MdClear />}
-                    onClick={() => onUpdate(null)}
+                    onClick={onClose}
                 >
-                    {t("Leeren")}
+                    {t("Abbrechen")}
                 </SecondaryButton>
                 <PrimaryButton
                     startIcon={<MdCheck />}

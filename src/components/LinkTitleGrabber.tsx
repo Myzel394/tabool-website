@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import {IFetchPageTitleResponse, useFetchPageTitleAPI} from "hooks/apis";
 import {useQuery} from "react-query";
 import {AxiosError} from "axios";
 import {Box, CircularProgress} from "@material-ui/core";
-import {useQueryOptions} from "hooks";
+import {useInheritedState, useQueryOptions} from "hooks";
 import {truncate} from "utils";
 
 export interface ILinkTitleGrabber {
@@ -27,12 +27,11 @@ const LinkTitleGrabber = ({
 
     const queryOptions = useQueryOptions();
 
-    const url = givenUrl ?? children as string;
+    const url = (givenUrl || children) as string;
     const fetchPageTitle = useFetchPageTitleAPI();
-    const [title, setTitle] = useState<string>(children ?? "");
+    const [title, setTitle] = useInheritedState<string>(children || "");
 
     const {
-        error,
         isLoading,
     } = useQuery<IFetchPageTitleResponse, AxiosError>(
         ["fetch_title", url],

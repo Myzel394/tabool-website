@@ -4,6 +4,7 @@ import {Box, BoxProps, ButtonBase, useTheme} from "@material-ui/core";
 
 export interface IButtonLike extends BoxProps {
     children: ReactNode;
+    [key: string]: any;
 }
 
 

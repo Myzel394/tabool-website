@@ -4,6 +4,8 @@ import {TeacherClassbook} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
 
+import {lazyDatetime} from "../../../../utils";
+
 import parseTeacherClassbookDetail from "./parseTeacherClassbookDetail";
 
 export interface ICreateTeacherClassbookData {
@@ -26,10 +28,10 @@ const useCreateTeacherClassbookAPI = () => {
         videoConferenceLink,
     }: ICreateTeacherClassbookData): Promise<TeacherClassbook> => {
         const {data} = await instance.post(buildUrl("/classbook/"), {
-            lessonDate,
             onlineContent,
             presenceContent,
             videoConferenceLink,
+            lessonDate: lazyDatetime(lessonDate, "date"),
             lesson: lessonId,
         }, await getLoginConfig());
 

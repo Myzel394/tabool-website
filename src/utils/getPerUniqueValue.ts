@@ -18,8 +18,8 @@ const getPerUniqueValue = <T = any, ReturnType = T>(
     const {doesExist, getKey, getValue} = Object.assign(defaults, options);
 
     return array.reduce((obj, element) => {
-        const isoDate = getKey(element);
-        const elements = obj[isoDate] ?? [];
+        const key = getKey(element);
+        const elements = obj[key] ?? [];
 
         if (!doesExist(elements, element)) {
             elements.push(getValue(element));
@@ -27,7 +27,7 @@ const getPerUniqueValue = <T = any, ReturnType = T>(
 
         return {
             ...obj,
-            [isoDate]: elements,
+            [key]: elements,
         };
     }, {});
 };

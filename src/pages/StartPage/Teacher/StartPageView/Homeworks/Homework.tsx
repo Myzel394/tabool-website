@@ -13,9 +13,10 @@ import {BottomSheetAction, ButtonLike} from "components";
 import {buildPath} from "utils";
 import {useTranslation} from "react-i18next";
 
+import DueDateChanger from "../DueDateChanger";
+
 import StatisticsCircle from "./StatisticsCircle";
 import useQuery from "./useQuery";
-import DueDateChanger from "./DueDateChanger";
 
 
 export interface IHomework {
@@ -60,9 +61,10 @@ const Homework = ({
                 >
                     <ListItemText
                         primary={homework.lesson.course.name}
-                        secondary={t("Fällig bis {{dueDate}}", {
-                            dueDate: homework.dueDate?.format?.("LL"),
-                        })}
+                        secondary={
+                            homework.dueDate && t("Fällig bis {{dueDate}}", {
+                                dueDate: homework.dueDate?.format?.("LL"),
+                            })}
                     />
                 </ButtonLike>
                 <ListItemSecondaryAction>
@@ -80,7 +82,10 @@ const Homework = ({
                 onClose={() => setIsOpen(false)}
             >
                 <DueDateChanger
-                    homework={homework}
+                    title={t("Fälligkeitsdatum ändern")}
+                    color={homework.lesson.course.subject.userRelation.color}
+                    date={homework.lessonDate}
+                    weekdays={homework.lesson.course.weekdays}
                     isLoading={isUpdateLoading}
                     onChange={newDate => {
                         setIsOpen(false);

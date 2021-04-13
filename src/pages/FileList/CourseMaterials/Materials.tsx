@@ -61,9 +61,6 @@ const Materials = ({
                                 />
                             </div>)}
                     </ul>
-                    {(() => {
-
-                    })()}
                     {shouldDividerBeHere(
                         // dateAsStr only checks date-based.
                         // When a material is today at a specific time available, the divider would be wrongly placed.

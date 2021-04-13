@@ -1,25 +1,20 @@
-import React from "react";
+import React, {useContext} from "react";
 import {TeacherClassbook} from "types";
 import {useTranslation} from "react-i18next";
-import {useTheme} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import FlipMove from "react-flip-move";
 import {getPerUniqueValue} from "utils";
 
-import Connector from "../../Connector";
+import Connector from "../../../Connector";
+import StartPageContext from "../../StartPageContext";
 
 import ConferenceList from "./ConferenceList";
 
-
-export interface IVideoConferences {
-    classbooks: TeacherClassbook[];
-}
-
-const VideoConferences = ({
-    classbooks,
-}: IVideoConferences) => {
+const VideoConferences = () => {
+    const {
+        dailyData: {classbookWithVideoConferences: classbooks},
+    } = useContext(StartPageContext);
     const {t} = useTranslation();
-    const theme = useTheme();
 
     const classbooksPerCourse = getPerUniqueValue<TeacherClassbook>(classbooks, {
         getKey: classbook => classbook.lesson.course.id,

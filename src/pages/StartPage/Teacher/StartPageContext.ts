@@ -9,9 +9,10 @@ export interface IStartPageContext {
     date: Dayjs;
     setDate: (newDate: Dayjs) => any;
 
+    scrollBack: () => any;
     requestLesson: () => Promise<TeacherLessonDetail>;
     isLessonSelectMode: boolean;
-    onIsLessonSelect: (lesson: TeacherLessonDetail) => any;
+    selectedLesson: TeacherLessonDetail | null;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

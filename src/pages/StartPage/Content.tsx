@@ -26,9 +26,12 @@ const Content = ({
     );
 
     return (
-        <>
-            <Box my={2} ml={disableMargin ? 2 : 0}>
-                <Button size="large" onClick={() => setShow(prevState => !prevState)}>
+        <section>
+            <Box my={2} ml={disableMargin ? 2 : 0} component="h2">
+                <Button
+                    size="large"
+                    onClick={() => setShow(prevState => !prevState)}
+                >
                     {title}
                 </Button>
                 {link}
@@ -43,7 +46,7 @@ const Content = ({
                     )
                 }
             </Collapse>
-        </>
+        </section>
     );
 };
 

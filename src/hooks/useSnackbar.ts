@@ -1,4 +1,10 @@
-import {OptionsObject, ProviderContext, SnackbarMessage, useSnackbar as notistackUseSnackbar} from "notistack";
+import {
+    OptionsObject,
+    ProviderContext,
+    SnackbarKey,
+    SnackbarMessage,
+    useSnackbar as notistackUseSnackbar,
+} from "notistack";
 import {AxiosError} from "axios";
 import {useCallback} from "react";
 import {useTranslation} from "react-i18next";
@@ -11,8 +17,8 @@ export enum PredefinedMessageType {
 
 export interface IUseSnackbar {
     addError: (error?: AxiosError, message?: string, predefinedMessage?: PredefinedMessageType) => any;
-    addWarning: (message: string) => any;
-    addSuccess: (message: string) => any;
+    addWarning: (message: string) => SnackbarKey;
+    addSuccess: (message: string) => SnackbarKey;
     addSnackbar: ProviderContext["enqueueSnackbar"];
     closeSnackbar: ProviderContext["closeSnackbar"];
 }
@@ -57,7 +63,7 @@ const useSnackbar = (): IUseSnackbar => {
             }
         }
 
-        addSnackbar(snackbarMessage, {
+        return addSnackbar(snackbarMessage, {
             variant: "error",
         });
     }, [addSnackbar, t]);

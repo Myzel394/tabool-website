@@ -23,3 +23,4 @@ export {default as useOnFCMMessageHandler} from "./useOnFCMMessageHandler";
 export {default as useGetForUserType} from "./useGetForUserType";
 export {default as useTitle} from "./useTitle";
 export {default as useScrollRestoration} from "./useScrollRestoration";
+export {default as useRect} from "./useRect";

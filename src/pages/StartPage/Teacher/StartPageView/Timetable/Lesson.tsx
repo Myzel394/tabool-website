@@ -5,7 +5,7 @@ import {buildPath, findNextDate, getEndTime, getStartTime, lazyDatetime} from "u
 import {Badges, ButtonLike, Lesson as LessonComponent, LessonContent, VideoConferenceBadge} from "components";
 import {Link} from "@material-ui/core";
 
-import createShadow from "../../createShadow";
+import createShadow from "../../../createShadow";
 
 
 export interface ILesson {
