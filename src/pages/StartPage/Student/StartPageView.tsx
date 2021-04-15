@@ -9,8 +9,8 @@ import update from "immutability-helper";
 import {Fade, Zoom} from "react-reveal";
 
 import Content from "../Content";
+import Title from "../Title";
 
-import Title from "./Title";
 import Modifications from "./Modifications";
 import ActionButton from "./ActionButton";
 import Form from "./Form";

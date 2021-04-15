@@ -1,9 +1,10 @@
 import React, {useContext} from "react";
 import {useTranslation} from "react-i18next";
-import {Backdrop, makeStyles} from "@material-ui/core";
+import {Backdrop, Box, makeStyles} from "@material-ui/core";
 
 import Content from "../../Content";
 import StartPageContext from "../StartPageContext";
+import Title from "../../Title";
 
 import Timetable from "./Timetable";
 import VideoConferences from "./VideoConferences";
@@ -30,6 +31,9 @@ const StartPageView = ({onLessonSelect, onLessonAbort}) => {
 
     return (
         <>
+            <Box my={4} mx={2}>
+                <Title />
+            </Box>
             <Content title={t("Fächer")}>
                 <Backdrop
                     open={isLessonSelectMode}
