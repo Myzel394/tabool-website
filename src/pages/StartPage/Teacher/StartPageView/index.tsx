@@ -5,6 +5,7 @@ import {Backdrop, Box, makeStyles} from "@material-ui/core";
 import Content from "../../Content";
 import StartPageContext from "../StartPageContext";
 import Title from "../../Title";
+import Form from "../../Form";
 
 import Timetable from "./Timetable";
 import VideoConferences from "./VideoConferences";
@@ -26,12 +27,14 @@ const StartPageView = ({onLessonSelect, onLessonAbort}) => {
     const classes = useClasses();
     const {
         isLessonSelectMode,
+        date,
+        setDate,
     } = useContext(StartPageContext);
     const {t} = useTranslation();
 
     return (
         <>
-            <Box my={4} mx={2}>
+            <Box mb={4} mx={2}>
                 <Title />
             </Box>
             <Content title={t("Fächer")}>
@@ -54,8 +57,14 @@ const StartPageView = ({onLessonSelect, onLessonAbort}) => {
             <Content title={t("Materialien")}>
                 <Materials />
             </Content>
+            <Box mx={2} mt={2}>
+                <Form
+                    date={date}
+                    onDateChange={setDate}
+                />
+            </Box>
         </>
     );
 };
-export default StartPageView;
 
+export default StartPageView;

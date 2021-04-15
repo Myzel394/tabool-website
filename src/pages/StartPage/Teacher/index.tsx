@@ -58,7 +58,7 @@ const TeacherStartPage = () => {
         >
             {dailyData =>
                 <>
-                    <Box mb={10} component="main">
+                    <Box my={2}>
                         <StartPageContext.Provider
                             value={{
                                 requestLesson,
