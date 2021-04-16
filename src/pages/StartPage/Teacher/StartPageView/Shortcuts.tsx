@@ -22,7 +22,7 @@ const Shortcuts = () => {
             display="flex"
             pl={0}
             mx="auto"
-            width="auto"
+            width="fit-content"
             flexDirection="column"
             component="ul"
             className={classes.list}
