@@ -1,24 +1,25 @@
 import React from "react";
-import {useTranslation} from "react-i18next";
-import {useFetchStudentCourseDetailAPI} from "hooks/apis";
-import {useQuery} from "react-query";
 import {useParams} from "react-router";
-import {StudentCourseDetail} from "types";
-import {AxiosError} from "axios";
+import {useTranslation} from "react-i18next";
 import {useQueryOptions} from "hooks";
-import {DetailPage, ErrorPage, LoadingPage, ResponseWrapper, RoomIcon, SubjectIcon, TeacherIcon} from "components";
-import {MdGroup, MdTitle} from "react-icons/all";
-import {Button, Link} from "@material-ui/core";
-import {buildPath} from "utils";
+import {useFetchTeacherCourseDetailAPI} from "hooks/apis";
+import {useQuery} from "react-query";
+import {TeacherCourseDetail} from "types";
+import {AxiosError} from "axios";
+import {DetailPage, ErrorPage, GenderStatus, LoadingPage, ResponseWrapper, RoomIcon, SubjectIcon} from "components";
+import {FaUsers, MdTitle} from "react-icons/all";
+import {Button, Link, List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import dayjs from "dayjs";
 
-type CourseKeys = "name" | "participantsCount" | "teacher" | "subject" | "room";
+import {buildPath, findNextDate} from "../../../../utils";
 
-const StudentCourseDetailPage = () => {
+type CourseKeys = "name" | "participants" | "subject" | "room";
+
+const TeacherCourseDetailPage = () => {
     const {id} = useParams<{ id: string; }>();
     const {t} = useTranslation();
     const queryOptions = useQueryOptions();
-    const fetchCourse = useFetchStudentCourseDetailAPI();
+    const fetchCourse = useFetchTeacherCourseDetailAPI();
 
     const {
         error,
@@ -27,14 +28,14 @@ const StudentCourseDetailPage = () => {
         isFetching,
         refetch,
         dataUpdatedAt,
-    } = useQuery<StudentCourseDetail, AxiosError>(
+    } = useQuery<TeacherCourseDetail, AxiosError>(
         ["fetch_course", id],
         () => fetchCourse(id),
         queryOptions,
     );
 
     return (
-        <ResponseWrapper<StudentCourseDetail>
+        <ResponseWrapper<TeacherCourseDetail>
             renderLoading={() => <LoadingPage title={t("Kurs wird geladen...")} />}
             renderError={error =>
                 <ErrorPage
@@ -48,11 +49,11 @@ const StudentCourseDetailPage = () => {
             getDocumentTitle={course => course.name}
         >
             {course =>
-                <DetailPage<CourseKeys, "", StudentCourseDetail>
+                <DetailPage<CourseKeys, "", TeacherCourseDetail>
                     color={course.subject.userRelation.color}
-                    orderingStorageName="course"
+                    orderingStorageName="teacher-course"
                     defaultOrdering={[
-                        "name", "participantsCount", "teacher", "subject", "room",
+                        "name", "subject", "room", "participants",
                     ]}
                     isRefreshing={isFetching}
                     data={{
@@ -60,15 +61,6 @@ const StudentCourseDetailPage = () => {
                             icon: <MdTitle />,
                             title: t("Name"),
                             information: course.name,
-                            disableShowMore: true,
-                        },
-                        participantsCount: {
-                            icon: <MdGroup />,
-                            title: t("Teilnehmer"),
-                            information: t("{{count}} Teilnehmer", {
-                                count: course.participantsCount,
-                            }),
-                            nativeValue: course.participantsCount,
                             disableShowMore: true,
                         },
                         room: {
@@ -94,25 +86,41 @@ const StudentCourseDetailPage = () => {
                                 </Link>
                             ),
                         },
-                        teacher: {
-                            icon: <TeacherIcon />,
-                            title: t("Lehrer"),
+                        participants: {
+                            icon: <FaUsers />,
+                            title: t("Teilnehmer"),
                             disableShowMore: true,
-                            information: `${course.teacher.firstName} ${course.teacher.lastName}`,
-                            helperText: (
-                                <Link
-                                    underline="none"
-                                    component={Button}
-                                    href={buildPath("/agenda/teacher/detail/:id/", {
-                                        id: course.teacher.id,
-                                    })}
-                                >
-                                    {t("Zum Lehrer")}
-                                </Link>
+                            information: (
+                                <List>
+                                    {course.participants.map(participant =>
+                                        <ListItem
+                                            key={participant.id}
+                                            button
+                                            component="a"
+                                            href={buildPath("/agenda/student/detail/:id/", {
+                                                id: participant.id,
+                                            })}
+                                        >
+                                            <ListItemIcon>
+                                                <GenderStatus justIcon value={participant.gender} />
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                primary={`${participant.firstName} ${participant.lastName}`}
+                                            />
+                                        </ListItem>)}
+                                </List>
                             ),
                         },
                     }}
                     title={course.name}
+                    subTitle={(() => {
+                        const now = dayjs();
+                        const weekdays = course.weekdays.map(weekday => findNextDate(now, weekday).format("dddd"));
+
+                        return t("Immer am {{weekdays}}", {
+                            weekdays,
+                        });
+                    })()}
                     updatedAt={dayjs(dataUpdatedAt)}
                     onRefetch={refetch}
                 />
@@ -121,4 +129,4 @@ const StudentCourseDetailPage = () => {
     );
 };
 
-export default StudentCourseDetailPage;
+export default TeacherCourseDetailPage;

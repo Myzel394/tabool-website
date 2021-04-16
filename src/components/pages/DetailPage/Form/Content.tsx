@@ -38,6 +38,10 @@ export interface IContent<FormikForm> {
     renderField?: ((formik: RenderFieldProps<FormikForm>) => JSX.Element) | false;
 }
 
+const fullWidth = {
+    width: "100%",
+};
+
 
 const Content = <T extends any>({
     icon,
@@ -97,7 +101,7 @@ const Content = <T extends any>({
                                     </>
                                 ) : (
                                     <Grid container direction="row" spacing={1} alignItems="center">
-                                        <Grid item>
+                                        <Grid item style={fullWidth}>
                                             <Typography
                                                 component="dd"
                                                 variant="body1"
