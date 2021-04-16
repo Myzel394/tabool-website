@@ -1,6 +1,8 @@
 import React, {useContext} from "react";
 import {useTranslation} from "react-i18next";
-import {Backdrop, Box, makeStyles} from "@material-ui/core";
+import {Backdrop, Box, Button, makeStyles} from "@material-ui/core";
+import {buildPath} from "utils";
+import {ExamIcon, HomeworkIcon} from "components";
 
 import Content from "../../Content";
 import StartPageContext from "../StartPageContext";
@@ -21,6 +23,12 @@ const useClasses = makeStyles(theme => ({
         top: 0,
         left: 0,
     },
+    list: {
+        "& > li": {
+            listStyle: "none",
+            paddingLeft: 0,
+        },
+    },
 }));
 
 const StartPageView = ({onLessonSelect, onLessonAbort}) => {
@@ -36,6 +44,34 @@ const StartPageView = ({onLessonSelect, onLessonAbort}) => {
         <>
             <Box mb={4} mx={2}>
                 <Title />
+            </Box>
+            <Box
+                display="flex"
+                pl={0}
+                mx="auto"
+                width="auto"
+                flexDirection="column"
+                component="ul"
+                className={classes.list}
+            >
+                <li>
+                    <Button
+                        component="a"
+                        href={buildPath("/add/homework/")}
+                        startIcon={<HomeworkIcon />}
+                    >
+                        {t("Hausaufgabe hinzufügen")}
+                    </Button>
+                </li>
+                <li>
+                    <Button
+                        component="a"
+                        href={buildPath("/add/exam")}
+                        startIcon={<ExamIcon />}
+                    >
+                        {t("Arbeit hinzufügen")}
+                    </Button>
+                </li>
             </Box>
             <Content title={t("Fächer")}>
                 <Backdrop
