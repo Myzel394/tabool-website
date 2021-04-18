@@ -10,8 +10,7 @@ import {DetailPage, ErrorPage, GenderStatus, LoadingPage, ResponseWrapper, RoomI
 import {FaUsers, MdTitle} from "react-icons/all";
 import {Button, Link, List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import dayjs from "dayjs";
-
-import {buildPath, findNextDate} from "../../../../utils";
+import {buildPath, findNextDate} from "utils";
 
 type CourseKeys = "name" | "participants" | "subject" | "room";
 

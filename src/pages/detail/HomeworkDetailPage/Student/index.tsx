@@ -40,9 +40,6 @@ const StudentHomeworkDetailPage = () => {
                 <Content
                     {...contentProps}
                     homework={homework}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore: homework is just checked
-                    updateHomework={updateHomework}
                 />
             ) : null)}
         </ResponseWrapper>

@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React from "react";
 import {StudentHomeworkDetail} from "types";
 import {
     BooleanStatus,
@@ -33,7 +33,6 @@ type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivat
 
 export interface IContent {
     homework: StudentHomeworkDetail;
-    updateHomework: Dispatch<SetStateAction<StudentHomeworkDetail>>;
 
     isFetching: boolean;
 
@@ -59,7 +58,6 @@ const Content = ({
     isFetching,
     refetch,
     update,
-    updateHomework,
     updateRelation,
 }: IContent) => {
     const {t} = useTranslation();
@@ -209,7 +207,6 @@ const Content = ({
                 onRefetch={refetch}
                 onSubmit={(values, {setErrors, setSubmitting}) =>
                     update(values)
-                        .then(updateHomework)
                         .catch((error) => setErrors(error.response?.data))
                         .finally(() => setSubmitting(false))
                 }

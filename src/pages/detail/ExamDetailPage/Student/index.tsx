@@ -14,7 +14,7 @@ import {buildPath, truncate} from "utils";
 
 type ExamKeys = "title" | "information" | "date" | "course";
 
-const ExamDetailPage = () => {
+const StudentExamDetailPage = () => {
     const {t} = useTranslation();
     const {id} = useParams<{ id: string; }>();
     const queryOptions = useQueryOptions();
@@ -53,7 +53,7 @@ const ExamDetailPage = () => {
             {exam =>
                 <DetailPage<ExamKeys, "", StudentExamDetail>
                     color={exam.course.subject.userRelation.color}
-                    orderingStorageName="exam"
+                    orderingStorageName="student-exam"
                     defaultOrdering={["title", "information", "date", "course"]}
                     isRefreshing={isFetching}
                     data={{
@@ -107,6 +107,6 @@ const ExamDetailPage = () => {
         </ResponseWrapper>
     );
 };
-export default ExamDetailPage;
+export default StudentExamDetailPage;
 
 
