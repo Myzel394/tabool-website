@@ -48,7 +48,9 @@ export const createInstance = (onMissingConnection: (error: AxiosError) => any) 
 
     // Snakecase request
     instance.interceptors.request.use(config => {
-        config.data = snakeCaseKeys(config.data ?? {});
+        if (!(config.data instanceof FormData)) {
+            config.data = snakeCaseKeys(config.data ?? {});
+        }
         config.params = snakeCaseKeys(config.params ?? {});
 
         return config;

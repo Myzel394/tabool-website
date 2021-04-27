@@ -17,6 +17,7 @@ import update from "immutability-helper";
 import {MdCheck} from "react-icons/all";
 import CardFlip from "react-card-flip";
 import {useTranslation} from "react-i18next";
+import FlipMove from "react-flip-move";
 
 export interface AvailableListItemProps extends Omit<ListItemProps, "onClick"> {
     onClick: () => any;
@@ -115,32 +116,38 @@ const SelectList = <ElementType extends any = any>({
                 </Paper>
             </Collapse>
             <List {...listProps}>
-                {data.map(element => {
-                    const key = getElementKey(element);
-                    const isSelected = selectedKeys.includes(key);
+                <FlipMove>
+                    {data.map(element => {
+                        const key = getElementKey(element);
+                        const isSelected = selectedKeys.includes(key);
 
-                    return renderElement(
-                        element,
-                        (
-                            <ListItemIcon
-                                onClick={() => {
-                                    toggleKey(key);
-                                }}
-                            >
-                                <CardFlip
-                                    isFlipped={isSelected}
-                                    flipSpeedBackToFront={0.4}
-                                    flipSpeedFrontToBack={0.4}
-                                >
-                                    {renderIcon(element)}
-                                    <Avatar style={selectedAvatarStyle}>
-                                        <MdCheck />
-                                    </Avatar>
-                                </CardFlip>
-                            </ListItemIcon>
-                        ),
-                    );
-                })}
+                        return (
+                            <div key={key}>
+                                {renderElement(
+                                    element,
+                                    (
+                                        <ListItemIcon
+                                            onClick={() => {
+                                                toggleKey(key);
+                                            }}
+                                        >
+                                            <CardFlip
+                                                isFlipped={isSelected}
+                                                flipSpeedBackToFront={0.4}
+                                                flipSpeedFrontToBack={0.4}
+                                            >
+                                                {renderIcon(element)}
+                                                <Avatar style={selectedAvatarStyle}>
+                                                    <MdCheck />
+                                                </Avatar>
+                                            </CardFlip>
+                                        </ListItemIcon>
+                                    ),
+                                )}
+                            </div>
+                        );
+                    })}
+                </FlipMove>
             </List>
         </>
     );

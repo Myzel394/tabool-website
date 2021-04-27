@@ -25,7 +25,7 @@ export interface TeacherWeekView {
 }
 
 export interface StudentLessonView {
-    classbook: StudentClassbook;
+    classbook: StudentClassbook | null;
     materials: StudentMaterialDetail[];
     submissions: StudentSubmissionDetail[];
     modifications: StudentModificationDetail[];
@@ -34,7 +34,7 @@ export interface StudentLessonView {
 }
 
 export interface TeacherLessonView {
-    classbook: TeacherClassbook;
+    classbook: TeacherClassbook | null;
     materials: TeacherMaterialDetail[];
     submissions: TeacherSubmissionDetail[];
     modifications: TeacherModificationDetail[];

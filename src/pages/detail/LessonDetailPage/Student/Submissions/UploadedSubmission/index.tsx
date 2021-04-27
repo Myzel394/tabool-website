@@ -82,6 +82,18 @@ const UploadedSubmissions = ({
         onChange(newSubmissions);
     };
 
+    const deleteSubmission = (submission: StudentSubmissionDetail): void => {
+        const submissionIndex = findIndex(submission);
+
+        const newSubmissions = update(submissions, {
+            $splice: [
+                [submissionIndex, 1],
+            ],
+        });
+
+        onChange(newSubmissions);
+    };
+
 
     return (
         <>
@@ -156,7 +168,7 @@ const UploadedSubmissions = ({
                                 updateSubmission(newSubmission);
                             }
                         }}
-                        onDeleted={async () => updateSubmission(submission)}
+                        onDeleted={() => deleteSubmission(submission)}
                     />
                 }
                 onSelectedKeysChange={setSelectedKeys}

@@ -5,6 +5,7 @@ import {parseTeacherMaterialDetail} from "../../material";
 import {parseTeacherModificationDetail} from "../../modification";
 import {parseTeacherSubmissionDetail} from "../../submission";
 import {parseTeacherClassbookDetail} from "../../classbook";
+import {parseTeacherLessonDetail} from "../../timetable";
 
 const parseTeacherLesson = async (lesson: TeacherLessonView) => {
     await Promise.allSettled([
@@ -12,7 +13,8 @@ const parseTeacherLesson = async (lesson: TeacherLessonView) => {
         ...lesson.materials.map(parseTeacherMaterialDetail),
         ...lesson.modifications.map(parseTeacherModificationDetail),
         ...lesson.submissions.map(parseTeacherSubmissionDetail),
-        parseTeacherClassbookDetail(lesson.classbook),
+        lesson.classbook && parseTeacherClassbookDetail(lesson.classbook),
+        parseTeacherLessonDetail(lesson.lessonInformation),
     ]);
 };
 

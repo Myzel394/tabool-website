@@ -59,7 +59,7 @@ const Element = ({
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isCompressing, setIsCompressing] = useState<boolean>(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
-    const [name, setName] = useState<string>("");
+    const [name, setName] = useState<string>(nativeFile.name);
 
     const {
         mutate,
@@ -74,7 +74,8 @@ const Element = ({
                 ]);
                 onDone();
             },
-            onError: error => setErrorMessage(error.message),
+            onError: error =>
+                setErrorMessage(error.message),
         },
     );
 
@@ -94,7 +95,7 @@ const Element = ({
                 try {
                     file = await compressImage(nativeFile, {
                         ...options,
-                        onProgress: setProgress,
+                        onProgress: progress => setProgress(progress / 100),
                     });
                 } catch (catchEvent) {
                     setErrorMessage(t("Das Bild konnte nicht komprimiert werden."));
@@ -131,15 +132,15 @@ const Element = ({
     return (
         <LoadingOverlay
             isLoading={isLoading || isCompressing}
-            text={isCompressing ? t("Bild wird komprimiert") : t("Bild wird hochgeladen")}
-            value={isCompressing ? progress : uploadProgress}
+            text={isCompressing ? t("Bild wird komprimiert") : t("Datei wird hochgeladen")}
+            value={Number(isCompressing ? progress : uploadProgress) * 100}
         >
             <ListItem>
                 <ListItemIcon onClick={onDelete}>
                     <ExtensionAvatar name={nativeFile.name} />
                 </ListItemIcon>
                 <FileInformation
-                    filename={nativeFile.name}
+                    filename={name}
                     lesson={lesson}
                     uploadDate={publishDatetime}
                     size={nativeFile.size}

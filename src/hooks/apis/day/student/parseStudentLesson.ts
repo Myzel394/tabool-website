@@ -13,7 +13,7 @@ const parseStudentLesson = async (lesson: StudentLessonView) => {
         ...lesson.materials.map(parseStudentMaterialDetail),
         ...lesson.modifications.map(parseStudentModificationDetail),
         ...lesson.submissions.map(parseStudentSubmissionDetail),
-        parseStudentClassbookDetail(lesson.classbook),
+        lesson.classbook && parseStudentClassbookDetail(lesson.classbook),
         parseStudentLessonDetail(lesson.lessonInformation),
     ]);
 };

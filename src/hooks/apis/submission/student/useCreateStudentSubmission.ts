@@ -30,11 +30,11 @@ const useCreateStudentSubmission = () => {
     }: ICreateStudentSubmissionData, onProgress?: ProgressFunction): Promise<StudentSubmissionDetail> => {
         const formData = new FormData();
         formData.append("file", file, name);
-        formData.append("lesson", lessonId);
-        formData.append("lessonDate", lazyDatetime(lessonDate) ?? "");
+        formData.set("lesson", lessonId);
+        formData.set("lesson_date", lazyDatetime(lessonDate, "date"));
 
         if (publishDatetime) {
-            formData.append("publishDatetime", lazyDatetime(publishDatetime) ?? "");
+            formData.set("publish_datetime", lazyDatetime(publishDatetime));
         }
 
         const {data} = await instance.post(
@@ -47,8 +47,7 @@ const useCreateStudentSubmission = () => {
                     },
                 },
                 onUploadProgress: {
-                    $set: event =>
-                        onProgress?.(event.loaded / event.total)
+                    $set: event => onProgress?.(event.loaded / event.total)
                     ,
                 },
             }),

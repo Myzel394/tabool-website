@@ -16,7 +16,7 @@ import RelatedObjects from "./RelatedObjects";
 
 type LessonKeys = "presenceContent" | "onlineContent" | "videoConferenceLink" | "time" | "course";
 
-const LessonDetailPage = () => {
+const StudentLessonDetailPage = () => {
     const {t} = useTranslation();
     const {id: lessonId, date: dateStr} = useParams<{ id: string; date: string; }>();
     const lessonDate = dayjs(dateStr);
@@ -74,17 +74,17 @@ const LessonDetailPage = () => {
                             isRefreshing={isFetching}
                             data={{
                                 presenceContent: {
-                                    information: lesson.classbook.presenceContent,
+                                    information: lesson?.classbook?.presenceContent,
                                     title: t("Inhalt Präsenzunterricht"),
                                     icon: <FaChalkboardTeacher />,
                                 },
                                 onlineContent: {
-                                    information: lesson.classbook.onlineContent,
+                                    information: lesson?.classbook?.onlineContent,
                                     title: t("Inhalt Fernunterricht"),
                                     icon: <MdLaptop />,
                                 },
                                 videoConferenceLink: {
-                                    information: lesson.classbook.videoConferenceLink && (
+                                    information: lesson?.classbook?.videoConferenceLink && (
                                         <Link
                                             underline="none"
                                             target="_blank"
@@ -173,6 +173,6 @@ const LessonDetailPage = () => {
         </ResponseWrapper>
     );
 };
-export default LessonDetailPage;
+export default StudentLessonDetailPage;
 
 

@@ -24,7 +24,7 @@ const getNextLessonDate = (startDate: Dayjs, lessonDates: LessonDate[]): Dayjs =
     const filteredSameWeekLessonDates = sortedLessonDates.filter(lessonDate => lessonDate.weekday >= startDateWeekDay);
     const filteredTimesSameWeekLessonDates = filteredSameWeekLessonDates.filter(lessonDate => {
         // Filter start and end time if it's the current weekday
-        if (lessonDate.weekday <= startDateWeekDay) {
+        if (lessonDate.weekday === startDateWeekDay) {
             const time = replaceDatetime(startDate, "date");
 
             return replaceDatetime(lessonDate.startTime, "date").isAfter(time);
@@ -44,7 +44,7 @@ const getNextLessonDate = (startDate: Dayjs, lessonDates: LessonDate[]): Dayjs =
         targetedTime = nextLesson.startTime;
     }
 
-    const nextDate = findNextDate(startDate, targetedWeekDay);
+    const nextDate = findNextDate(startDate.add(1, "day"), targetedWeekDay);
 
     return combineDatetime(nextDate, targetedTime);
 };
