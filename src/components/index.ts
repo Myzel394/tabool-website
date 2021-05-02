@@ -13,6 +13,7 @@ export * from "./timetable";
 export * from "./calendarStyles";
 export * from "./ResponseWrapper";
 export * from "./ColorPicker";
+export * from "./DueDateChanger";
 
 export {default as Poll} from "./Poll";
 export {default as renderDayWithLessonWeekdays} from "./renderDayWithLessonWeekdays";
@@ -24,4 +25,5 @@ export {default as ShowMoreArray} from "./ShowMoreArray";
 export {default as ShowMoreButton} from "./ShowMoreButton";
 export {default as LinkTitleGrabber} from "./LinkTitleGrabber";
 export {default as ColorPicker} from "./ColorPicker";
+export {default as DueDateChanger} from "./DueDateChanger";
 

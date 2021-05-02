@@ -1,10 +1,12 @@
 import React from "react";
 import {StudentLessonDetail, StudentSubmissionDetail} from "types";
-import {useInheritedState} from "hooks";
 import {Dayjs} from "dayjs";
+import {useInheritedState} from "hooks";
 
-import SubmitFiles from "./SubmitFiles";
-import UploadedSubmissions from "./UploadedSubmission";
+import SubmissionContext from "./SubmissionContext";
+import UploadForm from "./UploadForm";
+import SubmissionsList from "./SubmissionsList";
+
 
 export interface ISubmissions {
     submissions: StudentSubmissionDetail[];
@@ -12,21 +14,26 @@ export interface ISubmissions {
     lessonDate: Dayjs;
 }
 
-const Submissions = ({submissions: parentSubmissions, lesson, lessonDate}: ISubmissions) => {
+const Submissions = ({
+    submissions: parentSubmissions,
+    lesson,
+    lessonDate,
+}: ISubmissions) => {
     const [submissions, setSubmissions] = useInheritedState<StudentSubmissionDetail[]>(parentSubmissions);
 
     return (
-        <>
-            {submissions.length > 0 &&
-            <UploadedSubmissions lesson={lesson} submissions={submissions} onChange={setSubmissions} />}
-            <SubmitFiles
-                lesson={lesson}
-                submissions={submissions}
-                lessonDate={lessonDate}
-                onSubmissionsChange={setSubmissions}
-            />
-        </>
+        <SubmissionContext.Provider
+            value={{
+                submissions,
+                lesson,
+                lessonDate,
+                onSubmissionsChange: setSubmissions,
+            }}
+        >
+            <SubmissionsList />
+            <UploadForm />
+        </SubmissionContext.Provider>
     );
 };
-
 export default Submissions;
+

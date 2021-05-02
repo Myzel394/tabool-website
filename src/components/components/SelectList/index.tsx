@@ -116,7 +116,7 @@ const SelectList = <ElementType extends any = any>({
                 </Paper>
             </Collapse>
             <List {...listProps}>
-                <FlipMove>
+                <FlipMove enterAnimation="elevator" leaveAnimation="elevator">
                     {data.map(element => {
                         const key = getElementKey(element);
                         const isSelected = selectedKeys.includes(key);

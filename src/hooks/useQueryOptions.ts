@@ -17,6 +17,7 @@ const useQueryOptions = (): ConfigType => {
     // noinspection UnnecessaryLocalVariableJS
     const options = useMemo<ConfigType>(() => {
         let defaultData: ConfigType = {
+            refetchOnWindowFocus: false,
             retry: (failureCount, error) => failureCount <= 3 && !NO_RETRY_CODES.includes(error.response?.status),
         };
 

@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link} from "@material-ui/core";
 import {Trans, useTranslation} from "react-i18next";
 import {PrimaryButton, SecondaryButton} from "components";
@@ -50,4 +50,4 @@ const ExplainDialog = ({isOpen, onClose, onActivateCompression}: IExplainDialog)
     );
 };
 
-export default memo(ExplainDialog);
+export default ExplainDialog;

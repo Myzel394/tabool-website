@@ -19,6 +19,7 @@ export interface IFileInformation {
     lesson?: StudentLessonDetail;
     warningContainer?: any;
     onFilenameChange?: (newName: string) => void;
+    maxLength?: number;
 }
 
 const style = {
@@ -39,7 +40,7 @@ const FileInformation = ({
     onFilenameChange,
     lesson,
     warningContainer,
-
+    maxLength,
 }: IFileInformation) => {
     const {t} = useTranslation();
 
@@ -65,10 +66,14 @@ const FileInformation = ({
                 primary={
                     onFilenameChange ? (
                         <TextField
+                            fullWidth
                             style={textStyle}
                             variant="outlined"
                             size="small"
                             value={name}
+                            inputProps={{
+                                maxLength,
+                            }}
                             onChange={event => {
                                 const givenName = event.target.value;
                                 const newName = givenName.replace(NAME_REGEX, "");

@@ -13,7 +13,7 @@ import {BottomSheetAction, ButtonLike} from "components";
 import {buildPath} from "utils";
 import {useTranslation} from "react-i18next";
 
-import DueDateChanger from "../DueDateChanger";
+import DueDateChanger from "../../../../../components/DueDateChanger";
 
 import StatisticsCircle from "./StatisticsCircle";
 import useQuery from "./useQuery";

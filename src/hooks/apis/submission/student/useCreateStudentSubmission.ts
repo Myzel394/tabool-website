@@ -32,6 +32,7 @@ const useCreateStudentSubmission = () => {
         formData.append("file", file, name);
         formData.set("lesson", lessonId);
         formData.set("lesson_date", lazyDatetime(lessonDate, "date"));
+        formData.set("name", name);
 
         if (publishDatetime) {
             formData.set("publish_datetime", lazyDatetime(publishDatetime));
@@ -47,8 +48,7 @@ const useCreateStudentSubmission = () => {
                     },
                 },
                 onUploadProgress: {
-                    $set: event => onProgress?.(event.loaded / event.total)
-                    ,
+                    $set: event => onProgress?.(event.loaded / event.total),
                 },
             }),
         );

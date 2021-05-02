@@ -17,7 +17,7 @@ import {FaBell, MdCheck, MdMoreVert} from "react-icons/all";
 import dayjs from "dayjs";
 
 import SecondaryInformation from "../SecondaryInformation";
-import DueDateChanger from "../DueDateChanger";
+import DueDateChanger from "../../../../../components/DueDateChanger";
 
 import useQuery from "./useQuery";
 import AnnounceExplanation from "./AnnounceExplanation";

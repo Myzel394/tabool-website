@@ -4,7 +4,7 @@ import {Box, Button, CircularProgress, ListItem, ListItemIcon, ListItemText, mak
 import {MdDateRange} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {findNextDate, replaceDatetime} from "utils";
-import {renderDayWithLessonWeekdays} from "components";
+import {renderDayWithLessonWeekdays} from "components/index";
 
 import Picker, {IPicker} from "./Picker";
 

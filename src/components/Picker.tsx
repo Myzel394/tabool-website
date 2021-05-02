@@ -4,7 +4,7 @@ import {Dayjs} from "dayjs";
 import {useInheritedState} from "hooks";
 import {Dialog, DialogActions, DialogContent} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {PrimaryButton, SecondaryButton} from "components";
+import {PrimaryButton, SecondaryButton} from "components/index";
 import {MdCheck, MdClear} from "react-icons/all";
 
 
@@ -43,6 +43,7 @@ const Picker = ({
         >
             <DialogContent style={{padding: 0}}>
                 <PickerComponent
+                    ampm={false}
                     variant="static"
                     value={value}
                     renderDay={renderDay}

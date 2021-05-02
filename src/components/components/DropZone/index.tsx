@@ -1,10 +1,21 @@
 import React, {ReactNode, useMemo} from "react";
 import {useDropzone} from "react-dropzone";
-import {Box, ButtonBase, List, ListItem, ListItemAvatar, ListItemText, Paper, useTheme} from "@material-ui/core";
+import {
+    Box,
+    ButtonBase,
+    Collapse,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Paper,
+    useTheme,
+} from "@material-ui/core";
 import prettyBytes from "pretty-bytes";
 import {useTranslation} from "react-i18next";
 import tinycolor from "tinycolor2";
 import {MdAdd, MdFileUpload} from "react-icons/all";
+import {usePrevious} from "hooks";
 
 import Information from "../Information";
 
@@ -16,6 +27,7 @@ export interface IDropZone<FileType = any> {
 
     renderList: (element: FileType[]) => ReactNode;
 
+    disabled?: boolean;
     acceptedFormats?: string[];
     maxFiles?: number;
 }
@@ -24,6 +36,7 @@ const DropZone = <FileType extends any = any>({
     value,
     onChange,
     renderList,
+    disabled,
 }: IDropZone<FileType>) => {
     const {t} = useTranslation();
     const theme = useTheme();
@@ -53,18 +66,20 @@ const DropZone = <FileType extends any = any>({
         margin: "0 auto",
     }), [mainColor]);
 
+    const previousValue = usePrevious(value, value);
+
     return (
         <Paper elevation={0}>
             <Box
                 {...getRootProps({
-                    component: ButtonBase,
+                    component: disabled ? "div" : ButtonBase,
                     style: {
                         width: "100%",
                     },
                 })}
             >
                 <Box p={3} style={rootStyle}>
-                    <input {...getInputProps()} />
+                    <input {...getInputProps()} disabled={disabled} />
                     {isDragActive ? (
                         <Information
                             getIcon={props => <MdAdd {...props} />}
@@ -75,16 +90,16 @@ const DropZone = <FileType extends any = any>({
                         <Information
                             getIcon={props => <MdFileUpload {...props} />}
                             text={t("Dateien auswählen")}
-                            color="textPrimary"
+                            color={disabled ? "textSecondary" : "textPrimary"}
                         />
                     )}
                 </Box>
             </Box>
-            {value.length > 0 && (
+            <Collapse in={Boolean(value.length)}>
                 <Box m={2}>
-                    {renderList(value)}
+                    {renderList(value.length ? value : previousValue)}
                 </Box>
-            )}
+            </Collapse>
         </Paper>
     );
 };
