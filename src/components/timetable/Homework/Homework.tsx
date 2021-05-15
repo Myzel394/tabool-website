@@ -15,10 +15,9 @@ import {
 } from "hooks/apis";
 import {buildPath} from "utils";
 
-import styles from "./Homework.module.scss";
 import Action from "./Action";
-import checkIconAnimation from "./checkIconAnimation.module.scss";
-import ignoreAnimation from "./ignoreAnimation.module.scss";
+import checkIconAnimation from "./checkIconAnimation.module.css";
+import ignoreAnimation from "./ignoreAnimation.module.css";
 
 
 export interface IHomework {
@@ -66,6 +65,7 @@ const Homework = ({
     );
     const style = useMemo(() => ({
         ...givenStyle,
+        position: "relative" as "relative",
         borderRadius: theme.shape.borderRadius,
         filter: ignored ? "grayscale(.5)" : "",
         opacity: ignored ? 0.8 : 1,
@@ -75,7 +75,6 @@ const Homework = ({
     return (
         <ColoredBox
             style={style}
-            className={styles.wrapper}
             color={subject.userRelation.color}
         >
             <Link

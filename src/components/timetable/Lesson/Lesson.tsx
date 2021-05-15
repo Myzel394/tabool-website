@@ -1,13 +1,12 @@
 import React, {ReactNode, useMemo} from "react";
 import {Dayjs} from "dayjs";
 import clsx from "clsx";
-import {useTheme} from "@material-ui/core";
+import {Box, useTheme} from "@material-ui/core";
 
 import {ModificationType} from "../../../api";
 import {ColoredContainer} from "../../components";
 
 import LessonContext from "./LessonContext";
-import styles from "./Lesson.module.scss";
 import COLORS from "./colors";
 
 export interface ILesson {
@@ -40,9 +39,9 @@ const Lesson = ({
     const themeColor = isDisabled ? COLORS[ModificationType.FreePeriod] : color;
 
     return (
-        <div
+        <Box
+            height="100%"
             className={clsx(
-                styles.wrapper,
                 className,
             )}
             style={style}
@@ -55,7 +54,7 @@ const Lesson = ({
                     {children}
                 </ColoredContainer>
             </LessonContext.Provider>
-        </div>
+        </Box>
     );
 };
 

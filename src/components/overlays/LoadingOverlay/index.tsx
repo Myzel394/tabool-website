@@ -2,7 +2,7 @@ import React, {ReactNode, useMemo} from "react";
 import {CircularProgress, Typography, useTheme} from "@material-ui/core";
 import clsx from "clsx";
 
-import classes from "./index.module.scss";
+import classes from "./index.module.css";
 
 export interface ILoadingOverlay {
     isLoading: boolean;

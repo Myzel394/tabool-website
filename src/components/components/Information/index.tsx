@@ -1,8 +1,6 @@
 import React, {ReactNode, useMemo} from "react";
 import {Tooltip} from "components";
-import {Typography, TypographyProps, useTheme} from "@material-ui/core";
-
-import styles from "./Information.module.scss";
+import {Box, Typography, TypographyProps, useTheme} from "@material-ui/core";
 
 export interface IInformation extends TypographyProps {
     getIcon: (props) => ReactNode;
@@ -10,7 +8,7 @@ export interface IInformation extends TypographyProps {
     tooltip?: string;
 }
 
-const Information = ({getIcon, text, tooltip, ...other}: IInformation) => {
+const Information = ({getIcon, text, tooltip, style, ...other}: IInformation) => {
     const theme = useTheme();
     const iconProps = useMemo(() => ({
         color: theme.palette.text.secondary,
@@ -18,7 +16,10 @@ const Information = ({getIcon, text, tooltip, ...other}: IInformation) => {
     }), [theme.palette.text.secondary, theme.typography.body1.fontSize]);
     const textNode = (
         <Typography
-            className={styles.text}
+            style={{
+                display: "inline-block",
+                ...(style ?? {}),
+            }}
             variant="body1"
             component="dd"
             color="textPrimary"
@@ -30,10 +31,14 @@ const Information = ({getIcon, text, tooltip, ...other}: IInformation) => {
     const tooltipNode = tooltip ? <Tooltip title={tooltip}>{textNode}</Tooltip> : textNode;
 
     return (
-        <div className={styles.container}>
+        <Box
+            display="flex"
+            alignContent="center"
+            width="fit-content"
+        >
             {getIcon(iconProps)}
             {tooltipNode}
-        </div>
+        </Box>
     );
 };
 

@@ -144,7 +144,6 @@
         "dotenv": "^8.2.0",
         "eslint-plugin-react": "^7.23.1",
         "lodash-webpack-plugin": "^0.11.6",
-        "node-sass": "^5.0.0",
         "prettier": "^2.1.2",
         "react-app-rewire-alias": "^0.1.6",
         "react-app-rewired": "^2.1.6",

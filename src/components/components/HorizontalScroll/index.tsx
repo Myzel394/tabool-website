@@ -2,8 +2,6 @@ import React, {ReactNode, useRef} from "react";
 import {Grid} from "@material-ui/core";
 import {useElementSize} from "hooks";
 
-import styles from "./styles.module.scss";
-
 
 export interface IHorizontalScroll<DataType> {
     children: (element: DataType) => ReactNode;
@@ -26,7 +24,12 @@ const HorizontalScroll = <DataType extends any>({
             spacing={5}
             direction="row"
             wrap="nowrap"
-            className={styles.wrapper}
+            style={{
+                width: "100%",
+                margin: 0,
+                overflowX: "hidden",
+                scrollSnapType: "x-mandatory",
+            }}
             alignItems="center"
         >
             {elements.map(element =>
@@ -35,6 +38,8 @@ const HorizontalScroll = <DataType extends any>({
                     item
                     xs={12}
                     style={{
+                        scrollSnapAlign: "center",
+                        scrollSnapStop: "normal",
                         width: width * 0.9 || "100%",
                         flexShrink: 0,
                     }}

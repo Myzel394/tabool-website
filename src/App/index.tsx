@@ -17,7 +17,7 @@ import ThemeHandler from "./ThemeHandler";
 import BottomNavigationHandler from "./BottomNavigationHandler";
 import LanguageChangeObserver from "./LanguageChangeObserver";
 
-import "./global.scss";
+import "./global.css";
 
 
 const App = () => {

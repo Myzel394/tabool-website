@@ -6,7 +6,7 @@ import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
 import {isMobile} from "react-device-detect";
 
 import LessonContext from "../LessonContext";
-import styles from "../LessonContent.module.scss";
+import styles from "../LessonContent.module.css";
 import {Information} from "../../../components";
 
 

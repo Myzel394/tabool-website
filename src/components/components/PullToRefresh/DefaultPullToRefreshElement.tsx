@@ -1,18 +1,29 @@
 import React, {memo} from "react";
 import {useTranslation} from "react-i18next";
-import {Box, CircularProgress, Typography} from "@material-ui/core";
+import {Box, CircularProgress, makeStyles, Typography} from "@material-ui/core";
 import {MdArrowDownward} from "react-icons/all";
 import {CSSTransition} from "react-transition-group";
 
 import State from "./State";
-import styles from "./DefaultPullToRefreshElement.module.scss";
 
+const useStyles = makeStyles({
+    container: {
+        transition: ".3s",
+    },
+    on: {
+        transform: "rotate(180deg)",
+    },
+    off: {
+        transform: "none",
+    },
+});
 
 export interface IDefaultPullToRefreshObject {
     state: State;
 }
 
 const DefaultPullToRefreshElement = ({state}: IDefaultPullToRefreshObject) => {
+    const styles = useStyles();
     const {t} = useTranslation();
 
     if (state === "done") {

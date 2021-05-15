@@ -1,7 +1,7 @@
 import {ModificationType} from "api";
 import {StudentModificationDetail} from "types";
 
-import modificationStyle from "./modifications.module.scss";
+import modificationStyle from "./modifications.module.css";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

@@ -1,7 +1,7 @@
 import React, {memo} from "react";
 import {Typography} from "@material-ui/core";
 
-import styles from "../LessonContent.module.scss";
+import styles from "../LessonContent.module.css";
 
 export interface ICourse {
     name: string;

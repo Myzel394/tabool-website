@@ -1,11 +1,9 @@
-$scale: scale(.94);
-
 .isModificationAvailable {
     box-shadow: .1em .2em 1em .2em rgba(255, 0, 0, .5) !important;
-    transform: $scale;
+    transform: scale(.94);
 }
 
 .isFreePeriod {
-    transform: $scale;
+    transform: scale(.94);
     filter: grayscale(100%);
 }
