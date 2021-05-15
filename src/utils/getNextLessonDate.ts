@@ -44,7 +44,7 @@ const getNextLessonDate = (startDate: Dayjs, lessonDates: LessonDate[]): Dayjs =
         targetedTime = nextLesson.startTime;
     }
 
-    const nextDate = findNextDate(startDate.add(1, "day"), targetedWeekDay);
+    const nextDate = findNextDate(startDate, targetedWeekDay);
 
     return combineDatetime(nextDate, targetedTime);
 };
