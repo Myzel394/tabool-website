@@ -13,7 +13,7 @@ const SubmissionsList = () => {
     } = useContext(SubmissionContext);
 
     return (
-        <Box my={2}>
+        <Box mb={2}>
             <List>
                 <FlipMove>
                     {submissions.map(submission =>

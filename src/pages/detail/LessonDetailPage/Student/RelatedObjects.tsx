@@ -101,6 +101,9 @@ const RelatedObjects = ({
                 }
             </Grid>
             <Grid item style={fullWidth}>
+                <Typography variant="h2">
+                    {t("Einsendungen")}
+                </Typography>
                 <Submissions submissions={submissions} lesson={lesson} lessonDate={lessonDate} />
             </Grid>
         </Grid>
