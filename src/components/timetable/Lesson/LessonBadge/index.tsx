@@ -1,4 +1,4 @@
-import React, {ReactNode, useMemo} from "react";
+import React, {ReactNode} from "react";
 import {Tooltip} from "components";
 import {Box, useTheme} from "@material-ui/core";
 
@@ -19,8 +19,9 @@ const LessonBadge = ({description, getIcon}: ILessonBadge) => {
                 height="fit-content"
                 justifyContent="center"
                 alignItems="center"
-                p={4}
+                p={1}
                 style={{
+                    borderRadius: "50%",
                     backgroundColor: theme.palette.background.paper,
                 }}
             >

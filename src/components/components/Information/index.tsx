@@ -1,6 +1,6 @@
 import React, {ReactNode, useMemo} from "react";
 import {Tooltip} from "components";
-import {Box, Typography, TypographyProps, useTheme} from "@material-ui/core";
+import {Box, makeStyles, Typography, TypographyProps, useTheme} from "@material-ui/core";
 
 export interface IInformation extends TypographyProps {
     getIcon: (props) => ReactNode;
@@ -8,18 +8,23 @@ export interface IInformation extends TypographyProps {
     tooltip?: string;
 }
 
-const Information = ({getIcon, text, tooltip, style, ...other}: IInformation) => {
-    const theme = useTheme();
-    const iconProps = useMemo(() => ({
+const useStyles = makeStyles(theme => ({
+    icon: {
         color: theme.palette.text.secondary,
         fontSize: theme.typography.body1.fontSize,
-    }), [theme.palette.text.secondary, theme.typography.body1.fontSize]);
+        marginRight: theme.spacing(1),
+    },
+    typography: {
+        display: "inline-block",
+    },
+}));
+
+const Information = ({getIcon, text, tooltip, style, ...other}: IInformation) => {
+    const classes = useStyles();
+
     const textNode = (
         <Typography
-            style={{
-                display: "inline-block",
-                ...(style ?? {}),
-            }}
+            className={classes.typography}
             variant="body1"
             component="dd"
             color="textPrimary"
@@ -33,10 +38,12 @@ const Information = ({getIcon, text, tooltip, style, ...other}: IInformation) =>
     return (
         <Box
             display="flex"
-            alignContent="center"
+            alignItems="center"
             width="fit-content"
         >
-            {getIcon(iconProps)}
+            {getIcon({
+                className: classes.icon,
+            })}
             {tooltipNode}
         </Box>
     );

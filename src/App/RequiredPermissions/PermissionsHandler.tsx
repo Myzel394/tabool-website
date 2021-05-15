@@ -1,5 +1,5 @@
-import React from "react";
-import {usePermissions} from "hooks";
+import React, {useContext} from "react";
+import {usePermissions, useUser} from "hooks";
 import {PermissionType} from "hooks/usePermissions";
 
 import {LocationPermission, NotificationPermission} from "./permissions";
@@ -9,10 +9,12 @@ const PermissionsHandler = ({children}) => {
         state: permStates,
         setState: setPermStates,
     } = usePermissions();
+    const user = useUser();
+    const checkPermissions = user.isAuthenticated;
 
     const hasUndecidedPermissions = new Set(Object.values(permStates)).has(PermissionType.Default);
 
-    if (hasUndecidedPermissions) {
+    if (checkPermissions && hasUndecidedPermissions) {
         if (permStates.notification === PermissionType.Default) {
             return (
                 <NotificationPermission
