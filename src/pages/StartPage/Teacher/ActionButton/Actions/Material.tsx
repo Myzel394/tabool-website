@@ -19,13 +19,13 @@ import update from "immutability-helper";
 import StartPageContext from "../../StartPageContext";
 
 
-export interface IMaterial {
+export interface MaterialProps {
     material: TeacherMaterialDetail;
 }
 
 const Material = ({
     material,
-}: IMaterial) => {
+}: MaterialProps) => {
     const {
         onDailyDataChange,
     } = useContext(StartPageContext);

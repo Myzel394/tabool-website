@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addDownloadedMaterialsDate, getMaterialDownloadDate, RootState} from "state";
 
 
-export interface IFile {
+export interface FileProps {
     id: string;
     name: string;
     size: number;
@@ -31,7 +31,7 @@ const File = ({
     file,
     publishDatetime,
     lessonUrl,
-}: IFile) => {
+}: FileProps) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const date = useSelector<RootState>(getMaterialDownloadDate(id)) as Dayjs | undefined;

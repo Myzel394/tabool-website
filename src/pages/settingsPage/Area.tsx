@@ -1,8 +1,9 @@
 import React, {ReactNode} from "react";
 import {Grid, Typography} from "@material-ui/core";
 
+// TODO: Seriously
 
-export interface IArea {
+export interface AreaProps {
     title: string;
     children: ReactNode;
 }
@@ -11,7 +12,7 @@ const style = {
     width: "100%",
 };
 
-const Area = ({title, children}: IArea) => {
+const Area = ({title, children}: AreaProps) => {
     return (
         <Grid container spacing={1}>
             <Grid item>

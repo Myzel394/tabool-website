@@ -8,7 +8,7 @@ import UploadForm from "./UploadForm";
 import SubmissionsList from "./SubmissionsList";
 
 
-export interface ISubmissions {
+export interface SubmissionsProps {
     submissions: StudentSubmissionDetail[];
     lesson: StudentLessonDetail;
     lessonDate: Dayjs;
@@ -18,7 +18,7 @@ const Submissions = ({
     submissions: parentSubmissions,
     lesson,
     lessonDate,
-}: ISubmissions) => {
+}: SubmissionsProps) => {
     const [submissions, setSubmissions] = useInheritedState<StudentSubmissionDetail[]>(parentSubmissions);
 
     return (

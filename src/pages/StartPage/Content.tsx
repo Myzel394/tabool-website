@@ -2,7 +2,7 @@ import React, {ReactNode, useState} from "react";
 import {Box, Button, Collapse} from "@material-ui/core";
 
 
-export interface IContent {
+export interface ContentProps {
     children: ReactNode;
     title: string;
 
@@ -16,7 +16,7 @@ const Content = ({
     title,
     link,
     disableMargin,
-}: IContent) => {
+}: ContentProps) => {
     const [show, setShow] = useState<boolean>(true);
 
     const childrenWrapper = (

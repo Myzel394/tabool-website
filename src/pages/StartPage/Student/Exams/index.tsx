@@ -10,14 +10,14 @@ import {buildPath, truncate} from "utils";
 import createShadow from "../../createShadow";
 
 
-export interface IExams {
+export interface ExamsProps {
     exams: StudentExamDetail[];
 }
 
 
 const Exams = ({
     exams,
-}: IExams) => {
+}: ExamsProps) => {
     const theme = useTheme();
     const {t} = useTranslation();
 

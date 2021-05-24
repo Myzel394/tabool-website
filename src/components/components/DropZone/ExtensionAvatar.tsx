@@ -1,7 +1,7 @@
 import React from "react";
 import {Avatar} from "@material-ui/core";
 
-export interface IExtensionAvatar {
+export interface ExtensionAvatarProps {
     name: string;
 
     color?: string;
@@ -39,7 +39,7 @@ const getColor = value => EXTENSION_COLOR_MAPPING[value] ?? "#888";
 const ExtensionAvatar = ({
     name,
     color,
-}: IExtensionAvatar) => {
+}: ExtensionAvatarProps) => {
     const extension = name.split(".")
         .pop() ?? "";
 

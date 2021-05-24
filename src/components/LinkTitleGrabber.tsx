@@ -6,7 +6,7 @@ import {Box, CircularProgress} from "@material-ui/core";
 import {useInheritedState, useQueryOptions} from "hooks";
 import {truncate} from "utils";
 
-export interface ILinkTitleGrabber {
+export interface LinkTitleGrabberProps {
     url?: string;
     parseTitle?: (title: string) => string;
     children?: string;
@@ -20,7 +20,7 @@ const LinkTitleGrabber = ({
     children,
     parseTitle,
     url: givenUrl,
-}: ILinkTitleGrabber) => {
+}: LinkTitleGrabberProps) => {
     if (!givenUrl && !children) {
         throw new Error("Either specify `url` or `children`.");
     }

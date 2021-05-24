@@ -11,7 +11,7 @@ import {MdAdd} from "react-icons/all";
 
 import createShadow from "../../createShadow";
 
-export interface IHomeworks {
+export interface HomeworksProps {
     homeworks: StudentHomeworkDetail[];
     onChange: (newHomeworks: StudentHomeworkDetail[]) => any;
 }
@@ -19,7 +19,7 @@ export interface IHomeworks {
 const Homeworks = ({
     homeworks,
     onChange,
-}: IHomeworks) => {
+}: HomeworksProps) => {
     const {t} = useTranslation();
 
     const [wrapperRef, setWrapperRef] = useState<any>();

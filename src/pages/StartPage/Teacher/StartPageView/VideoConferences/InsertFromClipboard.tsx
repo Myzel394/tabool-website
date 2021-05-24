@@ -19,7 +19,7 @@ import {isIOS} from "react-device-detect";
 import {truncate} from "utils";
 
 
-export interface IInsertFromClipboard {
+export interface InsertFromClipboardProps {
     isUpdating: boolean;
     setVideoConferenceLink: (link: string) => any;
     close: () => any;
@@ -45,11 +45,13 @@ const checkClipboardAccess = async (): Promise<boolean> => {
     }
 };
 
+// TODO: Add hook!
+
 const InsertFromClipboard = ({
     setVideoConferenceLink,
     close,
     isUpdating,
-}: IInsertFromClipboard) => {
+}: InsertFromClipboardProps) => {
     const theme = useTheme();
     const {t} = useTranslation();
     const {addError, addWarning, addSnackbar, closeSnackbar, addSuccess} = useSnackbar();

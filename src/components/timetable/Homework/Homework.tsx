@@ -20,7 +20,7 @@ import checkIconAnimation from "./checkIconAnimation.module.css";
 import ignoreAnimation from "./ignoreAnimation.module.css";
 
 
-export interface IHomework {
+export interface HomeworkProps {
     id: string;
     creationDate: Dayjs;
     subject: Subject;
@@ -50,7 +50,7 @@ const Homework = ({
     onIgnoreChange,
     onServerUpdate,
     style: givenStyle,
-}: IHomework) => {
+}: HomeworkProps) => {
     const theme = useTheme();
     const updateHomeworkRelation = useUpdateHomeworkUserRelationAPI();
 

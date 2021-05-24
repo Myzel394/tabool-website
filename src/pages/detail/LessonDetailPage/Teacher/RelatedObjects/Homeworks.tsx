@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 import {Dayjs} from "dayjs";
 
 
-export interface IHomeworks {
+export interface HomeworksProps {
     homeworks: TeacherHomeworkDetail[];
     lesson: TeacherLessonDetail;
     date: Dayjs;
@@ -27,7 +27,7 @@ const Homeworks = ({
     homeworks,
     date,
     lesson,
-}: IHomeworks) => {
+}: HomeworksProps) => {
     const classes = useStyles();
     const {t} = useTranslation();
 

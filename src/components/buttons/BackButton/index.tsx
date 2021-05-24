@@ -5,7 +5,7 @@ import {MdClose} from "react-icons/md";
 
 import ConfirmationDialog from "./ConfirmationDialog";
 
-export interface IBackButton {
+export interface BackButtonProps {
     confirm: boolean;
 
     onBack?: () => any;
@@ -15,7 +15,7 @@ export interface IBackButton {
 const BackButton = ({
     confirm,
     onBack,
-}: IBackButton) => {
+}: BackButtonProps) => {
     const history = useHistory();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);

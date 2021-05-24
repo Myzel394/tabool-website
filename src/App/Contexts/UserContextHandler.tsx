@@ -16,11 +16,11 @@ import UserProviderHandler from "./UserProviderHandler";
 
 const usePersistedReducer = createPersistedReducer("user");
 
-export interface IUserContextHandler {
+export interface UserContextHandlerProps {
     children: ReactNode;
 }
 
-const UserContextHandler = ({children}: IUserContextHandler) => {
+const UserContextHandler = ({children}: UserContextHandlerProps) => {
     const history = useHistory();
     const reduxDispatch = useDispatch();
     const {addError} = useSnackbar();

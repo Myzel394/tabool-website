@@ -1,7 +1,7 @@
 import React, {memo} from "react";
 import {Box, Typography, useTheme} from "@material-ui/core";
 
-export interface ITitle {
+export interface TitleProps {
     title: string;
 }
 
@@ -9,7 +9,7 @@ const style = {
     wordBreak: "break-word" as "break-word",
 };
 
-const Title = ({title}: ITitle) => {
+const Title = ({title}: TitleProps) => {
     const theme = useTheme();
 
     const headerColor = {

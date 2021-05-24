@@ -10,7 +10,7 @@ import styles from "../LessonContent.module.css";
 import {Information} from "../../../components";
 
 
-export interface ILessonContent {
+export interface LessonContentProps {
     courseName: string;
     teacherName: string;
     roomName: string;
@@ -29,7 +29,7 @@ const LessonContent = ({
     className,
     showDetails,
     style,
-}: ILessonContent) => {
+}: LessonContentProps) => {
     const theme = useTheme();
     const {isDisabled, startTime, endTime} = useContext(LessonContext);
     const {isMD} = useDeviceWidth();

@@ -6,7 +6,7 @@ import {Trans, useTranslation} from "react-i18next";
 import {ButtonLike} from "../components";
 
 
-export interface IMultipleChoice {
+export interface MultipleChoiceProps {
     onChange: (value: string[]) => any;
     value: string[];
     choices: PollChoice[];
@@ -21,7 +21,7 @@ const MultipleChoice = ({
     value,
     minVoteChoices,
     maxVoteChoices,
-}: IMultipleChoice) => {
+}: MultipleChoiceProps) => {
     const {t} = useTranslation();
 
     const change = (id: string, include: boolean) => {

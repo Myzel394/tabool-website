@@ -19,13 +19,13 @@ import SubmissionContext from "../SubmissionContext";
 import useUpdate from "./useUpdate";
 
 
-export interface ISubmission {
+export interface SubmissionProps {
     submission: StudentSubmissionDetail;
 }
 
 const Submission = ({
     submission,
-}: ISubmission) => {
+}: SubmissionProps) => {
     const {
         lesson,
     } = useContext(SubmissionContext);

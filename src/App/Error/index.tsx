@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {Typography} from "@material-ui/core";
 import {FocusedPage} from "components";
 
-export interface IError {
+export interface ErrorProps {
     status?: number;
     title?: string;
     message?: string;
@@ -13,7 +13,7 @@ const Error = ({
     title,
     message,
     status,
-}: IError) => {
+}: ErrorProps) => {
     const {t} = useTranslation();
 
     return (

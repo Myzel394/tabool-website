@@ -4,7 +4,7 @@ import {AiOutlineStop, FaDizzy, FaExclamationTriangle, FaQuestionCircle, FaRunni
 import {useTranslation} from "react-i18next";
 import {IconType} from "react-icons";
 
-export interface ILoadingPage {
+export interface LoadingPageProps {
     status?: number;
     notFound?: string;
     accessDenied?: string;
@@ -35,7 +35,7 @@ const ErrorPage = ({
     accessDenied,
     tooFast,
     setDocumentTitle,
-}: ILoadingPage) => {
+}: LoadingPageProps) => {
     const {t} = useTranslation();
 
     let text: string;

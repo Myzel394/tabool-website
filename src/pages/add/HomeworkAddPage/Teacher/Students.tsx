@@ -8,7 +8,7 @@ import {Select} from "formik-material-ui";
 import {GenderStatus} from "components";
 
 
-export interface IStudents {
+export interface StudentsProps {
     isError: boolean;
     hasLessonSelected: boolean;
 
@@ -19,7 +19,7 @@ const Students = ({
     students,
     hasLessonSelected,
     isError,
-}: IStudents) => {
+}: StudentsProps) => {
     const {t} = useTranslation();
 
     if (!hasLessonSelected) {

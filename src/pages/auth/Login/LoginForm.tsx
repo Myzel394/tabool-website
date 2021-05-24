@@ -13,11 +13,11 @@ import {ErrorFieldsInjection} from "types";
 import {useColors} from "hooks";
 
 
-export interface ILoginPage {
+export interface LoginPageProps {
     onSubmit: (form: ILoginData) => Promise<ILoginResponse>;
 }
 
-const LoginForm = ({onSubmit}: ILoginPage) => {
+const LoginForm = ({onSubmit}: LoginPageProps) => {
     const {t} = useTranslation();
     const {
         inputIconColor,

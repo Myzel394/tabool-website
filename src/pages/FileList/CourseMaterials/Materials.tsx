@@ -8,7 +8,7 @@ import dayjs, {Dayjs} from "dayjs";
 import File from "./File";
 
 
-export interface IMaterials {
+export interface MaterialsProps {
     materials: StudentMaterialDetail[];
 }
 
@@ -32,7 +32,7 @@ const getLastMaterialDate = (materials?: StudentMaterialDetail[]): Dayjs | void 
 
 const Materials = ({
     materials,
-}: IMaterials) => {
+}: MaterialsProps) => {
     const theme = useTheme();
     const classes = createStickyHeaderStyles(theme.palette.background.default);
     const materialsPerDate = getPerUniqueValue(materials, {

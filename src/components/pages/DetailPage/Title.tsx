@@ -3,14 +3,14 @@ import {Box, Container, Typography} from "@material-ui/core";
 import {useAdaptedColor} from "hooks";
 import tinycolor from "tinycolor2";
 
-export interface ITitle {
+export interface TitleProps {
     title: string;
     color: string;
 
     subTitle?: string;
 }
 
-const Title = ({title, color, subTitle}: ITitle) => {
+const Title = ({title, color, subTitle}: TitleProps) => {
     const [textColor, backgroundColor] = useAdaptedColor(color);
     const divStyle = useMemo(() => ({
         backgroundColor,

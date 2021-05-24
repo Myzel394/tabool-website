@@ -6,12 +6,12 @@ import {AxiosError} from "axios";
 import {Poll} from "components";
 
 
-export interface IPollHandler {
+export interface PollHandlerProps {
     children: JSX.Element;
 }
 
 
-const PollHandler = ({children}: IPollHandler) => {
+const PollHandler = ({children}: PollHandlerProps) => {
     const user = useUser();
     const queryOptions = useQueryOptions();
     const fetchPolls = useFetchPollListAPI();

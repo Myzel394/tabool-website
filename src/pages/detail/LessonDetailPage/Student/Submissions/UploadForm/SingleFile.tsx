@@ -17,7 +17,7 @@ import SettingsModal from "./SettingsModal";
 import {SubmissionUploadFile} from "./types";
 
 
-export interface ISingleFile {
+export interface SingleFileProps {
     file: SubmissionUploadFile;
     compressImage: boolean;
 
@@ -33,7 +33,7 @@ const SingleFile = ({
     onFileChange,
     onRemove,
     maxLength,
-}: ISingleFile, reference) => {
+}: SingleFileProps, reference) => {
     const {
         lesson,
         lessonDate,

@@ -4,11 +4,11 @@ import {FaClipboardList} from "react-icons/all";
 
 import LessonBadge from "../LessonBadge";
 
-export interface IHomeworkBadge {
+export interface HomeworkBadgeProps {
     count: number;
 }
 
-const HomeworkBadge = ({count}: IHomeworkBadge) => {
+const HomeworkBadge = ({count}: HomeworkBadgeProps) => {
     const {t} = useTranslation();
 
     return (

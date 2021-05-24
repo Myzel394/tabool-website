@@ -7,7 +7,7 @@ import {StudentLessonDetail} from "types";
 
 import LessonFieldContext from "./LessonFieldContext";
 
-export interface ILessonEvent {
+export interface LessonEventProps {
     event: CalendarEvent;
     style?: CSSProperties;
 }
@@ -40,7 +40,7 @@ const useClasses = makeStyles(theme => ({
 const LessonEvent = ({
     event,
     style,
-}: ILessonEvent): JSX.Element => {
+}: LessonEventProps): JSX.Element => {
     const {
         allowedLessons,
         allowedCourses,

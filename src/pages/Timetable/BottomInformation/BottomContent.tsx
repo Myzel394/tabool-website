@@ -10,7 +10,7 @@ import {MdShare} from "react-icons/all";
 import {Dayjs} from "dayjs";
 
 
-export interface IBottomContent {
+export interface BottomContentProps {
     timetable: StudentWeekView;
     selectedDate: Dayjs;
 }
@@ -18,7 +18,7 @@ export interface IBottomContent {
 const BottomContent = ({
     timetable,
     selectedDate,
-}: IBottomContent) => {
+}: BottomContentProps) => {
     const {t} = useTranslation();
     const {
         addSuccess,

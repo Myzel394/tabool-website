@@ -3,7 +3,7 @@ import {IconType} from "react-icons/lib";
 import {Box, Link, Typography, useTheme} from "@material-ui/core";
 import {ButtonLike} from "components";
 
-export interface IMoreElement {
+export interface MoreElementProps {
     text: string;
     href: string;
     icon: IconType;
@@ -13,7 +13,7 @@ const MoreElement = ({
     text,
     href,
     icon: Icon,
-}: IMoreElement) => {
+}: MoreElementProps) => {
     const theme = useTheme();
 
     return (
@@ -48,6 +48,5 @@ const MoreElement = ({
         </ButtonLike>
     );
 };
+
 export default MoreElement;
-
-

@@ -6,12 +6,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState, setUpdatedAtTimeView} from "state";
 import {AvailableUpdatedAtTimeViews} from "types";
 
-export interface IUpdatedAt {
+export interface UpdatedAtProps {
     value: Dayjs;
     frequency: number;
 }
 
-const UpdatedAt = ({value, frequency}: IUpdatedAt) => {
+const UpdatedAt = ({value, frequency}: UpdatedAtProps) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
 

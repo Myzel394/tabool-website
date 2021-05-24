@@ -8,7 +8,7 @@ import {PrimaryButton, SecondaryButton} from "components/index";
 import {MdCheck, MdClear} from "react-icons/all";
 
 
-export interface IPicker {
+export interface PickerProps {
     isOpen: boolean;
     onClose: () => any;
     value: Dayjs | null;
@@ -29,7 +29,7 @@ const Picker = ({
     pickerType,
     renderDay,
     value: parentValue,
-}: IPicker) => {
+}: PickerProps) => {
     const {t} = useTranslation();
 
     const [value, setValue] = useInheritedState<Dayjs | null>(parentValue);

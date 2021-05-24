@@ -3,7 +3,7 @@ import {createMuiTheme, Theme, ThemeProvider} from "@material-ui/core";
 import update from "immutability-helper";
 import tinycolor from "tinycolor2";
 
-export interface IColoredContainer {
+export interface ColoredContainerProps {
     color: string;
     children: ReactNode;
 
@@ -79,7 +79,7 @@ const createTheme = (parentTheme: Theme | undefined, color: string): Theme => {
     });
 };
 
-const ColoredContainer = ({children, parentTheme, color}: IColoredContainer) => {
+const ColoredContainer = ({children, parentTheme, color}: ColoredContainerProps) => {
     return (
         <ThemeProvider theme={createTheme(parentTheme, color)}>
             {children}

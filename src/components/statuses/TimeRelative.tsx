@@ -1,12 +1,14 @@
 import {ReactNode, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 
-export interface ITimeRelative {
+// TODO: Make function!
+
+export interface TimeRelativeProps {
     children: ((now: Dayjs) => ReactNode) | ReactNode;
     updateFrequency: number;
 }
 
-const TimeRelative = ({children, updateFrequency}: ITimeRelative) => {
+const TimeRelative = ({children, updateFrequency}: TimeRelativeProps) => {
     const [now, setNow] = useState<Dayjs>(dayjs());
 
     useEffect(() => {

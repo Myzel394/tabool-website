@@ -6,11 +6,13 @@ import {useTranslation} from "react-i18next";
 import {findNextDate, replaceDatetime} from "utils";
 import {renderDayWithLessonWeekdays} from "components/index";
 
-import Picker, {IPicker} from "./Picker";
+import Picker, {PickerProps} from "./Picker";
 
-export interface IDueDateChangerBase {
+// TODO: Remove prefixes!
+
+export interface DueDateChangerBaseProps {
     isLoading: boolean;
-    pickerType: IPicker["pickerType"];
+    pickerType: PickerProps["pickerType"];
     title: string;
 
     disabled?: boolean;
@@ -20,19 +22,19 @@ export interface IDueDateChangerBase {
     color: string;
 }
 
-export interface IDueDateChangerWithDate {
+export interface DueDateChangerWithDateProps {
     date: Dayjs;
     onChange: (newDate: Dayjs) => any;
     disableClearing: true;
 }
 
-export interface IDueDateChangerUnknownDate {
+export interface DueDateChangerUnknownDateProps {
     date: Dayjs | null;
     onChange: (newDate: Dayjs | null) => any;
     disableClearing?: false;
 }
 
-export type IDueDateChanger = IDueDateChangerBase & (IDueDateChangerWithDate | IDueDateChangerUnknownDate);
+export type IDueDateChanger = DueDateChangerBaseProps & (DueDateChangerWithDateProps | DueDateChangerUnknownDateProps);
 
 const getDatesForWeekdays = (weekdays: number[], startDate?: Dayjs): Dayjs[] => {
     const start = replaceDatetime(startDate || dayjs(), "time");

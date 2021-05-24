@@ -1,7 +1,7 @@
 import React from "react";
 import {Box, Grid} from "@material-ui/core";
 
-export interface IBadges {
+export interface BadgesProps {
     badges: JSX.Element[];
 }
 
@@ -13,7 +13,7 @@ const style = {
     height: "fit-content",
 };
 
-const Badges = ({badges}: IBadges) => {
+const Badges = ({badges}: BadgesProps) => {
     return (
         <Box
             mr={1}

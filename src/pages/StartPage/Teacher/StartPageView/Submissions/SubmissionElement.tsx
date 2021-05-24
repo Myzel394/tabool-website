@@ -8,7 +8,7 @@ import prettyBytes from "pretty-bytes";
 import SecondaryInformation from "../SecondaryInformation";
 
 
-export interface ISubmissionElement {
+export interface SubmissionElementProps {
     submission: TeacherSubmissionDetail;
     innerRef: any;
 }
@@ -16,7 +16,7 @@ export interface ISubmissionElement {
 const SubmissionElement = ({
     submission,
     innerRef,
-}: ISubmissionElement) => {
+}: SubmissionElementProps) => {
     const {t} = useTranslation();
 
     return (

@@ -14,7 +14,7 @@ import RelatedObjects from "./RelatedObjects";
 import useValidationSchema from "./useValidationSchema";
 import useClassbook from "./useClassbook";
 
-export interface IContent {
+export interface ContentProps {
     lesson: TeacherLessonView;
     updateLesson: Dispatch<SetStateAction<TeacherLessonView>>;
     lessonDate: Dayjs;
@@ -32,7 +32,7 @@ const Content = ({
     isFetching,
     updatedAt,
     lessonDate,
-}: IContent) => {
+}: ContentProps) => {
     const {t} = useTranslation();
     const validationSchema = useValidationSchema();
     const {

@@ -11,7 +11,7 @@ import TimetableContext from "../TimetableContext";
 import getModificationClass from "./getModificationClass";
 
 
-export interface IWeekEvent {
+export interface WeekEventProps {
     event: CalendarEvent;
     style?: CSSProperties;
 }
@@ -19,7 +19,7 @@ export interface IWeekEvent {
 const WeekEvent = ({
     event,
     style,
-}: IWeekEvent) => {
+}: WeekEventProps) => {
     const {
         date,
     } = useContext(TimetableContext);

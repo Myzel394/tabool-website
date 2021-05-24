@@ -10,7 +10,7 @@ import {MdCheck, MdClear} from "react-icons/all";
 
 import Day from "../../../Day";
 
-export interface ISettingsDialog {
+export interface SettingsDialogProps {
     publishDatetime: Dayjs | null;
     onPublishDatetimeChange: (newPublishDatetime: Dayjs | null) => any;
     isOpen: boolean;
@@ -24,7 +24,7 @@ const SettingsModal = ({
     onClose,
     publishDatetime: parentPublishDatetime,
     lesson,
-}: ISettingsDialog) => {
+}: SettingsDialogProps) => {
     const {t} = useTranslation();
 
     const [publishDatetime, setPublishDatetime] = useInheritedState<Dayjs | null>(parentPublishDatetime);

@@ -5,13 +5,13 @@ import {useTranslation} from "react-i18next";
 import {StudentModificationDetail} from "types";
 import {SingleModification} from "components";
 
-export interface IModifications {
+export interface ModificationsProps {
     modifications: StudentModificationDetail[];
 }
 
 const Modifications = ({
     modifications,
-}: IModifications) => {
+}: ModificationsProps) => {
     const {t} = useTranslation();
 
     if (!modifications.length) {

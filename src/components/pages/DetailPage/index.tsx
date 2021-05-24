@@ -19,7 +19,7 @@ import _ from "lodash";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {addDetailPageOrdering, RootState} from "state";
 
-import Title, {ITitle} from "./Title";
+import Title, {TitleProps} from "./Title";
 import Form, {IForm} from "./Form";
 import ToggleButtonsForm, {IToggleButtonsForm} from "./ToggleButtonsForm";
 
@@ -29,8 +29,8 @@ export interface IDetailPage<AvailableKeys extends string,
     RelationKeys extends string = string,
     RelationForm extends Record<string, any> = Record<RelationKeys, any>,
     > {
-    title: ITitle["title"];
-    color: ITitle["color"];
+    title: TitleProps["title"];
+    color: TitleProps["color"];
 
     defaultOrdering: IForm<AvailableKeys, FormikForm>["ordering"];
     data: IForm<AvailableKeys, FormikForm>["data"];
@@ -52,7 +52,7 @@ export interface IDetailPage<AvailableKeys extends string,
 
     searchAllPath?: string;
     addPath?: string;
-    subTitle?: ITitle["subTitle"];
+    subTitle?: TitleProps["subTitle"];
 
     validationSchema?: IForm<AvailableKeys, FormikForm>["validationSchema"];
     onSubmit?: IForm<AvailableKeys, FormikForm>["onSubmit"];

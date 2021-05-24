@@ -6,7 +6,7 @@ import {Dayjs} from "dayjs";
 import {useColors, useInheritedState} from "hooks";
 import {FaCalendarDay, FaCalendarWeek} from "react-icons/all";
 
-export interface IForm {
+export interface FormProps {
     onChange: (data: {
         targetedDate: Dayjs;
         maxFutureDays: number;
@@ -23,7 +23,7 @@ const Form = ({
     maxFutureDays,
     onChange,
     targetedDate,
-}: IForm) => {
+}: FormProps) => {
     const {
         inputIconColor,
     } = useColors();

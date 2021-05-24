@@ -8,7 +8,7 @@ import {Avatar} from "components";
 import Description from "./Description";
 
 
-export interface IConferenceList {
+export interface ConferenceListProps {
     date: Dayjs;
     lessons: StudentLessonDetail[];
 }
@@ -17,7 +17,7 @@ const style = {
     width: "100%",
 };
 
-const ConferenceList = ({lessons, date}: IConferenceList) => {
+const ConferenceList = ({lessons, date}: ConferenceListProps) => {
     return (
         <Grid container direction="row" spacing={2} alignItems="center" wrap="nowrap">
             <Grid item>

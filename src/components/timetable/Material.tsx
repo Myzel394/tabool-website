@@ -12,7 +12,7 @@ import {Information} from "../components";
 import {TimeRelative} from "../statuses";
 import extensionIconMap from "../extensionIconMap";
 
-export interface IMaterial {
+export interface MaterialProps {
     name: string;
     size: number;
     file: string;
@@ -21,7 +21,7 @@ export interface IMaterial {
 }
 
 
-const Material = ({name, id, size, file, publishDatetime}: IMaterial) => {
+const Material = ({name, id, size, file, publishDatetime}: MaterialProps) => {
     const dispatch = useDispatch();
     const downloadDate = useSelector<RootState>(getMaterialDownloadDate(id)) as Dayjs | null;
     const {t} = useTranslation();

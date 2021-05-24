@@ -8,7 +8,7 @@ import {BackButton} from "../../buttons";
 import Title from "./Title";
 import Wrapper from "./Wrapper";
 
-export interface IFocusedPage {
+export interface FocusedPageProps {
     children: ReactNode;
 
     title?: string;
@@ -30,7 +30,7 @@ export default function FocusedPage({
     onBackButtonClick,
     bottomContent,
     style,
-}: IFocusedPage) {
+}: FocusedPageProps) {
     const {t} = useTranslation();
 
     return (

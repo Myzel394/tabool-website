@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Box, CircularProgress, Typography} from "@material-ui/core";
 
-export interface ILoadingPage {
+export interface LoadingPageProps {
     title: string;
     setDocumentTitle?: boolean;
 }
@@ -9,7 +9,7 @@ export interface ILoadingPage {
 const LoadingPage = ({
     title,
     setDocumentTitle,
-}: ILoadingPage) => {
+}: LoadingPageProps) => {
     useEffect(() => {
         if (setDocumentTitle) {
             document.title = title;

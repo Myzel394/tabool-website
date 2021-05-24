@@ -1,7 +1,7 @@
 import React from "react";
 import {Box} from "@material-ui/core";
 
-export interface ISecondaryInformation {
+export interface SecondaryInformationProps {
     text: string;
 
     icon?: JSX.Element;
@@ -15,7 +15,7 @@ const informationProps = {
     },
 };
 
-const SecondaryInformation = ({icon, text}: ISecondaryInformation) => {
+const SecondaryInformation = ({icon, text}: SecondaryInformationProps) => {
     return (
         <Box {...informationProps}>
             <Box mr={1}>

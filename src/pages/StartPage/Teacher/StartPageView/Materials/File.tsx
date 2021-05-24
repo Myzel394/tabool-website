@@ -23,7 +23,7 @@ import useQuery from "./useQuery";
 import AnnounceExplanation from "./AnnounceExplanation";
 
 
-export interface IFile {
+export interface FileProps {
     material: TeacherMaterialDetail;
 }
 
@@ -34,7 +34,7 @@ const listItemStyle = {
 
 const File = ({
     material,
-}: IFile) => {
+}: FileProps) => {
     const {t} = useTranslation();
     const {
         isLoading,

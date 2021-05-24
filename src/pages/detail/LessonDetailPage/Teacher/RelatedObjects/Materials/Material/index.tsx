@@ -18,13 +18,13 @@ import {useTranslation} from "react-i18next";
 import useUpdate from "./useUpdate";
 
 
-export interface IMaterial {
+export interface MaterialProps {
     material: TeacherMaterialDetail;
 }
 
 const Material = ({
     material,
-}: IMaterial) => {
+}: MaterialProps) => {
     const {t} = useTranslation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);

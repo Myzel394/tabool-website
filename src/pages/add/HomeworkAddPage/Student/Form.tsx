@@ -26,7 +26,7 @@ import useInitialValues, {FormikForm} from "./useInitialValues";
 import useSchema from "./useSchema";
 
 
-export interface IForm {
+export interface FormProps {
     onSubmit: (data: FormikForm, formikHelpers: FormikHelpers<FormikForm>) => Promise<StudentHomeworkDetail>;
 }
 
@@ -39,7 +39,7 @@ const parseData = (stringData: string): FormikForm => {
 
 const Form = ({
     onSubmit,
-}: IForm) => {
+}: FormProps) => {
     const {t} = useTranslation();
     const {addSnackbar} = useSnackbar();
     const initialValues = useInitialValues();

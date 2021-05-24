@@ -3,7 +3,7 @@ import {LinkTitleGrabber} from "components";
 import {TextField} from "@material-ui/core";
 
 
-export interface ILinkField {
+export interface LinkFieldProps {
     isEditMode: boolean;
     onChange: (newValue: string) => any;
     value: string;
@@ -13,7 +13,7 @@ const LinkField = ({
     isEditMode,
     onChange,
     value,
-}: ILinkField) => {
+}: LinkFieldProps) => {
     const [url, setUrl] = useState<string>(value);
 
     const submit = () => onChange(url);

@@ -6,7 +6,7 @@ import {SingleLesson} from "components";
 
 import createShadow from "../../createShadow";
 
-export interface ITimetable {
+export interface TimetableProps {
     lessons: StudentLessonDetail[];
     homeworks: StudentHomeworkDetail[];
     materials: StudentMaterialDetail[];
@@ -20,7 +20,7 @@ const Timetable = ({
     lessons,
     homeworks,
     materials,
-}: ITimetable) => {
+}: TimetableProps) => {
     const theme = useTheme();
 
     return (

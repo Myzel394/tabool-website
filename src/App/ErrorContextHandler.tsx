@@ -4,7 +4,7 @@ import update from "immutability-helper";
 
 import ErrorComponent from "./Error";
 
-export interface IErrorContext {
+export interface ErrorContextProps {
     children: ReactNode;
 }
 
@@ -33,7 +33,7 @@ const reducer = (
     }
 };
 
-const ErrorContextHandler = ({children}: IErrorContext) => {
+const ErrorContextHandler = ({children}: ErrorContextProps) => {
     const [state, dispatch]: [IError, any] = useReducer(reducer, initialErrorState);
 
     if (state.error) {

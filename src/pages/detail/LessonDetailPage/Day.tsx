@@ -2,12 +2,12 @@ import {cloneElement, memo} from "react";
 import {useAdaptedColor} from "hooks";
 import {useTheme} from "@material-ui/core";
 
-export interface IDay {
+export interface DayProps {
     color: string;
     dayComponent: JSX.Element;
 }
 
-const Day = ({color, dayComponent}: IDay) => {
+const Day = ({color, dayComponent}: DayProps) => {
     const theme = useTheme();
 
     const [textColor, backgroundColor] = useAdaptedColor(color, theme.palette.background.paper);

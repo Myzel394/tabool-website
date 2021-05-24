@@ -9,7 +9,7 @@ import ManageMaterials from "./ManageMaterials";
 
 export type AvailableActions = "addVideoConference" | "manageMaterials";
 
-export interface IActionHandler {
+export interface ActionHandlerProps {
     action: AvailableActions | null;
     onActionUpdate: (newAction: AvailableActions | null) => any;
 }
@@ -23,7 +23,7 @@ const ACTION_COMPONENT_MAP: Record<AvailableActions, FC<{}>> = {
 const ActionHandler = ({
     onActionUpdate,
     action,
-}: IActionHandler) => {
+}: ActionHandlerProps) => {
     const {
         scrollBack,
     } = useContext(StartPageContext);

@@ -7,7 +7,7 @@ import FlipMove from "react-flip-move";
 import Classbook from "./Classbook";
 
 
-export interface IConferenceList {
+export interface ConferenceListProps {
     classbooks: TeacherClassbook[];
 }
 
@@ -17,7 +17,7 @@ const style = {
 
 const ConferenceList = ({
     classbooks,
-}: IConferenceList) => {
+}: ConferenceListProps) => {
     return (
         <Grid container direction="row" spacing={2} alignItems="center" wrap="nowrap">
             <Grid item>

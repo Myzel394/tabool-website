@@ -3,7 +3,7 @@ import {Box, List, Typography} from "@material-ui/core";
 
 import BottomSheet from "./BottomSheet";
 
-export interface IBottomSheetAction {
+export interface BottomSheetActionProps {
     isOpen: boolean;
     onClose: () => void;
     children: ReactNode;
@@ -24,7 +24,7 @@ const BottomSheetAction = ({
     isOpen,
     onClose,
     children,
-}: IBottomSheetAction) => {
+}: BottomSheetActionProps) => {
     return (
         <BottomSheet
             isOpen={isOpen}

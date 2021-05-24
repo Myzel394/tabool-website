@@ -3,12 +3,14 @@ import {Typography} from "@material-ui/core";
 
 import styles from "../LessonContent.module.css";
 
-export interface ICourse {
+export interface CourseProps {
     name: string;
 }
 
+// TODO: Seriously
 
-const Course = ({name}: ICourse) => {
+
+const Course = ({name}: CourseProps) => {
     return (
         <Typography
             variant="h5"

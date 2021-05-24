@@ -22,7 +22,7 @@ export interface MaterialFile {
     announce: boolean;
 }
 
-export interface ISingleFile {
+export interface SingleFileProps {
     onRemove: () => any;
     onChange: (newMaterialFile: MaterialFile) => any;
     material: MaterialFile;
@@ -37,7 +37,7 @@ const SingleFile = ({
     onChange,
     onRemove,
     compressImage,
-}: ISingleFile, reference) => {
+}: SingleFileProps, reference) => {
     const {
         updateLesson,
         lesson,

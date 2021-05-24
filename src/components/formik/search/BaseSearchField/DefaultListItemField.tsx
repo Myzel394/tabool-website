@@ -5,7 +5,7 @@ import tinycolor from "tinycolor2";
 import ActiveCheckIcon from "./ActiveCheckIcon";
 
 
-export interface IDefaultListItemField {
+export interface DefaultListItemFieldProps {
     isSelected: boolean;
     isParentSelected: boolean;
     onClick: () => any;
@@ -23,7 +23,7 @@ const DefaultListItemField = ({
     onClick,
     primary,
     secondary,
-}: IDefaultListItemField) => {
+}: DefaultListItemFieldProps) => {
     const theme = useTheme();
 
     return (

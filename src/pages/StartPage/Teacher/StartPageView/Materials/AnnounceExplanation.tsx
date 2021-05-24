@@ -4,14 +4,15 @@ import {useTranslation} from "react-i18next";
 import {SimpleDialog} from "components";
 import {DialogContentText, IconButton} from "@material-ui/core";
 
+// TODO: Look usages
 
-export interface IAnnounceExplanation {
+export interface AnnounceExplanationProps {
     isAnnounced: boolean;
 }
 
 const AnnounceExplanation = ({
     isAnnounced,
-}: IAnnounceExplanation) => {
+}: AnnounceExplanationProps) => {
     const {t} = useTranslation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);

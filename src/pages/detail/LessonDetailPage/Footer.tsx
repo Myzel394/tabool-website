@@ -8,7 +8,7 @@ import {supportsWASM} from "supports";
 import ExplainDialog from "./ExplainDialog";
 
 
-export interface IFooter {
+export interface FooterProps {
     compressImages: boolean;
     onCompressImagesChange: (compressImages: boolean) => void;
 
@@ -28,7 +28,7 @@ const Footer = ({
     onCompressImagesChange,
     containsImages,
     disabled,
-}: IFooter) => {
+}: FooterProps) => {
     const {t} = useTranslation();
 
     const [showExplanation, setShowExplanation] = useState<boolean>(false);

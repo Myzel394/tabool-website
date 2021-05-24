@@ -4,11 +4,11 @@ import {HiDocument} from "react-icons/all";
 
 import LessonBadge from "../LessonBadge";
 
-export interface IMaterialBadge {
+export interface MaterialBadgeProps {
     count: number;
 }
 
-const MaterialBadge = ({count}: IMaterialBadge) => {
+const MaterialBadge = ({count}: MaterialBadgeProps) => {
     const {t} = useTranslation();
 
     return (

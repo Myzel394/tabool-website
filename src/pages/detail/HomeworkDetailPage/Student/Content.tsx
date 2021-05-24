@@ -31,7 +31,7 @@ import ExtraActions from "./ExtraActions";
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "isPrivate" | "lesson";
 
-export interface IContent {
+export interface ContentProps {
     homework: StudentHomeworkDetail;
 
     isFetching: boolean;
@@ -59,7 +59,7 @@ const Content = ({
     refetch,
     update,
     updateRelation,
-}: IContent) => {
+}: ContentProps) => {
     const {t} = useTranslation();
     const schema = useSchema();
     const classes = useClasses();

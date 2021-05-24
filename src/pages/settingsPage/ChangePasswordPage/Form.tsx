@@ -17,11 +17,11 @@ type FormikForm = ErrorFieldsInjection & IChangePasswordData & {
     newPasswordConfirm: string;
 };
 
-export interface IForm {
+export interface FormProps {
     onSubmit: (values: FormikForm, helpers: FormikHelpers<FormikForm>) => Promise<any>;
 }
 
-const Form = ({onSubmit}: IForm) => {
+const Form = ({onSubmit}: FormProps) => {
     const {
         inputIconColor,
     } = useColors();

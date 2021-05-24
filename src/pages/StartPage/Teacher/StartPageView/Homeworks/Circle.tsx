@@ -3,7 +3,7 @@ import {useForceUpdate} from "@shopify/react-hooks";
 import {useTheme} from "@material-ui/core";
 
 
-export interface ICircle {
+export interface CircleProps {
     color: string;
     fillPercentage: number;
     offsetPercentage: number;
@@ -26,7 +26,7 @@ const Circle = ({
     fillPercentage,
     offsetPercentage,
     color,
-}: ICircle) => {
+}: CircleProps) => {
     const theme = useTheme();
     const forceUpdate = useForceUpdate();
 

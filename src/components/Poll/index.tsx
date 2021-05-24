@@ -13,7 +13,7 @@ import SingleChoice from "./SingleChoice";
 import MultipleChoice from "./MultipleChoice";
 
 
-export interface IPoll {
+export interface PollProps {
     id: string;
     title: string;
     choices: PollChoice[];
@@ -42,7 +42,7 @@ const Poll = ({
     maxVoteChoices,
     maxVoteDate,
     title,
-}: IPoll) => {
+}: PollProps) => {
     const {t} = useTranslation();
     const votePoll = useVotePollAPI();
 

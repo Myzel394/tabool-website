@@ -8,7 +8,7 @@ import {FaLongArrowAltRight} from "react-icons/all";
 import Avatar from "./Avatar";
 
 
-export interface ISingleModification {
+export interface SingleModificationProps {
     lesson: StudentLessonDetail;
     modificationType: ModificationType;
     newSubject?: Subject | null;
@@ -18,7 +18,7 @@ const SingleModification = ({
     lesson,
     modificationType,
     newSubject,
-}: ISingleModification) => {
+}: SingleModificationProps) => {
     const {t} = useTranslation();
 
     if (!lesson) {

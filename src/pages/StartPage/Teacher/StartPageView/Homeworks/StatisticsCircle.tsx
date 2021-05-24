@@ -7,7 +7,7 @@ import {Tooltip} from "components";
 import Circle from "./Circle";
 
 
-export interface IStatisticsCircle {
+export interface StatisticsCircleProps {
     completedAmount: number;
     ignoredAmount: number;
     participantsCount: number;
@@ -29,7 +29,7 @@ const StatisticsCircle = ({
     completedAmount,
     ignoredAmount,
     participantsCount,
-}: IStatisticsCircle) => {
+}: StatisticsCircleProps) => {
     const {t} = useTranslation();
     const theme = useTheme();
     const classes = useStyles();

@@ -6,7 +6,7 @@ import {Gender} from "api";
 import {Information} from "../components";
 import genderColor from "../../constants/genderColor";
 
-export interface IGenderField {
+export interface GenderFieldProps {
     value: Gender;
     justIcon?: boolean;
     withColor?: boolean;
@@ -22,7 +22,7 @@ const GenderStatus = ({
     value,
     justIcon,
     withColor,
-}: IGenderField) => {
+}: GenderFieldProps) => {
     const {t} = useTranslation();
 
     const Icon = ICON_GENDER_MAPPING[value];

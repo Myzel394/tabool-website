@@ -7,7 +7,7 @@ import createMailToLink from "mailto-link";
 
 import {EMAIL} from "../../../constants/contact";
 
-export interface IHelpNeeded {
+export interface HelpNeededProps {
     isOpen: boolean;
     onClose: () => any;
 }
@@ -15,7 +15,7 @@ export interface IHelpNeeded {
 const HelpNeeded = ({
     isOpen,
     onClose,
-}: IHelpNeeded) => {
+}: HelpNeededProps) => {
     const {t} = useTranslation();
 
     return (

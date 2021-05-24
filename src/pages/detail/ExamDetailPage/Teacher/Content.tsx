@@ -16,7 +16,7 @@ import {DatePicker} from "formik-material-ui-pickers";
 import ExtraActions from "./ExtraActions";
 
 
-export interface IContent {
+export interface ContentProps {
     exam: TeacherExamDetail;
 
     isFetching: boolean;
@@ -35,7 +35,7 @@ const Content = ({
     isFetching,
     refetch,
     update,
-}: IContent) => {
+}: ContentProps) => {
     const {t} = useTranslation();
 
     const renderDay = renderDayWithLessonWeekdays(exam.course.weekdays, exam.course.subject.userRelation.color);

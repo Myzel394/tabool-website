@@ -17,7 +17,7 @@ import {Dayjs} from "dayjs";
 import Submissions from "./Submissions";
 
 
-export interface IRelatedObjects {
+export interface RelatedObjectsProps {
     lesson: StudentLessonDetail;
     lessonDate: Dayjs;
     materials: StudentMaterialDetail[];
@@ -37,7 +37,7 @@ const RelatedObjects = ({
     onLessonUpdate,
     lesson,
     lessonDate,
-}: IRelatedObjects) => {
+}: RelatedObjectsProps) => {
     const {t} = useTranslation();
 
     return (

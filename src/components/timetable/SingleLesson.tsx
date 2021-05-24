@@ -7,7 +7,7 @@ import dayjs, {Dayjs} from "dayjs";
 import {Badges, ExamBadge, HomeworkBadge, Lesson, LessonContent, MaterialBadge, VideoConferenceBadge} from "./Lesson";
 
 
-export interface ILessonEvent {
+export interface LessonEventProps {
     lesson: StudentLessonDetail;
 
     homeworkCount?: number;
@@ -39,7 +39,7 @@ const SingleLesson = ({
     showDetails,
     date,
     disableLinkWrapper,
-}: ILessonEvent) => {
+}: LessonEventProps) => {
     const badges = [
         homeworkCount && <HomeworkBadge count={homeworkCount} />,
         materialCount && <MaterialBadge count={materialCount} />,

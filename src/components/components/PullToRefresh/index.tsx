@@ -6,7 +6,7 @@ import {useWindowSize} from "hooks";
 import DefaultPullToRefreshObject from "./DefaultPullToRefreshElement";
 import State from "./State";
 
-export interface IPullToRefresh {
+export interface PullToRefreshProps {
     children: ReactNode;
     onRefresh: () => any;
     isRefreshing: boolean;
@@ -32,7 +32,7 @@ const PullToRefresh = ({
     getLoadingElement,
     isRefreshing,
     loadingElementHeight,
-}: IPullToRefresh) => {
+}: PullToRefreshProps) => {
     const $div = useRef<any>();
     const [, windowHeight] = useWindowSize();
 

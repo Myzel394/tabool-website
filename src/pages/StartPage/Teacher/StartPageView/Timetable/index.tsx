@@ -9,7 +9,7 @@ import StartPageContext from "../../StartPageContext";
 
 import Lesson from "./Lesson";
 
-export interface ITimetable {
+export interface TimetableProps {
     onLessonSelect?: (lesson: TeacherLessonDetail) => any;
 }
 
@@ -19,7 +19,7 @@ const fullWidth = {
 
 const Timetable = ({
     onLessonSelect,
-}: ITimetable) => {
+}: TimetableProps) => {
     const {
         dailyData: {
             classbooksForLessons: classbooks,

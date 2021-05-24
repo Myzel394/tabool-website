@@ -10,7 +10,7 @@ import {useElementSize, useRect} from "../../../../../hooks";
 import SubmissionElement from "./SubmissionElement";
 
 
-export interface ISubmissionsList {
+export interface SubmissionsListProps {
     listKey: string;
     submissions: TeacherSubmissionDetail[];
 }
@@ -27,7 +27,7 @@ const parseKey = (key: string): [string, Dayjs] => {
 const SubmissionsList = ({
     submissions,
     listKey,
-}: ISubmissionsList) => {
+}: SubmissionsListProps) => {
     const [lessonId] = parseKey(listKey);
     const lesson = submissions.find(submission => submission.lesson.id === lessonId)!.lesson;
 

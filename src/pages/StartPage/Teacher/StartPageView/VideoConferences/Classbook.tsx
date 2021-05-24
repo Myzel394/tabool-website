@@ -18,13 +18,13 @@ import LinkField from "./LinkField";
 import useClassbook from "./useClassbook";
 
 
-export interface IClassbook {
+export interface ClassbookProps {
     classbook: TeacherClassbook;
 }
 
 const Classbook = ({
     classbook,
-}: IClassbook) => {
+}: ClassbookProps) => {
     const {t} = useTranslation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -5,14 +5,14 @@ import {PollChoice} from "types";
 import {ButtonLike} from "../components";
 
 
-export interface ISingleChoice {
+export interface SingleChoiceProps {
     onChange: (value: string) => any;
     value: string;
     choices: PollChoice[];
 }
 
 
-const SingleChoice = ({onChange, value, choices}: ISingleChoice) => {
+const SingleChoice = ({onChange, value, choices}: SingleChoiceProps) => {
     return (
         <RadioGroup
             name="poll_choice_select_radio_group"

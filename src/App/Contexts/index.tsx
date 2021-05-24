@@ -7,13 +7,13 @@ import UserContextHandler from "./UserContextHandler";
 import UtilsContextHandler from "./UtilsContextHandler";
 
 
-export interface IContexts {
+export interface ContextsProps {
     children: ReactNode;
 }
 
 const queryClient = new QueryClient();
 
-const Contexts = ({children}: IContexts) => {
+const Contexts = ({children}: ContextsProps) => {
     return (
         <QueryClientProvider client={queryClient}>
             <UtilsContextHandler>

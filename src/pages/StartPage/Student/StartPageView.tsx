@@ -20,7 +20,7 @@ import Homeworks from "./Homeworks";
 import Timetable from "./Timetable";
 
 
-export interface IStartPageView {
+export interface StartPageViewProps {
     dailyData: StudentDailyDataView;
     onDailyDataChange: (newData: StudentDailyDataView) => any;
 
@@ -41,7 +41,7 @@ const StartPageView = ({
     onMaxFutureDaysChange,
     onTargetedDateChange,
     targetedDate,
-}: IStartPageView) => {
+}: StartPageViewProps) => {
     const {t} = useTranslation();
     const theme = useTheme();
     const {

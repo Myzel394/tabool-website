@@ -1,11 +1,11 @@
 import React, {HTMLAttributes, ReactNode, useMemo} from "react";
 
-import ColoredContainer, {IColoredContainer} from "./ColoredContainer";
+import ColoredContainer, {ColoredContainerProps} from "./ColoredContainer";
 
 export interface IColoredBox extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
-    color: IColoredContainer["color"];
-    parentTheme?: IColoredContainer["parentTheme"];
+    color: ColoredContainerProps["color"];
+    parentTheme?: ColoredContainerProps["parentTheme"];
 }
 
 const ColoredBox = ({

@@ -7,7 +7,7 @@ import {useTranslation} from "react-i18next";
 import DaysSelect from "./DaysSelect";
 
 
-export interface IForm {
+export interface FormProps {
     date: Dayjs;
     onDateChange: (newDate: Dayjs) => any;
 }
@@ -15,7 +15,7 @@ export interface IForm {
 const Form = ({
     date,
     onDateChange,
-}: IForm) => {
+}: FormProps) => {
     const {t} = useTranslation();
 
     return (

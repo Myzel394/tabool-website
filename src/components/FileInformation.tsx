@@ -10,7 +10,7 @@ import {StudentCourseDetail, TeacherCourseDetail} from "types";
 
 import SecondaryInformation from "./SecondaryInformation";
 
-export interface IFileInformation {
+export interface FileInformationProps {
     filename: string;
     size: number;
 
@@ -41,7 +41,7 @@ const FileInformation = ({
     course,
     warningContainer,
     maxLength,
-}: IFileInformation) => {
+}: FileInformationProps) => {
     const {t} = useTranslation();
 
     const [name, setName] = useInheritedState<string>(filename);

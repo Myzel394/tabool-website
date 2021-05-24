@@ -7,7 +7,7 @@ import PrimaryButton from "../PrimaryButton";
 import SecondaryButton from "../SecondaryButton";
 
 
-export interface IConfirmationDialog {
+export interface ConfirmationDialogProps {
     open: boolean;
 
     onConfirm: () => void;
@@ -20,7 +20,7 @@ export interface IConfirmationDialog {
 }
 
 
-const ConfirmationDialog = (props: IConfirmationDialog) => {
+const ConfirmationDialog = (props: ConfirmationDialogProps) => {
     const {t} = useTranslation();
     const titleId = useUniqueId("title", "modal"),
         contentId = useUniqueId("content", "modal");

@@ -10,7 +10,7 @@ import {useSnackbar} from "hooks";
 import {useHistory} from "react-router-dom";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 
-export interface IExtraActions {
+export interface ExtraActionsProps {
     id: string;
     allow: boolean;
 }
@@ -18,7 +18,7 @@ export interface IExtraActions {
 const ExtraActions = ({
     id,
     allow,
-}: IExtraActions) => {
+}: ExtraActionsProps) => {
     const {t} = useTranslation();
     const deleteHomework = useDeleteStudentHomeworkAPI();
     const {addError} = useSnackbar();

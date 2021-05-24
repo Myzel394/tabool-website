@@ -11,13 +11,13 @@ import {useSnackbar} from "hooks";
 import {useDeleteTeacherExamAPI} from "hooks/apis";
 
 
-export interface IExtraActions {
+export interface ExtraActionsProps {
     id: string;
 }
 
 const ExtraActions = ({
     id,
-}: IExtraActions) => {
+}: ExtraActionsProps) => {
     const {t} = useTranslation();
     const deleteHomework = useDeleteTeacherExamAPI();
     const {addError} = useSnackbar();

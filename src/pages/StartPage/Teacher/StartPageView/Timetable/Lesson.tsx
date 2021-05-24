@@ -8,7 +8,7 @@ import {Link} from "@material-ui/core";
 import createShadow from "../../../createShadow";
 
 
-export interface ILesson {
+export interface LessonProps {
     lesson: TeacherLessonDetail;
     isLessonSelectMode: boolean;
     hasVideoConference: boolean;
@@ -26,7 +26,7 @@ const Lesson = ({
     lesson,
     onLessonSelect,
     hasVideoConference,
-}: ILesson) => {
+}: LessonProps) => {
     const badges = [
         hasVideoConference && <VideoConferenceBadge />,
     ].filter(Boolean) as JSX.Element[];

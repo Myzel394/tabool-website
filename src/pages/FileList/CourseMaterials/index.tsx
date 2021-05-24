@@ -21,7 +21,7 @@ import Materials from "./Materials";
 import useFetchMaterials from "./useFetchMaterials";
 
 
-export interface ICourseMaterials {
+export interface CourseMaterialsProps {
     courseName: string;
     courseId: string;
     color: string;
@@ -57,7 +57,7 @@ const CourseMaterials = ({
     courseId,
     color,
     courseName,
-}: ICourseMaterials, ref) => {
+}: CourseMaterialsProps, ref) => {
     const {t} = useTranslation();
     const classes = useClasses();
     const {

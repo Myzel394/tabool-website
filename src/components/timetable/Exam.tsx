@@ -7,7 +7,7 @@ import {HiClock} from "react-icons/all";
 import {ColoredBox, Information} from "../components";
 
 
-export interface IExam {
+export interface ExamProps {
     course: StudentCourseDetail;
     targetedDate: Dayjs;
     information: string | null;
@@ -25,7 +25,7 @@ const Exam = ({
     course,
     information,
     targetedDate,
-}: IExam) => {
+}: ExamProps) => {
     const classes = useStyles();
 
     return (

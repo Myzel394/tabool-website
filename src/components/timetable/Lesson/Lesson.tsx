@@ -9,7 +9,7 @@ import {ColoredContainer} from "../../components";
 import LessonContext from "./LessonContext";
 import COLORS from "./colors";
 
-export interface ILesson {
+export interface LessonProps {
     children: ReactNode;
     startTime: Dayjs;
     endTime: Dayjs;
@@ -28,7 +28,7 @@ const Lesson = ({
     isDisabled,
     className,
     style,
-}: ILesson) => {
+}: LessonProps) => {
     const theme = useTheme();
     const contextValue = useMemo(() => ({
         color,

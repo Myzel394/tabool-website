@@ -5,11 +5,11 @@ import {useTranslation} from "react-i18next";
 
 import {Information} from "../components";
 
-export interface IBooleanStatus {
+export interface BooleanStatusProps {
     value: boolean;
 }
 
-const BooleanStatus = ({value}: IBooleanStatus) => {
+const BooleanStatus = ({value}: BooleanStatusProps) => {
     const {t} = useTranslation();
     const theme = useTheme();
 

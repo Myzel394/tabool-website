@@ -1,7 +1,7 @@
 import React, {memo, useMemo, useState} from "react";
 import {Transition} from "react-transition-group";
 
-export interface ITransitionWrapper {
+export interface TransitionWrapperProps {
     children: (style: any) => JSX.Element;
     active: boolean;
     offsetAmount?: number;
@@ -9,7 +9,7 @@ export interface ITransitionWrapper {
 
 const TRANSITION_DURATION = 150;
 
-const TransitionWrapper = ({children: childrenFn, offsetAmount, active}: ITransitionWrapper) => {
+const TransitionWrapper = ({children: childrenFn, offsetAmount, active}: TransitionWrapperProps) => {
     const [animationDuration, setAnimationDuration] = useState<number>(0);
     const transitionStyles = useMemo(() => ({
         entering: {

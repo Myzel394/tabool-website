@@ -3,13 +3,13 @@ import {Dialog, DialogActions, DialogActionsProps, DialogContent, DialogTitle} f
 import {useTranslation} from "react-i18next";
 import {PrimaryButton} from "components";
 
-export interface IFilterDialog {
+export interface FilterDialogProps {
     isOpen: boolean;
     children: DialogActionsProps["children"];
     onClose: () => any;
 }
 
-const FilterDialog = ({isOpen, children, onClose}: IFilterDialog) => {
+const FilterDialog = ({isOpen, children, onClose}: FilterDialogProps) => {
     const {t} = useTranslation();
 
     return (

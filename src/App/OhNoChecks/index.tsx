@@ -5,7 +5,7 @@ import {isIOS} from "react-device-detect";
 import IsIOS from "./IsIOS";
 
 
-export interface IOhNoChecks {
+export interface OhNoChecksProps {
     children: JSX.Element;
 }
 
@@ -15,7 +15,7 @@ interface Checks {
 
 const OhNoChecks = ({
     children,
-}: IOhNoChecks) => {
+}: OhNoChecksProps) => {
     const [checks, setChecks] = usePersistentStorage<Checks>({
         ios: false,
     }, "checks");

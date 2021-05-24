@@ -19,13 +19,13 @@ import StatisticsCircle from "./StatisticsCircle";
 import useQuery from "./useQuery";
 
 
-export interface IHomework {
+export interface HomeworkProps {
     homework: TeacherHomeworkDetail;
 }
 
 const Homework = ({
     homework,
-}: IHomework) => {
+}: HomeworkProps) => {
     const {t} = useTranslation();
     const {
         deleteHomework,

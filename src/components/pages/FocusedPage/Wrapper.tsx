@@ -3,7 +3,7 @@ import {Box, Container, useTheme} from "@material-ui/core";
 import {UtilsContext} from "contexts";
 
 
-export interface IWrapper {
+export interface WrapperProps {
     children: NonNullable<ReactNode>;
 
     maxWidth: "xs" | "sm" | "md" | "lg" | "xl" | false;
@@ -20,7 +20,7 @@ const Wrapper = ({
     maxWidth,
     bottomContent,
     style,
-}: IWrapper) => {
+}: WrapperProps) => {
     const {bottomSheetHeight} = useContext(UtilsContext);
     const theme = useTheme();
     const containerStyles = {

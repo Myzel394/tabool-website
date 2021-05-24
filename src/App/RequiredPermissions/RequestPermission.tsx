@@ -4,7 +4,7 @@ import {ReactSVG} from "react-svg";
 import {useTranslation} from "react-i18next";
 import {FocusedPage} from "components";
 
-export interface IRequestPermission {
+export interface RequestPermissionProps {
     title: string;
     description: string;
     svgLocation: string;
@@ -19,7 +19,7 @@ const RequestPermission = ({
     onDismiss,
     onGrant,
     title,
-}: IRequestPermission) => {
+}: RequestPermissionProps) => {
     const {t} = useTranslation();
 
     return (

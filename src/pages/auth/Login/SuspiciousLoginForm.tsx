@@ -9,7 +9,7 @@ import {LoadingOverlay, PrimaryButton} from "components";
 import {TextField} from "formik-material-ui";
 
 
-export interface ISuspiciousLoginForm {
+export interface SuspiciousLoginFormProps {
     onSubmit: (form: ILoginData) => Promise<ILoginResponse>;
     loginData: ILoginData;
 }
@@ -19,7 +19,7 @@ interface FormikForm {
 }
 
 
-const SuspiciousLoginForm = ({onSubmit, loginData}: ISuspiciousLoginForm) => {
+const SuspiciousLoginForm = ({onSubmit, loginData}: SuspiciousLoginFormProps) => {
     const {t} = useTranslation();
 
     const validationSchema = yup.object({

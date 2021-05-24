@@ -12,13 +12,13 @@ import Connector from "../../Connector";
 
 import ConferenceList from "./ConferenceList";
 
-export interface IVideoConferences {
+export interface VideoConferencesProps {
     classbooks: StudentClassbook[];
 }
 
 const VideoConferences = ({
     classbooks,
-}: IVideoConferences) => {
+}: VideoConferencesProps) => {
     const {t} = useTranslation();
     const theme = useTheme();
 

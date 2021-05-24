@@ -10,7 +10,7 @@ import {Checkbox, FormControlLabel} from "@material-ui/core";
 import Day from "../../../../Day";
 
 
-export interface ISettingsModal {
+export interface SettingsModalProps {
     isOpen: boolean;
     onClose: () => any;
 
@@ -34,7 +34,7 @@ const SettingsModal = ({
     lessonDateWeeks,
     announce: parentAnnounce,
     publishDatetime: parentPublishDatetime,
-}: ISettingsModal) => {
+}: SettingsModalProps) => {
     const {t} = useTranslation();
 
     const [announce, setAnnounce] = useInheritedState<boolean>(parentAnnounce);

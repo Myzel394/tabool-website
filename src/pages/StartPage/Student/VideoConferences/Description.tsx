@@ -5,7 +5,7 @@ import {buildPath, lazyDatetime} from "utils";
 import {ButtonLike} from "components";
 
 
-export interface IDescription {
+export interface DescriptionProps {
     date: Dayjs;
     secondaryText: string;
 }
@@ -18,7 +18,7 @@ const style = {
 const Description = ({
     date,
     secondaryText,
-}: IDescription) => {
+}: DescriptionProps) => {
     return (
         <ButtonLike
             style={style}

@@ -5,13 +5,13 @@ import {PrimaryButton, SecondaryButton} from "components";
 import {Alert} from "@material-ui/lab";
 import {supportsWASM} from "supports";
 
-export interface IExplainDialog {
+export interface ExplainDialogProps {
     isOpen: boolean;
     onClose: () => any;
     onActivateCompression: () => any;
 }
 
-const ExplainDialog = ({isOpen, onClose, onActivateCompression}: IExplainDialog) => {
+const ExplainDialog = ({isOpen, onClose, onActivateCompression}: ExplainDialogProps) => {
     const {t} = useTranslation();
 
     return (

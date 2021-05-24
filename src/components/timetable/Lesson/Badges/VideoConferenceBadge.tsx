@@ -4,11 +4,11 @@ import {FaVideo} from "react-icons/all";
 
 import LessonBadge from "../LessonBadge";
 
-export interface IVideoConferenceBadge {
+export interface VideoConferenceBadgeProps {
     isActive?: boolean;
 }
 
-const VideoConferenceBadge = ({isActive}: IVideoConferenceBadge) => {
+const VideoConferenceBadge = ({isActive}: VideoConferenceBadgeProps) => {
     const {t} = useTranslation();
 
     return (

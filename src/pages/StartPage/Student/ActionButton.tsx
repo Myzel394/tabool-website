@@ -10,7 +10,7 @@ import {Dayjs} from "dayjs";
 
 import useSpeedDialStyle from "../useSpeedDialStyle";
 
-export interface IActionButton {
+export interface ActionButtonProps {
     lesson: StudentLessonDetail;
     date: Dayjs;
 }
@@ -18,7 +18,7 @@ export interface IActionButton {
 const ActionButton = ({
     lesson,
     date,
-}: IActionButton) => {
+}: ActionButtonProps) => {
     const {t} = useTranslation();
     const theme = useTheme();
     const history = useHistory();

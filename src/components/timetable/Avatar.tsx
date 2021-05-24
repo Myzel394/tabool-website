@@ -7,13 +7,13 @@ import {buildPath, findNextDate, lazyDatetime} from "utils";
 import dayjs from "dayjs";
 
 
-export interface IAvatar {
+export interface AvatarProps {
     lesson?: StudentLessonDetail;
     subject?: Subject;
 }
 
 
-const Avatar = ({lesson, subject}: IAvatar) => {
+const Avatar = ({lesson, subject}: AvatarProps) => {
     if (!lesson && !subject) {
         throw new Error("Lesson or subject must be set.");
     }

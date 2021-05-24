@@ -9,7 +9,7 @@ import StartPageContext from "../StartPageContext";
 
 import {ActionHandler, AvailableActions} from "./Actions";
 
-export interface IActionButton {
+export interface ActionButtonProps {
     scrollPositionRef: MutableRefObject<number>;
 }
 
@@ -29,7 +29,7 @@ const getScrollPosition = (): number =>
 
 const ActionButton = ({
     scrollPositionRef,
-}: IActionButton) => {
+}: ActionButtonProps) => {
     const {
         requestLesson: parentRequestLesson,
     } = useContext(StartPageContext);

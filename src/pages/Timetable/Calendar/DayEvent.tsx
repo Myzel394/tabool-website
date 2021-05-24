@@ -9,7 +9,7 @@ import TimetableContext from "../TimetableContext";
 import getModificationClass from "./getModificationClass";
 
 
-export interface IDayEvent {
+export interface DayEventProps {
     event: CalendarEvent;
     style?: CSSProperties;
 }
@@ -17,7 +17,7 @@ export interface IDayEvent {
 const DayEvent = ({
     event,
     style,
-}: IDayEvent) => {
+}: DayEventProps) => {
     const {
         date,
     } = useContext(TimetableContext);

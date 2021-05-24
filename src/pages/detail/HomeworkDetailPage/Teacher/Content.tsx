@@ -27,7 +27,7 @@ import ExtraActions from "./ExtraActions";
 
 type HomeworkKeys = "information" | "type" | "dueDate" | "createdAt" | "lesson" | "privateToStudent";
 
-export interface IContent {
+export interface ContentProps {
     homework: TeacherHomeworkDetail;
     updateHomework: Dispatch<SetStateAction<TeacherHomeworkDetail>>;
 
@@ -46,7 +46,7 @@ const Content = ({
     isFetching,
     dataUpdatedAt,
     homework,
-}: IContent) => {
+}: ContentProps) => {
     const {t} = useTranslation();
     const schema = useSchema();
 

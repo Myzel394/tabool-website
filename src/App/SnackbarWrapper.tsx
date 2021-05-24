@@ -7,13 +7,13 @@ import {SnackbarKey, SnackbarProvider} from "notistack";
 import {UtilsContext} from "../contexts";
 
 
-export interface ISnackbarProvider {
+export interface SnackbarProviderProps {
     children: ReactNode;
 }
 
 const SnackbarWrapper = ({
     children,
-}: ISnackbarProvider) => {
+}: SnackbarProviderProps) => {
     const {
         bottomSheetHeight,
     } = useContext(UtilsContext);

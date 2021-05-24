@@ -9,11 +9,11 @@ import firebase, {isSupported} from "../firebase";
 import {fcmKey} from "../constants/firebase";
 
 
-export interface IFCMHandler {
+export interface FCMHandlerProps {
     children: JSX.Element;
 }
 
-const FCMHandler = ({children}: IFCMHandler) => {
+const FCMHandler = ({children}: FCMHandlerProps) => {
     const sendToken = useSendFCMTokenAPI();
     const {
         state,

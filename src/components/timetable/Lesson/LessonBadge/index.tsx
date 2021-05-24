@@ -2,12 +2,12 @@ import React, {ReactNode} from "react";
 import {Tooltip} from "components";
 import {Box, useTheme} from "@material-ui/core";
 
-export interface ILessonBadge {
+export interface LessonBadgeProps {
     description: string;
     getIcon: (props) => ReactNode;
 }
 
-const LessonBadge = ({description, getIcon}: ILessonBadge) => {
+const LessonBadge = ({description, getIcon}: LessonBadgeProps) => {
     const theme = useTheme();
 
     return (

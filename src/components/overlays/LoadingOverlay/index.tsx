@@ -4,7 +4,9 @@ import clsx from "clsx";
 
 import classes from "./index.module.css";
 
-export interface ILoadingOverlay {
+// TODO: CSS!
+
+export interface LoadingOverlayProps {
     isLoading: boolean;
     children: ReactNode;
 
@@ -12,7 +14,7 @@ export interface ILoadingOverlay {
     value?: number;
 }
 
-const LoadingOverlay = ({isLoading, children, text, value}: ILoadingOverlay) => {
+const LoadingOverlay = ({isLoading, children, text, value}: LoadingOverlayProps) => {
     const theme = useTheme();
     const styles = useMemo(() => {
         return isLoading ? {

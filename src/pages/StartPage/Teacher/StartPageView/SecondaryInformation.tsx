@@ -2,7 +2,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/core";
 
 
-export interface ISecondaryInformation {
+export interface SecondaryInformationProps {
     information: [string, any][];
 }
 
@@ -22,7 +22,7 @@ const useClasses = makeStyles(theme => ({
 
 const SecondaryInformation = ({
     information,
-}: ISecondaryInformation) => {
+}: SecondaryInformationProps) => {
     const classes = useClasses();
 
     return (

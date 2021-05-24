@@ -7,11 +7,11 @@ import PressOnAllow from "../PressOnAllow";
 
 import {notification} from "./svg";
 
-export interface IRequestPermission {
+export interface RequestPermissionProps {
     onDone: (hasGranted: PermissionType) => void;
 }
 
-const NotificationPermission = ({onDone}: IRequestPermission) => {
+const NotificationPermission = ({onDone}: RequestPermissionProps) => {
     const {t} = useTranslation();
 
     const [isRequesting, setIsRequesting] = useState<boolean>(false);

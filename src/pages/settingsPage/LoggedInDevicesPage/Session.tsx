@@ -36,7 +36,7 @@ import {useSnackbar} from "hooks";
 import UAParser from "ua-parser-js";
 
 
-export interface ISession {
+export interface SessionProps {
     id: string;
     lastActivity: Dayjs;
     userAgent: string;
@@ -67,7 +67,7 @@ const Session = ({
     lastActivity,
     userAgent,
     onDelete,
-}: ISession) => {
+}: SessionProps) => {
     const {t} = useTranslation();
     const deleteSession = useDeleteSessionAPI();
     const {addError} = useSnackbar();

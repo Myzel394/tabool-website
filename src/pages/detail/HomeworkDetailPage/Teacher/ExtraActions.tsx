@@ -12,13 +12,13 @@ import {MdDeleteForever, MdMoreVert} from "react-icons/all";
 import {BottomSheetAction} from "../../../../components";
 
 
-export interface IExtraAction {
+export interface ExtraActionProps {
     id: string;
 }
 
 const ExtraActions = ({
     id,
-}: IExtraAction) => {
+}: ExtraActionProps) => {
     const {t} = useTranslation();
     const deleteHomework = useDeleteTeacherHomeworkAPI();
     const {addError} = useSnackbar();

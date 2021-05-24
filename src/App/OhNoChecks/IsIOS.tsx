@@ -3,13 +3,13 @@ import {FocusedPage, SecondaryButton} from "components";
 import {Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
-export interface IIsIOS {
+export interface IsIOSProps {
     onClose: () => any;
 }
 
 const IsIOS = ({
     onClose,
-}: IIsIOS) => {
+}: IsIOSProps) => {
     const {t} = useTranslation();
 
     return (

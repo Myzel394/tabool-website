@@ -20,7 +20,7 @@ import {Alert} from "@material-ui/lab";
 
 import {SearchBar} from "../../inputs";
 
-import OrderingDialog, {IOrderingDialog} from "./OrderingDialog";
+import OrderingDialog, {OrderingDialogProps} from "./OrderingDialog";
 import FilterDialog from "./FilterDialog";
 import RowElement, {IRowElement} from "./RowElement";
 
@@ -40,7 +40,7 @@ export interface ISearchPage<DataType = any, OrderingType = string> {
     sortType: "numeric" | "alphabetic" | "amount";
     sorting: "ascending" | "descending";
 
-    orderings: IOrderingDialog["orderings"];
+    orderings: OrderingDialogProps["orderings"];
     ordering: OrderingType;
     onOrderingChange: (ordering: OrderingType) => any;
 

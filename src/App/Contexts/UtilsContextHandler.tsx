@@ -2,11 +2,11 @@ import React, {ReactNode, useState} from "react";
 import {UtilsContext} from "contexts";
 import {useForceUpdate} from "@shopify/react-hooks";
 
-export interface IUtilsContextHandler {
+export interface UtilsContextHandlerProps {
     children: ReactNode;
 }
 
-const UtilsContextHandler = ({children}: IUtilsContextHandler) => {
+const UtilsContextHandler = ({children}: UtilsContextHandlerProps) => {
     const [bottomSheetHeight, setBottomSheetHeight] = useState<number>(0);
     const forceUpdate = useForceUpdate();
 

@@ -11,7 +11,7 @@ interface OrderingType {
     name: string;
 }
 
-export interface IOrderingDialog {
+export interface OrderingDialogProps {
     isOpen: boolean;
     onClose: () => any;
     orderings: OrderingType[];
@@ -25,7 +25,7 @@ const OrderingDialog = ({
     orderings,
     value,
     onValueChange,
-}: IOrderingDialog) => {
+}: OrderingDialogProps) => {
     const {t} = useTranslation();
 
     return (

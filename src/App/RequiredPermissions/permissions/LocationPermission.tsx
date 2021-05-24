@@ -8,11 +8,11 @@ import RequestPermission from "../RequestPermission";
 import {location} from "./svg";
 
 
-export interface ILocationPermission {
+export interface LocationPermissionProps {
     onDone: (hasGranted: PermissionType) => void;
 }
 
-const LocationPermission = ({onDone}: ILocationPermission) => {
+const LocationPermission = ({onDone}: LocationPermissionProps) => {
     const {t} = useTranslation();
 
     const [isRequesting, setIsRequesting] = useState<boolean>(false);
