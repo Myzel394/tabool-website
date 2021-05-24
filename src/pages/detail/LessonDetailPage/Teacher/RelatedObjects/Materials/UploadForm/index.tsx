@@ -1,48 +1,32 @@
 import React, {useContext, useMemo} from "react";
 import {List} from "@material-ui/core";
-import {DropZone} from "components";
 import update from "immutability-helper";
-import dayjs from "dayjs";
+import {DropZone} from "components";
 import getNextLessonDate from "utils/getNextLessonDate";
+import dayjs from "dayjs";
 import {getEndTime, getStartTime} from "utils";
 
-import useFiles from "../../../useFiles";
-import SubmissionContext from "../SubmissionContext";
-import Footer from "../../../Footer";
+import useFiles from "../../../../useFiles";
+import Footer from "../../../../Footer";
+import RelatedObjectsContext from "../../RelatedObjectsContext";
 
-import SingleFile from "./SingleFile";
-import {SingleFileReference, SubmissionUploadFile} from "./types";
-
-const FILENAME_EXTENSION_REGEX = /^([^\\]*)\.(\w+)$/;
-const MAX_FILENAME_LENGTH = 31;
-
-const createFilename = (filename: string): string => {
-    const result = FILENAME_EXTENSION_REGEX.exec(filename);
-
-    if (!result) {
-        return filename;
-    }
-
-    const name = result[1];
-    const extension = result[2];
-
-    return `${name.substr(0, MAX_FILENAME_LENGTH - (extension.length + 1))}.${extension}`;
-};
+import SingleFile, {MaterialFile} from "./SingleFile";
 
 const UploadForm = () => {
     const {
         lesson,
-    } = useContext(SubmissionContext);
+        updateLesson,
+    } = useContext(RelatedObjectsContext);
     const {
-        setCompressImages,
-        compressImages,
+        $files,
         files,
         uploadFiles,
+        compressImages,
         containsImages,
+        setCompressImages,
         setFiles,
         isUploading,
-        $files,
-    } = useFiles<SubmissionUploadFile>();
+    } = useFiles<MaterialFile>();
     const nextLessonDate = useMemo(() =>
         getNextLessonDate(dayjs(), lesson.course.weekdays.map(weekday => ({
             weekday,
@@ -51,39 +35,26 @@ const UploadForm = () => {
         }))),
     [lesson]);
 
-    const addFiles = (files: FileList) =>
-        setFiles(prevState => [
-            ...prevState,
-            ...Array.from(files)
-                .map(file => ({
-                    nativeFile: file,
-                    publishDatetime: nextLessonDate,
-                    name: createFilename(file.name),
-                })),
-        ]);
-
     return (
-        <DropZone<SubmissionUploadFile>
+        <DropZone<MaterialFile>
             files={files}
-            disabled={isUploading}
-            renderList={(files) =>
+            renderList={files => (
                 <>
                     <List>
-                        {files.map((file, index) => (
+                        {files.map((material, index) => (
                             <div
                                 // eslint-disable-next-line react/no-array-index-key
-                                key={`submission_add_${file.nativeFile.name}_${index}`}
+                                key={`submission_add_${material.nativeFile.name}_${index}`}
                             >
                                 <SingleFile
-                                    ref={(reference: SingleFileReference) => {
+                                    ref={(reference: any) => {
                                         $files.current[index] = reference;
                                     }}
-                                    maxLength={MAX_FILENAME_LENGTH}
-                                    file={file}
+                                    material={material}
                                     compressImage={compressImages}
-                                    onFileChange={newFile => setFiles(prevState => update(prevState, {
+                                    onChange={newMaterial => setFiles(prevState => update(prevState, {
                                         [index]: {
-                                            $set: newFile,
+                                            $set: newMaterial,
                                         },
                                     }))}
                                     onRemove={() => setFiles(prevState => update(prevState, {
@@ -96,17 +67,25 @@ const UploadForm = () => {
                         ))}
                     </List>
                     <Footer
-                        disabled={isUploading}
                         compressImages={compressImages}
                         containsImages={containsImages}
+                        disabled={isUploading}
                         onCompressImagesChange={setCompressImages}
                         onUpload={uploadFiles}
                     />
                 </>
-            }
-            onFilesAdded={addFiles}
+            )}
+            onFilesAdded={newFiles => setFiles(oldFiles => [
+                ...oldFiles,
+                ...Array.from(newFiles).map(file => ({
+                    nativeFile: file,
+                    name: file.name,
+                    announce: true,
+                    publishDatetime: nextLessonDate,
+                })),
+            ])}
         />
     );
 };
-
 export default UploadForm;
+

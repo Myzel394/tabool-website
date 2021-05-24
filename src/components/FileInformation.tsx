@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {Dayjs} from "dayjs";
 import {ListItemText, Portal, TextField} from "@material-ui/core";
 import prettyBytes from "pretty-bytes";
@@ -6,7 +6,7 @@ import {MdAdd, MdFileUpload} from "react-icons/all";
 import {useInheritedState} from "hooks";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
-import {StudentLessonDetail} from "types";
+import {StudentCourseDetail, TeacherCourseDetail} from "types";
 
 import SecondaryInformation from "./SecondaryInformation";
 
@@ -16,7 +16,7 @@ export interface IFileInformation {
 
     uploadDate?: Dayjs | null;
     creationDate?: Dayjs;
-    lesson?: StudentLessonDetail;
+    course?: StudentCourseDetail | TeacherCourseDetail;
     warningContainer?: any;
     onFilenameChange?: (newName: string) => void;
     maxLength?: number;
@@ -38,7 +38,7 @@ const FileInformation = ({
     size,
     uploadDate,
     onFilenameChange,
-    lesson,
+    course,
     warningContainer,
     maxLength,
 }: IFileInformation) => {
@@ -51,10 +51,9 @@ const FileInformation = ({
         const lowerCase = name.toLowerCase();
 
         return Boolean(
-            // Course
-            lesson && (
-                lowerCase.includes(lesson.course.subject.name.toLowerCase()) ||
-                lowerCase.includes(`${lesson.course.subject.shortName}${lesson.course.courseNumber}`.toLowerCase())
+            course && (
+                lowerCase.includes(course.subject.name.toLowerCase()) ||
+                lowerCase.includes(`${course.subject.shortName}${course.courseNumber}`.toLowerCase())
             ),
         );
     };
@@ -115,7 +114,7 @@ const FileInformation = ({
             {containsUnnecessaryInformation() && (
                 <Portal container={warningContainer}>
                     <Alert severity="warning">
-                        {t("Vermeide unnötige Angaben in Dateinamen (Kurs, Datum, 'AB', etc.).")}
+                        {t("Vermeide unnötige Angaben in Dateinamen wie der Kursname, das Datum, \"AB\", etc.")}
                     </Alert>
                 </Portal>
             )}
@@ -123,4 +122,4 @@ const FileInformation = ({
     );
 };
 
-export default memo(FileInformation);
+export default FileInformation;

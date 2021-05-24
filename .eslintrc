@@ -3,6 +3,7 @@
         "plugin:@shopify/typescript",
         "plugin:@shopify/react"
     ],
+    "plugins": ["unused-imports"],
     "rules": {
         "quotes": [
             "error",
@@ -85,7 +86,8 @@
         "react/jsx-max-props-per-line": ["error", {
             "maximum": 1,
             "when": "multiline"
-        }]
+        }],
+        "unused-imports/no-unused-imports": ["error"]
     },
     "env": {
         "browser": true,

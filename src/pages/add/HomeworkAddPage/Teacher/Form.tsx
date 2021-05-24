@@ -71,14 +71,15 @@ const Form = ({
                                     <Field
                                         required
                                         disablePast
-                                        innerRef={reference => {
-                                            if (reference.lesson) {
-                                                setLesson(reference.lesson);
-                                            }
-                                        }}
                                         name="lesson"
                                         label={t("Stunde")}
                                         component={LessonField}
+                                        onLessonFetch={newLesson => {
+                                            // Handles init lesson fetch
+                                            if (!lesson) {
+                                                setLesson(newLesson);
+                                            }
+                                        }}
                                         onError={() => setIsError(true)}
                                         onChange={async event => {
                                             setIsError(false);

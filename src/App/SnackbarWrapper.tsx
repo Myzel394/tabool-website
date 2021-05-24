@@ -1,13 +1,10 @@
-import React, {ReactNode, useCallback, useContext, useLayoutEffect, useMemo, useRef, useState} from "react";
+import React, {ReactNode, useCallback, useContext, useMemo, useRef} from "react";
 import {isMobile} from "react-device-detect";
 import {IconButton} from "@material-ui/core";
 import {MdClose} from "react-icons/md";
-import {useElementSize} from "hooks";
 import {SnackbarKey, SnackbarProvider} from "notistack";
 
 import {UtilsContext} from "../contexts";
-
-import BottomNavigation from "./BottomNavigation";
 
 
 export interface ISnackbarProvider {

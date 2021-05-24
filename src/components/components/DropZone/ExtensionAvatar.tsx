@@ -14,6 +14,7 @@ const EXTENSION_COLOR_MAPPING = {
     jpg: "#1f9213",
     png: "#1F9213",
     webp: "#1F9213",
+    svg: "#2cc61d",
 
     pdf: "#ee581d",
 

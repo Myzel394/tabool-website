@@ -1,6 +1,6 @@
 import {useCallback, useContext} from "react";
 import {AxiosContext} from "contexts";
-import {StudentSubmissionDetail} from "types";
+import {ProgressFunction, StudentSubmissionDetail} from "types";
 import getLoginConfig from "api/getLoginConfig";
 import {Dayjs} from "dayjs";
 import update from "immutability-helper";
@@ -15,8 +15,6 @@ export interface ICreateStudentSubmissionData {
     name: string;
     publishDatetime: Dayjs | null;
 }
-
-export type ProgressFunction = (progress: number) => any;
 
 const useCreateStudentSubmission = () => {
     const {instance, buildUrl} = useContext(AxiosContext);

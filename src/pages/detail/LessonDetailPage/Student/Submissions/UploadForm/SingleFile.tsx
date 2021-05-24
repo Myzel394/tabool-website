@@ -1,17 +1,20 @@
-import React, {forwardRef, useContext, useRef, useState} from "react";
+import React, {forwardRef, useContext, useImperativeHandle, useRef, useState} from "react";
 import {IconButton, ListItem, ListItemIcon, ListItemSecondaryAction} from "@material-ui/core";
 import {MdSettings} from "react-icons/all";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Dayjs} from "dayjs";
-import {ExtensionAvatar, LoadingOverlay} from "components";
+import {ExtensionAvatar, LoadingOverlay, FileInformation} from "components";
+import {useFileUpload} from "hooks";
+import {ICreateStudentSubmissionData, useCreateStudentSubmission} from "hooks/apis";
+import {getTextForState} from "hooks/useFileUpload";
+import {AxiosError} from "axios";
 
-import {SubmissionUploadFile} from "../types";
-import SubmissionContext from "../../SubmissionContext";
-import FileInformation from "../../FileInformation";
-import SettingsModal from "../../SettingsModal";
+import SubmissionContext from "../SubmissionContext";
+import {StudentSubmissionDetail} from "../../../../../../types";
 
-import useFileUpload from "./useFileUpload";
+import SettingsModal from "./SettingsModal";
+import {SubmissionUploadFile} from "./types";
 
 
 export interface ISingleFile {
@@ -33,12 +36,16 @@ const SingleFile = ({
 }: ISingleFile, reference) => {
     const {
         lesson,
+        lessonDate,
+        onSubmissionsChange,
     } = useContext(SubmissionContext);
     const {t} = useTranslation();
 
     const $warningContainer = useRef<any>();
 
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+
+    const sendSubmission = useCreateStudentSubmission();
 
     // File
     const {name, publishDatetime} = file;
@@ -57,16 +64,40 @@ const SingleFile = ({
         isPreparingUpload,
         isReadingFile,
         isProcessing,
-        progress,
         errorMessage,
         isUploaded,
-    } = useFileUpload({
+        upload,
+        readFile,
+        isDoingAnything,
+        progress = 0,
+    } = useFileUpload<StudentSubmissionDetail, AxiosError, ICreateStudentSubmissionData>(
+        file.nativeFile,
+        sendSubmission,
+        undefined,
+        {
+            onSuccess: newSubmission => onSubmissionsChange(oldSubmissions => [
+                ...oldSubmissions,
+                newSubmission,
+            ]),
+        },
+    );
+
+    useImperativeHandle(reference, () => ({
+        isCompressing,
+        isUploading,
         nativeFile: file.nativeFile,
-        compressImage,
-        reference,
-        name,
-        publishDatetime,
-    });
+        upload: async () => {
+            const loadedFile = await readFile();
+
+            return upload({
+                name,
+                lessonDate,
+                file: loadedFile,
+                publishDatetime,
+                lessonId: lesson.id,
+            });
+        },
+    }));
 
     if (isUploaded) {
         return null;
@@ -74,20 +105,15 @@ const SingleFile = ({
 
     return (
         <LoadingOverlay
-            isLoading={isUploading || isCompressing || isPreparingUpload || isProcessing || isReadingFile}
-            text={(() => {
-                if (isReadingFile) {
-                    return t("Datei wird gelesen");
-                } else if (isPreparingUpload) {
-                    return t("Hochladen wird vorbereitet");
-                } else if (isCompressing) {
-                    return t("Bild wird komprimiert");
-                } else if (isUploading) {
-                    return t("Datei wird hochgeladen");
-                } else {
-                    return t("Datei wird vom Server verarbeitet");
-                }
-            })()}
+            isLoading={isDoingAnything}
+            text={getTextForState({
+                isReadingFile,
+                isProcessing,
+                isUploaded,
+                isUploading,
+                isCompressing,
+                isPreparingUpload,
+            }, t)}
             value={[1, 0].includes(progress) ? undefined : progress * 100}
         >
             <ListItem>
@@ -97,7 +123,7 @@ const SingleFile = ({
                 <FileInformation
                     maxLength={maxLength}
                     filename={name}
-                    lesson={lesson}
+                    course={lesson.course}
                     uploadDate={publishDatetime}
                     size={file.nativeFile.size}
                     warningContainer={$warningContainer.current}

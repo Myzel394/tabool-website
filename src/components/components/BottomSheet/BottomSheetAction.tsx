@@ -16,6 +16,8 @@ const wordBreakStyle = {
     wordBreak: "break-all" as "break-all",
 };
 
+export const ICON_SIZE = "1.5rem";
+
 const BottomSheetAction = ({
     title,
     description,

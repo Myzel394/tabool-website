@@ -1,4 +1,3 @@
-import React from "react";
 import {Dayjs} from "dayjs";
 
 export interface ITime {

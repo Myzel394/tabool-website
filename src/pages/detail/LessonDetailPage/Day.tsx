@@ -1,4 +1,4 @@
-import React, {cloneElement, memo} from "react";
+import {cloneElement, memo} from "react";
 import {useAdaptedColor} from "hooks";
 import {useTheme} from "@material-ui/core";
 

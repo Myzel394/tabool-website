@@ -24,3 +24,5 @@ export type PageType = number;
 export interface IDelete {
     ids: string[];
 }
+
+export type ProgressFunction = (progress: number) => any;

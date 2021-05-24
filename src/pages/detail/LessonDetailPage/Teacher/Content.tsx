@@ -10,6 +10,7 @@ import {Field} from "formik";
 import {TextField} from "formik-material-ui";
 import update from "immutability-helper";
 
+import RelatedObjects from "./RelatedObjects";
 import useValidationSchema from "./useValidationSchema";
 import useClassbook from "./useClassbook";
 
@@ -165,6 +166,17 @@ const Content = ({
                     });
                 }
             })()}
+            bottomNode={
+                <RelatedObjects
+                    updateLesson={updateLesson}
+                    lesson={lesson.lessonInformation}
+                    date={lessonDate}
+                    homeworks={lesson.homeworks}
+                    modifications={lesson.modifications}
+                    submissions={lesson.submissions}
+                    materials={lesson.materials}
+                />
+            }
             onSubmit={(values, {setSubmitting}) =>
                 updateClassbook(values)
                     .then(newClassbook => updateLesson(lesson => update(lesson, {

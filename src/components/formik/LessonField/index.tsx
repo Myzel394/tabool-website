@@ -1,6 +1,6 @@
-import React, {forwardRef, useImperativeHandle, useMemo, useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useMemo, useState} from "react";
 import {FieldProps} from "formik";
-import {StudentLessonDetail, StudentTimetableDetail} from "types";
+import {StudentLessonDetail, StudentTimetableDetail, TeacherLessonDetail, TeacherTimetableDetail} from "types";
 import {useFetchStudentCurrentTimetableAPI} from "hooks/apis";
 import {useDeviceWidth, useInheritedState, useQueryOptions} from "hooks";
 import {useQuery} from "react-query";
@@ -33,6 +33,7 @@ export interface ILessonField extends FieldProps {
     disableFuture?: boolean;
 
     onChange?: (event) => any;
+    onLessonFetch?: (lesson: StudentLessonDetail | TeacherLessonDetail) => any;
     onError?: (error: AxiosError) => any;
     helpText?: string;
 }
@@ -42,7 +43,7 @@ export interface LessonFieldReference {
     close: () => void;
     updateDate: (newDate: Date) => void;
 
-    lesson?: StudentLessonDetail;
+    lesson?: StudentLessonDetail | TeacherLessonDetail;
 }
 
 const isDateSelected = (lessonDate: Dayjs, selectedDate: Dayjs) =>
@@ -71,6 +72,7 @@ const LessonField = ({
 
     helpText,
     onError,
+    onLessonFetch,
     onChange: customOnChange,
 }: ILessonField, ref) => {
     const {t} = useTranslation();
@@ -90,7 +92,7 @@ const LessonField = ({
     const {
         data: timetable,
         isLoading,
-    } = useQuery<StudentTimetableDetail, AxiosError>(
+    } = useQuery<StudentTimetableDetail | TeacherTimetableDetail, AxiosError>(
         "fetch_current_timetable",
         fetchTimetable,
         {
@@ -107,6 +109,12 @@ const LessonField = ({
             value: selectedLessonIdentifier,
         },
     });
+
+    useEffect(() => {
+        if (onLessonFetch && lesson) {
+            onLessonFetch(lesson);
+        }
+    }, [lesson, onLessonFetch]);
 
     useImperativeHandle(ref, () => ({
         lesson,

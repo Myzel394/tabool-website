@@ -1,6 +1,6 @@
-import React, {ReactNode, useMemo} from "react";
+import React, {ReactNode} from "react";
 import {Tooltip} from "components";
-import {Box, makeStyles, Typography, TypographyProps, useTheme} from "@material-ui/core";
+import {Box, makeStyles, Typography, TypographyProps} from "@material-ui/core";
 
 export interface IInformation extends TypographyProps {
     getIcon: (props) => ReactNode;

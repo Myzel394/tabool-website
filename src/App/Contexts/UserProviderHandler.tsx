@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {observeStore} from "utils";

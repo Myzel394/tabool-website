@@ -22,8 +22,8 @@ import Information from "../Information";
 import ExtensionAvatar from "./ExtensionAvatar";
 
 export interface IDropZone<FileType = any> {
-    value: FileType[];
-    onChange: (files: FileList) => any;
+    files: FileType[];
+    onFilesAdded: (files: FileList) => any;
 
     renderList: (element: FileType[]) => ReactNode;
 
@@ -33,8 +33,8 @@ export interface IDropZone<FileType = any> {
 }
 
 const DropZone = <FileType extends any = any>({
-    value,
-    onChange,
+    files,
+    onFilesAdded,
     renderList,
     disabled,
 }: IDropZone<FileType>) => {
@@ -51,7 +51,7 @@ const DropZone = <FileType extends any = any>({
             const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
 
             if (files !== undefined) {
-                onChange(files);
+                onFilesAdded(files);
             }
             return [];
         },
@@ -66,7 +66,7 @@ const DropZone = <FileType extends any = any>({
         margin: "0 auto",
     }), [mainColor]);
 
-    const previousValue = usePrevious(value, value);
+    const previousValue = usePrevious(files, files);
 
     return (
         <Paper elevation={0}>
@@ -95,9 +95,9 @@ const DropZone = <FileType extends any = any>({
                     )}
                 </Box>
             </Box>
-            <Collapse in={Boolean(value.length)}>
+            <Collapse in={Boolean(files.length)}>
                 <Box m={2}>
-                    {renderList(value.length ? value : previousValue)}
+                    {renderList(files.length ? files : previousValue)}
                 </Box>
             </Collapse>
         </Paper>

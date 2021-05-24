@@ -1,6 +1,5 @@
 import React, {ReactNode} from "react";
 import {QueryClient, QueryClientProvider} from "react-query";
-import {BrowserRouter as Router} from "react-router-dom";
 
 import SnackbarWrapper from "../SnackbarWrapper";
 

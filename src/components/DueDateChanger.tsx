@@ -8,17 +8,31 @@ import {renderDayWithLessonWeekdays} from "components/index";
 
 import Picker, {IPicker} from "./Picker";
 
-
-export interface IDueDateChanger {
-    weekdays: number[];
-    color: string;
-    date: Dayjs | null;
+export interface IDueDateChangerBase {
     isLoading: boolean;
     pickerType: IPicker["pickerType"];
     title: string;
-    onChange: (newDate: Dayjs | null) => any;
+
     disabled?: boolean;
+    disableClearing?: boolean;
+
+    weekdays: number[];
+    color: string;
 }
+
+export interface IDueDateChangerWithDate {
+    date: Dayjs;
+    onChange: (newDate: Dayjs) => any;
+    disableClearing: true;
+}
+
+export interface IDueDateChangerUnknownDate {
+    date: Dayjs | null;
+    onChange: (newDate: Dayjs | null) => any;
+    disableClearing?: false;
+}
+
+export type IDueDateChanger = IDueDateChangerBase & (IDueDateChangerWithDate | IDueDateChangerUnknownDate);
 
 const getDatesForWeekdays = (weekdays: number[], startDate?: Dayjs): Dayjs[] => {
     const start = replaceDatetime(startDate || dayjs(), "time");
@@ -50,6 +64,7 @@ const DueDateChanger = ({
     color,
     title,
     disabled,
+    disableClearing,
 }: IDueDateChanger) => {
     const {t} = useTranslation();
     const classes = useClasses();
@@ -70,13 +85,17 @@ const DueDateChanger = ({
                 {isLoading && <CircularProgress color="inherit" size="1rem" />}
             </ListItem>
             <Box display="flex" flexWrap="nowrap" className={classes.wrapper}>
-                <Button
-                    size="small"
-                    disabled={isLoading || disabled}
-                    onClick={() => onChange(null)}
-                >
-                    {t("Leeren")}
-                </Button>
+                {!disableClearing && (
+                    <Button
+                        size="small"
+                        disabled={isLoading || disabled}
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        onClick={() => onChange(null)}
+                    >
+                        {t("Leeren")}
+                    </Button>
+                )}
                 <Button
                     size="small"
                     disabled={isLoading || disabled}
@@ -118,6 +137,9 @@ const DueDateChanger = ({
                 onClose={() => setIsSelectMode(false)}
                 onUpdate={date => {
                     setIsSelectMode(false);
+
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     onChange(date);
                 }}
             />

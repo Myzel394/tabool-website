@@ -11,9 +11,9 @@ import {
 } from "@material-ui/core";
 import {MdDeleteForever, MdFileDownload, MdSettings} from "react-icons/all";
 import {useTranslation} from "react-i18next";
-import {BottomSheetAction, DueDateChanger, ExtensionAvatar} from "components";
+import {BottomSheetAction, DueDateChanger, ExtensionAvatar, ICON_SIZE} from "components";
 
-import FileInformation from "../FileInformation";
+import FileInformation from "../../../../../../components/FileInformation";
 import SubmissionContext from "../SubmissionContext";
 
 import useUpdate from "./useUpdate";
@@ -22,8 +22,6 @@ import useUpdate from "./useUpdate";
 export interface ISubmission {
     submission: StudentSubmissionDetail;
 }
-
-const FONT_SIZE = "1.5rem";
 
 const Submission = ({
     submission,
@@ -49,7 +47,7 @@ const Submission = ({
                 </ListItemAvatar>
                 <FileInformation
                     filename={submission.name}
-                    lesson={lesson}
+                    course={lesson.course}
                     uploadDate={submission.publishDatetime}
                     size={submission.size}
                     creationDate={submission.createdAt}
@@ -74,7 +72,7 @@ const Submission = ({
                     target="_blank"
                 >
                     <ListItemIcon>
-                        <MdFileDownload size={FONT_SIZE} />
+                        <MdFileDownload size={ICON_SIZE} />
                     </ListItemIcon>
                     <ListItemText primary={t("Download")} />
                 </ListItem>
@@ -104,7 +102,7 @@ const Submission = ({
                     }
                 >
                     <ListItemIcon>
-                        <MdDeleteForever size={FONT_SIZE} />
+                        <MdDeleteForever size={ICON_SIZE} />
                     </ListItemIcon>
                     <ListItemText primary={t("Löschen")} />
                     {isDeleting && <CircularProgress size="1rem" color="inherit" />}

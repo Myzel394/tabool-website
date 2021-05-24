@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {ISendFCMTokenData, useSendFCMTokenAPI} from "hooks/apis";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";

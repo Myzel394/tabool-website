@@ -1,6 +1,6 @@
 import React from "react";
 import {StudentDetail} from "types";
-import {Box, CircularProgress, FormControl, InputLabel, MenuItem} from "@material-ui/core";
+import {Box, CircularProgress, FormControl, InputLabel, MenuItem, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {Alert} from "@material-ui/lab";
 import {Field} from "formik";
@@ -30,16 +30,25 @@ const Students = ({
         );
     }
 
-    if (isError) {
+    if (!students) {
+        return (
+            <Box display="flex" alignItems="center" justifyContent="center">
+                <Box mr={1}>
+                    <CircularProgress size="1rem" />
+                </Box>
+                <Typography>
+                    {t("Schülerliste wird geladen")}
+                </Typography>
+            </Box>
+        );
+    }
+
+    if (!students && isError) {
         return (
             <Alert severity="error">
                 {t("Es gab einen Fehler")}
             </Alert>
         );
-    }
-
-    if (!students) {
-        return <CircularProgress />;
     }
 
     return (

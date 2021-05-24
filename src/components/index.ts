@@ -26,4 +26,6 @@ export {default as ShowMoreButton} from "./ShowMoreButton";
 export {default as LinkTitleGrabber} from "./LinkTitleGrabber";
 export {default as ColorPicker} from "./ColorPicker";
 export {default as DueDateChanger} from "./DueDateChanger";
+export {default as FileInformation} from "./FileInformation";
+export {default as SecondaryInformation} from "./SecondaryInformation";
 

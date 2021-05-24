@@ -26,3 +26,5 @@ export {default as useScrollRestoration} from "./useScrollRestoration";
 export {default as useRect} from "./useRect";
 export {default as useGetStudentCurrentLesson} from "./useGetStudentCurrentLesson";
 export {default as useGetTeacherCurrentLesson} from "./useGetTeacherCurrentLesson";
+export {default as useReadFile} from "./useReadFile";
+export {default as useFileUpload} from "./useFileUpload";

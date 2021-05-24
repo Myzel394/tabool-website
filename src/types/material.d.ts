@@ -11,7 +11,7 @@ export interface StudentMaterialDetail extends StudentLessonDateMixin {
 }
 
 export interface TeacherMaterialDetail extends TeacherLessonDateMixin {
-    publishDatetime: Dayjs | null;
+    publishDatetime: Dayjs;
     announce: boolean;
     name: string;
     file: string;

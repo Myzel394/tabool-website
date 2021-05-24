@@ -2,11 +2,9 @@ import {Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState}
 import {supportsWASM} from "supports";
 import update from "immutability-helper";
 
-import {SingleFileReference, SubmissionUploadFile} from "./types";
-
-export interface IUseFilesResult {
-    files: SubmissionUploadFile[];
-    setFiles: Dispatch<SetStateAction<SubmissionUploadFile[]>>;
+export interface IUseFilesResult<Reference, File> {
+    files: File[];
+    setFiles: Dispatch<SetStateAction<File[]>>;
     compressImages: boolean;
     setCompressImages: (compressImages: boolean) => void;
 
@@ -15,15 +13,34 @@ export interface IUseFilesResult {
 
     isUploading: boolean;
 
-    $files: MutableRefObject<SingleFileReference[]>;
+    $files: MutableRefObject<Reference[]>;
 }
 
-const useFiles = (): IUseFilesResult => {
-    const [files, setFiles] = useState<SubmissionUploadFile[]>([]);
+interface HasUploadFunctionReference {
+    upload: () => Promise<any>;
+    nativeFile: File;
+}
+
+interface HasNativeFileFile {
+    nativeFile: File;
+}
+
+interface DefaultFile {
+    nativeFile: File;
+    isCompressing: boolean;
+    isUploading: boolean;
+    upload: () => Promise<void>;
+}
+
+const useFiles = <
+    File extends HasNativeFileFile,
+    Reference extends HasUploadFunctionReference = DefaultFile,
+    >(): IUseFilesResult<Reference, File> => {
+    const [files, setFiles] = useState<File[]>([]);
     const [compressImages, setCompressImages] = useState<boolean>(supportsWASM);
     const [isUploading, setIsUploading] = useState<boolean>(false);
 
-    const $files = useRef<SingleFileReference[]>([]);
+    const $files = useRef<Reference[]>([]);
     const containsImages = files.some(file => file.nativeFile.type.startsWith("image"));
 
     const uploadFiles = async () => {
@@ -49,12 +66,14 @@ const useFiles = (): IUseFilesResult => {
 
         const indexes = succeededIndexes.map((givenIndex, listIndex) => givenIndex - listIndex);
         setFiles(prevState => update(prevState, {
-            $splice: indexes.map(index => [index, 1]),
+            $splice: indexes.map((index, removeIndex) => [index - removeIndex, 1]),
         }));
     };
 
     useEffect(() => {
-        $files.current = Array(files.length).fill(null);
+        if ($files.current.length !== files.length) {
+            $files.current = Array(files.length).fill(null);
+        }
     }, [files]);
 
     return {
