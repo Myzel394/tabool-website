@@ -1,9 +1,8 @@
 import React from "react";
 import {Dayjs} from "dayjs";
 import {ListItemText, Portal, TextField} from "@material-ui/core";
-import prettyBytes from "pretty-bytes";
 import {MdAdd, MdFileUpload} from "react-icons/all";
-import {useInheritedState} from "hooks";
+import {useInheritedState, usePrettyBytes} from "hooks";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {StudentCourseDetail, TeacherCourseDetail} from "types";
@@ -43,6 +42,7 @@ const FileInformation = ({
     maxLength,
 }: FileInformationProps) => {
     const {t} = useTranslation();
+    const prettyBytes = usePrettyBytes();
 
     const [name, setName] = useInheritedState<string>(filename);
 
@@ -92,9 +92,7 @@ const FileInformation = ({
                 secondary={
                     <>
                         <SecondaryInformation
-                            text={prettyBytes(size, {
-                                locale: "de",
-                            })}
+                            text={prettyBytes(size)}
                         />
                         {creationDate && (
                             <SecondaryInformation

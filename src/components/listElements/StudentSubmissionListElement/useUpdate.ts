@@ -1,26 +1,30 @@
 import {StudentSubmissionDetail} from "types";
 import {IUpdateStudentSubmissionData, useDeleteStudentSubmissionAPI, useUpdateStudentSubmissionAPI} from "hooks/apis";
 import {UseMutateAsyncFunction, useMutation} from "react-query";
-import {useContext} from "react";
 import {AxiosError} from "axios";
 import {useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
-import update from "immutability-helper";
 
-import SubmissionContext from "../SubmissionContext";
 
-export interface IUseUpdateResult {
+export interface UseUpdateData {
+    id: string;
+    onUpdate?: (newMaterial: StudentSubmissionDetail) => any;
+    onDelete?: () => any;
+}
+
+export interface UseUpdateResponse {
     update: UseMutateAsyncFunction<StudentSubmissionDetail, AxiosError, IUpdateStudentSubmissionData>;
-    delete: UseMutateAsyncFunction<void, AxiosError, void>;
     isUpdating: boolean;
+
+    delete: UseMutateAsyncFunction<void, AxiosError, void>;
     isDeleting: boolean;
 }
 
-const useUpdate = (submission: StudentSubmissionDetail): IUseUpdateResult => {
-    const {
-        submissions,
-        onSubmissionsChange,
-    } = useContext(SubmissionContext);
+const useUpdate = ({
+    id: submissionId,
+    onDelete,
+    onUpdate,
+}: UseUpdateData): UseUpdateResponse => {
     const {addError} = useSnackbar();
     const updateSubmission = useUpdateStudentSubmissionAPI();
     const deleteSubmission = useDeleteStudentSubmissionAPI();
@@ -29,18 +33,9 @@ const useUpdate = (submission: StudentSubmissionDetail): IUseUpdateResult => {
         mutateAsync: updateFunction,
         isLoading: isUpdating,
     } = useMutation<StudentSubmissionDetail, AxiosError, IUpdateStudentSubmissionData>(
-        values => updateSubmission(submission.id, values),
+        values => updateSubmission(submissionId, values),
         {
-            onSuccess: newSubmission =>
-                onSubmissionsChange(prevState => {
-                    const index = submissions.findIndex(givenSubmission => submission.id === givenSubmission.id);
-
-                    return update(prevState, {
-                        [index]: {
-                            $set: newSubmission,
-                        },
-                    });
-                }),
+            onSuccess: onUpdate,
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
     );
@@ -48,18 +43,9 @@ const useUpdate = (submission: StudentSubmissionDetail): IUseUpdateResult => {
         mutateAsync: deleteFunction,
         isLoading: isDeleting,
     } = useMutation<void, AxiosError, void>(
-        () => deleteSubmission(submission.id),
+        () => deleteSubmission(submissionId),
         {
-            onSuccess: () =>
-                onSubmissionsChange(prevState => {
-                    const index = submissions.findIndex(givenSubmission => submission.id === givenSubmission.id);
-
-                    return update(prevState, {
-                        $splice: [
-                            [index, 1],
-                        ],
-                    });
-                }),
+            onSuccess: onDelete,
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
     );

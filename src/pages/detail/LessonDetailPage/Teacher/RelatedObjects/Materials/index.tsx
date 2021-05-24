@@ -1,15 +1,17 @@
 import React, {useContext} from "react";
 import {List, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
+import {TeacherMaterialListElement} from "components";
+import update from "immutability-helper";
 
 import RelatedObjectsContext from "../RelatedObjectsContext";
 
-import Material from "./Material";
 import UploadForm from "./UploadForm";
 
 const Materials = () => {
     const {
         materials,
+        updateLesson,
     } = useContext(RelatedObjectsContext);
     const {t} = useTranslation();
 
@@ -20,9 +22,31 @@ const Materials = () => {
             </Typography>
             <List>
                 {materials.map(material =>
-                    <Material
+                    <TeacherMaterialListElement
                         key={material.id}
                         material={material}
+                        onUpdate={newMaterial => updateLesson(prevState => {
+                            const index = prevState.materials.findIndex(givenMaterial => givenMaterial.id === material.id);
+
+                            return update(prevState, {
+                                materials: {
+                                    [index]: {
+                                        $set: newMaterial,
+                                    },
+                                },
+                            });
+                        })}
+                        onDelete={() => updateLesson(prevState => {
+                            const index = prevState.materials.findIndex(givenMaterial => givenMaterial.id === material.id);
+
+                            return update(prevState, {
+                                materials: {
+                                    $splice: [
+                                        [index, 1],
+                                    ],
+                                },
+                            });
+                        })}
                     />)}
             </List>
             <UploadForm />

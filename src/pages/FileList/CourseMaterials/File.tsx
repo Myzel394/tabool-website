@@ -3,12 +3,13 @@ import dayjs, {Dayjs} from "dayjs";
 import {IconButton, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import {FaFile} from "react-icons/all";
 import extensionIconMap from "components/extensionIconMap";
-import prettyBytes from "pretty-bytes";
 import {LessonIcon} from "components/icons";
 import {useTranslation} from "react-i18next";
 import {getMaterialDownloadDateString} from "utils";
 import {useDispatch, useSelector} from "react-redux";
 import {addDownloadedMaterialsDate, getMaterialDownloadDate, RootState} from "state";
+
+import {usePrettyBytes} from "../../../hooks";
 
 
 export interface FileProps {
@@ -35,6 +36,7 @@ const File = ({
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const date = useSelector<RootState>(getMaterialDownloadDate(id)) as Dayjs | undefined;
+    const prettyBytes = usePrettyBytes();
 
     const isAvailable = publishDatetime.isBefore(dayjs());
     const extension = name ? name
@@ -47,11 +49,8 @@ const File = ({
         isAvailable && date && t("Heruntergeladen am {{date}}", {
             date: dayjs(date).format("lll"),
         }),
-        prettyBytes(size, {
-            locale: "de",
-        }),
+        prettyBytes(size),
     ].filter(Boolean);
-
 
     return (
         <ListItem

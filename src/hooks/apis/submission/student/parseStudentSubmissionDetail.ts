@@ -6,10 +6,13 @@ import {parseStudentLessonDateMixin} from "../../timetable";
 
 
 const parseStudentSubmissionDetail = async (submission: StudentSubmissionDetail) => {
-    convertToDate(submission, ["publishDatetime", "createdAt"]);
-    submission.isUploaded = Boolean(submission.publishDatetime && submission.publishDatetime.isBefore(dayjs()));
-
     await parseStudentLessonDateMixin(submission);
+    convertToDate(submission, ["publishDatetime", "createdAt"]);
+
+    submission.isUploaded = function() {
+        return Boolean(this.publishDatetime?.isBefore?.(dayjs()));
+    };
+
 };
 
 export default parseStudentSubmissionDetail;

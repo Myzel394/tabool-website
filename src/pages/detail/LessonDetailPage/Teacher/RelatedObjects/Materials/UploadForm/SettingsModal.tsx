@@ -1,6 +1,6 @@
 import React from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {PrimaryButton, SimpleDialog} from "components";
+import {AnnounceExplanation, PrimaryButton, SimpleDialog} from "components";
 import {MdCheck} from "react-icons/all";
 import {useInheritedState} from "hooks";
 import {useTranslation} from "react-i18next";
@@ -86,7 +86,9 @@ const SettingsModal = ({
                         onChange={event => setAnnounce(event.target.checked)}
                     />
                 }
-                label={t("Ankündigen")}
+                label={
+                    <AnnounceExplanation />
+                }
             />
         </SimpleDialog>
     );

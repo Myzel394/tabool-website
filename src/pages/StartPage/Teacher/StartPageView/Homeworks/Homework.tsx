@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 import {TeacherHomeworkDetail} from "types";
 import {
-    CircularProgress,
-    IconButton,
+    DialogContentText,
+    IconButton, LinearProgress,
     ListItem,
     ListItemIcon,
     ListItemSecondaryAction,
     ListItemText,
 } from "@material-ui/core";
-import {MdDeleteForever, MdMoreVert} from "react-icons/all";
-import {BottomSheetAction, ButtonLike} from "components";
+import {MdMoreVert} from "react-icons/all";
+import {BottomSheetAction, ButtonLike, DeleteConfirmItem} from "components";
 import {buildPath} from "utils";
 import {useTranslation} from "react-i18next";
 
@@ -29,9 +29,9 @@ const Homework = ({
     const {t} = useTranslation();
     const {
         deleteHomework,
-        isUpdateLoading,
+        isUpdating,
         updateHomework,
-        isDeleteLoading,
+        isDeleting,
     } = useQuery({
         homework,
     });
@@ -73,6 +73,7 @@ const Homework = ({
                     </IconButton>
                 </ListItemSecondaryAction>
             </ListItem>
+            {(isUpdating || isDeleting) && <LinearProgress />}
             <BottomSheetAction
                 isOpen={isOpen}
                 title={t("{{course}} am {{date}}", {
@@ -86,7 +87,7 @@ const Homework = ({
                     color={homework.lesson.course.subject.userRelation.color}
                     date={homework.lessonDate}
                     weekdays={homework.lesson.course.weekdays}
-                    isLoading={isUpdateLoading}
+                    isLoading={isUpdating}
                     onChange={newDate => {
                         setIsOpen(false);
                         updateHomework({
@@ -95,27 +96,14 @@ const Homework = ({
                     }}
                 />
 
-                <ListItem
-                    button
-                    disabled={isDeleteLoading}
-                    onClick={() => {
-                        setIsOpen(false);
-                        deleteHomework();
-                    }}
-                >
-                    <ListItemIcon>
-                        <MdDeleteForever size="1.5rem" />
-                    </ListItemIcon>
-                    <ListItemText
-                        primary={t("Löschen")}
-                    />
-                    {isDeleteLoading && <CircularProgress color="inherit" size="1rem" />}
-                </ListItem>
+                <DeleteConfirmItem isDeleting={isDeleting} onDelete={deleteHomework}>
+                    <DialogContentText>
+                        {t("Möchtest du wirklich diese Hausaufgabe löschen?")}
+                    </DialogContentText>
+                </DeleteConfirmItem>
             </BottomSheetAction>
         </>
     );
 };
-
-// TODO: Add ConfirmDialogListItem element!
 
 export default Homework;

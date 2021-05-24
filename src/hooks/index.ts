@@ -28,3 +28,6 @@ export {default as useGetStudentCurrentLesson} from "./useGetStudentCurrentLesso
 export {default as useGetTeacherCurrentLesson} from "./useGetTeacherCurrentLesson";
 export {default as useReadFile} from "./useReadFile";
 export {default as useFileUpload} from "./useFileUpload";
+export {default as useClipboard} from "./useClipboard";
+export {default as useRealTimeUpdate} from "./useRealTimeUpdate";
+export {default as usePrettyBytes} from "./usePrettyBytes";

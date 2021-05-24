@@ -3,9 +3,9 @@ import {IconButton, ListItem, ListItemSecondaryAction, ListItemText} from "@mate
 import {MdFileDownload} from "react-icons/all";
 import {TeacherSubmissionDetail} from "types";
 import {useTranslation} from "react-i18next";
-import prettyBytes from "pretty-bytes";
 
 import SecondaryInformation from "../SecondaryInformation";
+import {usePrettyBytes} from "../../../../../hooks";
 
 
 export interface SubmissionElementProps {
@@ -18,6 +18,7 @@ const SubmissionElement = ({
     innerRef,
 }: SubmissionElementProps) => {
     const {t} = useTranslation();
+    const prettyBytes = usePrettyBytes();
 
     return (
         <ListItem>
@@ -27,7 +28,7 @@ const SubmissionElement = ({
                     secondary={
                         <SecondaryInformation
                             information={[
-                                [t("Größe"), prettyBytes(submission.size, {locale: "de"})],
+                                [t("Größe"), prettyBytes(submission.size)],
                                 [t("Datei"), submission.name],
                             ]}
                         />

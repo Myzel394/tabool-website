@@ -2,7 +2,6 @@ import React, {memo} from "react";
 import {Box, Grid, IconButton, Paper, Typography} from "@material-ui/core";
 import {FaFile, MdFileDownload} from "react-icons/all";
 import {useTranslation} from "react-i18next";
-import prettyBytes from "pretty-bytes";
 import dayjs, {Dayjs} from "dayjs";
 import {getMaterialDownloadDateString} from "utils";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,6 +10,7 @@ import {addDownloadedMaterialsDate, getMaterialDownloadDate, RootState} from "st
 import {Information} from "../components";
 import {TimeRelative} from "../statuses";
 import extensionIconMap from "../extensionIconMap";
+import {usePrettyBytes} from "../../hooks";
 
 export interface MaterialProps {
     name: string;
@@ -25,11 +25,11 @@ const Material = ({name, id, size, file, publishDatetime}: MaterialProps) => {
     const dispatch = useDispatch();
     const downloadDate = useSelector<RootState>(getMaterialDownloadDate(id)) as Dayjs | null;
     const {t} = useTranslation();
+    const prettyBytes = usePrettyBytes();
 
     const extension = name ? name.split(".").pop() : "";
     const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
     const isAvailable = publishDatetime?.isBefore(dayjs());
-
 
     return (
         <Paper>
@@ -53,9 +53,7 @@ const Material = ({name, id, size, file, publishDatetime}: MaterialProps) => {
                                 {!isAvailable && getMaterialDownloadDateString(t, publishDatetime)}
                                 <Typography variant="body2" color="textSecondary">
                                     {t("Größe: {{size}}", {
-                                        size: prettyBytes(size, {
-                                            locale: "de",
-                                        }),
+                                        size: prettyBytes(size),
                                     })}
                                 </Typography>
                             </Grid>
@@ -65,7 +63,7 @@ const Material = ({name, id, size, file, publishDatetime}: MaterialProps) => {
                                         {now =>
                                             <Typography variant="body2" color="textSecondary">
                                                 {t("Zuletzt runtergeladen: {{relative}}", {
-                                                    relative: downloadDate.from(now.add(3, "second")),
+                                                    relative: downloadDate.from(dayjs(now).add(3, "second")),
                                                 })}
                                             </Typography>
                                         }

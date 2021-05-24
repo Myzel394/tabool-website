@@ -4,14 +4,9 @@ import {
     Box,
     ButtonBase,
     Collapse,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
     Paper,
     useTheme,
 } from "@material-ui/core";
-import prettyBytes from "pretty-bytes";
 import {useTranslation} from "react-i18next";
 import tinycolor from "tinycolor2";
 import {MdAdd, MdFileUpload} from "react-icons/all";
@@ -19,7 +14,6 @@ import {usePrevious} from "hooks";
 
 import Information from "../Information";
 
-import ExtensionAvatar from "./ExtensionAvatar";
 
 export interface IDropZone<FileType = any> {
     files: FileType[];
@@ -102,26 +96,6 @@ const DropZone = <FileType extends any = any>({
             </Collapse>
         </Paper>
     );
-};
-
-DropZone.defaultProps = {
-    // eslint-disable-next-line react/display-name
-    renderList: (files) => (
-        <List>
-            {files.map(file =>
-                <ListItem key={file.name}>
-                    <ListItemAvatar>
-                        <ExtensionAvatar name={file.name} />
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={file.name}
-                        secondary={prettyBytes(file.size, {
-                            locale: "de",
-                        })}
-                    />
-                </ListItem>)}
-        </List>
-    ),
 };
 
 export default DropZone;

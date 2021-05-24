@@ -1,18 +1,10 @@
 import React, {useState} from "react";
 import {MdInfo} from "react-icons/all";
 import {useTranslation} from "react-i18next";
-import {SimpleDialog} from "components";
+import {SimpleDialog} from "components/index";
 import {DialogContentText, IconButton} from "@material-ui/core";
 
-// TODO: Look usages
-
-export interface AnnounceExplanationProps {
-    isAnnounced: boolean;
-}
-
-const AnnounceExplanation = ({
-    isAnnounced,
-}: AnnounceExplanationProps) => {
+const AnnounceExplanation = () => {
     const {t} = useTranslation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -35,11 +27,9 @@ const AnnounceExplanation = ({
                             "Dabei können sie nur sehen, dass ein Material existiert. " +
                             "Zugriff erhalten sie trotz der Ankündigung erst nach der Veröffentlichung.")}
                     </p>
-                    {isAnnounced && (
-                        <p>
-                            {t("Sobald einmal angekündigt, kann ein Material nicht mehr privat gestellt werden.")}
-                        </p>
-                    )}
+                    <p>
+                        {t("Sobald einmal angekündigt, kann ein Material nicht mehr privat gestellt werden.")}
+                    </p>
                 </DialogContentText>
             </SimpleDialog>
         </>

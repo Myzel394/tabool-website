@@ -12,7 +12,7 @@ import {
     useTheme,
 } from "@material-ui/core";
 import {FaRegClipboard, MdCheck, MdClear} from "react-icons/all";
-import {useAsync, useSnackbar} from "hooks";
+import {useAsync, useClipboard, useSnackbar} from "hooks";
 import {useTranslation} from "react-i18next";
 import {Alert} from "@material-ui/lab";
 import {isIOS} from "react-device-detect";
@@ -27,26 +27,6 @@ export interface InsertFromClipboardProps {
 
 const IS_URL_REGEX = new RegExp(`https://(${allowedDomains.join("|")}).*`);
 
-const checkClipboardAccess = async (): Promise<boolean> => {
-    if (!navigator.clipboard || !navigator.permissions) {
-        return false;
-    }
-
-    try {
-        const status = await navigator.permissions.query({
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore: Not supported from Typescript yet
-            name: "clipboard-read",
-        });
-
-        return status.state === "granted";
-    } catch (err) {
-        return false;
-    }
-};
-
-// TODO: Add hook!
-
 const InsertFromClipboard = ({
     setVideoConferenceLink,
     close,
@@ -55,25 +35,26 @@ const InsertFromClipboard = ({
     const theme = useTheme();
     const {t} = useTranslation();
     const {addError, addWarning, addSnackbar, closeSnackbar, addSuccess} = useSnackbar();
-    const getClipboardValue = useCallback(async () => {
-        const hasClipboardAccess = await checkClipboardAccess();
 
-        if (hasClipboardAccess) {
+    const [isAsking, setIsAsking] = useState<boolean>(false);
+
+    const {
+        readContent,
+        isAvailable,
+        hasAccess,
+    } = useClipboard();
+    const getClipboardValue = useCallback(async () => {
+        if (hasAccess) {
             try {
-                const data = await navigator.clipboard.readText();
+                const data = await readContent();
                 return truncate(data, 30);
             } catch (err) {
                 return "";
             }
         }
-
-        return "";
-    }, []);
+    }, [readContent, hasAccess]);
     const {value: clipboardValue} = useAsync(getClipboardValue);
     const isURL = clipboardValue && IS_URL_REGEX.test(clipboardValue);
-
-    const [isAsking, setIsAsking] = useState<boolean>(false);
-    const [isClipboardDisabled, setIsClipboardDisabled] = useState<boolean>(false);
 
     const readLinkFromClipboard = async (): Promise<string | undefined> => {
         const data = await navigator.clipboard.readText();
@@ -87,7 +68,6 @@ const InsertFromClipboard = ({
     };
 
     const showClipboardIsBlocked = () => {
-        setIsClipboardDisabled(true);
         addError(
             undefined,
             t("Fehler beim Auslesen der Zwischenablage. Eventuell hast du keine Berechtigung erteilt."),
@@ -126,7 +106,7 @@ const InsertFromClipboard = ({
             </Portal>
             <ListItem
                 button
-                disabled={!isURL || isUpdating || isClipboardDisabled || !navigator.clipboard}
+                disabled={!isURL || isUpdating || !isAvailable}
                 onClick={async () => {
                     setIsAsking(true);
 
@@ -168,7 +148,7 @@ const InsertFromClipboard = ({
                 />
                 {isUpdating && <CircularProgress color="inherit" size="1rem" />}
             </ListItem>
-            {!navigator.clipboard && (
+            {!isAvailable && (
                 <Alert severity="warning">
                     {isIOS ? t("Auf iOS leider nicht verfügbar.") : t("Dein Browser unterstützt dieses Feature nicht.")}
                 </Alert>

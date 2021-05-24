@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from "react";
-import {Dayjs} from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
 import {
     DialogContentText,
     Grid,
@@ -112,7 +112,7 @@ const Session = ({
                                 os: uaInstance.getOS().name,
                             }) + (isThis ? ` ${t(" (Dieses Gerät)")}` : "")}
                             secondary={t("Letzte Aktivität {{lastActivity}}", {
-                                lastActivity: now.to(lastActivity),
+                                lastActivity: dayjs(now).to(lastActivity),
                             })}
                         />}
                 </TimeRelative>

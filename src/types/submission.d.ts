@@ -9,8 +9,9 @@ export interface StudentSubmissionDetail extends StudentLessonDateMixin {
     file: string;
     createdAt: Dayjs;
     size: number;
-    isUploaded: boolean;
     id: string;
+
+    isUploaded: () => boolean;
 }
 
 export interface TeacherSubmissionDetail extends TeacherLessonDateMixin {

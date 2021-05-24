@@ -8,9 +8,7 @@ import {renderDayWithLessonWeekdays} from "components/index";
 
 import Picker, {PickerProps} from "./Picker";
 
-// TODO: Remove prefixes!
-
-export interface DueDateChangerBaseProps {
+interface Base {
     isLoading: boolean;
     pickerType: PickerProps["pickerType"];
     title: string;
@@ -22,19 +20,19 @@ export interface DueDateChangerBaseProps {
     color: string;
 }
 
-export interface DueDateChangerWithDateProps {
+export interface WithDate {
     date: Dayjs;
     onChange: (newDate: Dayjs) => any;
     disableClearing: true;
 }
 
-export interface DueDateChangerUnknownDateProps {
+export interface WithDateAndNull {
     date: Dayjs | null;
     onChange: (newDate: Dayjs | null) => any;
     disableClearing?: false;
 }
 
-export type IDueDateChanger = DueDateChangerBaseProps & (DueDateChangerWithDateProps | DueDateChangerUnknownDateProps);
+export type DueDateChangerProps = Base & (WithDate | WithDateAndNull);
 
 const getDatesForWeekdays = (weekdays: number[], startDate?: Dayjs): Dayjs[] => {
     const start = replaceDatetime(startDate || dayjs(), "time");
@@ -67,7 +65,7 @@ const DueDateChanger = ({
     title,
     disabled,
     disableClearing,
-}: IDueDateChanger) => {
+}: DueDateChangerProps) => {
     const {t} = useTranslation();
     const classes = useClasses();
 

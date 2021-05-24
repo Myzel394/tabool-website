@@ -1,23 +1,13 @@
-import {ReactNode, useEffect, useState} from "react";
-import dayjs, {Dayjs} from "dayjs";
-
-// TODO: Make function!
+import {ReactNode} from "react";
+import {useRealTimeUpdate} from "hooks";
 
 export interface TimeRelativeProps {
-    children: ((now: Dayjs) => ReactNode) | ReactNode;
+    children: ((now: Date) => ReactNode) | ReactNode;
     updateFrequency: number;
 }
 
 const TimeRelative = ({children, updateFrequency}: TimeRelativeProps) => {
-    const [now, setNow] = useState<Dayjs>(dayjs());
-
-    useEffect(() => {
-        const $interval = setInterval(() => {
-            setNow(dayjs());
-        }, updateFrequency);
-
-        return () => clearInterval($interval);
-    }, [updateFrequency]);
+    const now = useRealTimeUpdate(updateFrequency);
 
     return typeof children === "function" ? children(now) : children;
 };

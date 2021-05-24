@@ -18,4 +18,6 @@ export interface TeacherMaterialDetail extends TeacherLessonDateMixin {
     size: number;
     createdAt: Dayjs;
     id: string;
+
+    isUploaded: () => boolean;
 }

@@ -1,8 +1,6 @@
 import React, {ReactNode} from "react";
 import {Grid, Typography} from "@material-ui/core";
 
-// TODO: Seriously
-
 export interface AreaProps {
     title: string;
     children: ReactNode;

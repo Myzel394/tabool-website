@@ -15,10 +15,10 @@ export interface IUseQuery {
 
 export interface IUseQueryResult {
     updateHomework: UseMutateFunction<TeacherHomeworkDetail, AxiosError, IUpdateTeacherHomeworkData, unknown>;
-    isUpdateLoading: boolean;
+    isUpdating: boolean;
 
     deleteHomework: UseMutateFunction<void, AxiosError<any>, void, unknown>;
-    isDeleteLoading: boolean;
+    isDeleting: boolean;
 }
 
 const useQuery = ({
@@ -33,7 +33,7 @@ const useQuery = ({
 
     const {
         mutate: updHomework,
-        isLoading: isUpdateLoading,
+        isLoading: isUpdating,
     } = useMutation<TeacherHomeworkDetail, AxiosError, IUpdateTeacherHomeworkData>(
         values => updateHomework(homework.id, values),
         {
@@ -50,7 +50,7 @@ const useQuery = ({
 
     const {
         mutate: delHomework,
-        isLoading: isDeleteLoading,
+        isLoading: isDeleting,
     } = useMutation<void, AxiosError, void>(
         () => deleteHomework(homework.id),
         {
@@ -66,8 +66,8 @@ const useQuery = ({
     );
 
     return {
-        isUpdateLoading,
-        isDeleteLoading,
+        isUpdating,
+        isDeleting,
         updateHomework: updHomework,
         deleteHomework: delHomework,
     };

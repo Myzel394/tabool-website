@@ -2,19 +2,19 @@ import React, {useContext} from "react";
 import {getPerUniqueValue, lazyDatetime} from "utils";
 import {Box, Divider, List, ListSubheader, useTheme} from "@material-ui/core";
 import dayjs from "dayjs";
-import {createStickyHeaderStyles} from "components";
+import {createStickyHeaderStyles, TeacherMaterialListElement} from "components";
 import sortArray from "sort-array";
 import FlipMove from "react-flip-move";
+import update from "immutability-helper";
 
-import StartPageContext from "../../StartPageContext";
-
-import File from "./File";
+import StartPageContext from "../StartPageContext";
 
 
 const Materials = () => {
     const theme = useTheme();
     const {
         dailyData: {materials},
+        onDailyDataChange,
     } = useContext(StartPageContext);
 
     const classes = createStickyHeaderStyles(theme.palette.background.default);
@@ -40,7 +40,27 @@ const Materials = () => {
                             <FlipMove>
                                 {materials.map(material =>
                                     <div key={material.id}>
-                                        <File material={material} />
+                                        <TeacherMaterialListElement
+                                            material={material}
+                                            onUpdate={newMaterial => onDailyDataChange(dailyData => update(dailyData, {
+                                                materials: {
+                                                    $splice: [
+                                                        [dailyData.materials.findIndex(material => material.id === newMaterial.id), 1, newMaterial],
+                                                    ],
+                                                },
+                                            }))}
+                                            onDelete={() => onDailyDataChange(dailyData => {
+                                                const index = dailyData.materials.findIndex(givenMaterial => givenMaterial.id === material.id);
+
+                                                return update(dailyData, {
+                                                    materials: {
+                                                        $splice: [
+                                                            [index, 1],
+                                                        ],
+                                                    },
+                                                });
+                                            })}
+                                        />
                                     </div>)}
                             </FlipMove>
                         </ul>

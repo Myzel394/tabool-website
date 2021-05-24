@@ -2,25 +2,28 @@ import {IUpdateTeacherMaterialData, useDeleteTeacherMaterialAPI, useUpdateTeache
 import {UseMutateAsyncFunction, useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {TeacherMaterialDetail} from "types";
-import {useContext} from "react";
-import update from "immutability-helper";
 import {useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
 
-import RelatedObjectsContext from "../../RelatedObjectsContext";
+export interface UseUpdateData {
+    id: string;
+    onUpdate?: (newMaterial: TeacherMaterialDetail) => any;
+    onDelete?: () => any;
+}
 
-export interface UseUpdateResult {
-    delete: UseMutateAsyncFunction<void, AxiosError, void>;
+export interface UseUpdateResponse {
     update: UseMutateAsyncFunction<TeacherMaterialDetail, AxiosError, IUpdateTeacherMaterialData>;
-
     isUpdating: boolean;
+
+    delete: UseMutateAsyncFunction<void, AxiosError, void>;
     isDeleting: boolean;
 }
 
-const useUpdate = (materialId: string): UseUpdateResult => {
-    const {
-        updateLesson,
-    } = useContext(RelatedObjectsContext);
+const useUpdate = ({
+    onDelete,
+    onUpdate,
+    id: materialId,
+}: UseUpdateData): UseUpdateResponse => {
     const {
         addError,
     } = useSnackbar();
@@ -33,17 +36,7 @@ const useUpdate = (materialId: string): UseUpdateResult => {
     } = useMutation<TeacherMaterialDetail, AxiosError, IUpdateTeacherMaterialData>(
         values => updateMaterial(materialId, values),
         {
-            onSuccess: newMaterial => updateLesson(prevState => {
-                const index = prevState.materials.findIndex(material => material.id === materialId);
-
-                return update(prevState, {
-                    materials: {
-                        [index]: {
-                            $set: newMaterial,
-                        },
-                    },
-                });
-            }),
+            onSuccess: onUpdate,
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
     );
@@ -54,17 +47,7 @@ const useUpdate = (materialId: string): UseUpdateResult => {
     } = useMutation<void, AxiosError, void>(
         () => deleteMaterial(materialId),
         {
-            onSuccess: () => updateLesson(prevState => {
-                const index = prevState.materials.findIndex(material => material.id === materialId);
-
-                return update(prevState, {
-                    materials: {
-                        $splice: [
-                            [index, 1],
-                        ],
-                    },
-                });
-            }),
+            onSuccess: onDelete,
             onError: error => addError(error, undefined, PredefinedMessageType.ErrorMutating),
         },
     );

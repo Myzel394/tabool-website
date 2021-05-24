@@ -5,9 +5,10 @@ import {useDeviceWidth} from "hooks";
 import {FaGraduationCap, FaMapMarkerAlt} from "react-icons/all";
 import {isMobile} from "react-device-detect";
 
-import LessonContext from "../LessonContext";
-import styles from "../LessonContent.module.css";
-import {Information} from "../../../components";
+import {Information} from "../../components";
+
+import styles from "./LessonContent.module.css";
+import LessonContext from "./LessonContext";
 
 
 export interface LessonContentProps {
