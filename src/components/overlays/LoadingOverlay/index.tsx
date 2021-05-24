@@ -4,8 +4,6 @@ import clsx from "clsx";
 
 import classes from "./index.module.css";
 
-// TODO: CSS!
-
 export interface LoadingOverlayProps {
     isLoading: boolean;
     children: ReactNode;

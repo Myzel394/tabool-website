@@ -132,6 +132,5 @@ const Material = ({
 
 export default Material;
 
-// TODO: IBla -> BlaProps
 // TODO: Add DeleteConfirmWidget
 // TODO: Add announce explanation
