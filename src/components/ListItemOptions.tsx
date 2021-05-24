@@ -19,6 +19,7 @@ interface Base {
 
     extraFields?: ReactNode;
 
+    description?: string;
 }
 
 interface WithDownload {
@@ -80,6 +81,7 @@ const ListItemOptions = ({
     downloadTitle,
     publishDatetimeTitle,
     pickerType,
+    description,
 }: ListItemOptionsProps) => {
     const {t} = useTranslation();
 
@@ -92,6 +94,7 @@ const ListItemOptions = ({
             <BottomSheetAction
                 isOpen={isOpen}
                 title={title}
+                description={description}
                 onClose={onClose}
             >
                 {downloadLink && (

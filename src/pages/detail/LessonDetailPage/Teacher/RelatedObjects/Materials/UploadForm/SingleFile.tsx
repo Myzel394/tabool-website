@@ -117,10 +117,12 @@ const SingleFile = ({
                         course={lesson.course}
                         size={material.nativeFile.size}
                         warningContainer={$warningContainer.current}
-                        onFilenameChange={newName => onChange({
-                            ...material,
-                            name: newName,
-                        })}
+                        onFilenameChange={newName =>
+                            onChange({
+                                ...material,
+                                name: newName,
+                            })
+                        }
                     />
                     <ListItemSecondaryAction>
                         <IconButton onClick={() => setIsSettingsOpen(true)}>

@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {AnnounceExplanation, PrimaryButton, SimpleDialog} from "components";
-import {MdCheck} from "react-icons/all";
+import {MdCheck, MdInfo} from "react-icons/all";
 import {useInheritedState} from "hooks";
 import {useTranslation} from "react-i18next";
 import {DateTimePicker} from "@material-ui/pickers";
-import {Checkbox, FormControlLabel} from "@material-ui/core";
+import {Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
 
 import Day from "../../../../Day";
 
@@ -37,60 +37,76 @@ const SettingsModal = ({
 }: SettingsModalProps) => {
     const {t} = useTranslation();
 
+    const [isAnnounceOpen, setIsAnnounceOpen] = useState<boolean>(false);
     const [announce, setAnnounce] = useInheritedState<boolean>(parentAnnounce);
     const [publishDatetime, setPublishDatetime] = useInheritedState<Dayjs>(parentPublishDatetime);
 
     return (
-        <SimpleDialog
-            title={t("Veröffentlichung einstellen")}
-            primaryButton={
-                <PrimaryButton
-                    startIcon={<MdCheck />}
-                    onClick={() => {
-                        onClose();
-                        onChange({
-                            announce,
-                            publishDatetime,
-                        });
-                    }}
-                >
-                    {t("Speichern")}
-                </PrimaryButton>
-            }
-            isOpen={isOpen}
-            onClose={onClose}
-        >
-            <DateTimePicker
-                disablePast
-                inputVariant="outlined"
-                value={publishDatetime}
-                format="lll"
-                renderDay={(day, selectedDate, x, dayComponent) => {
-                    if (
+        <>
+            <SimpleDialog
+                title={t("Veröffentlichung einstellen")}
+                primaryButton={
+                    <PrimaryButton
+                        startIcon={<MdCheck />}
+                        onClick={() => {
+                            onClose();
+                            onChange({
+                                announce,
+                                publishDatetime,
+                            });
+                        }}
+                    >
+                        {t("Speichern")}
+                    </PrimaryButton>
+                }
+                isOpen={isOpen}
+                onClose={onClose}
+            >
+                <DateTimePicker
+                    disablePast
+                    inputVariant="outlined"
+                    value={publishDatetime}
+                    format="lll"
+                    renderDay={(day, selectedDate, x, dayComponent) => {
+                        if (
                         // Date
-                        day && selectedDate && !day.isSame(selectedDate) && !day.isBefore(dayjs()) &&
+                            day && selectedDate && !day.isSame(selectedDate) && !day.isBefore(dayjs()) &&
                         // Lesson
                         lessonColor && lessonDateWeeks?.includes?.(day.day())
-                    ) {
-                        return <Day color={lessonColor} dayComponent={dayComponent} />;
-                    }
+                        ) {
+                            return <Day color={lessonColor} dayComponent={dayComponent} />;
+                        }
 
-                    return dayComponent;
-                }}
-                onChange={date => date && setPublishDatetime(date)}
+                        return dayComponent;
+                    }}
+                    onChange={date => date && setPublishDatetime(date)}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={announce}
+                            onChange={event => setAnnounce(event.target.checked)}
+                        />
+                    }
+                    label={
+                        <>
+                            {t("Ankündigen")}
+                            <IconButton
+                                size="small"
+                                edge="end"
+                                onClick={() => setIsAnnounceOpen(true)}
+                            >
+                                <MdInfo />
+                            </IconButton>
+                        </>
+                    }
+                />
+            </SimpleDialog>
+            <AnnounceExplanation
+                isOpen={isAnnounceOpen}
+                onClose={() => setIsAnnounceOpen(false)}
             />
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={announce}
-                        onChange={event => setAnnounce(event.target.checked)}
-                    />
-                }
-                label={
-                    <AnnounceExplanation />
-                }
-            />
-        </SimpleDialog>
+        </>
     );
 };
 
