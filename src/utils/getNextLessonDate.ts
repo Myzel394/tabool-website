@@ -1,9 +1,9 @@
-import {Dayjs} from "dayjs";
-import _ from "lodash";
+import dayjs, {Dayjs} from "dayjs";
+import sortArray from "sort-array";
 
 import findNextDate from "./findNextDate";
-import replaceDatetime from "./replaceDatetime";
 import combineDatetime from "./combineDatetime";
+import replaceDatetime from "./replaceDatetime";
 
 export interface LessonDate {
     weekday: number;
@@ -15,38 +15,54 @@ export interface LessonDate {
 // 4, [1, 2, 3] -> 1
 
 const getNextLessonDate = (startDate: Dayjs, lessonDates: LessonDate[]): Dayjs => {
-    let targetedWeekDay: number;
-    let targetedTime: Dayjs;
-    const startDateWeekDay = startDate.day();
+    let targetedDate: Dayjs;
 
-    // Filter
-    const sortedLessonDates = _.orderBy(lessonDates, "weekday");
-    const filteredSameWeekLessonDates = sortedLessonDates.filter(lessonDate => lessonDate.weekday >= startDateWeekDay);
-    const filteredTimesSameWeekLessonDates = filteredSameWeekLessonDates.filter(lessonDate => {
-        // Filter start and end time if it's the current weekday
-        if (lessonDate.weekday === startDateWeekDay) {
-            const time = replaceDatetime(startDate, "date");
+    const nextDates = sortArray(
+        lessonDates
+            .map(date =>
+                findNextDate(
+                    replaceDatetime(startDate, "date"),
+                    date.weekday,
+                ).unix()),
+        {
+            order: "asc",
+        },
+    )
+        .map(unix => dayjs.unix(unix))
+        .filter(date => date.isAfter(replaceDatetime(startDate, "date")));
 
-            return replaceDatetime(lessonDate.startTime, "date").isAfter(time);
+    // Check if lesson is active
+    if (nextDates.length >= 1) {
+        const weekday = nextDates[0].day();
+        const earliestTime = replaceDatetime(nextDates[0], "date");
+
+        if (
+            lessonDates.some(date =>
+                weekday === date.weekday &&
+                earliestTime.isAfter(replaceDatetime(date.startTime, "date")) &&
+                earliestTime.isBefore(replaceDatetime(date.endTime, "date")))
+        ) {
+            nextDates.splice(0, 1);
         }
-        return true;
-    });
-
-    if (filteredTimesSameWeekLessonDates.length === 0) {
-        // startDate's week contains no more lessons, so take the first one of the next week
-        const firstLesson = sortedLessonDates[0];
-        targetedWeekDay = firstLesson.weekday;
-        targetedTime = firstLesson.startTime;
-    } else {
-        // Get the next lesson
-        const nextLesson = filteredTimesSameWeekLessonDates[0];
-        targetedWeekDay = nextLesson.weekday;
-        targetedTime = nextLesson.startTime;
     }
 
-    const nextDate = findNextDate(startDate, targetedWeekDay);
+    if (nextDates.length === 0) {
+        // Get first day of next week
+        const nextWeekWeekday = Math.min(...lessonDates.map(date => date.weekday));
+        const startTime = lessonDates.find(date => date.weekday === nextWeekWeekday)!.startTime;
+        // Add 1 day to ensure the next day is next week
+        const date = findNextDate(startDate.add(1, "day"), nextWeekWeekday);
 
-    return combineDatetime(nextDate, targetedTime);
+        targetedDate = combineDatetime(date, startTime);
+    } else {
+        const weekday = nextDates[0].day();
+        const startTime = lessonDates.find(date => date.weekday === weekday)!.startTime;
+        const date = findNextDate(startDate, weekday);
+
+        targetedDate = combineDatetime(date, startTime);
+    }
+
+    return targetedDate;
 };
 
 export default getNextLessonDate;

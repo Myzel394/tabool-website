@@ -80,7 +80,7 @@ describe("getNextLessonDate works with lessons", () => {
         expectDatesSame(actualDate, expectedDate);
     });
 
-    it("same week (lesson on same day)", () => {
+    it("same week (lesson on same day available but choose next)", () => {
         const startTime = date.add(1, "hour");
 
         const lessonDates: LessonDate[] = [
