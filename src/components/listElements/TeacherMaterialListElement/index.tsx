@@ -69,6 +69,7 @@ const TeacherMaterialListElement = ({
                 lessonColor={material.lesson.course.subject.userRelation.color}
                 pickerType="datetime"
                 isDeleting={isDeleting}
+                isUpdating={isUpdating}
                 title={material.name}
                 description={t("Am {{date}} hochgeladen", {
                     date: material.createdAt.format("LL"),
@@ -91,6 +92,7 @@ const TeacherMaterialListElement = ({
                     <>
                         <ListItem
                             button
+                            disabled={isUpdating}
                             onClick={toggleAnnounce}
                         >
                             <ListItemIcon>
@@ -115,16 +117,16 @@ const TeacherMaterialListElement = ({
                     </>
                 }
                 onClose={() => setIsOpen(false)}
-                onDateChange={newDate =>
+                onDateChange={newDate => {
+                    setIsOpen(false);
                     update({
                         publishDatetime: newDate,
-                    })
-                        .then(() => setIsOpen(false))
-                }
-                onDelete={() =>
-                    deleteMaterial()
-                        .then(() => setIsOpen(false))
-                }
+                    });
+                }}
+                onDelete={() => {
+                    setIsOpen(false);
+                    deleteMaterial();
+                }}
             >
                 <ListItemAvatar>
                     <Link underline="none" href={material.file} target="_blank" rel="noreferrer">

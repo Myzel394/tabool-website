@@ -56,7 +56,7 @@ describe("getNextLessonDate works with lessons", () => {
         expectDatesSame(actualDate, expectedDate);
     });
 
-    it("same week (lesson active)", () => {
+    it("same week (lesson active multiple)", () => {
         const startTime = date.subtract(1, "hour");
 
         const lessonDates: LessonDate[] = [
@@ -75,6 +75,44 @@ describe("getNextLessonDate works with lessons", () => {
         ];
 
         const expectedDate = combineDatetime(dayjs(new Date(2020, 11, 24)), startTime);
+        const actualDate = getNextLessonDate(date, lessonDates);
+
+        expectDatesSame(actualDate, expectedDate);
+    });
+
+    it("same week (lesson active single)", () => {
+        const startTime = date.subtract(1, "hour");
+
+        const lessonDates: LessonDate[] = [
+            // Lesson active
+            // Next week should be selected
+            {
+                weekday: 3,
+                startTime,
+                endTime: date.add(1, "hour"),
+            },
+        ];
+
+        const expectedDate = combineDatetime(dayjs(new Date(2020, 11, 30)), startTime);
+        const actualDate = getNextLessonDate(date, lessonDates);
+
+        expectDatesSame(actualDate, expectedDate);
+    });
+
+    it("same week (lesson was active earlier)", () => {
+        const startTime = date.subtract(1, "hour");
+
+        const lessonDates: LessonDate[] = [
+            // Lesson active
+            // NExt week should be selected
+            {
+                weekday: 3,
+                startTime,
+                endTime: date.subtract(30, "minute"),
+            },
+        ];
+
+        const expectedDate = combineDatetime(dayjs(new Date(2020, 11, 30)), startTime);
         const actualDate = getNextLessonDate(date, lessonDates);
 
         expectDatesSame(actualDate, expectedDate);

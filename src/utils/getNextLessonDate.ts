@@ -37,10 +37,27 @@ const getNextLessonDate = (startDate: Dayjs, lessonDates: LessonDate[]): Dayjs =
         const earliestTime = replaceDatetime(nextDates[0], "date");
 
         if (
-            lessonDates.some(date =>
-                weekday === date.weekday &&
-                earliestTime.isAfter(replaceDatetime(date.startTime, "date")) &&
-                earliestTime.isBefore(replaceDatetime(date.endTime, "date")))
+            lessonDates.some(date => {
+                const startTime = replaceDatetime(date.startTime, "date");
+                const endTime = replaceDatetime(date.endTime, "date");
+
+                const isSameWeekday = weekday === date.weekday;
+                const isBetween = (
+                    earliestTime.isAfter(startTime) &&
+                    earliestTime.isBefore(endTime)
+                );
+                const isBefore = (
+                    earliestTime.isAfter(startTime) &&
+                    earliestTime.isAfter(endTime)
+                );
+
+                return (
+                    isSameWeekday &&
+                    (
+                        isBetween || isBefore
+                    )
+                );
+            })
         ) {
             nextDates.splice(0, 1);
         }
