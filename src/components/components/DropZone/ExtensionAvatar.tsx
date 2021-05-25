@@ -1,5 +1,5 @@
 import React from "react";
-import {Avatar} from "@material-ui/core";
+import {Avatar, useTheme} from "@material-ui/core";
 import {
     AiFillFileZip, AiFillHtml5, FaCode,
     FaFileAudio,
@@ -10,6 +10,8 @@ import {
     SiMicrosoftexcel,
     SiMicrosoftpowerpoint, SiPhp, SiReact, SiTypescript, SiVisualstudiocode,
 } from "react-icons/all";
+
+import {useAdaptedColor} from "../../../hooks";
 
 export interface ExtensionAvatarProps {
     name: string;
@@ -22,6 +24,7 @@ const EXTENSION_ICON_MAPPING = {
     mp3: FaFileAudio,
 
     jpg: FaFileImage,
+    jpeg: FaFileImage,
     png: FaFileImage,
     webp: FaFileImage,
     svg: FaFileImage,
@@ -75,6 +78,7 @@ const EXTENSION_COLOR_MAPPING = {
     mp3: "#205EFC",
 
     jpg: "#AAC71D",
+    jpeg: "#AAC71D",
     png: "#AAC71D",
     webp: "#AAC71D",
     svg: "#AAC71D",
@@ -82,7 +86,7 @@ const EXTENSION_COLOR_MAPPING = {
 
     pdf: "#DC1D00",
 
-    txt: "#d98d50",
+    txt: "#db7722",
 
     doc: "#185ABD",
     docx: "#185ABD",
@@ -113,22 +117,34 @@ const EXTENSION_COLOR_MAPPING = {
 
 const getColor = value => EXTENSION_COLOR_MAPPING[value] ?? "#888";
 
+const getExtension = (filename: string): string => {
+    const parts = filename.split(".");
+    if (parts.length === 1 || (parts[0] === "" && parts.length === 2)) {
+        return "";
+    }
+    return parts.pop() || "";
+};
+
 const ExtensionAvatar = ({
     name,
-    color,
+    color: parentColor,
 }: ExtensionAvatarProps) => {
-    const extension = name.split(".")
-        .pop() ?? "";
+    const theme = useTheme();
+    const extension = getExtension(name);
+
+    const mainColor = parentColor ?? getColor(extension.toLowerCase());
+    const [textColor, backgroundColor] = useAdaptedColor(parentColor || theme.palette.background.default, mainColor);
+
     const Icon = EXTENSION_ICON_MAPPING[extension];
 
     return (
         <Avatar
             style={{
+                backgroundColor,
                 cursor: "pointer",
-                backgroundColor: color ?? getColor(extension.toLowerCase()),
             }}
         >
-            {Icon ? <Icon /> : extension.toUpperCase().substr(0, 3)}
+            {Icon ? <Icon color={textColor} /> : extension.toUpperCase().substr(0, 3)}
         </Avatar>
     );
 };
