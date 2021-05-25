@@ -15,7 +15,6 @@ import SingleFile, {MaterialFile} from "./SingleFile";
 const UploadForm = () => {
     const {
         lesson,
-        updateLesson,
     } = useContext(RelatedObjectsContext);
     const {
         $files,

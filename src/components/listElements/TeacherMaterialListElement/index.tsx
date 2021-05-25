@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {
     Button,
     CircularProgress,
-    DialogContentText, IconButton,
+    DialogContentText, IconButton, Link,
     ListItem, ListItemAvatar,
     ListItemIcon,
     ListItemSecondaryAction,
@@ -127,9 +127,9 @@ const TeacherMaterialListElement = ({
                 }
             >
                 <ListItemAvatar>
-                    <a href={material.file} target="_blank" rel="noreferrer">
+                    <Link underline="none" href={material.file} target="_blank" rel="noreferrer">
                         <ExtensionAvatar name={material.name} />
-                    </a>
+                    </Link>
                 </ListItemAvatar>
                 <ListItemText
                     primary={material.name}
