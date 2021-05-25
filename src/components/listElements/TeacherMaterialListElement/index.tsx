@@ -127,7 +127,9 @@ const TeacherMaterialListElement = ({
                 }
             >
                 <ListItemAvatar>
-                    <ExtensionAvatar name={material.name} />
+                    <a href={material.file} target="_blank" rel="noreferrer">
+                        <ExtensionAvatar name={material.name} />
+                    </a>
                 </ListItemAvatar>
                 <ListItemText
                     primary={material.name}

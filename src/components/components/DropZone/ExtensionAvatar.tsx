@@ -1,5 +1,5 @@
 import React from "react";
-import {Avatar, useTheme} from "@material-ui/core";
+import {Avatar, AvatarProps, useTheme} from "@material-ui/core";
 import {
     AiFillFileZip, AiFillHtml5, FaCode,
     FaFileAudio,
@@ -13,7 +13,7 @@ import {
 
 import {useAdaptedColor} from "../../../hooks";
 
-export interface ExtensionAvatarProps {
+export interface ExtensionAvatarProps extends AvatarProps {
     name: string;
 
     color?: string;
@@ -128,6 +128,8 @@ const getExtension = (filename: string): string => {
 const ExtensionAvatar = ({
     name,
     color: parentColor,
+    style = {},
+    ...other
 }: ExtensionAvatarProps) => {
     const theme = useTheme();
     const extension = getExtension(name);
@@ -139,7 +141,9 @@ const ExtensionAvatar = ({
 
     return (
         <Avatar
+            {...other}
             style={{
+                ...style,
                 backgroundColor,
                 cursor: "pointer",
             }}

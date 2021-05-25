@@ -83,9 +83,9 @@ const SingleFile = ({
             const loadedFile = await readFile();
 
             return upload({
-                name,
                 lessonDate,
                 file: loadedFile,
+                name: material.name,
                 publishDatetime: material.publishDatetime,
                 announce: material.announce,
                 lessonId: lesson.id,

@@ -98,7 +98,7 @@ const useFileUpload = <Data, Error, Variables>(
         isCompressing,
         isReadingFile,
         isUploaded,
-        isDoingAnything: isUploading || isPreparingUpload || isPreparingUpload || isCompressing || isReadingFile,
+        isDoingAnything: isUploading || isPreparingUpload || isPreparingUpload || isCompressing || isReadingFile || isProcessing,
 
         progress,
         errorMessage,

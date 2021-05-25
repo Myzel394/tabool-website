@@ -30,7 +30,7 @@ const useCreateTeacherMaterialAPI = () => {
         announce,
     }: ICreateTeacherMaterialData, onProgress?: ProgressFunction): Promise<TeacherMaterialDetail> => {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", file, name);
         formData.set("name", name);
         formData.set("lesson", lessonId);
         formData.set("lesson_date", lazyDatetime(lessonDate, "date"));
