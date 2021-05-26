@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {Box, Button, CircularProgress, ListItem, ListItemIcon, ListItemText, makeStyles} from "@material-ui/core";
+import {Button, CircularProgress, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {MdDateRange} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {findNextDate, replaceDatetime} from "utils";
 import {renderDayWithLessonWeekdays} from "components/index";
 
 import Picker, {PickerProps} from "./Picker";
+import HorizontalScrollWrapper from "./HorizontalScrollWrapper";
 
 interface Base {
     isLoading: boolean;
@@ -43,18 +44,6 @@ const getDatesForWeekdays = (weekdays: number[], startDate?: Dayjs): Dayjs[] => 
     return nextDates;
 };
 
-const useClasses = makeStyles(() => ({
-    wrapper: {
-        overflowX: "auto",
-        "&::-webkit-scrollbar": {
-            display: "none",
-        },
-        "& > button": {
-            flex: "0 0 auto",
-        },
-    },
-}));
-
 const DueDateChanger = ({
     isLoading,
     onChange,
@@ -67,7 +56,6 @@ const DueDateChanger = ({
     disableClearing,
 }: DueDateChangerProps) => {
     const {t} = useTranslation();
-    const classes = useClasses();
 
     const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
 
@@ -84,7 +72,7 @@ const DueDateChanger = ({
                 />
                 {isLoading && <CircularProgress color="inherit" size="1rem" />}
             </ListItem>
-            <Box display="flex" flexWrap="nowrap" className={classes.wrapper}>
+            <HorizontalScrollWrapper>
                 {!disableClearing && (
                     <Button
                         size="small"
@@ -128,7 +116,7 @@ const DueDateChanger = ({
                 >
                     {t("Übernächste Stunde")}
                 </Button>
-            </Box>
+            </HorizontalScrollWrapper>
             <Picker
                 renderDay={renderDay}
                 pickerType={pickerType}

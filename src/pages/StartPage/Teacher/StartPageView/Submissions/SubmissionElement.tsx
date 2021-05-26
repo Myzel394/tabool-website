@@ -3,9 +3,9 @@ import {IconButton, ListItem, ListItemSecondaryAction, ListItemText} from "@mate
 import {MdFileDownload} from "react-icons/all";
 import {TeacherSubmissionDetail} from "types";
 import {useTranslation} from "react-i18next";
+import {usePrettyBytes} from "hooks";
 
 import SecondaryInformation from "../SecondaryInformation";
-import {usePrettyBytes} from "../../../../../hooks";
 
 
 export interface SubmissionElementProps {

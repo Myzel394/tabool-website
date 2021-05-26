@@ -38,7 +38,7 @@ const LoadingOverlay = ({isLoading, children, text, value}: LoadingOverlayProps)
                 {children}
             </div>
             <div className={containerClasses} style={styles}>
-                <CircularProgress variant={value ? "determinate" : "indeterminate"} value={value} />
+                <CircularProgress variant={(value === undefined) ? "indeterminate" : "determinate"} value={value} />
                 {text && <Typography>{text}</Typography>}
             </div>
         </div>

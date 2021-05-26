@@ -23,6 +23,7 @@ export * from "./buildPath";
 export * from "./createShort";
 export * from "./setTime";
 export * from "./copyText";
+export * from "./getExtension";
 
 export {default as isAllDay} from "./isAllDay";
 export {default as snakeCaseKeys} from "./snakeCaseKeys";
@@ -60,3 +61,4 @@ export {default as copyText} from "./copyText";
 export {default as supportsThemes} from "./supportsThemes";
 export {default as getLanguageFromI18Next} from "./getLanguageFromI18Next";
 export {default as getCurrentLesson} from "./getCurrentLesson";
+export {default as getExtension} from "./getExtension";

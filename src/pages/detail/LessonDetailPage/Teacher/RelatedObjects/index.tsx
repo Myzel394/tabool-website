@@ -11,6 +11,7 @@ import {Dayjs} from "dayjs";
 import Homeworks from "./Homeworks";
 import Materials from "./Materials";
 import RelatedObjectsContext from "./RelatedObjectsContext";
+import Submissions from "./Submissions";
 
 interface IRelatedContent {
     lesson: TeacherLessonDetail;
@@ -54,6 +55,9 @@ const RelatedObjects = ({
                 </Grid>
                 <Grid item style={fullWidth}>
                     <Materials />
+                </Grid>
+                <Grid item style={fullWidth}>
+                    <Submissions />
                 </Grid>
             </Grid>
         </RelatedObjectsContext.Provider>

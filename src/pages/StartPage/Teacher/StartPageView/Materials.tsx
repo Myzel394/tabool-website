@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
-import {getPerUniqueValue, lazyDatetime} from "utils";
-import {Box, Divider, List, ListSubheader, useTheme} from "@material-ui/core";
+import {buildPath, getPerUniqueValue, lazyDatetime} from "utils";
+import {Box, Button, Divider, List, ListSubheader, useTheme} from "@material-ui/core";
 import dayjs from "dayjs";
 import {createStickyHeaderStyles, TeacherMaterialListElement} from "components";
 import sortArray from "sort-array";
@@ -15,6 +15,7 @@ const Materials = () => {
     const {
         dailyData: {materials},
         onDailyDataChange,
+        date,
     } = useContext(StartPageContext);
 
     const classes = createStickyHeaderStyles(theme.palette.background.default);
@@ -40,6 +41,14 @@ const Materials = () => {
                             <FlipMove>
                                 {materials.map(material =>
                                     <div key={material.id}>
+                                        <Button
+                                            href={buildPath("/agenda/lesson/detail/:id/:date/", {
+                                                id: material.lesson.id,
+                                                date: lazyDatetime(date, "date"),
+                                            })}
+                                        >
+                                            {material.lesson.course.subject.name}
+                                        </Button>
                                         <TeacherMaterialListElement
                                             material={material}
                                             onUpdate={newMaterial => onDailyDataChange(dailyData => update(dailyData, {

@@ -1,5 +1,6 @@
 .wrapper {
     position: relative;
+    height: 100%;
 }
 
 @keyframes animateIn {
@@ -28,6 +29,7 @@
 }
 
 .children {
+    height: 100%;
     will-change: opacity, filter;
     transition: .2s;
 }

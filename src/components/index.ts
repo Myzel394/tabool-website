@@ -18,6 +18,8 @@ export * from "./DeleteConfirmItem";
 export * from "./ListItemOptions";
 export * from "./AnnounceExplanation";
 export * from "./listElements";
+export * from "./HorizontalScrollWrapper";
+export * from "./extensions";
 
 export {default as Poll} from "./Poll";
 export {default as renderDayWithLessonWeekdays} from "./renderDayWithLessonWeekdays";
@@ -35,4 +37,5 @@ export {default as SecondaryInformation} from "./SecondaryInformation";
 export {default as DeleteConfirmItem} from "./DeleteConfirmItem";
 export {default as ListItemOptions} from "./ListItemOptions";
 export {default as AnnounceExplanation} from "./AnnounceExplanation";
+export {default as HorizontalScrollWrapper} from "./HorizontalScrollWrapper";
 

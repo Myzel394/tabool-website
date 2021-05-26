@@ -4,8 +4,7 @@ import {Avatar, ShowMoreArray, ShowMoreButton} from "components";
 import {TeacherSubmissionDetail} from "types";
 import {useForceUpdate} from "@shopify/react-hooks";
 import dayjs, {Dayjs} from "dayjs";
-
-import {useElementSize, useRect} from "../../../../../hooks";
+import {useElementSize, useRect} from "hooks";
 
 import SubmissionElement from "./SubmissionElement";
 
