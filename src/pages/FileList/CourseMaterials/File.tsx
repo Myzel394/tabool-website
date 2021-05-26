@@ -2,7 +2,6 @@ import React from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {IconButton, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import {FaFile} from "react-icons/all";
-import extensionIconMap from "components/extensionIconMap";
 import {LessonIcon} from "components/icons";
 import {useTranslation} from "react-i18next";
 import {getMaterialDownloadDateString} from "utils";
@@ -10,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addDownloadedMaterialsDate, getMaterialDownloadDate, RootState} from "state";
 
 import {usePrettyBytes} from "../../../hooks";
+import {EXTENSION_ICON_MAPPING} from "../../../components";
 
 
 export interface FileProps {
@@ -43,7 +43,7 @@ const File = ({
         .split(".")
         .pop()
         : "";
-    const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
+    const FormatIcon = (extension && EXTENSION_ICON_MAPPING[extension]) ?? FaFile;
     const secondaryItems = [
         !isAvailable && getMaterialDownloadDateString(t, publishDatetime),
         isAvailable && date && t("Heruntergeladen am {{date}}", {

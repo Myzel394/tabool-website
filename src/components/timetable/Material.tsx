@@ -9,8 +9,8 @@ import {addDownloadedMaterialsDate, getMaterialDownloadDate, RootState} from "st
 
 import {Information} from "../components";
 import {TimeRelative} from "../statuses";
-import extensionIconMap from "../extensionIconMap";
 import {usePrettyBytes} from "../../hooks";
+import {EXTENSION_ICON_MAPPING} from "../extensions";
 
 export interface MaterialProps {
     name: string;
@@ -28,7 +28,7 @@ const Material = ({name, id, size, file, publishDatetime}: MaterialProps) => {
     const prettyBytes = usePrettyBytes();
 
     const extension = name ? name.split(".").pop() : "";
-    const FormatIcon = (extension && extensionIconMap[extension]) ?? FaFile;
+    const FormatIcon = (extension && EXTENSION_ICON_MAPPING[extension]) ?? FaFile;
     const isAvailable = publishDatetime?.isBefore(dayjs());
 
     return (

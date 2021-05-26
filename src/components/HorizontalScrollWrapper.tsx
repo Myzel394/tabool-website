@@ -1,7 +1,6 @@
 import React, {ReactNode} from "react";
 import {Box, BoxProps, makeStyles} from "@material-ui/core";
-
-import {useDeviceWidth} from "../hooks";
+import {isMobile} from "react-device-detect";
 
 export interface HorizontalScrollWrapperProps extends BoxProps {
     children: ReactNode;
@@ -24,12 +23,11 @@ const HorizontalScrollWrapper = ({
     ...other
 }: HorizontalScrollWrapperProps) => {
     const classes = useClasses();
-    const {isLG} = useDeviceWidth();
 
     return (
         <Box
             display="flex"
-            flexWrap={isLG ? "wrap" : "nowrap"}
+            flexWrap={isMobile ? "wrap" : "nowrap"}
             className={classes.wrapper}
             {...other}
         >
