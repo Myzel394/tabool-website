@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 import {Box, LinearProgress, List, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {TeacherSubmissionListElement} from "components";
+import {Alert} from "@material-ui/lab";
 
 import RelatedObjectsContext from "../RelatedObjectsContext";
 
@@ -32,11 +33,19 @@ const Submissions = () => {
                     <LinearProgress variant="determinate" value={Math.min(100, usersSubmissionAmount / lesson.course.participantsCount * 100)} />
                 </Box>
             </Box>
-            <List>
-                {submissions.map(submission =>
-                    <TeacherSubmissionListElement key={submission.id} submission={submission} />)}
-            </List>
-            <ExtraOptions />
+            {submissions.length ? (
+                <>
+                    <List>
+                        {submissions.map(submission =>
+                            <TeacherSubmissionListElement key={submission.id} submission={submission} />)}
+                    </List>
+                    <ExtraOptions />
+                </>
+            ) : (
+                <Alert severity="info">
+                    {t("Es liegen keine Einsendungen vor.")}
+                </Alert>
+            )}
         </>
     );
 };

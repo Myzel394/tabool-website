@@ -55,6 +55,7 @@ const Students = ({
         <Box mt={2}>
             <FormControl
                 fullWidth
+                required
                 variant="outlined"
             >
                 <InputLabel>
@@ -65,7 +66,7 @@ const Students = ({
                     defaultValue=""
                     type="radio"
                     name="privateToStudentId"
-                    label={t("Schüler")}
+                    label={t("Schüler*")}
                 >
                     {students.map(student =>
                         <MenuItem key={student.id} value={student.id}>

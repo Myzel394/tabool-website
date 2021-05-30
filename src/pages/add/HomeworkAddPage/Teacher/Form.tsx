@@ -112,7 +112,6 @@ const Form = ({
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <HomeworkDueDateField
-                                        required
                                         fullWidth
                                         name="dueDate"
                                         renderDay={renderDueDateDay}
@@ -142,13 +141,15 @@ const Form = ({
                                             type="checkbox"
                                             Label={{label: t("Private Hausaufgabe")}}
                                         />
-                                        {!values.isPrivate && (
-                                            <FormHelperText>
-                                                {t("Eine private Hausaufgabe ist nur für einen Schüler auf.")}
-                                            </FormHelperText>
-                                        )}
+                                        <FormHelperText>
+                                            {t("Eine private Hausaufgabe ist nur für einen Schüler auf.")}
+                                        </FormHelperText>
                                     </FormGroup>
-                                    <Collapse in={values.isPrivate}>
+                                    <Collapse
+                                        mountOnEnter
+                                        unmountOnExit
+                                        in={values.isPrivate}
+                                    >
                                         <Students
                                             hasLessonSelected={Boolean(values.lesson)}
                                             students={lesson?.course.participants}

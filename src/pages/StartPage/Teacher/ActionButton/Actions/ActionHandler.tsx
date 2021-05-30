@@ -1,5 +1,6 @@
 import React, {FC, useContext} from "react";
 import {SimpleDialog} from "components";
+import {useTranslation} from "react-i18next";
 
 import StartPageContext from "../../StartPageContext";
 
@@ -24,6 +25,7 @@ const ActionHandler = ({
     onActionUpdate,
     action,
 }: ActionHandlerProps) => {
+    const {t} = useTranslation();
     const {
         scrollBack,
     } = useContext(StartPageContext);

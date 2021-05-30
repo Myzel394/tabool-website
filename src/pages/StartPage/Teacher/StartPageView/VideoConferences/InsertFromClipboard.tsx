@@ -135,14 +135,25 @@ const InsertFromClipboard = ({
                         <Box display="flex" alignItems="center">
                             {(() => {
                                 if (isURL) {
-                                    return <MdCheck />;
+                                    return (
+                                        <>
+                                            <MdCheck />
+                                            <Box ml={1}>
+                                                {clipboardValue}
+                                            </Box>
+                                        </>
+                                    );
                                 } else {
-                                    return <MdClear />;
+                                    return (
+                                        <>
+                                            <MdClear />
+                                            <Box ml={1}>
+                                                {t("Kein gültiger Link")}
+                                            </Box>
+                                        </>
+                                    );
                                 }
                             })()}
-                            <Box ml={1}>
-                                {clipboardValue}
-                            </Box>
                         </Box>
                     )}
                 />

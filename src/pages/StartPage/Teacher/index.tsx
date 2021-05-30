@@ -10,7 +10,6 @@ import {getMaxFutureDays, RootState} from "state";
 
 import getTargetedDate from "../getTargetedDate";
 
-import ActionButton from "./ActionButton";
 import StartPageContext from "./StartPageContext";
 import StartPageView from "./StartPageView";
 import useRequestLesson from "./useRequestLesson";
@@ -80,7 +79,6 @@ const TeacherStartPage = () => {
                             </Box>
                         </Wrapper>
                     </LoadingOverlay>
-                    <ActionButton scrollPositionRef={$oldScrollPosition} />
                 </StartPageContext.Provider>
             }
         </ResponseWrapper>
