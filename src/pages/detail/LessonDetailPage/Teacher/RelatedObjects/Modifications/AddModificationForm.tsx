@@ -21,7 +21,6 @@ import {
 import {Select, TextField} from "formik-material-ui";
 import _ from "lodash";
 
-import {useDeviceWidth} from "../../../../../../hooks";
 import RelatedObjectsContext from "../RelatedObjectsContext";
 
 export interface AddModificationProps {
@@ -46,7 +45,6 @@ const AddModification = ({
         updateLesson,
     } = useContext(RelatedObjectsContext);
     const addModification = useCreateTeacherModificationAPI();
-    const {isMD} = useDeviceWidth();
 
     const [subject, setSubject] = useState<Subject>();
 
@@ -104,11 +102,11 @@ const AddModification = ({
                 <LoadingOverlay isLoading={isLoading}>
                     <IkForm>
                         <Box my={2}>
-                            <Grid container spacing={2}>
+                            <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <FormControl
                                         required
-                                        fullWidth={!isMD}
+                                        fullWidth
                                         variant="outlined"
                                     >
                                         <InputLabel>
@@ -138,9 +136,9 @@ const AddModification = ({
                                         </Field>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={4}>
                                     <Field
-                                        fullWidth={!isMD}
+                                        fullWidth
                                         disabled={[ModificationType.RoomChange, ModificationType.FreePeriod].includes(values.modificationType)}
                                         name="newSubject"
                                         label={t("Neues Fach")}
@@ -148,18 +146,17 @@ const AddModification = ({
                                         onChange={(id, course: TeacherCourseDetail) => setSubject(course.subject)}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={4}>
                                     <Field
-                                        fullWidth={!isMD}
+                                        fullWidth
                                         disabled={[ModificationType.RoomChange, ModificationType.FreePeriod].includes(values.modificationType)}
                                         name="newTeacher"
                                         label={t("Neuer Lehrer")}
                                         component={TeacherField}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={4}>
                                     <Field
-                                        fullWidth={!isMD}
                                         disabled={[ModificationType.FreePeriod].includes(values.modificationType)}
                                         name="newRoom"
                                         label={t("Neuer Raum")}
@@ -169,8 +166,8 @@ const AddModification = ({
                                 <Grid item xs={12}>
                                     <Field
                                         multiline
+                                        fullWidth
                                         variant="outlined"
-                                        fullWidth={!isMD}
                                         name="information"
                                         label={t("Informationen")}
                                         component={TextField}

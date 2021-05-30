@@ -17,8 +17,10 @@ import Shortcuts from "./Shortcuts";
 const useClasses = makeStyles(theme => ({
     backdrop: {
         zIndex: theme.zIndex.speedDial - 2,
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "100%",
+        margin: 0,
+        padding: 0,
         top: 0,
         left: 0,
     },
@@ -35,7 +37,7 @@ const StartPageView = ({onLessonSelect, onLessonAbort}) => {
 
     return (
         <>
-            <Box mb={4} mx={2}>
+            <Box mb={4}>
                 <Title />
             </Box>
             <Shortcuts />
@@ -59,7 +61,7 @@ const StartPageView = ({onLessonSelect, onLessonAbort}) => {
             <Content title={t("Materialien")}>
                 <Materials />
             </Content>
-            <Box mx={2} mt={2}>
+            <Box mt={2}>
                 <Form
                     date={date}
                     onDateChange={setDate}

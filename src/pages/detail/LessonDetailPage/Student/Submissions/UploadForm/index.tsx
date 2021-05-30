@@ -51,7 +51,7 @@ const UploadForm = () => {
         }))),
     [lesson]);
 
-    const addFiles = (files: FileList) =>
+    const addFiles = (files: File[]) =>
         setFiles(prevState => [
             ...prevState,
             ...Array.from(files)

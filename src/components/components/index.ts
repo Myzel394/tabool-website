@@ -10,6 +10,7 @@ export * from "./SelectList";
 export * from "./SimpleDialog";
 export * from "./ColoredContainer";
 export * from "./Logo";
+export * from "./ExtensionAvatar";
 
 export {default as Tooltip} from "./Tooltip";
 export {default as ButtonLike} from "./ButtonLike";
@@ -22,3 +23,4 @@ export {default as SelectList} from "./SelectList";
 export {default as SimpleDialog} from "./SimpleDialog";
 export {default as ColoredContainer} from "./ColoredContainer";
 export {default as Logo} from "./Logo";
+export {default as ExtensionAvatar} from "./ExtensionAvatar";

@@ -21,7 +21,6 @@ export type IPlaceField = Omit<IAutocompleteField,
     "onChange"> & FieldProps & {
     helperText?: string;
     label?: string;
-    fullWidth?: boolean;
     onChange?: (place: Room) => any;
 };
 
@@ -33,7 +32,6 @@ const PlaceField = ({
     helperText,
     label,
     onChange,
-    fullWidth,
     ...other
 }: IPlaceField) => {
     const {
@@ -106,7 +104,6 @@ const PlaceField = ({
 
     return (
         <Autocomplete<Room, false, false, true>
-            fullWidth={fullWidth}
             {...field}
             multiple={false}
             {...other}
@@ -144,7 +141,6 @@ const PlaceField = ({
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             renderOption={(option) => option.place ?? option.title}
-            style={{width: 300}}
             renderInput={params =>
                 <TextField
                     {...params}

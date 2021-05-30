@@ -77,7 +77,6 @@ const useRenderers = <
                     {...textFieldProps}
                     {...params}
                     variant="outlined"
-                    margin="normal"
                     InputProps={{
                         ...(textFieldProps?.InputProps || {}),
                         ...params.InputProps,
@@ -113,9 +112,7 @@ const useRenderers = <
                 return customRenderOption(option, state);
             }
 
-            const text = getTextFromOption(option);
-
-            return text;
+            return getTextFromOption(option);
         },
         getTextFromOption,
     };

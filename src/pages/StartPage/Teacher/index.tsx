@@ -2,6 +2,7 @@ import React, {useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {TeacherDailyDataView, TeacherLessonDetail} from "types";
 import {Dayjs} from "dayjs";
+import Wrapper from "components/pages/FocusedPage/Wrapper";
 import {ErrorPage, LoadingOverlay, LoadingPage, ResponseWrapper} from "components";
 import {Box} from "@material-ui/core";
 import {useSelector} from "react-redux";
@@ -57,30 +58,30 @@ const TeacherStartPage = () => {
             renderError={error => <ErrorPage status={error.response?.status} />}
         >
             {dailyData =>
-                <>
-                    <Box my={2}>
-                        <StartPageContext.Provider
-                            value={{
-                                requestLesson,
-                                dailyData,
-                                isLessonSelectMode,
-                                scrollBack,
-                                selectedLesson,
-                                onDailyDataChange,
-                                date: targetedDate,
-                                setDate: setTargetedDate,
-                            }}
-                        >
-                            <LoadingOverlay isLoading={isFetching}>
+                <StartPageContext.Provider
+                    value={{
+                        requestLesson,
+                        dailyData,
+                        isLessonSelectMode,
+                        scrollBack,
+                        selectedLesson,
+                        onDailyDataChange,
+                        date: targetedDate,
+                        setDate: setTargetedDate,
+                    }}
+                >
+                    <LoadingOverlay isLoading={isFetching}>
+                        <Wrapper>
+                            <Box my={2}>
                                 <StartPageView
                                     onLessonAbort={$onLessonAbort.current}
                                     onLessonSelect={$onLessonSelect.current}
                                 />
-                            </LoadingOverlay>
-                            <ActionButton scrollPositionRef={$oldScrollPosition} />
-                        </StartPageContext.Provider>
-                    </Box>
-                </>
+                            </Box>
+                        </Wrapper>
+                    </LoadingOverlay>
+                    <ActionButton scrollPositionRef={$oldScrollPosition} />
+                </StartPageContext.Provider>
             }
         </ResponseWrapper>
     );

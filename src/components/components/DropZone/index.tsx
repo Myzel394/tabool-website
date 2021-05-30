@@ -1,23 +1,22 @@
-import React, {ReactNode, useMemo} from "react";
-import {useDropzone} from "react-dropzone";
+import React, {ReactNode} from "react";
 import {
     Box,
-    ButtonBase,
     Collapse,
-    Paper,
-    useTheme,
+    Paper, Typography,
 } from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import tinycolor from "tinycolor2";
 import {MdAdd, MdFileUpload} from "react-icons/all";
-import {usePrevious} from "hooks";
+import {usePrettyBytes, usePrevious} from "hooks";
 
 import Information from "../Information";
+
+import useDropZone, {MAX_FILE_SIZE} from "./useDropZone";
+import useMainColor from "./useMainColor";
 
 
 export interface IDropZone<FileType = any> {
     files: FileType[];
-    onFilesAdded: (files: FileList) => any;
+    onFilesAdded: (files: File[]) => any;
 
     renderList: (element: FileType[]) => ReactNode;
 
@@ -33,51 +32,37 @@ const DropZone = <FileType extends any = any>({
     disabled,
 }: IDropZone<FileType>) => {
     const {t} = useTranslation();
-    const theme = useTheme();
+    const prettyBytes = usePrettyBytes();
     const {
-        getRootProps,
-        getInputProps,
+        inputProps,
+        rootProps,
         isDragActive,
-    } = useDropzone({
-        getFilesFromEvent: async (event) => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
-
-            if (files !== undefined) {
-                onFilesAdded(files);
-            }
-            return [];
-        },
+    } = useDropZone({
+        onFilesAdded,
     });
-    const mainColor = tinycolor(theme.palette.text.secondary)
-        .setAlpha(isDragActive ? 1 : theme.palette.action.activatedOpacity)
-        .toString();
-
-    const rootStyle = useMemo(() => ({
-        border: `${mainColor} .2em dashed`,
-        width: "100%",
-        margin: "0 auto",
-    }), [mainColor]);
-
     const previousValue = usePrevious(files, files);
+    const mainColor = useMainColor({
+        isDragActive,
+    });
 
     return (
         <Paper elevation={0}>
-            <Box
-                {...getRootProps({
-                    component: disabled ? "div" : ButtonBase,
-                    style: {
-                        width: "100%",
-                    },
-                })}
-            >
-                <Box p={3} style={rootStyle}>
-                    <input {...getInputProps()} disabled={disabled} />
+            <Box {...rootProps}>
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    flexDirection="column"
+                    p={3}
+                    width="100%"
+                    my={0}
+                    mx="auto"
+                    border={`${mainColor} .2em dashed`}
+                >
+                    <input {...inputProps} disabled={disabled} />
                     {isDragActive ? (
                         <Information
                             getIcon={props => <MdAdd {...props} />}
-                            text={t("Datei hinzufügen")}
+                            text={t("Dateien hinzufügen")}
                             color="textPrimary"
                         />
                     ) : (
@@ -87,6 +72,11 @@ const DropZone = <FileType extends any = any>({
                             color={disabled ? "textSecondary" : "textPrimary"}
                         />
                     )}
+                    <Typography variant="body2" color="textSecondary">
+                        {t("Maximale Dateigröße: {{maxSize}}", {
+                            maxSize: prettyBytes(MAX_FILE_SIZE),
+                        })}
+                    </Typography>
                 </Box>
             </Box>
             <Collapse in={Boolean(files.length)}>
@@ -99,4 +89,3 @@ const DropZone = <FileType extends any = any>({
 };
 
 export default DropZone;
-export {default as ExtensionAvatar} from "./ExtensionAvatar";

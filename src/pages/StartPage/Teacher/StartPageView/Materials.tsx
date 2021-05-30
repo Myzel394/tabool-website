@@ -18,7 +18,7 @@ const Materials = () => {
         date,
     } = useContext(StartPageContext);
 
-    const classes = createStickyHeaderStyles(theme.palette.background.default);
+    const classes = createStickyHeaderStyles(theme.palette.background.paper);
     const materialsPerDate = getPerUniqueValue(materials, {
         getKey: material => lazyDatetime(material.publishDatetime, "date") ?? "",
     });

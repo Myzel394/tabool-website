@@ -1,10 +1,9 @@
 import React from "react";
 import {Avatar, AvatarProps, useTheme} from "@material-ui/core";
+import {useAdaptedColor} from "hooks";
+import {getExtension} from "utils";
 
-
-import {useAdaptedColor} from "../../../hooks";
-import {EXTENSION_COLOR_MAPPING, EXTENSION_ICON_MAPPING} from "../../extensions";
-import {getExtension} from "../../../utils";
+import {EXTENSION_COLOR_MAPPING, EXTENSION_ICON_MAPPING} from "../extensions";
 
 export interface ExtensionAvatarProps extends AvatarProps {
     name: string;
