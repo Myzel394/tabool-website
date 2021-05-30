@@ -11,7 +11,7 @@ import BaseSearchField, {DefaultListItemField} from "./BaseSearchField";
 const filter = createFilterOptions<TeacherCourseDetail>();
 const getLabel = (course: TeacherCourseDetail) => course.name;
 
-const TeacherCourseField = (props: FieldProps) => {
+const TeacherCourseField = (props: FieldProps & {disabled: boolean;}) => {
     const {t} = useTranslation();
     const fetchCourses = useFetchTeacherCourseListAPI();
     const fetchCourseDetail = useFetchTeacherCourseDetailAPI();

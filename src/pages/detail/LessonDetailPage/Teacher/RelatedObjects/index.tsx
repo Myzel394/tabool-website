@@ -12,6 +12,7 @@ import Homeworks from "./Homeworks";
 import Materials from "./Materials";
 import RelatedObjectsContext from "./RelatedObjectsContext";
 import Submissions from "./Submissions";
+import Modifications from "./Modifications";
 
 interface IRelatedContent {
     lesson: TeacherLessonDetail;
@@ -58,6 +59,9 @@ const RelatedObjects = ({
                 </Grid>
                 <Grid item style={fullWidth}>
                     <Submissions />
+                </Grid>
+                <Grid item style={fullWidth}>
+                    <Modifications />
                 </Grid>
             </Grid>
         </RelatedObjectsContext.Provider>

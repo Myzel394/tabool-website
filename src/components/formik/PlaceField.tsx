@@ -4,7 +4,7 @@ import {useQuery} from "react-query";
 import {IFetchRoomResponse, useFetchRoomDetailAPI, useFetchRoomListAPI} from "hooks/apis";
 import {AxiosError} from "axios";
 import {Autocomplete, createFilterOptions} from "@material-ui/lab";
-import {CircularProgress, InputAdornment, TextField} from "@material-ui/core";
+import {Box, CircularProgress, InputAdornment, TextField} from "@material-ui/core";
 import {Room} from "types";
 import {useColors, useQueryOptions, useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
@@ -21,6 +21,7 @@ export type IPlaceField = Omit<IAutocompleteField,
     "onChange"> & FieldProps & {
     helperText?: string;
     label?: string;
+    fullWidth?: boolean;
     onChange?: (place: Room) => any;
 };
 
@@ -32,6 +33,7 @@ const PlaceField = ({
     helperText,
     label,
     onChange,
+    fullWidth,
     ...other
 }: IPlaceField) => {
     const {
@@ -104,6 +106,7 @@ const PlaceField = ({
 
     return (
         <Autocomplete<Room, false, false, true>
+            fullWidth={fullWidth}
             {...field}
             multiple={false}
             {...other}
@@ -151,7 +154,9 @@ const PlaceField = ({
                         ...params.InputProps,
                         startAdornment: (
                             <InputAdornment position="start">
-                                <RoomIcon color={inputIconColor} />
+                                <Box ml={2}>
+                                    <RoomIcon color={inputIconColor} />
+                                </Box>
                             </InputAdornment>
                         ),
                         endAdornment: (

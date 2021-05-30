@@ -85,6 +85,7 @@ const SearchField = <
         modalTitle,
         searchPlaceholder,
         filterOptions,
+        disabled,
         ...other
     }: ISearchField<DataType, KeyType, QueryResponse>) => {
     const {t} = useTranslation();
@@ -152,6 +153,7 @@ const SearchField = <
             required,
         },
         getOptionLabel,
+        disabled,
         findElementByKey,
         customRenderOption: renderOption,
     });
@@ -164,6 +166,7 @@ const SearchField = <
         <>
             <Autocomplete<DataType>
                 autoHighlight
+                disabled={disabled}
                 {...other}
                 renderInput={renderInput}
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

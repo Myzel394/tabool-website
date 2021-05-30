@@ -6,6 +6,7 @@ export * from "./event";
 export * from "./exam";
 export * from "./homework";
 export * from "./material";
+export * from "./modification";
 export * from "./poll";
 export * from "./preference";
 export * from "./room";

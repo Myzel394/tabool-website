@@ -18,6 +18,7 @@ export interface IUseRenderers<
     textFieldProps: TextFieldProps;
 
     customRenderOption?: (option: DataType, state: AutocompleteRenderOptionState) => ReactNode;
+    disabled?: boolean;
 }
 
 const MORE_AVAILABLE_SYMBOL = Symbol("more-available");
@@ -46,6 +47,7 @@ const useRenderers = <
         customRenderOption,
         findElementByKey,
         getOptionLabel,
+        disabled,
     }: IUseRenderers<DataType, KeyType>): IUseRenderersResult<DataType, KeyType> => {
     const {t} = useTranslation();
 
@@ -82,7 +84,7 @@ const useRenderers = <
                         startAdornment: (
                             <InputAdornment position="start">
                                 <Tooltip title={t("Dialog öffnen").toString()}>
-                                    <IconButton onClick={() => updateIsOpen(true)}>
+                                    <IconButton disabled={disabled} onClick={() => updateIsOpen(true)}>
                                         <MdFullscreen />
                                     </IconButton>
                                 </Tooltip>
