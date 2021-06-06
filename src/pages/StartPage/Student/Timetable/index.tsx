@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {Fade} from "react-reveal";
 import {Grid, useTheme} from "@material-ui/core";
 import {StudentHomeworkDetail, StudentLessonDetail, StudentMaterialDetail} from "types";
@@ -48,4 +48,4 @@ const Timetable = ({
     );
 };
 
-export default memo(Timetable);
+export default Timetable;

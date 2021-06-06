@@ -9,9 +9,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "states";
 
 import firebase, {isSupported} from "../firebase";
-
-// eslint-disable-next-line @shopify/strict-component-boundaries
-import {PermissionType} from "./RequiredPermissions/permissions/types";
+import {PermissionType} from "../utils";
 
 
 export interface FCMHandlerProps {

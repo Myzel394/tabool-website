@@ -3,22 +3,15 @@ import {supportsNotifications} from "supports";
 import {useDispatch} from "react-redux";
 import {setNotification as setStoreNotification} from "states";
 import {useAsync} from "hooks";
-
-import {PermissionType} from "./permissions/types";
+import {PermissionType} from "utils";
+import {PERMISSION_STATUS_TYPE_MAP} from "mappings";
 
 const getNotificationPermissionStatus = (): PermissionType | void => {
     if (!supportsNotifications) {
         return PermissionType.NotAvailable;
     }
 
-    switch (Notification.permission) {
-        case "granted":
-            return PermissionType.Granted;
-        case "denied":
-            return PermissionType.Blocked;
-        case "default":
-            return PermissionType.Unknown;
-    }
+    return PERMISSION_STATUS_TYPE_MAP[Notification.permission];
 };
 
 const useNotificationPermission = () => {
@@ -52,17 +45,7 @@ const useNotificationPermission = () => {
         if (permissionsStatus) {
             // eslint-disable-next-line func-style
             const updateNotification = function(this: PermissionStatus) {
-                switch (this.state) {
-                    case "granted":
-                        setNotification(PermissionType.Granted);
-                        break;
-                    case "denied":
-                        setNotification(PermissionType.Blocked);
-                        break;
-                    case "prompt":
-                        setNotification(PermissionType.Unknown);
-                        break;
-                }
+                setNotification(PERMISSION_STATUS_TYPE_MAP[this.state]);
             };
 
             permissionsStatus.addEventListener("change", updateNotification);

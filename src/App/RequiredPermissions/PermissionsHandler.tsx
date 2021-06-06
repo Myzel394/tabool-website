@@ -3,8 +3,9 @@ import {useUser} from "hooks";
 import {useSelector} from "react-redux";
 import {RootState} from "states";
 
+import {PermissionType} from "../../utils";
+
 import {LocationPermission, NotificationPermission} from "./permissions";
-import {PermissionType} from "./permissions/types";
 import useLocationPermission from "./useLocationPermission";
 import useNotificationPermission from "./useNotificationPermission";
 
@@ -19,13 +20,13 @@ const PermissionsHandler = ({children}) => {
     useLocationPermission();
 
     if (checkPermissions) {
-        if (notification === PermissionType.Unknown) {
+        if (notification === PermissionType.Ask) {
             return (
                 <NotificationPermission />
             );
         }
 
-        if (location === PermissionType.Unknown) {
+        if (location === PermissionType.Ask) {
             return (
                 <LocationPermission />
             );

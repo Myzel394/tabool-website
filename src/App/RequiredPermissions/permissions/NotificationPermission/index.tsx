@@ -2,15 +2,17 @@ import React, {useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
 import {setNotification as setStoreNotification} from "states";
+import {useNotificationPrompt} from "hooks";
 
 import RequestPermission from "../RequestPermission";
 import PressOnAllow from "../PressOnAllow";
-import {PermissionType} from "../types";
+import {PermissionType} from "../../../../utils";
 
 import notification from "./notification.svg";
 
 const NotificationPermission = () => {
     const {t} = useTranslation();
+    const promptUser = useNotificationPrompt();
     const dispatch = useDispatch();
     const setNotification = useCallback((perm: PermissionType) => dispatch(setStoreNotification(perm)), [dispatch]);
 
@@ -24,21 +26,7 @@ const NotificationPermission = () => {
                 svgLocation={notification}
                 onGrant={() => {
                     setIsRequesting(true);
-                    Notification.requestPermission()
-                        .then(permType => {
-                            switch (permType) {
-                                case "granted":
-                                    setNotification(PermissionType.Granted);
-                                    break;
-                                case "denied":
-                                    setNotification(PermissionType.Blocked);
-                                    break;
-                                case "default":
-                                    setNotification(PermissionType.Unknown);
-                                    break;
-                            }
-                        })
-                        .catch(() => setNotification(PermissionType.Blocked));
+                    promptUser();
                 }}
                 onDismiss={() => setNotification(PermissionType.Denied)}
             />

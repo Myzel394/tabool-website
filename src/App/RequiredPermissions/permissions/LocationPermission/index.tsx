@@ -2,16 +2,18 @@ import React, {useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {setLocation as setStoreLocation} from "states";
 import {useDispatch} from "react-redux";
+import {useLocationPrompt} from "hooks";
+import {PermissionType} from "utils";
 
 import PressOnAllow from "../PressOnAllow";
 import RequestPermission from "../RequestPermission";
-import {PermissionType} from "../types";
 
 import location from "./location.svg";
 
 
 const LocationPermission = () => {
     const {t} = useTranslation();
+    const promptUser = useLocationPrompt();
     const dispatch = useDispatch();
     const setLocation = useCallback((perm: PermissionType) => dispatch(setStoreLocation(perm)), [dispatch]);
 
@@ -28,18 +30,7 @@ const LocationPermission = () => {
                 svgLocation={location}
                 onGrant={() => {
                     setIsRequesting(true);
-                    navigator.geolocation.getCurrentPosition(() => {
-                        setLocation(PermissionType.Granted);
-                    }, error => {
-                        switch (error.code) {
-                            case error.PERMISSION_DENIED:
-                                setLocation(PermissionType.Blocked);
-                                break;
-                            case error.TIMEOUT:
-                            case error.POSITION_UNAVAILABLE:
-                                setLocation(PermissionType.NotAvailable);
-                        }
-                    });
+                    promptUser();
                 }}
                 onDismiss={() => setLocation(PermissionType.Denied)}
             />

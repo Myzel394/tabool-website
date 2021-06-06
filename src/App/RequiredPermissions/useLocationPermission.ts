@@ -3,8 +3,9 @@ import {supportsLocation} from "supports";
 import {useDispatch} from "react-redux";
 import {setLocation as setStoreLocation} from "states";
 import {useAsync} from "hooks";
+import {PermissionType} from "utils";
 
-import {PermissionType} from "./permissions/types";
+import {PERMISSION_STATUS_TYPE_MAP} from "../../mappings";
 
 const getLocationPermission = async (): Promise<PermissionType | void> => {
     if (!supportsLocation) {
@@ -20,21 +21,17 @@ const getLocationPermission = async (): Promise<PermissionType | void> => {
             name: "geolocation",
         });
 
-        switch (status.state) {
-            case "granted":
-                return PermissionType.Granted;
-            case "denied":
-                return PermissionType.Blocked;
-            case "prompt":
-                return PermissionType.Unknown;
-        }
+        return PERMISSION_STATUS_TYPE_MAP[status.state];
         // eslint-disable-next-line no-empty
     } catch {}
 };
 
 const useLocationPermission = () => {
     const dispatch = useDispatch();
-    const setLocation = useCallback((perm: PermissionType) => dispatch(setStoreLocation(perm)), [dispatch]);
+    const setLocation = useCallback(
+        (perm: PermissionType) => dispatch(setStoreLocation(perm)),
+        [dispatch],
+    );
 
     const getStatus = useCallback(async (): Promise<PermissionStatus | undefined> => {
         if (!navigator.permissions) {
@@ -63,17 +60,7 @@ const useLocationPermission = () => {
         if (permissionsStatus) {
             // eslint-disable-next-line func-style
             const updateLocation = function(this: PermissionStatus) {
-                switch (this.state) {
-                    case "granted":
-                        setLocation(PermissionType.Granted);
-                        break;
-                    case "denied":
-                        setLocation(PermissionType.Blocked);
-                        break;
-                    case "prompt":
-                        setLocation(PermissionType.Unknown);
-                        break;
-                }
+                setLocation(PERMISSION_STATUS_TYPE_MAP[this.state]);
             };
 
             permissionsStatus.addEventListener("change", updateLocation);

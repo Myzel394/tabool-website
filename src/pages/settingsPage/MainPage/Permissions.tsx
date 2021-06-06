@@ -17,25 +17,23 @@ import {Alert} from "@material-ui/lab";
 import {SecondaryButton} from "components";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState, setLocation, setNotification} from "states";
-import {PermissionType} from "App/RequiredPermissions/permissions/types";
+import {useLocationPrompt, useNotificationPrompt} from "hooks";
+import {PermissionType} from "utils";
 
 const PERMISSION_UNAVAILABLE = [
     PermissionType.Blocked, PermissionType.NotAvailable,
 ];
 
-const PERMISSION_BOOL_MAP = {
-    true: PermissionType.Granted,
-    false: PermissionType.Denied,
-};
-
 const Permissions = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
-    const notificationPerm = useSelector<RootState>(state => state.permissions.notification) as PermissionType;
-    const locationPerm = useSelector<RootState>(state => state.permissions.location) as PermissionType;
+    const promptLocation = useLocationPrompt();
+    const promptNotification = useNotificationPrompt();
+    const notification = useSelector<RootState>(state => state.permissions.notification) as PermissionType;
+    const location = useSelector<RootState>(state => state.permissions.location) as PermissionType;
 
-    const isNotificationDisabled = PERMISSION_UNAVAILABLE.includes(notificationPerm);
-    const isLocationDisabled = PERMISSION_UNAVAILABLE.includes(locationPerm);
+    const isNotificationDisabled = PERMISSION_UNAVAILABLE.includes(notification);
+    const isLocationDisabled = PERMISSION_UNAVAILABLE.includes(location);
 
     return (
         <Paper>
@@ -43,7 +41,7 @@ const Permissions = () => {
                 {/* Notification */}
                 <ListItem disabled={isNotificationDisabled}>
                     <ListItemIcon>
-                        {notificationPerm === PermissionType.Granted
+                        {notification === PermissionType.Granted
                             ? <MdNotifications />
                             : <MdNotificationsOff />
                         }
@@ -51,13 +49,19 @@ const Permissions = () => {
                     <ListItemText primary={t("Benachrichtigungen")} />
                     <ListItemSecondaryAction>
                         <Switch
-                            checked={notificationPerm === PermissionType.Granted}
+                            checked={notification === PermissionType.Granted}
                             disabled={isNotificationDisabled}
-                            onChange={event => dispatch(setNotification(PERMISSION_BOOL_MAP[event.target.checked.toString()]))}
+                            onChange={() => {
+                                if (notification === PermissionType.Granted) {
+                                    dispatch(setNotification(PermissionType.Denied));
+                                } else {
+                                    promptNotification();
+                                }
+                            }}
                         />
                     </ListItemSecondaryAction>
                 </ListItem>
-                <Collapse in={notificationPerm === PermissionType.Granted}>
+                <Collapse in={notification === PermissionType.Granted}>
                     <AccordionDetails>
                         <SecondaryButton
                             startIcon={<MdNotifications />}
@@ -70,7 +74,7 @@ const Permissions = () => {
                 {/* Location */}
                 <ListItem disabled={isLocationDisabled}>
                     <ListItemIcon>
-                        {locationPerm === PermissionType.Granted
+                        {location === PermissionType.Granted
                             ? <MdLocationOn />
                             : <MdLocationOff />
                         }
@@ -78,14 +82,20 @@ const Permissions = () => {
                     <ListItemText primary={t("Standort")} />
                     <ListItemSecondaryAction>
                         <Switch
-                            checked={locationPerm === PermissionType.Granted}
+                            checked={location === PermissionType.Granted}
                             disabled={isLocationDisabled}
-                            onChange={event => dispatch(setLocation(PERMISSION_BOOL_MAP[event.target.checked.toString()]))}
+                            onChange={() => {
+                                if (location === PermissionType.Granted) {
+                                    dispatch(setLocation(PermissionType.Denied));
+                                } else {
+                                    promptLocation();
+                                }
+                            }}
                         />
                     </ListItemSecondaryAction>
                 </ListItem>
             </List>
-            {((notificationPerm === PermissionType.Blocked) || (locationPerm === PermissionType.Blocked)) && (
+            {((notification === PermissionType.Blocked) || (location === PermissionType.Blocked)) && (
                 <Alert severity="warning">
                     {t("Du hast Berechtigungen verboten, diese können daher nicht mehr angefragt werden. " +
                         "Wenn du sie dennoch wieder erlauben möchtest, musst du sie in den Einstellungen ändern.")}

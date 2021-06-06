@@ -3,14 +3,14 @@ import persistConfig from "constants/persistConfig";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Permission} from "types";
 import {persistReducer} from "redux-persist";
-import {PermissionType} from "App/RequiredPermissions/permissions/types";
+import {PermissionType} from "utils";
 
 
 export const permissionSlice = createSlice({
     name: "permission",
     initialState: {
-        notification: PermissionType.Unknown,
-        location: PermissionType.Unknown,
+        notification: PermissionType.Ask,
+        location: PermissionType.Ask,
     } as Permission,
     reducers: {
         setNotification: (state, {payload: permissionType}: PayloadAction<PermissionType>) =>

@@ -30,3 +30,5 @@ export {default as useFileUpload} from "./useFileUpload";
 export {default as useClipboard} from "./useClipboard";
 export {default as useRealTimeUpdate} from "./useRealTimeUpdate";
 export {default as usePrettyBytes} from "./usePrettyBytes";
+export {default as useLocationPrompt} from "./useLocationPrompt";
+export {default as useNotificationPrompt} from "./useNotificationPrompt";

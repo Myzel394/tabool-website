@@ -1,8 +1,10 @@
-export enum PermissionType {
+enum PermissionType {
     Denied = "denied",
     Granted = "granted",
     NotAvailable = "not_available",
 
-    Unknown = "unknown",
+    Ask = "ask",
     Blocked = "blocked",
 }
+
+export default PermissionType;

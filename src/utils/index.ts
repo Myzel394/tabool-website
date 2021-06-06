@@ -62,3 +62,4 @@ export {default as supportsThemes} from "./supportsThemes";
 export {default as getLanguageFromI18Next} from "./getLanguageFromI18Next";
 export {default as getCurrentLesson} from "./getCurrentLesson";
 export {default as getExtension} from "./getExtension";
+export {default as PermissionType} from "./permissionType";
