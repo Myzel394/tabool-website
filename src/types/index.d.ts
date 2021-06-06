@@ -19,6 +19,7 @@ export * from "./reducers";
 export * from "./classbook";
 export * from "./timetable";
 export * from "./preference";
+export * from "./permission";
 export * from "./submission";
 export * from "./validators";
 export * from "./autocomplete";

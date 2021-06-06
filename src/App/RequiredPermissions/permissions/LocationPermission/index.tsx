@@ -1,19 +1,19 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {PermissionType} from "hooks/usePermissions";
+import {setLocation as setStoreLocation} from "state";
+import {useDispatch} from "react-redux";
 
 import PressOnAllow from "../PressOnAllow";
 import RequestPermission from "../RequestPermission";
+import {PermissionType} from "../types";
 
-import {location} from "./svg";
+import location from "./location.svg";
 
 
-export interface LocationPermissionProps {
-    onDone: (hasGranted: PermissionType) => void;
-}
-
-const LocationPermission = ({onDone}: LocationPermissionProps) => {
+const LocationPermission = () => {
     const {t} = useTranslation();
+    const dispatch = useDispatch();
+    const setLocation = useCallback((perm: PermissionType) => dispatch(setStoreLocation(perm)), [dispatch]);
 
     const [isRequesting, setIsRequesting] = useState<boolean>(false);
 
@@ -29,19 +29,19 @@ const LocationPermission = ({onDone}: LocationPermissionProps) => {
                 onGrant={() => {
                     setIsRequesting(true);
                     navigator.geolocation.getCurrentPosition(() => {
-                        onDone(PermissionType.Granted);
+                        setLocation(PermissionType.Granted);
                     }, error => {
                         switch (error.code) {
                             case error.PERMISSION_DENIED:
-                                onDone(PermissionType.NotGranted);
+                                setLocation(PermissionType.Blocked);
                                 break;
                             case error.TIMEOUT:
                             case error.POSITION_UNAVAILABLE:
-                                onDone(PermissionType.NotAvailable);
+                                setLocation(PermissionType.NotAvailable);
                         }
                     });
                 }}
-                onDismiss={() => onDone(PermissionType.NotGranted)}
+                onDismiss={() => setLocation(PermissionType.Denied)}
             />
         </PressOnAllow>
     );

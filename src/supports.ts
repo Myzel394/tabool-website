@@ -12,3 +12,7 @@ export const supportsWASM = (() => {
     }
     return false;
 })();
+
+export const supportsNotifications = Boolean(window.Notification);
+
+export const supportsLocation = Boolean(navigator.geolocation);

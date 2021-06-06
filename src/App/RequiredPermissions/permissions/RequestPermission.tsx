@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React from "react";
 import {Box, Button, Grid, Typography} from "@material-ui/core";
 import {ReactSVG} from "react-svg";
 import {useTranslation} from "react-i18next";
@@ -61,4 +61,4 @@ const RequestPermission = ({
     );
 };
 
-export default memo(RequestPermission);
+export default RequestPermission;

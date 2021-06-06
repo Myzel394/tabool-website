@@ -1,41 +1,33 @@
 import React from "react";
-import {usePermissions, useUser} from "hooks";
-import {PermissionType} from "hooks/usePermissions";
+import {useUser} from "hooks";
+import {useSelector} from "react-redux";
+import {RootState} from "state";
 
 import {LocationPermission, NotificationPermission} from "./permissions";
+import {PermissionType} from "./permissions/types";
+import useLocationPermission from "./useLocationPermission";
+import useNotificationPermission from "./useNotificationPermission";
 
 const PermissionsHandler = ({children}) => {
-    const {
-        state: permStates,
-        setState: setPermStates,
-    } = usePermissions();
+    const location = useSelector<RootState>(store => store.permissions.location);
+    const notification = useSelector<RootState>(store => store.permissions.notification);
+
     const user = useUser();
     const checkPermissions = user.isAuthenticated;
 
-    const hasUndecidedPermissions = new Set(Object.values(permStates)).has(PermissionType.Default);
+    useNotificationPermission();
+    useLocationPermission();
 
-    if (checkPermissions && hasUndecidedPermissions) {
-        if (permStates.notification === PermissionType.Default) {
+    if (checkPermissions) {
+        if (notification === PermissionType.Unknown) {
             return (
-                <NotificationPermission
-                    onDone={state =>
-                        setPermStates({
-                            ...permStates,
-                            notification: state,
-                        })}
-                />
+                <NotificationPermission />
             );
         }
-        if (permStates.location === PermissionType.Default) {
+
+        if (location === PermissionType.Unknown) {
             return (
-                <LocationPermission
-                    onDone={state =>
-                        setPermStates({
-                            ...permStates,
-                            location: state,
-                        })
-                    }
-                />
+                <LocationPermission />
             );
         }
     }

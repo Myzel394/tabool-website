@@ -17,7 +17,6 @@ export {default as useInheritedState} from "./useInheritedState";
 export {default as useIsMounted} from "./useIsMounted";
 export {default as useQueryString} from "./useQueryString";
 export {default as useColors} from "./useColors";
-export {default as usePermissions} from "./usePermissions";
 export {default as useAsync} from "./useAsync";
 export {default as useOnFCMMessageHandler} from "./useOnFCMMessageHandler";
 export {default as useGetForUserType} from "./useGetForUserType";
