@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {observeStore} from "utils";
-import {RootState} from "state";
+import {RootState} from "states";
 import {ServerPreference} from "types";
 import {IUpdatePreferenceData, useUpdatePreferenceAPI} from "hooks/apis";
 import {useUser} from "hooks";

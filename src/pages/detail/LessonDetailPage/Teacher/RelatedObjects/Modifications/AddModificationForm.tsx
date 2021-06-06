@@ -14,7 +14,6 @@ import {
     LoadingOverlay,
     PlaceField,
     PrimaryButton,
-    SingleModification,
     TeacherCourseField,
     TeacherField,
 } from "components";
@@ -22,6 +21,7 @@ import {Select, TextField} from "formik-material-ui";
 import _ from "lodash";
 
 import RelatedObjectsContext from "../RelatedObjectsContext";
+import {SingleModification} from "../../../../../../modules";
 
 export interface AddModificationProps {
     onAdd: () => any;

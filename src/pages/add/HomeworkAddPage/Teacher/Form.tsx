@@ -8,7 +8,6 @@ import {
     LessonField,
     LoadingOverlay,
     PrimaryButton,
-    renderDayWithLessonWeekdays,
 } from "components";
 import {Box, Collapse, FormGroup, FormHelperText, Grid} from "@material-ui/core";
 import dayjs from "dayjs";
@@ -21,6 +20,8 @@ import {MdAdd} from "react-icons/all";
 import FormikRemember from "formik-remember";
 import {convertToDate} from "api";
 import {useFetchTeacherLessonAPI} from "hooks/apis";
+
+import {renderDayWithLessonWeekdays} from "../../../../modules";
 
 import useSchema from "./useSchema";
 import useInitialValues, {FormikForm} from "./useInitialValues";

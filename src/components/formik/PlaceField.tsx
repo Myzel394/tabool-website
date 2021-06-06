@@ -8,7 +8,7 @@ import {Box, CircularProgress, InputAdornment, TextField} from "@material-ui/cor
 import {Room} from "types";
 import {useColors, useQueryOptions, useSnackbar} from "hooks";
 import {PredefinedMessageType} from "hooks/useSnackbar";
-import {RoomIcon} from "components/icons";
+import {RoomIcon} from "mappings";
 
 import {IAutocompleteField} from "./AutocompleteField";
 

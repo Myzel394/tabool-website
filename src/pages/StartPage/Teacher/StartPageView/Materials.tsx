@@ -2,10 +2,11 @@ import React, {useContext} from "react";
 import {buildPath, getPerUniqueValue, lazyDatetime} from "utils";
 import {Box, Button, Divider, List, ListSubheader, useTheme} from "@material-ui/core";
 import dayjs from "dayjs";
-import {createStickyHeaderStyles, TeacherMaterialListElement} from "components";
+import {createStickyHeaderStyles} from "components";
 import sortArray from "sort-array";
 import FlipMove from "react-flip-move";
 import update from "immutability-helper";
+import {TeacherMaterialListElement} from "modules";
 
 import StartPageContext from "../StartPageContext";
 

@@ -17,7 +17,7 @@ import {PullToRefresh, UpdatedAt} from "components";
 import {MdAdd, MdSearch} from "react-icons/all";
 import _ from "lodash";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {addDetailPageOrdering, RootState} from "state";
+import {addDetailPageOrdering, RootState} from "states";
 
 import Title, {TitleProps} from "./Title";
 import Form, {IForm} from "./Form";

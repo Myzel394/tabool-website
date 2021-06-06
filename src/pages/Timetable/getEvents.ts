@@ -16,7 +16,7 @@ import {
     isDateEqual,
 } from "utils";
 import {Event as CalendarEvent} from "react-big-calendar";
-import {ExamIcon, ModificationIcon} from "components";
+import {ExamIcon, ModificationIcon} from "mappings";
 import dayjs, {Dayjs} from "dayjs";
 
 import {ITimetableContext} from "./TimetableContext";

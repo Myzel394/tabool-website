@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {Exam, Material, ShowMoreArray, ShowMoreButton, SingleLesson, SingleModification} from "components";
+import {ShowMoreArray, ShowMoreButton} from "components";
+import {Exam, Material, SingleLesson, SingleModification} from "modules";
 import {StudentExamDetail, StudentWeekView} from "types";
 import {Box, Button, Grid, Link, List, ListItem, ListItemText, Typography, useTheme} from "@material-ui/core";
 import {useElementSize, useSnackbar, useUniqueId} from "hooks";

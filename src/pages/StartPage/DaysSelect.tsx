@@ -4,7 +4,7 @@ import {FaCalendarWeek} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {useColors} from "hooks";
 import {useDispatch, useSelector} from "react-redux";
-import {getMaxFutureDays, RootState, setStartPageMaxFutureDays} from "state";
+import {getMaxFutureDays, RootState, setStartPageMaxFutureDays} from "states";
 
 const DaysSelect = () => {
     const {t} = useTranslation();

@@ -3,7 +3,7 @@ import {Box, Typography} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {StudentModificationDetail} from "types";
-import {SingleModification} from "components";
+import {SingleModification} from "modules";
 
 export interface ModificationsProps {
     modifications: StudentModificationDetail[];

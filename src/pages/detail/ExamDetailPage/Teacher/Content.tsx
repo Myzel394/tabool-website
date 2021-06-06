@@ -7,11 +7,13 @@ import {Button, Grid, Link} from "@material-ui/core";
 import {QueryObserverBaseResult, UseMutateAsyncFunction} from "react-query";
 import {AxiosError} from "axios";
 import {useTranslation} from "react-i18next";
-import {CourseIcon, DetailPage, renderDayWithLessonWeekdays} from "components";
+import {DetailPage} from "components";
+import {CourseIcon} from "mappings";
 import {TeacherExamDetail} from "types";
 import {buildPath} from "utils";
 import {IUpdateTeacherExamData} from "hooks/apis";
 import {DatePicker} from "formik-material-ui-pickers";
+import {renderDayWithLessonWeekdays} from "modules";
 
 import ExtraActions from "./ExtraActions";
 

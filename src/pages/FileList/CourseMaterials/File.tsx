@@ -2,14 +2,12 @@ import React from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {IconButton, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import {FaFile} from "react-icons/all";
-import {LessonIcon} from "components/icons";
 import {useTranslation} from "react-i18next";
 import {getMaterialDownloadDateString} from "utils";
 import {useDispatch, useSelector} from "react-redux";
-import {addDownloadedMaterialsDate, getMaterialDownloadDate, RootState} from "state";
-
-import {usePrettyBytes} from "../../../hooks";
-import {EXTENSION_ICON_MAPPING} from "../../../components";
+import {addDownloadedMaterialsDate, getMaterialDownloadDate, RootState} from "states";
+import {usePrettyBytes} from "hooks";
+import {EXTENSION_ICON_MAPPING, LessonIcon} from "mappings";
 
 
 export interface FileProps {

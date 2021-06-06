@@ -1,7 +1,7 @@
 import {useCallback, useEffect} from "react";
 import {supportsLocation} from "supports";
 import {useDispatch} from "react-redux";
-import {setLocation as setStoreLocation} from "state";
+import {setLocation as setStoreLocation} from "states";
 import {useAsync} from "hooks";
 
 import {PermissionType} from "./permissions/types";

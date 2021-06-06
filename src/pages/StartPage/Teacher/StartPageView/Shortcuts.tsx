@@ -1,7 +1,7 @@
 import React from "react";
 import {Box, Button, makeStyles} from "@material-ui/core";
 import {buildPath} from "utils";
-import {ExamIcon, HomeworkIcon} from "components";
+import {ExamIcon, HomeworkIcon} from "mappings";
 import {useTranslation} from "react-i18next";
 
 const useClasses = makeStyles({

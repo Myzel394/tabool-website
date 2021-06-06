@@ -9,10 +9,10 @@ import {Box, Button, CircularProgress, FormGroup, FormHelperText, Typography} fr
 import {useTranslation} from "react-i18next";
 import dayjs, {Dayjs} from "dayjs";
 import {findNextDate, replaceDatetime} from "utils";
+import {LessonIcon} from "mappings";
 
-import {SimpleDialog} from "../../components";
+import {SimpleDialog} from "../../functional";
 import {PrimaryButton} from "../../buttons";
-import {LessonIcon} from "../../icons";
 
 import Timetable from "./Timetable";
 import LessonFieldContext, {LessonIdentifier} from "./LessonFieldContext";

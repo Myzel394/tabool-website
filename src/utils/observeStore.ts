@@ -1,5 +1,5 @@
 import _ from "lodash";
-import {RootState, store} from "state";
+import {RootState, store} from "states";
 
 type ReturnType = () => any;
 

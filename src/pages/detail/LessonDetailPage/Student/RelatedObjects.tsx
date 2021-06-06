@@ -10,7 +10,8 @@ import {Grid, Typography} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import update from "immutability-helper";
-import {Homework, HorizontalScroll, Material} from "components";
+import {HorizontalScroll} from "components";
+import {Homework, Material} from "modules";
 import {truncate} from "utils";
 import {Dayjs} from "dayjs";
 

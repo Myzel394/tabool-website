@@ -1,7 +1,7 @@
 import React from "react";
 import {TeacherClassbook} from "types";
 import {Grid, List} from "@material-ui/core";
-import {Avatar} from "components";
+import {Avatar} from "modules";
 import FlipMove from "react-flip-move";
 
 import Classbook from "./Classbook";

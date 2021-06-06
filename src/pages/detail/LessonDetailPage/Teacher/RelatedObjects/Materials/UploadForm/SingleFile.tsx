@@ -7,10 +7,11 @@ import {MdSettings} from "react-icons/all";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {getTextForState} from "hooks/useFileUpload";
-import {ExtensionAvatar, FileInformation, LoadingOverlay} from "components";
+import {ExtensionAvatar, LoadingOverlay} from "components";
 import update from "immutability-helper";
 
 import RelatedObjectsContext from "../../RelatedObjectsContext";
+import {FileInformation} from "../../../../../../../modules";
 
 import SettingsModal from "./SettingsModal";
 

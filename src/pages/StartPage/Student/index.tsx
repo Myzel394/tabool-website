@@ -8,7 +8,7 @@ import {StudentDailyDataView} from "types";
 import {ErrorPage, ResponseWrapper} from "components";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {getMaxFutureDays, RootState, setStartPageMaxFutureDays} from "state";
+import {getMaxFutureDays, RootState, setStartPageMaxFutureDays} from "states";
 
 import getTargetedDate from "../getTargetedDate";
 

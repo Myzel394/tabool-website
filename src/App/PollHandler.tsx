@@ -3,7 +3,7 @@ import {useQueryOptions, useUser} from "hooks";
 import {useQuery} from "react-query";
 import {IFetchPollResponse, useFetchPollListAPI} from "hooks/apis";
 import {AxiosError} from "axios";
-import {Poll} from "components";
+import {Poll} from "modules";
 
 
 export interface PollHandlerProps {

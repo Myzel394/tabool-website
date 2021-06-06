@@ -3,12 +3,12 @@ import {AVAILABLE_LANGUAGES} from "constants/language";
 import React, {useState} from "react";
 import {Box, FormControl, InputLabel, List, ListItem, MenuItem, Paper, Select} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
-import {getLanguage, RootState, setLanguage} from "state";
+import {getLanguage, RootState, setLanguage} from "states";
 import {AvailableLanguages} from "types";
 import ReactCountryFlag from "react-country-flag";
 import {useTranslation} from "react-i18next";
 import {MdAdd} from "react-icons/all";
-import {CurrentDeviceOSIcon} from "components";
+import {CurrentDeviceOSIcon} from "mappings";
 import {getLanguageFromI18Next} from "utils";
 
 import HelpNeeded from "./HelpNeeded";

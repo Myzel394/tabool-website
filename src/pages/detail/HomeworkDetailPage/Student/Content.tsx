@@ -5,8 +5,6 @@ import {
     DetailPage,
     HomeworkDueDateField,
     HomeworkTypeField,
-    LessonIcon,
-    renderDayWithLessonWeekdays,
 } from "components";
 import {Alert} from "@material-ui/lab";
 import {
@@ -23,6 +21,8 @@ import {TextField} from "formik-material-ui";
 import {useTranslation} from "react-i18next/src";
 import {AxiosError} from "axios";
 import {QueryObserverBaseResult, UseMutateAsyncFunction} from "react-query";
+import {renderDayWithLessonWeekdays} from "modules";
+import {LessonIcon} from "mappings";
 
 import getDueDateIcon from "../getDueDateIcon";
 

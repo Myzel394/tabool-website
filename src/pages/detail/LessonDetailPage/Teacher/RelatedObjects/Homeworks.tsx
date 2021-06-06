@@ -1,7 +1,8 @@
 import React from "react";
 import {TeacherHomeworkDetail, TeacherLessonDetail} from "types";
 import {Button, makeStyles, Typography} from "@material-ui/core";
-import {Homework, HorizontalScroll} from "components";
+import {HorizontalScroll} from "components";
+import {Homework} from "modules";
 import {MdAdd} from "react-icons/all";
 import {buildPath, lazyDatetime, truncate} from "utils";
 import {useTranslation} from "react-i18next";

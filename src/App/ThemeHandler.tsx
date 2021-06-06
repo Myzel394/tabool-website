@@ -5,7 +5,7 @@ import dark from "themes/dark";
 import blue from "themes/blue";
 import midnight from "themes/midnight";
 import {useSelector} from "react-redux";
-import {getTheme, RootState} from "state";
+import {getTheme, RootState} from "states";
 import useSystemTheme from "react-use-system-theme";
 import {AvailableThemes} from "types";
 

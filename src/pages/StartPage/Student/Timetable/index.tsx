@@ -2,7 +2,7 @@ import React, {memo} from "react";
 import {Fade} from "react-reveal";
 import {Grid, useTheme} from "@material-ui/core";
 import {StudentHomeworkDetail, StudentLessonDetail, StudentMaterialDetail} from "types";
-import {SingleLesson} from "components";
+import {SingleLesson} from "modules";
 
 import createShadow from "../../createShadow";
 

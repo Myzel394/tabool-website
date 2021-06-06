@@ -11,7 +11,6 @@ import {
     LessonField,
     LoadingOverlay,
     PrimaryButton,
-    renderDayWithLessonWeekdays,
 } from "components";
 import {Field, Form as IkForm, Formik, FormikHelpers} from "formik";
 import {Box, FormGroup, FormHelperText, Grid} from "@material-ui/core";
@@ -21,6 +20,8 @@ import {MdAdd} from "react-icons/all";
 import {getEndTime, getNextLessonDate, getStartTime, LessonDate} from "utils";
 import {convertToDate} from "api";
 import FormikRemember from "formik-remember";
+
+import {renderDayWithLessonWeekdays} from "../../../../modules";
 
 import useInitialValues, {FormikForm} from "./useInitialValues";
 import useSchema from "./useSchema";

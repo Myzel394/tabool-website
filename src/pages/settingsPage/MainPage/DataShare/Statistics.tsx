@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {DialogContentText, ListItem, ListItemSecondaryAction, ListItemText, Switch} from "@material-ui/core";
 import {PrimaryButton, SecondaryButton, SimpleDialog} from "components";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState, setAllowStatistics} from "state";
+import {RootState, setAllowStatistics} from "states";
 
 
 const Statistics = () => {

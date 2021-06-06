@@ -1,6 +1,7 @@
 import React, {memo, useState} from "react";
 import {StudentHomeworkDetail} from "types";
-import {Homework, HorizontalScroll, SecondaryButton} from "components";
+import {Homework} from "modules";
+import {HorizontalScroll, SecondaryButton} from "components";
 import {useElementSize} from "hooks";
 import update from "immutability-helper";
 import {Alert} from "@material-ui/lab";

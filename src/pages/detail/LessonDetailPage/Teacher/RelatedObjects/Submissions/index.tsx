@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {Box, LinearProgress, List, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {TeacherSubmissionListElement} from "components";
+import {TeacherSubmissionListElement} from "modules";
 import {Alert} from "@material-ui/lab";
 
 import RelatedObjectsContext from "../RelatedObjectsContext";

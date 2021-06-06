@@ -9,15 +9,15 @@ import {
     GenderStatus,
     HomeworkDueDateField,
     HomeworkTypeField,
-    LessonIcon,
-    renderDayWithLessonWeekdays,
 } from "components";
+import {LessonIcon} from "mappings";
 import {buildPath, lazyDatetime} from "utils";
 import {BiBarChartSquare, FaClock, MdInfo, MdLock, MdLockOpen} from "react-icons/all";
 import {Field} from "formik";
 import {TextField} from "formik-material-ui";
 import {useTranslation} from "react-i18next/src";
 import {Box, Button, Grid, Link} from "@material-ui/core";
+import {renderDayWithLessonWeekdays} from "modules";
 
 import getDueDateIcon from "../getDueDateIcon";
 

@@ -1,8 +1,9 @@
 import React from "react";
-import {ExamIcon, FocusedPage, HomeworkIcon} from "components";
+import {ExamIcon, HomeworkIcon} from "mappings";
 import {useTranslation} from "react-i18next";
 import {List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {buildPath} from "utils";
+import {FocusedPage} from "components";
 
 const ITEM_SIZE = "1.5rem";
 

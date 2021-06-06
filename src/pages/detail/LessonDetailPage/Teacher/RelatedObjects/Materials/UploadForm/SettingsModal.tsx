@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {AnnounceExplanation, PrimaryButton, SimpleDialog} from "components";
+import {PrimaryButton, SimpleDialog} from "components";
 import {MdCheck, MdInfo} from "react-icons/all";
 import {useInheritedState} from "hooks";
 import {useTranslation} from "react-i18next";
@@ -8,6 +8,7 @@ import {DateTimePicker} from "@material-ui/pickers";
 import {Checkbox, FormControlLabel, IconButton} from "@material-ui/core";
 
 import Day from "../../../../Day";
+import {AnnounceExplanation} from "../../../../../../../modules";
 
 
 export interface SettingsModalProps {

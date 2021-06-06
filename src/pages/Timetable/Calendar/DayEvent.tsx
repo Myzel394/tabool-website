@@ -1,6 +1,6 @@
 import React, {CSSProperties, useContext} from "react";
 import {Event as CalendarEvent} from "react-big-calendar";
-import {SingleLesson} from "components";
+import {SingleLesson} from "modules";
 import {getEventWrapperStyles} from "utils";
 
 import {DayLessonResource} from "../getEvents";

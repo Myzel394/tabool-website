@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {HomeworkIcon} from "components";
+import {HomeworkIcon} from "mappings";
 import {Backdrop, useTheme} from "@material-ui/core";
 import {SpeedDial, SpeedDialAction, SpeedDialIcon} from "@material-ui/lab";
 import {useTranslation} from "react-i18next/src";

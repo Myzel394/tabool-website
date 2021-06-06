@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import i18n from "i18next";
 import {observeStore} from "utils";
-import {getLanguage, RootState} from "state";
+import {getLanguage, RootState} from "states";
 import {AvailableLanguages} from "types";
 import {useSelector} from "react-redux";
 

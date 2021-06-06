@@ -1,7 +1,8 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {TeacherLessonView} from "types";
 import {Dayjs} from "dayjs";
-import {CourseIcon, DetailPage, LinkTitleGrabber} from "components";
+import {DetailPage, LinkTitleGrabber} from "components";
+import {CourseIcon} from "mappings";
 import {useTranslation} from "react-i18next";
 import {FaChalkboardTeacher, IoIosVideocam, MdLaptop, MdWatch} from "react-icons/all";
 import {Button, Link} from "@material-ui/core";

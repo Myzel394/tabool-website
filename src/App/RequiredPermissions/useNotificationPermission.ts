@@ -1,7 +1,7 @@
 import {useCallback, useEffect} from "react";
 import {supportsNotifications} from "supports";
 import {useDispatch} from "react-redux";
-import {setNotification as setStoreNotification} from "state";
+import {setNotification as setStoreNotification} from "states";
 import {useAsync} from "hooks";
 
 import {PermissionType} from "./permissions/types";

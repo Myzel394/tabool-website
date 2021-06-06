@@ -5,9 +5,9 @@ import "i18n";
 import "react-app-polyfill/stable";
 import App from "App";
 import "dayjs/locale/de";
-import "./extends/dayjs";
-import "./extends/immutability-helper";
-import "./extends/yup";
+import "./extensions/dayjs";
+import "./extensions/immutability-helper";
+import "./extensions/yup";
 import "./supports";
 import "./firebase";
 

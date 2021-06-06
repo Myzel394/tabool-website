@@ -16,7 +16,7 @@ import {MdLocationOff, MdLocationOn, MdNotifications, MdNotificationsOff} from "
 import {Alert} from "@material-ui/lab";
 import {SecondaryButton} from "components";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState, setLocation, setNotification} from "state";
+import {RootState, setLocation, setNotification} from "states";
 import {PermissionType} from "App/RequiredPermissions/permissions/types";
 
 const PERMISSION_UNAVAILABLE = [

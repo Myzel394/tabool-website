@@ -1,6 +1,7 @@
 import React, {useRef} from "react";
 import {Box, Grid, List, Typography} from "@material-ui/core";
-import {Avatar, ShowMoreArray, ShowMoreButton} from "components";
+import {ShowMoreArray, ShowMoreButton} from "components";
+import {Avatar} from "modules";
 import {TeacherSubmissionDetail} from "types";
 import {useForceUpdate} from "@shopify/react-hooks";
 import dayjs, {Dayjs} from "dayjs";

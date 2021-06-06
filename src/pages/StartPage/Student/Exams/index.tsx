@@ -1,6 +1,7 @@
 import React, {memo} from "react";
 import {StudentExamDetail} from "types";
-import {Exam, ShowMoreArray, ShowMoreButton} from "components";
+import {ShowMoreArray, ShowMoreButton} from "components";
+import {Exam} from "modules";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Box, Link, useTheme} from "@material-ui/core";

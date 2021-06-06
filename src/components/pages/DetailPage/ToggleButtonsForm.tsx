@@ -2,8 +2,7 @@ import React from "react";
 import {Field, Form, Formik, FormikConfig} from "formik";
 import {ToggleButton} from "@material-ui/lab";
 import {ToggleButtonGroup} from "formik-material-ui-lab";
-
-import {LoadingOverlay} from "../../overlays";
+import {LoadingOverlay} from "components";
 
 import * as changeRelation from "./changeRelation";
 

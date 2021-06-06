@@ -6,7 +6,7 @@ import {useMutation} from "react-query";
 import {AxiosError} from "axios";
 import {useOnFCMMessageHandler, usePersistentStorage, useUser} from "hooks";
 import {useSelector} from "react-redux";
-import {RootState} from "state";
+import {RootState} from "states";
 
 import firebase, {isSupported} from "../firebase";
 

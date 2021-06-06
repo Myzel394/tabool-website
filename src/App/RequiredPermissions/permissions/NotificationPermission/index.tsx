@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
-import {setNotification as setStoreNotification} from "state";
+import {setNotification as setStoreNotification} from "states";
 
 import RequestPermission from "../RequestPermission";
 import PressOnAllow from "../PressOnAllow";

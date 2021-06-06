@@ -15,7 +15,7 @@ import {useUser} from "hooks";
 import {FiLogOut, MdAccountCircle, MdDevices, MdLock, MdVpnKey} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {UserType} from "api";
-import {TeacherIcon} from "components";
+import {TeacherIcon} from "mappings";
 import {buildPath} from "utils";
 
 

@@ -1,10 +1,12 @@
+import genderColor from "constants/genderColor";
+
 import React from "react";
 import {FaGenderless, IoMdFemale, IoMdMale} from "react-icons/all";
 import {useTranslation} from "react-i18next";
 import {Gender} from "api";
 
-import {Information} from "../components";
-import genderColor from "../../constants/genderColor";
+import {Information} from "../functional";
+
 
 export interface GenderFieldProps {
     value: Gender;

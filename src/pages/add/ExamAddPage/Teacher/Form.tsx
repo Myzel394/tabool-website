@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Field, Form as IkForm, Formik, FormikHelpers} from "formik";
-import {LoadingOverlay, PrimaryButton, renderDayWithLessonWeekdays, TeacherCourseField} from "components";
+import {LoadingOverlay, PrimaryButton, TeacherCourseField} from "components";
 import {Box, Grid, InputAdornment} from "@material-ui/core";
 import {TextField} from "formik-material-ui";
 import {useTranslation} from "react-i18next/src";
@@ -12,6 +12,8 @@ import {TeacherCourseDetail} from "types";
 import FormikRemember from "formik-remember";
 import {useFetchTeacherCourseDetailAPI} from "hooks/apis";
 import {convertToDate} from "api";
+
+import {renderDayWithLessonWeekdays} from "../../../../modules";
 
 import useInitialValues, {FormikForm} from "./useInitialValues";
 import useSchema from "./useSchema";

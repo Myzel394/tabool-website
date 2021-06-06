@@ -5,7 +5,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DayjsUtils from "@date-io/dayjs";
 import {Provider} from "react-redux";
-import {persistor, store} from "state";
+import {persistor, store} from "states";
 import {PersistGate} from "redux-persist/integration/react";
 import {useTranslation} from "react-i18next";
 import {LoadingPage} from "components";

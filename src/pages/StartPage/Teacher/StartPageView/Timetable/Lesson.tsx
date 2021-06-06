@@ -2,7 +2,8 @@ import React, {CSSProperties} from "react";
 import {TeacherLessonDetail} from "types";
 import dayjs from "dayjs";
 import {buildPath, findNextDate, getEndTime, getStartTime, lazyDatetime} from "utils";
-import {Badges, ButtonLike, Lesson as LessonComponent, LessonContent, VideoConferenceBadge} from "components";
+import {ButtonLike} from "components";
+import {Badges, Lesson as LessonComponent, LessonContent, VideoConferenceBadge} from "modules";
 import {Link} from "@material-ui/core";
 
 import createShadow from "../../../createShadow";

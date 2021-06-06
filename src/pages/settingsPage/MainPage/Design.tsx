@@ -10,11 +10,12 @@ import {
     Radio,
     RadioGroup,
 } from "@material-ui/core";
-import {CurrentDeviceOSIcon, Information} from "components";
+import {Information} from "components";
 import {FaMoon, FaSun, IoIosWater, WiMoonFull} from "react-icons/all";
 import {useDispatch, useSelector} from "react-redux";
-import {getTheme, RootState, setTheme} from "state";
+import {getTheme, RootState, setTheme} from "states";
 import {AvailableThemes} from "types";
+import {CurrentDeviceOSIcon} from "mappings";
 
 
 const Design = () => {

@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {Box, List} from "@material-ui/core";
 import FlipMove from "react-flip-move";
-import {StudentSubmissionListElement} from "components";
+import {StudentSubmissionListElement} from "modules";
 import update from "immutability-helper";
 
 import SubmissionContext from "./SubmissionContext";

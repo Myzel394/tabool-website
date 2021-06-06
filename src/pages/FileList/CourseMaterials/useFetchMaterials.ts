@@ -1,7 +1,7 @@
 import {useQueryOptions} from "hooks";
 import {IFetchStudentMaterialResponse, useFetchStudentMaterialListAPI} from "hooks/apis";
 import {useSelector} from "react-redux";
-import {RootState} from "state";
+import {RootState} from "states";
 import _ from "lodash";
 import {useContext, useMemo} from "react";
 import {InfiniteQueryObserverBaseResult, useInfiniteQuery} from "react-query";

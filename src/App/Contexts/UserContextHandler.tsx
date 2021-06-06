@@ -8,7 +8,7 @@ import {buildPath, parseErrors} from "utils";
 import {createInstance} from "contexts/AxiosContext";
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {reset} from "state";
+import {reset} from "states";
 import {useSnackbar} from "hooks";
 import {useTranslation} from "react-i18next";
 

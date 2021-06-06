@@ -3,7 +3,8 @@ import {TeacherSubmissionDetail} from "types";
 import {Checkbox, FormControlLabel, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {useForceUpdate} from "@shopify/react-hooks";
 import {useTranslation} from "react-i18next";
-import {HorizontalScrollWrapper} from "components";
+
+import {HorizontalScrollWrapper} from "../../../../../../../components";
 
 export interface SelectMenuProps {
     availableSubmissions: TeacherSubmissionDetail[];

@@ -3,7 +3,7 @@ import dayjs, {Dayjs} from "dayjs";
 import {Box, ButtonBase, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState, setUpdatedAtTimeView} from "state";
+import {RootState, setUpdatedAtTimeView} from "states";
 import {AvailableUpdatedAtTimeViews} from "types";
 
 export interface UpdatedAtProps {

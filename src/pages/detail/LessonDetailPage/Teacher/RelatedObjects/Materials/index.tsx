@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {List, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import {TeacherMaterialListElement} from "components";
+import {TeacherMaterialListElement} from "modules";
 import update from "immutability-helper";
 
 import RelatedObjectsContext from "../RelatedObjectsContext";

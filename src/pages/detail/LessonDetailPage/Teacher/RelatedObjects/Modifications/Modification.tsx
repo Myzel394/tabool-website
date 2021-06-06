@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
-import {LoadingOverlay, SingleModification} from "components";
+import {LoadingOverlay} from "components";
 import {MdDeleteForever} from "react-icons/all";
 import {TeacherModificationDetail} from "types";
 import {useMutation} from "react-query";
@@ -11,6 +11,7 @@ import {useSnackbar} from "hooks";
 import {useDeleteTeacherModificationAPI} from "hooks/apis";
 
 import RelatedObjectsContext from "../RelatedObjectsContext";
+import {SingleModification} from "../../../../../../modules";
 
 export interface ModificationProps {
     modification: TeacherModificationDetail;

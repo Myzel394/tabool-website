@@ -6,7 +6,7 @@ import Wrapper from "components/pages/FocusedPage/Wrapper";
 import {ErrorPage, LoadingOverlay, LoadingPage, ResponseWrapper} from "components";
 import {Box} from "@material-ui/core";
 import {useSelector} from "react-redux";
-import {getMaxFutureDays, RootState} from "state";
+import {getMaxFutureDays, RootState} from "states";
 
 import getTargetedDate from "../getTargetedDate";
 

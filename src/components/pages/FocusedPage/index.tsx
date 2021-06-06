@@ -1,9 +1,8 @@
 import React, {CSSProperties, ReactNode} from "react";
 import {Box} from "@material-ui/core";
-import {useTranslation} from "react-i18next";
 
-import {Logo} from "../../components";
 import {BackButton} from "../../buttons";
+import {Logo} from "../../../modules";
 
 import Title from "./Title";
 import Wrapper from "./Wrapper";
@@ -31,8 +30,6 @@ export default function FocusedPage({
     bottomContent,
     style,
 }: FocusedPageProps) {
-    const {t} = useTranslation();
-
     return (
         <Wrapper bottomContent={bottomContent} style={style}>
             <Box

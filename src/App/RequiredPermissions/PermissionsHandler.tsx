@@ -1,7 +1,7 @@
 import React from "react";
 import {useUser} from "hooks";
 import {useSelector} from "react-redux";
-import {RootState} from "state";
+import {RootState} from "states";
 
 import {LocationPermission, NotificationPermission} from "./permissions";
 import {PermissionType} from "./permissions/types";

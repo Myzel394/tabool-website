@@ -3,7 +3,7 @@ import {Event as CalendarEvent} from "react-big-calendar";
 import {getEventWrapperStyles} from "utils";
 import {useTheme} from "@material-ui/core";
 import {useDeviceWidth} from "hooks";
-import {SingleLesson} from "components";
+import {SingleLesson} from "modules";
 
 import {DayLessonResource} from "../getEvents";
 import TimetableContext from "../TimetableContext";

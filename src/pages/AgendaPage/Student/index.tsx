@@ -1,5 +1,6 @@
 import React from "react";
-import {FocusedPage, HomeworkIcon} from "components";
+import {HomeworkIcon} from "mappings";
+import {FocusedPage} from "components";
 import {useTranslation} from "react-i18next";
 import {List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {buildPath} from "utils";

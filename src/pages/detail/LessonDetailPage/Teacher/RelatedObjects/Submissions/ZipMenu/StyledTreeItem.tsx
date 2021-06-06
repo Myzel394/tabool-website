@@ -3,7 +3,7 @@ import {TreeItem, TreeItemProps} from "@material-ui/lab";
 import {makeStyles, Typography} from "@material-ui/core";
 import {IconType} from "react-icons";
 import {getExtension} from "utils";
-import {EXTENSION_ICON_MAPPING} from "components";
+import {EXTENSION_ICON_MAPPING} from "mappings";
 import {FaFile} from "react-icons/all";
 
 export interface StyledTreeItemProps extends TreeItemProps {

@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {setLocation as setStoreLocation} from "state";
+import {setLocation as setStoreLocation} from "states";
 import {useDispatch} from "react-redux";
 
 import PressOnAllow from "../PressOnAllow";

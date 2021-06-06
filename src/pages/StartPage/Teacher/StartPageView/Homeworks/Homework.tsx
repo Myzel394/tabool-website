@@ -9,11 +9,9 @@ import {
     ListItemText,
 } from "@material-ui/core";
 import {MdMoreVert} from "react-icons/all";
-import {BottomSheetAction, ButtonLike, DeleteConfirmItem} from "components";
+import {BottomSheetAction, ButtonLike, DeleteConfirmItem, DueDateChanger} from "components";
 import {buildPath} from "utils";
 import {useTranslation} from "react-i18next";
-
-import DueDateChanger from "../../../../../components/DueDateChanger";
 
 import StatisticsCircle from "./StatisticsCircle";
 import useQuery from "./useQuery";

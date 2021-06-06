@@ -4,14 +4,15 @@ import {MdSettings} from "react-icons/all";
 import {Alert} from "@material-ui/lab";
 import {useTranslation} from "react-i18next";
 import {Dayjs} from "dayjs";
-import {ExtensionAvatar, LoadingOverlay, FileInformation} from "components";
+import {ExtensionAvatar, LoadingOverlay} from "components";
 import {useFileUpload} from "hooks";
 import {ICreateStudentSubmissionData, useCreateStudentSubmission} from "hooks/apis";
 import {getTextForState} from "hooks/useFileUpload";
 import {AxiosError} from "axios";
+import {StudentSubmissionDetail} from "types";
 
 import SubmissionContext from "../SubmissionContext";
-import {StudentSubmissionDetail} from "../../../../../../types";
+import {FileInformation} from "../../../../../../modules";
 
 import SettingsModal from "./SettingsModal";
 import {SubmissionUploadFile} from "./types";
