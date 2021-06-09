@@ -1,6 +1,9 @@
+import {isDev} from "constants/dev";
+
 import {UseMutateAsyncFunction, useMutation} from "react-query";
 import {TFunction} from "i18next";
 import {UseMutationOptions} from "react-query/types/react/types";
+
 
 import useReadFile, {UseReadFileOptions} from "./useReadFile";
 import useQueryOptions from "./useQueryOptions";
@@ -79,7 +82,7 @@ const useFileUpload = <Data, Error, Variables>(
 
                 if (errorMessage) {
                     setErrorMessage(errorMessage);
-                } else {
+                } else if (isDev) {
                     console.warn("Error message couldn't be found, please provide your own `onError` function in the queryOptions.");
                 }
             },
