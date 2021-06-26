@@ -20,8 +20,7 @@ import {MdAdd} from "react-icons/all";
 import FormikRemember from "formik-remember";
 import {convertToDate} from "api";
 import {useFetchTeacherLessonAPI} from "hooks/apis";
-
-import {renderDayWithLessonWeekdays} from "../../../../modules";
+import {renderDayWithLessonWeekdays} from "modules";
 
 import useSchema from "./useSchema";
 import useInitialValues, {FormikForm} from "./useInitialValues";

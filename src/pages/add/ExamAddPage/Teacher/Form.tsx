@@ -12,8 +12,7 @@ import {TeacherCourseDetail} from "types";
 import FormikRemember from "formik-remember";
 import {useFetchTeacherCourseDetailAPI} from "hooks/apis";
 import {convertToDate} from "api";
-
-import {renderDayWithLessonWeekdays} from "../../../../modules";
+import {renderDayWithLessonWeekdays} from "modules";
 
 import useInitialValues, {FormikForm} from "./useInitialValues";
 import useSchema from "./useSchema";
