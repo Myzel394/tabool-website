@@ -1,8 +1,6 @@
 import React, {useContext, useMemo} from "react";
 import {Box, Button, IconButton, Paper} from "@material-ui/core";
-import {ToolbarProps} from "react-big-calendar";
 import {FaAngleLeft, FaAngleRight} from "react-icons/all";
-import {navigate as navigationConstants} from "react-big-calendar/lib/utils/constants";
 import dayjs, {Dayjs} from "dayjs";
 import {findNextDate, replaceDatetime} from "utils";
 import {useTranslation} from "react-i18next";
@@ -15,6 +13,12 @@ const getNextMonday = (date: Dayjs) =>
         1,
     );
 
+const getLastMonday = (date: Dayjs) =>
+    findNextDate(
+        date,
+        1,
+    );
+
 const getLastFriday = (date: Dayjs) =>
     findNextDate(
         date.subtract(7, "day"),
@@ -22,15 +26,14 @@ const getLastFriday = (date: Dayjs) =>
     );
 
 
-const Toolbar = ({
-    onNavigate,
-}: ToolbarProps): JSX.Element => {
+const Toolbar = (): JSX.Element => {
     const {t} = useTranslation();
     const {
         activeDate,
         disableNavigation,
         allowedMaxDate,
         allowedMinDate,
+        onActiveDateChange,
     } = useContext(LessonFieldContext);
     const [disablePrevious, disableNext] = useMemo(() => {
         const date = dayjs(activeDate);
@@ -51,13 +54,13 @@ const Toolbar = ({
                 <Box flexDirection="row" display="flex" justifyContent="center">
                     <IconButton
                         disabled={disablePrevious}
-                        onClick={() => onNavigate(navigationConstants.PREVIOUS)}
+                        onClick={() => onActiveDateChange(getLastMonday(dayjs(activeDate).subtract(7, "day")).toDate())}
                     >
                         <FaAngleLeft />
                     </IconButton>
                     <Button
                         disabled={(allowedMinDate && allowedMinDate.isAfter(dayjs())) || (allowedMaxDate && allowedMaxDate.isBefore(dayjs()))}
-                        onClick={() => onNavigate(navigationConstants.TODAY)}
+                        onClick={() => onActiveDateChange(getLastMonday(dayjs()).toDate())}
                     >
                         {t("{{startDate}} - {{endDate}}", {
                             startDate: startDate.format("ll"),
@@ -66,7 +69,7 @@ const Toolbar = ({
                     </Button>
                     <IconButton
                         disabled={disableNavigation || disableNext}
-                        onClick={() => onNavigate(navigationConstants.NEXT)}
+                        onClick={() => onActiveDateChange(getNextMonday(dayjs(activeDate)).toDate())}
                     >
                         <FaAngleRight />
                     </IconButton>

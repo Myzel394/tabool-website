@@ -74,7 +74,16 @@ const Timetable = ({classes}) => {
             min={minTime}
             max={maxTime}
             style={style}
-            onNavigate={date => onActiveDateChange(date)}
+            onNavigate={rawDate => {
+                const date = dayjs(rawDate);
+
+                if (date.day() === 0) {
+                    onActiveDateChange(rawDate);
+                } else {
+                    const mondayDate = findNextDate(date.subtract(6, "day"), 1);
+                    onActiveDateChange(mondayDate.toDate());
+                }
+            }}
         />
     );
 };
