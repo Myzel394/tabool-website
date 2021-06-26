@@ -35,7 +35,7 @@ const Form = ({
     const dayLabel = t("Tage");
 
     return (
-        <>
+        <Box mx={2}>
             <Typography variant="body2" color="textSecondary">
                 {t("Wähle Datum aus, und wie weit maximal Hausaufgaben, Events, Videokonferenzen etc. geladen werden.")}
             </Typography>
@@ -110,7 +110,7 @@ const Form = ({
                     </Grid>
                 </Grid>
             </Box>
-        </>
+        </Box>
     );
 };
 
