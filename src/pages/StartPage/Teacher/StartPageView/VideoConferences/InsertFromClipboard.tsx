@@ -110,7 +110,7 @@ const InsertFromClipboard = ({
                 onClick={async () => {
                     setIsAsking(true);
 
-                    let link;
+                    let link: string | undefined;
 
                     try {
                         link = await readLinkFromClipboard();
