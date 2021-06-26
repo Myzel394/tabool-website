@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {
     Accordion,
     AccordionDetails,
@@ -21,13 +21,7 @@ const Modifications = () => {
         modifications,
     } = useContext(RelatedObjectsContext);
 
-    const [isOpen, setIsOpen] = useState<boolean>(!modifications.length);
-
-    useEffect(() => {
-        if (!modifications.length) {
-            setIsOpen(true);
-        }
-    }, [modifications.length]);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
         <>
