@@ -5,7 +5,7 @@ import update from "immutability-helper";
 import {Grid} from "@material-ui/core";
 import {FormikHelpers} from "formik/dist/types";
 
-import {BooleanStatus} from "../../../statuses";
+import BooleanStatus from "../../../statuses/BooleanStatus";
 
 import Field, {IField} from "./Field";
 

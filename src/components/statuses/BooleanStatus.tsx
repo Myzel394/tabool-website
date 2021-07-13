@@ -3,7 +3,7 @@ import {MdCancel, MdCheckCircle} from "react-icons/all";
 import {useTheme} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 
-import {Information} from "../functional";
+import Information from "../functional/Information";
 
 export interface BooleanStatusProps {
     value: boolean;

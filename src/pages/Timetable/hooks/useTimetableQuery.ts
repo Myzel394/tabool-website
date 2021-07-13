@@ -4,7 +4,7 @@ import _ from "lodash";
 import {Dispatch, SetStateAction, useMemo} from "react";
 import {StudentWeekView} from "types";
 import {useQueryOptions} from "hooks";
-import {useFetchStudentWeekAPI} from "hooks/apis";
+import {IFetchStudentDayData, useFetchStudentWeekAPI} from "hooks/apis";
 import {getMinMaxTime} from "utils";
 import {Dayjs} from "dayjs";
 import {Event as CalendarEvent} from "react-big-calendar";
@@ -58,7 +58,7 @@ const useTimetableQuery = ({
             startDate: queryStartDate,
             endDate: queryEndDate,
         }],
-        context => fetchWeek(context.queryKey[1]),
+        context => fetchWeek(context.queryKey[1] as IFetchStudentDayData),
         {
             ...queryOptions,
             onSuccess: async newTimetable => {
